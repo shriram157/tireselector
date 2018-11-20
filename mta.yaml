@@ -1,0 +1,99 @@
+ID: tireSelector
+_schema-version: '2.1'
+description: MTA Project For Tire Selector
+version: 0.0.1
+
+modules:
+ - name: tireSelector_Node
+   type: nodejs
+   path: tireSelector_Node
+   parameters:
+      host: tireSelector_Node
+      register-service-url: true
+      service-name: tireSelector_Node
+      service-url: '${default-url}'
+      disk-quota: 256MB
+      memory: 256MB
+   provides:
+    - name: tireSelector_Node_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: TIRE_SELECTOR_APIM_CUPS
+    
+ - name: tireSelector
+   type: html5
+   path: tireSelector
+   parameters:
+      host: tireSelector
+      register-service-url: true
+      service-name: tireSelector
+      service-url: '${default-url}'
+      disk-quota: 256M
+      memory: 256M
+   build-parameters:
+      builder: grunt
+   requires:
+    - name: uaa_tireSelector
+    - name: dest_tireSelector
+    - name: tireSelector_Node_api
+      group: destinations
+      properties:
+        name: tireSelector-node-backend
+        url: '~{url}'
+        forwardAuthToken: true
+        
+        
+ - name: tireSelector_hdb
+   type: hdb
+   path: tireSelector_hdb
+   requires:
+    - name: hdi_tireSelector_hdb
+
+ - name: tireSelector_XSJS
+   type: nodejs
+   path: tireSelector_XSJS
+   parameters:
+      host: tireSelector
+      register-service-url: true
+      service-name: tireSelector
+      service-url: '${default-url}'
+      disk-quota: 512M
+      memory: 256M
+   provides:
+    - name: tireSelector_XSJS_api
+      properties:
+         url: ${default-url}
+   requires:
+     - name: tireSelector_hdb
+     - name: hdi_tireSelector_hdb
+     - name: uaa_tireSelector
+     - name: dest_tireSelector
+resources:
+ - name: uaa_tireSelector
+   parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+   type: org.cloudfoundry.managed-service
+
+ - name: dest_tireSelector
+   parameters:
+      service-plan: lite
+      service: destination
+   type: org.cloudfoundry.managed-service
+   
+ - name: TIRE_SELECTOR_APIM_CUPS
+   type: org.cloudfoundry.existing-service
+   parameters:
+     service-name: TIRE_SELECTOR_APIM_CUPS
+   properties:
+      odata-call-service-name: '${service-name}'
+
+ - name: hdi_tireSelector_hdb
+   parameters:
+      config:
+         schema: tireSelector
+   properties:
+      hdi-container-name: ${service-name}
+   type: com.sap.xs.hdi-container

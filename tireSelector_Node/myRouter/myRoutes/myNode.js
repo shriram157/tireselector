@@ -1,0 +1,72 @@
+/*eslint no-console: 0, no-unused-vars: 0, no-shadow: 0, new-cap: 0*/
+/*eslint-env node, es6 */
+'use strict';
+var express = require('express');
+var request = require('request');
+var xsenv = require("@sap/xsenv");
+var passport = require('passport');
+// var JWTStrategy = require('@sap/xssec').JWTStrategy; 
+
+var async = require('async');
+module.exports = function () {
+	var app = express.Router();
+	//Hello Router
+	app.get('/', (req, res) => {
+		var output = '<a os Details</a> - Your Node Module is up and Running</br> ';
+		res.type('text/html').status(200).send(output);
+	});
+	var auth64;
+	
+	// SAP Calls Start from here
+	var options = {};
+	options = Object.assign(options, xsenv.getServices({
+		api: {
+			name: "TIRE_SELECTOR_APIM_CUPS"
+		}
+	}));
+
+	var uname = options.api.user,
+		pwd = options.api.password,
+		url = options.api.host,
+		APIKey = options.api.APIKey,
+		client = options.api.client;
+
+	auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
+	app.use(function (req, res, next) {
+		res.header("Access-Control-Allow-Origin", "*");
+		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		next();
+	});
+
+	app.all('/*', function (req, res, next) {
+		let headOptions = {};
+		var csrfToken;
+		// prepare the magic reverse proxy header for odata service to work. 
+		let originalHost = req.hostname;
+		if (!!req.headers.host) {
+			headOptions.host = req.headers.host;
+		}
+
+		//only support the basic auth
+		headOptions.Authorization = auth64;
+
+		let method = req.method;
+		let xurl = url + req.url;
+		console.log('Method', method);
+		console.log('URL that I am running', xurl);
+		let xRequest =
+			request({
+				method: method,
+				url: xurl,
+				headers: headOptions
+			});
+		req.pipe(xRequest);
+		xRequest.on('response', (response) => {
+			csrfToken = response.headers['x-csrf-token'];
+			xRequest.pipe(res);
+		}).on('error', (error) => {
+			next(error);
+		});
+	});
+	return app;
+};

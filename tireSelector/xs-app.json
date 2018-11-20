@@ -1,0 +1,20 @@
+{
+  "welcomeFile": "/tireselector/index.html",
+  "authenticationMethod": "none",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/tireselector/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    },
+       {
+      "source": "/node(.*)",
+      "destination": "tireSelector-node-backend",
+      "csrfProtection": false,
+      "authenticationType": "none"
+    }
+  ]
+}

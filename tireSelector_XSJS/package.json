@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@sap/xsjs": "3.3.7",
+    "@sap/xsenv": "1.2.9"
+  },
+  "description": "XSJS Module to Provide oData",
+  "devDependencies": {
+    "@sap/xsjs-test": "2.0.16"
+  },
+  "files": [],
+  "main": "server.js",
+  "name": "tireSelector_XSJS",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node testrun.js"
+  },
+  "engines": {
+    "node": "8.x"
+  },
+  "version": "1.0.0"
+}
