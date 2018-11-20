@@ -121,6 +121,23 @@ sap.ui.define([
 					"RimSize": "7Jx17 ET39"
 				}]
 			};
+			
+	
+    
+			     var sLocation = window.location.host;
+      var sLocation_conf = sLocation.search("webide");
+    
+      if (sLocation_conf == 0) {
+        this.sPrefix = "/tireSelector-dest";
+      } else {
+        this.sPrefix = "";
+        
+     }
+      
+      this.nodeJsUrl = this.sPrefix + "/node";
+      //for xsodata
+      //     this.nodeJsUrl = this.sPrefix + "/xsodata";
+			
 			_that.oSelectJSONModel.setData(_that.objList);
 			_that.oSelectJSONModel.updateBindings();
 			_that.oSearchOptionList.setSelectedKey(_that.oSearchOptionList.getItems()[2].getProperty("key"));
@@ -128,7 +145,7 @@ sap.ui.define([
 
 			// this.nodeJsUrl = "/node";
 			$.ajax({
-				url: "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_VEHICLE_MASTER_SRV/zc_c_vehicle",
+				url:       this.nodeJsUrl  + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=20",
 				//url: this.nodeJsUrl+"/Z_VEHICLE_MASTER_SRV/zc_c_vehicle",
 				type: "GET",
 				dataType: "json",

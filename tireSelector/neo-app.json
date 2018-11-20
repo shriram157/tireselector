@@ -18,7 +18,17 @@
         "entryPath": "/test-resources"
       },
       "description": "SAPUI5 Test Resources"
+    },
+        {
+    	"path": "tireSelector-dest",
+        "target": {
+        	"type": "destination",
+        	"name": "tireSelector-dest"
+        },
+        "description":"tireSelector-dest"
     }
+    
+    
   ],
   "sendWelcomeFileRedirect": true
 }

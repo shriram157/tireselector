@@ -15,6 +15,12 @@
       "destination": "tireSelector-node-backend",
       "csrfProtection": false,
       "authenticationType": "none"
+    },
+           {
+      "source": "/xsodata(.*)",
+      "destination": "tireSelector-node-backend",
+      "csrfProtection": false,
+      "authenticationType": "none"
     }
   ]
 }
