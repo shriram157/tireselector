@@ -1,0 +1,275 @@
+<mvc:View xmlns:u="sap.ui.unified" xmlns:tnt="sap.tnt" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" controllerName="app.toyota.tireselector.ui5_tireselector.controller.tireQuotation"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page showNavButton="false" class="stylePageSection customStyle">
+				<customHeader>
+					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
+						<contentLeft>
+							<Image id="idLexusLogo" src="images/LexusNew.png" width="100px"/>
+							<Text text="|" class="sapUiTinyMarginBeginEnd"/>
+							<Text class="clCustomFont" text="{i18n>PageTitle}"/>
+						</contentLeft>
+						<contentMiddle><Text text="" id="selectedModelText"/></contentMiddle>
+						<contentRight>
+							<!--<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
+							<!--<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
+							<!--<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>-->
+							<Button text="{i18n>Logout}" type="Default"/>
+						</contentRight>
+					</Bar>
+				</customHeader>
+				<tnt:ToolHeader backgroundDesign="Translucent">
+					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
+				</tnt:ToolHeader>
+				<content>
+					<l:VerticalLayout class="sapUiContentPadding" width="100%">
+						<l:content>
+							<Breadcrumbs currentLocationText="{i18n>PrepareQuote}"></Breadcrumbs>
+						</l:content>
+					</l:VerticalLayout>
+					<OverflowToolbar class="noBottomBorder">
+						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
+						<ToolbarSpacer/>
+						<Button text="{i18n>SelectDifferentTire}" type="Emphasized" press="SelectDifferentTire"/>
+					</OverflowToolbar>
+					<!--<l:VerticalLayout class="sapUiContentPadding" width="100%">-->
+					<!--	<l:content>-->
+					<!--		<Image src="images/LexusNew.png" densityAware="false" width="auto">-->
+					<!--			<layoutData>-->
+					<!--				<FlexItemData growFactor="1"/>-->
+					<!--			</layoutData>-->
+					<!--		</Image>-->
+					<!--	</l:content>-->
+					<!--</l:VerticalLayout>-->
+					<f:SimpleForm id="form_TireQuotation" editable="true" layout="ResponsiveGridLayout" adjustLabelSpan="true" columnsXL="2" columnsL="2"
+						columnsM="2" singleContainerFullSize="false" class="form_TireQuotation">
+						<f:content>
+							<core:Title text=""/>
+							<Label text=""/>
+							<Text text="Dealer Name"/>
+							<Label text=""/>
+							<Text text="Dealer Address"/>
+							<Label text=""/>
+							<Text text="Dealer Phone"/>
+							<Label text="{i18n>DealerTel}"/>
+							<Input type="Number" value="1234567890"/>
+							<Label text="{i18n>QuoteDate}" required="true"/>
+							<Input type="Number" value=""/>
+							<Label text="{i18n>AfterExpiry}" required="true"/>
+							<Input type="Number" value=""/>
+							<core:Title text=""/>
+							<Label text="{i18n>Vehicle}"/>
+							<Input type="Text" value="Vehicle Details"/>
+							<Label text="{i18n>VIN}"/>
+							<Input type="Text" value="VIN"/>
+							<Label text="{i18n>Name}"/>
+							<Input type="Text" value="Name"/>
+							<Label text="{i18n>Address}"/>
+							<Input type="Text" value="Address"/>
+							<Label text="{i18n>PostalCode}"/>
+							<Input type="Text" value="Postal Code"/>
+							<Label text="{i18n>Phone}"/>
+							<Input type="Number" value="1234567890"/>
+							<Label text="{i18n>CreditApp}"/>
+							<Input type="Text" value="Credit App"/>
+						</f:content>
+					</f:SimpleForm>
+					<Table inset="false">
+						<columns>
+							<Column minScreenWidth="Tablet" demandPopin="true">
+								<Text text=""/>
+							</Column>
+							<Column minScreenWidth="Tablet" demandPopin="true" width="10rem" hAlign="Center">
+								<Text text="{i18n>UnitPrice}"/>
+							</Column>
+							<Column minScreenWidth="Desktop" demandPopin="true" width="10rem" hAlign="Center">
+								<Text text="{i18n>Quantity}"/>
+							</Column>
+							<Column minScreenWidth="Desktop" demandPopin="true" width="10rem" hAlign="Center">
+								<Text text="{i18n>Price}"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>Tires}"/>
+										<Text text="Description"/>
+									</VBox>
+									<!--<ObjectHeader title="{i18n>Tires}">-->
+									<!--	<attributes>-->
+									<!--		<ObjectAttribute text="Description"/>-->
+									<!--	</attributes>-->
+									<!--</ObjectHeader>-->
+									<Input value=""/>
+									<Input value=""/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<HBox>
+											<Label text="{i18n>RoadHazardProtection} "/>
+											<Label text=" ({i18n>AgreementText})" class="noCustomColor"/>
+										</HBox>
+										<Select forceSelection="false" selectedKey="">
+											<core:Item key="{i18n>NoThankYou}" text="{i18n>NoThankYou}"/>
+										</Select>
+									</VBox>
+									<Input value=""/>
+									<Input value=""/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>MountingAndBalancing}"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>Wheels}"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="70%"/>
+									</VBox>
+									<Input value=""/>
+									<Input value=""/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>TPMS}"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="70%"/>
+									</VBox>
+									<Input value=""/>
+									<Input value=""/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>FittingKits}"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="70%"/>
+									</VBox>
+									<Input value=""/>
+									<Input value=""/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>OtherItems}"/>
+										<Input value="" width="70%"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Input value="" width="70%"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Input value="" width="70%"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Input value="" width="70%"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="Fee Description {i18n>FeeDescription}"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="Federal Tax Code"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>Provincial Tax Code}"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>Total}"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value=""/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns">
+								<cells>
+									<VBox>
+										<Label text="{i18n>DealerMessage}"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" maxLength="1000" showExceededText="true" width="100%"/>
+									</VBox>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{propertiesModel>/enableInput}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+					<OverflowToolbar class="noBottomBorder">
+						<Label text="{i18n>Disclaimer}"/>
+						<ToolbarSpacer/>
+						<Button text="{i18n>PrintQuote}" type="Emphasized" press="SelectDifferentTire"/>
+					</OverflowToolbar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

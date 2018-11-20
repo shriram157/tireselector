@@ -1,0 +1,121 @@
+<mvc:View xmlns:u="sap.ui.unified" xmlns:tnt="sap.tnt" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core" xmlns:t="sap.ui.table" controllerName="app.toyota.tireselector.ui5_tireselector.controller.searchResultsTire"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page showNavButton="false" class="stylePageSection customStyle">
+				<customHeader>
+					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
+						<contentLeft>
+							<Image id="idLexusLogo" src="images/LexusNew.png" width="100px"/>
+							<Text text="|" class="sapUiTinyMarginBeginEnd"/>
+							<Text class="clCustomFont" text="{i18n>PageTitle}"/>
+						</contentLeft>
+						<contentMiddle><Text text="" id="selectedModelText"/></contentMiddle>
+						<contentRight>
+							<!--<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
+							<!--<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
+							<!--<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>-->
+							<Button text="{i18n>Logout}" type="Default"/>
+						</contentRight>
+					</Bar>
+				</customHeader>
+				<tnt:ToolHeader backgroundDesign="Translucent">
+					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
+				</tnt:ToolHeader>
+				<content>
+					<l:VerticalLayout class="sapUiContentPadding" width="100%">
+						<l:content>
+							<Breadcrumbs currentLocationText="{i18n>SelectTire}">
+								<Link press="onPressBreadCrumb" text="{i18n>PageTitle}"/>
+							</Breadcrumbs>
+						</l:content>
+					</l:VerticalLayout>
+					<OverflowToolbar class="noBottomBorder">
+						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
+						<ToolbarSpacer/>
+						<Button text="{i18n>BackToSearch}" type="Emphasized" press="NavBackToSearch"/>
+					</OverflowToolbar>
+					<!--<VBox id="idVBox">-->
+					<!--	<items>-->
+					<!--		<FacetFilter type="Simple" showPersonalization="true" showReset="true" reset="handleFacetFilterReset" confirm="handleFacetConfirm"-->
+					<!--			lists="{SelectTireJSONModel>/Filters}">-->
+					<!--			<lists>-->
+					<!--				<FacetFilterList title="{SelectTireJSONModel>type}" key="{SelectTireJSONModel>key}" mode="MultiSelect"-->
+					<!--					items="{path:'SelectTireJSONModel>values', templateShareable: 'true'}">-->
+					<!--					<items>-->
+					<!--						<FacetFilterItem text="{SelectTireJSONModel>text}" key="{SelectTireJSONModel>key}"/>-->
+					<!--					</items>-->
+					<!--				</FacetFilterList>-->
+					<!--			</lists>-->
+					<!--		</FacetFilter>-->
+					<!--	</items>-->
+					<!--</VBox>-->
+					<HBox class="customStyleBox">
+						<t:Table id="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
+							rows="{SelectTireJSONModel>/TireSelectionList}" visibleRowCount="7">
+							<t:toolbar>
+								<Toolbar>
+									<CheckBox text="Show Dealer Net" select="onCheckPress"/>
+									<CheckBox text="Use Preview Markup" select="onCheckPress"/>
+								</Toolbar>
+							</t:toolbar>
+							<t:columns>
+								<t:Column id="ID_TireFitment" sortProperty="TireFitment" filterProperty="TireFitment">
+									<Label text="{i18n>TireFitment}"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>TireFitment}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column sortProperty="TireCategory" filterProperty="TireCategory">
+									<Label text="{i18n>TireCategory}"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>TireCategory}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column sortProperty="TireBrandDesc" filterProperty="TireBrandDesc">
+									<Label text="{i18n>TireBrandDesc}"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>TireBrandDesc}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column sortProperty="Ratings" filterProperty="Ratings">
+									<Label text="{i18n>Ratings}"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>Ratings}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column sortProperty="PartNumber" filterProperty="PartNumber">
+									<Label text="{i18n>PartNumber}" wrapping="false"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>PartNumber}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column id="ID_DealerNet" sortProperty="DealerNet" filterProperty="DealerNet" visible="{propertiesModel>/enableDealerNet}">
+									<Label text="{i18n>DealerNet}" wrapping="false"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>DealerNet}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column id="ID_Profit" sortProperty="Profit" filterProperty="Profit" visible="{propertiesModel>/enableProfit}">
+									<Label text="{i18n>Profit}" wrapping="false"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>Profit}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column sortProperty="Retails" filterProperty="Retails">
+									<Label text="{i18n>Retails}" wrapping="false"/>
+									<t:template>
+										<Text text="{SelectTireJSONModel>Retails}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+							</t:columns>
+						</t:Table>
+					</HBox>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

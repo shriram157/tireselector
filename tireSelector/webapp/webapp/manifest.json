@@ -1,0 +1,180 @@
+{
+	"_version": "1.8.0",
+	"sap.app": {
+		"id": "app.toyota.tireselector.ui5_tireselector",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "html5moduletemplates.basicSAPUI5ApplicationProjectModule",
+			"version": "1.40.12"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "app.toyota.tireselector.ui5_tireselector.view.master",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.38.34",
+			"libs": {
+				"sap.ui.core": {},
+				"sap.m": {},
+				"sap.f":{},
+				"sap.ui.layout": {},
+				"sap.ushell": {},
+				"sap.collaboration": {},
+				"sap.ui.comp": {},
+				"sap.uxap": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "app.toyota.tireselector.ui5_tireselector.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+				"controlAggregation": "pages",
+				"controlId": "idAppControl",
+				"clearControlAggregation": false
+			},
+			"routes": [
+				{
+					"name": "Routemaster",
+					"pattern": "Routemaster",
+					"target": "Routemaster"
+				},
+				{
+					"name": "searchResults",
+					"pattern": "searchResults",
+					"target": "searchResults"
+				},
+				{
+					"name": "searchResultsTire",
+					"pattern": "searchResultsTire/{modelData}",
+					"target": "searchResultsTire"
+				},
+				{
+					"name": "searchResultsTire",
+					"pattern": "searchResultsTire",
+					"target": "searchResultsTire"
+				},
+				{
+					"name": "productMarkups",
+					"pattern": "productMarkups",
+					"target": "productMarkups"
+				},
+				{
+					"name": "reportError",
+					"pattern": "reportError",
+					"target": "reportError"
+				},
+				{
+					"name":"tireQuotation",
+					"pattern":"tireQuotation/{rowData}",
+					"target":"tireQuotation"
+				}
+			],
+			"targets": {
+				"Routemaster": {
+					"viewType": "XML",
+					"transition": "slide",
+					"clearControlAggregation": false,
+					"viewName": "master",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl"
+				},
+				"searchResults": {
+					"viewType": "XML",
+					"viewName": "searchResults",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"searchResultsTire": {
+					"viewType": "XML",
+					"viewName": "searchResultsTire",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"productMarkups": {
+					"viewType": "XML",
+					"viewName": "productMarkups",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"reportError": {
+					"viewType": "XML",
+					"viewName": "reportError",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"tireQuotation": {
+					"viewType": "XML",
+					"viewName": "tireQuotation"
+				}
+			}
+		}
+	}
+}
