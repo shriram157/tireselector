@@ -1,6 +1,6 @@
 <mvc:View xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
-	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:f="sap.ui.layout.form"
-	controllerName="app.toyota.tireselector.ui5_tireselector.controller.master" displayBlock="true">
+	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:f="sap.ui.layout.form" controllerName="tireSelector.controller.master"
+	displayBlock="true">
 	<App id="idAppControl">
 		<!--<pages>-->
 		<Page showNavButton="false" class="stylePageSection customStyle">
@@ -19,7 +19,7 @@
 			<tnt:ToolHeader backgroundDesign="Translucent">
 				<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
 				<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
-				<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
+				<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
 			</tnt:ToolHeader>
 			<content>
 				<l:VerticalLayout class="sapUiContentPadding" width="100%">
@@ -45,28 +45,26 @@
 						</VBox>
 						<VBox>
 							<Label id="searchOptionLabel" required="true"/>
-							<Input type="Text" id="searchOptionTireSize" required="true" visible="true"
-								valueStateText="Input cannot be blank." liveChange="onLiveChangeTireSize" change="onInputEntryTireSize" showSuggestion="true"
-								suggestionItems="{ path: 'GlobalJSONModel>/results' }">
+							<Input id="searchOptionVIN" type="Text" visible="{propertiesModel>/enableVin}" liveChange="onLiveChangeVIN" showSuggestion="true"
+								suggest="handleVINSuggest" change="onInputEntryVIN" suggestionItems="{GlobalJSONModel>/vinData}">
 								<suggestionItems>
 									<core:Item text="{GlobalJSONModel>VIN}"/>
 								</suggestionItems>
-								<layoutData>
-									<l:GridData span="L2 M12 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
-								</layoutData>
 							</Input>
-							<Input type="Text" id="searchOptionVIN" visible="false" required="true" valueStateText="Input cannot be blank."
-								liveChange="onLiveChangeVIN" change="onInputEntryVIN" showSuggestion="true" suggestionItems="{ path: 'GlobalJSONModel>/results' }">
+							<Input id="searchOptionTireSize" type="Text" visible="{propertiesModel>/enableTireSize}" liveChange="onLiveChangeTireSize" showSuggestion="true"
+								suggest="handleTireSizeSuggest" change="onInputEntryTireSize" suggestionItems="{GlobalJSONModel>/FitmentData}">
 								<suggestionItems>
-									<core:Item text="{GlobalJSONModel>VIN}"/>
+									<core:Item text="{GlobalJSONModel>TireSize}"/>
 								</suggestionItems>
-								<layoutData>
-									<l:GridData span="L2 M12 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>
-								</layoutData>
 							</Input>
-							<!--<VBox >-->
-							<ComboBox id="VehicleSearchCombo" selectionChange="onInputEntryChange" change="onComboInputChange" value="" selectedKey=""
-								visible="false"
+							<!--<Input type="Text" id="searchOptionTireSize" visible="{propertiesModel>/enableTireSize}" valueStateText="Input cannot be blank."-->
+							<!--	liveChange="onLiveChangeTireSize" change="onInputEntryTireSize">-->
+							<!--	<layoutData>-->
+							<!--		<l:GridData span="L2 M12 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>-->
+							<!--	</layoutData>-->
+							<!--</Input>-->
+							<ComboBox id="VehicleSearchCombo" visible="{propertiesModel>/enableVehicleInputs}" selectionChange="onInputEntryChange"
+								change="onComboInputChange" value="" selectedKey=""
 								items="{ path: 'GlobalJSONModel>/vehicleSeriesData', sorter: { path: 'TCISeriesDescriptionEN' } }">
 								<core:ListItem key="{GlobalJSONModel>TCISeriesDescriptionEN}" text="{GlobalJSONModel>TCISeriesDescriptionEN}"/>
 								<layoutData>
@@ -75,7 +73,7 @@
 							</ComboBox>
 							<!--</VBox>-->
 						</VBox>
-						<VBox id="forVehicleSearchOnly" visible="false">
+						<VBox id="forVehicleSearchOnly" visible="{propertiesModel>/enableVehicleInputs}">
 							<Label text="{i18n>ModelYear}" id="ModelSeriesLabel" required="true"/>
 							<ComboBox id="ModelSeriesCombo" selectionChange="onInputEntryChange" change="onComboInputChange" value="" selectedKey=""
 								items="{ path: 'GlobalJSONModel>/modelDetailsData', sorter: { path: 'Modelyear' } }">

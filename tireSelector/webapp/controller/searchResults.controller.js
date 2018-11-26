@@ -3,64 +3,93 @@ sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/resource/ResourceModel',
-	'app/toyota/tireselector/ui5_tireselector/controller/BaseController'
+	'tireSelector/controller/BaseController'
 ], function (Controller, JSONModel, ResourceModel, BaseController) {
 	"use strict";
 
-	return BaseController.extend("app.toyota.tireselector.ui5_tireselector.controller.searchResults", {
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.searchResults
-		 */
+	return BaseController.extend("tireSelector.controller.searchResults", {
+		// https://fioridev1.dev.toyota.ca:44300/sap/opu/odata/sap/Z_VEHICLE_MASTER_SRV/
+		// https://fioridev1.dev.toyota.ca:44300/sap/opu/odata/sap/Z_VEHICLE_CATALOGUE_SRV/
+		// https://fioridev1.dev.toyota.ca:44300/sap/opu/odata/sap/Z_TIRESELECTOR_SRV/
 		onInit: function () {
 			_that = this;
-			
-			var SearchOptionVIN = sap.ushell.components.SearchOptionVIN.getValue();
-			var SearchOptionTireSize = sap.ushell.components.SearchOptionTireSize.getValue();
-			var ModelSeriesCombo = sap.ushell.components.ModelSeriesCombo.getValue();
-			var ModelSeriesCombo = sap.ushell.components.SearchOptionVehicle;
-			
-			_that.SearchResultModel = sap.ui.getCore().getModel("SelectJSONModel");
-			_that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
-			_that.SearchResultModel.updateBindings();
-			
-			_that.serviceURL = "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_VEHICLE_FITMENT_SRV/";
-			//Z_VEHICLE_FITMENT_SRV/ZC_FitmentSet(Zzmoyr='2018',Model='DFREVT',Zzsuffix='BM')
-			_that.SearchResultModel.getData().FitmentData = [];
-			$.ajax({
-				dataType: "json",
-				url: _that.serviceURL + "ZC_FitmentSet",
-				type: "GET",
-				success: function (oData) {
-					console.log("Ajax data", oData.d.results);
-					_that.SearchResultModel.getData().FitmentData = oData.d.results;
-					_that.SearchResultModel.updateBindings();
-				},
-				error: function (oError) {}
-			});
-			
-			
-			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				bundleUrl: "i18n/i18n.properties"
-			});
-			_that.getView().setModel(_that.oI18nModel, "i18n");
 
-			if (window.location.search == "?language=fr") {
-				var i18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("fr")
+			_that.getRouter().attachRouteMatched(function (oEvent) {
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties"
 				});
-				_that.getView().setModel(i18nModel, "i18n");
-				_that.sCurrentLocale = 'FR';
-			} else {
-				var i18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("en")
+				_that.getView().setModel(_that.oI18nModel, "i18n");
+
+				if (window.location.search == "?language=fr") {
+					_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+						bundleUrl: "i18n/i18n.properties",
+						bundleLocale: ("fr")
+					});
+					_that.getView().setModel(_that.oI18nModel, "i18n");
+					_that.sCurrentLocale = 'FR';
+				} else {
+					_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+						bundleUrl: "i18n/i18n.properties",
+						bundleLocale: ("en")
+					});
+					_that.getView().setModel(_that.oI18nModel, "i18n");
+					_that.sCurrentLocale = 'EN';
+				}
+				
+				var breadCrumbVal = this.getView().byId("ID_curCrumbText");
+				var SearchOptionVIN = sap.ushell.components.SearchOptionVIN.getValue();
+				var SearchOptionTireSize = sap.ushell.components.SearchOptionTireSize.getValue();
+				var ModelSeriesCombo = sap.ushell.components.ModelSeriesCombo.getValue();
+				var SearchOptionVehicle = sap.ushell.components.SearchOptionVehicle.getValue();
+				
+				if(sap.ushell.components.SearchOptionVIN.getValue()!== "" && sap.ushell.components.SearchOptionVIN.getValue() !== undefined ) {
+					breadCrumbVal.setCurrentLocationText(_that.oI18nModel.getResourceBundle().getText("SelectModel"));
+				}
+				else {
+					breadCrumbVal.setCurrentLocationText(_that.oI18nModel.getResourceBundle().getText("SelectModel") +"> [" + SearchOptionVehicle + "] [" + ModelSeriesCombo + "]");
+				}
+				_that.SelectJSONModel = sap.ui.getCore().getModel("SelectJSONModel");
+				_that.getView().setModel(_that.SelectJSONModel, "SelectJSONModel");
+
+				_that.SearchResultModel = new sap.ui.model.json.JSONModel();
+				_that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
+
+				var sLocation = window.location.host;
+				var sLocation_conf = sLocation.search("webide");
+
+				if (sLocation_conf == 0) {
+					this.sPrefix = "/tireSelector-dest";
+				} else {
+					this.sPrefix = "";
+				}
+				this.nodeJsUrl = this.sPrefix + "/node";
+				_that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
+
+				if (SearchOptionVIN !== "" || SearchOptionVIN !== undefined) {
+					var serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
+					// var serviceURL = "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
+				} else {
+					var serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='" + SearchOptionVehicle + "',Model='" +
+						ModelSeriesCombo + "',Zzsuffix='')";
+					// var serviceURL = "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='" +
+					// ModelSeriesCombo + "',Model='',Zzsuffix='')";
+				}
+				// _that.serviceURL = this.nodeJsUrl + "/Z_VEHICLE_FITMENT_SRV/";
+				//Z_VEHICLE_FITMENT_SRV/ZC_FitmentSet(Zzmoyr='2018',Model='DFREVT',Zzsuffix='BM')
+				// _that.SearchResultModel.getData().FitmentData = [];
+				$.ajax({
+					dataType: "json",
+					url: serviceURL,
+					type: "GET",
+					success: function (oData) {
+						console.log("Search Result data", oData.d.results);
+						_that.SearchResultModel.setData(oData.d);
+						_that.SearchResultModel.updateBindings();
+					},
+					error: function (oError) {}
 				});
-				_that.getView().setModel(i18nModel, "i18n");
-				_that.sCurrentLocale = 'EN';
-			}
+
+			}, _that);
 		},
 
 		onPressBreadCrumb: function (oEvtLink) {
@@ -70,13 +99,16 @@ sap.ui.define([
 		},
 
 		NavBackToSearch: function () {
-			_that.getRouter().navTo("Routemaster");
-			_that.SearchResultModel.getData().SearchOptionVal = _that.oI18nModel.getResourceBundle().getText("SelectModel");
-			_that.SearchResultModel.updateBindings();
+			// if (_that.oSelectJSONModel!== undefined) {
+				// _that.oSelectJSONModel.getData().SearchOptionVal = "";
+				// _that.SelectJSONModel.getData().SearchOptionVal = _that.oI18nModel.getResourceBundle().getText("SelectModel");
+				// _that.SelectJSONModel.updateBindings();
+			// }
 			sap.ushell.components.SearchOptionVIN.setValue("");
 			sap.ushell.components.SearchOptionTireSize.setValue("");
 			sap.ushell.components.ModelSeriesCombo.setSelectedKey();
 			sap.ushell.components.SearchOptionVehicle.setSelectedKey();
+			_that.getRouter().navTo("Routemaster");
 		},
 
 		navToSelectTire: function (oEvtModel) {
@@ -112,7 +144,7 @@ sap.ui.define([
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.searchResults
+		 * @memberOf tireSelector.view.searchResults
 		 */
 		//	onBeforeRendering: function() {
 		//
@@ -121,7 +153,7 @@ sap.ui.define([
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.searchResults
+		 * @memberOf tireSelector.view.searchResults
 		 */
 		//	onAfterRendering: function() {
 		//
@@ -129,7 +161,7 @@ sap.ui.define([
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.searchResults
+		 * @memberOf tireSelector.view.searchResults
 		 */
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;

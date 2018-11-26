@@ -5,37 +5,22 @@ sap.ui.define([
 	'sap/ui/model/resource/ResourceModel',
 	'sap/ui/model/Filter',
 	'sap/m/ObjectIdentifier',
-	'app/toyota/tireselector/ui5_tireselector/controller/BaseController'
+	'tireSelector/controller/BaseController'
 ], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController) {
 	"use strict";
 
-	return BaseController.extend("app.toyota.tireselector.ui5_tireselector.controller.searchResultsTire", {
+	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.searchResults
+		 * @memberOf tireSelector.view.searchResults
 		 */
 		onInit: function () {
 			_that = this;
-
-			_that.serviceURL = "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_VEHICLE_FITMENT_SRV/";
+			// _that.serviceURL = "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_VEHICLE_FITMENT_SRV/";
 
 			_that.oSelectTireJSONModel = new JSONModel();
 			_that.getView().setModel(_that.oSelectTireJSONModel, "SelectTireJSONModel");
-
-			//ZC_FitmentSet
-			_that.oSelectTireJSONModel.getData().FitmentData = [];
-			$.ajax({
-				dataType: "json",
-				url: _that.serviceURL + "ZC_FitmentSet",
-				type: "GET",
-				success: function (oData) {
-					console.log("Ajax data", oData.d.results);
-					_that.oSelectTireJSONModel.getData().FitmentData = oData.d.results;
-					_that.oSelectTireJSONModel.updateBindings();
-				},
-				error: function (oError) {}
-			});
 
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
@@ -52,41 +37,60 @@ sap.ui.define([
 			_that.getView().setModel(_that.oI18nModel, "i18n");
 
 			if (window.location.search == "?language=fr") {
-				var i18nModel = new sap.ui.model.resource.ResourceModel({
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
 				});
-				_that.getView().setModel(i18nModel, "i18n");
+				_that.getView().setModel(_that.oI18nModel, "i18n");
 				_that.sCurrentLocale = 'FR';
 			} else {
-				var i18nModel = new sap.ui.model.resource.ResourceModel({
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
 				});
-				_that.getView().setModel(i18nModel, "i18n");
+				_that.getView().setModel(_that.oI18nModel, "i18n");
 				_that.sCurrentLocale = 'EN';
 			}
 
-			this.getRouter().attachRouteMatched(function (oEvent) {
+			_that.getRouter().attachRouteMatched(function (oEvent) {
 				_that.oTable = _that.getView().byId("idTireSelectionTable");
 
-				// _that.getView().byId("ID_DealerNet").setVisible(false);
-				// _that.getView().byId("ID_Profit").setVisible(false)
-				// if (_that.oTable !== undefined) {
-				// 	_that.oTable.getColumns()[5].setVisible(false);
-				// 	_that.oTable.getColumns()[6].setVisible(false);
-				// }
-				// if (_that.oTable !== undefined) {
-				// 	if (sap.ushell.components.SearchOption.getSelectedKey() == "Tire Size") {
-				// 		_that.oTable.getColumns()[0].setVisible(true);
-				// 	} else {
-				// 		_that.oTable.getColumns()[0].setVisible(false);
-				// 	}
-				// }
+				_that.oTireFitmentJSONModel = new JSONModel();
+				_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+				_that.oTireFitmentJSONModel.getData().FitmentData = [];
+				var sLocation = window.location.host;
+				var sLocation_conf = sLocation.search("webide");
+
+				if (sLocation_conf == 0) {
+					this.sPrefix = "/tireSelector-dest";
+				} else {
+					this.sPrefix = "";
+				}
+				this.nodeJsUrl = this.sPrefix + "/node";
+
 				if (oEvent.getParameter("arguments").modelData !== undefined) {
 					_that.oSelectedModel = oEvent.getParameter("arguments").modelData;
-					_that.getView().byId("selectedModelText").setText("Selected Model: " + _that.oSelectedModel + "");
+					// _that.getView().byId("selectedModelText").setText("Selected Model: " + _that.oSelectedModel + "");
+					 _that.serviceURL = this.nodeJsUrl + "Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='',Zzsuffix='')";
+					// _that.serviceURL =
+						// "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='" +
+						// _that.oSelectedModel + "',Zzsuffix='')";
+				} else {
+					_that.serviceURL = this.nodeJsUrl + "Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='" +_that.oSelectedModel + "',Zzsuffix='')";
+					// _that.serviceURL =
+						// "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='',Zzsuffix='')";
 				}
+				$.ajax({
+					dataType: "json",
+					url: _that.serviceURL,
+					type: "GET",
+					success: function (oData) {
+						console.log("Tire Results Page data", oData.d.results);
+						_that.oTireFitmentJSONModel.getData().FitmentData = oData.d.results;
+						_that.oTireFitmentJSONModel.updateBindings();
+					},
+					error: function (oError) {}
+				});
 			}, _that);
 
 			_that.oTable = _that.getView().byId("idTireSelectionTable");
@@ -238,10 +242,11 @@ sap.ui.define([
 			_that.getRouter().navTo("Routemaster");
 		},
 		NavBackToSearch: function () {
-			_that.getRouter().navTo("Routemaster");
-			sap.ushell.components.SearchOptionVal.setValue("");
+			sap.ushell.components.SearchOptionVIN.setValue("");
+			sap.ushell.components.SearchOptionTireSize.setValue("");
 			sap.ushell.components.ModelSeriesCombo.setSelectedKey();
-			sap.ushell.components.SearchOptionVal2.setSelectedKey();
+			sap.ushell.components.SearchOptionVehicle.setSelectedKey();
+			_that.getRouter().navTo("Routemaster");
 		},
 		handleFacetConfirm: function (oEvent) {
 			// debugger;

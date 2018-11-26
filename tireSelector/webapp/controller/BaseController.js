@@ -5,7 +5,7 @@ sap.ui.define([
 		], function (Controller, History, Device) {
 			"use strict";
 
-			return Controller.extend("app.toyota.tireselector.ui5_tireselector.controller.BaseController", {
+			return Controller.extend("tireSelector.controller.BaseController", {
 					/**
 					 * Convenience method for accessing the router in every controller of the application.
 					 * @public
@@ -42,10 +42,7 @@ sap.ui.define([
 					 * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
 					 */
 					getResourceBundle: function () {
-						
-
 							return this.getOwnerComponent().getModel("i18n").getResourceBundle();
-
 						},
 
 						onShareEmailPress: function () {

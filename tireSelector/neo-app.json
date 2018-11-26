@@ -19,7 +19,7 @@
       },
       "description": "SAPUI5 Test Resources"
     },
-        {
+       {
     	"path": "tireSelector-dest",
         "target": {
         	"type": "destination",

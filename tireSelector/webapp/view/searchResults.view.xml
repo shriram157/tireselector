@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:tnt="sap.tnt" xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form"
-	controllerName="app.toyota.tireselector.ui5_tireselector.controller.searchResults" xmlns:html="http://www.w3.org/1999/xhtml"
+	controllerName="tireSelector.controller.searchResults" xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<App>
 		<pages>
@@ -22,12 +22,12 @@
 				<tnt:ToolHeader backgroundDesign="Translucent">
 					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
 					<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
-					<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
+					<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
 				</tnt:ToolHeader>
 				<content>
 					<l:VerticalLayout class="sapUiContentPadding" width="100%">
 						<l:content>
-							<Breadcrumbs id="ID_curCrumbText" currentLocationText="{SearchResultModel>/SearchOptionVal}">
+							<Breadcrumbs id="ID_curCrumbText">
 								<Link press="onPressBreadCrumb" text="{i18n>PageTitle}"/>
 							</Breadcrumbs>
 						</l:content>
@@ -37,7 +37,7 @@
 						<ToolbarSpacer/>
 						<Button text="{i18n>BackToSearch}" type="Emphasized" press="NavBackToSearch"/>
 					</OverflowToolbar>
-					<Table id="idSearchresultsTable" inset="false" items="{ path: 'SearchResultModel>/FitmentData', sorter: { path: 'Model' } }">
+					<Table id="idSearchresultsTable" inset="false" items="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }">
 						<columns>
 							<Column demandPopin="true">
 								<Text text="{i18n>Model}"/>

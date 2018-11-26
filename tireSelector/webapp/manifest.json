@@ -1,7 +1,7 @@
 {
 	"_version": "1.8.0",
 	"sap.app": {
-		"id": "app.toyota.tireselector.ui5_tireselector",
+		"id": "tireSelector",
 		"type": "application",
 		"i18n": "i18n/i18n.properties",
 		"applicationVersion": {
@@ -36,7 +36,7 @@
 	},
 	"sap.ui5": {
 		"rootView": {
-			"viewName": "app.toyota.tireselector.ui5_tireselector.view.master",
+			"viewName": "tireSelector.view.master",
 			"type": "XML"
 		},
 		"dependencies": {
@@ -60,7 +60,7 @@
 			"i18n": {
 				"type": "sap.ui.model.resource.ResourceModel",
 				"settings": {
-					"bundleName": "app.toyota.tireselector.ui5_tireselector.i18n.i18n"
+					"bundleName": "tireSelector.i18n.i18n"
 				}
 			}
 		},
@@ -76,7 +76,7 @@
 				"routerClass": "sap.m.routing.Router",
 				"viewType": "XML",
 				"async": true,
-				"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+				"viewPath": "tireSelector.view",
 				"controlAggregation": "pages",
 				"controlId": "idAppControl",
 				"clearControlAggregation": false
@@ -98,9 +98,9 @@
 					"target": "searchResultsTire"
 				},
 				{
-					"name": "searchResultsTire",
-					"pattern": "searchResultsTire",
-					"target": "searchResultsTire"
+					"name": "searchResultsTireNoData",
+					"pattern": "searchResultsTireNoData",
+					"target": "searchResultsTireNoData"
 				},
 				{
 					"name": "productMarkups",
@@ -126,7 +126,7 @@
 					"viewName": "master",
 					"routerClass": "sap.m.routing.Router",
 					"async": true,
-					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"viewPath": "tireSelector.view",
 					"controlAggregation": "pages",
 					"controlId": "idAppControl"
 				},
@@ -135,7 +135,7 @@
 					"viewName": "searchResults",
 					"routerClass": "sap.m.routing.Router",
 					"async": true,
-					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"viewPath": "tireSelector.view",
 					"controlAggregation": "pages",
 					"controlId": "idAppControl",
 					"clearControlAggregation": false
@@ -145,7 +145,17 @@
 					"viewName": "searchResultsTire",
 					"routerClass": "sap.m.routing.Router",
 					"async": true,
-					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"viewPath": "tireSelector.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"clearControlAggregation": false
+				},
+				"searchResultsTireNoData": {
+					"viewType": "XML",
+					"viewName": "searchResultsTire",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "tireSelector.view",
 					"controlAggregation": "pages",
 					"controlId": "idAppControl",
 					"clearControlAggregation": false
@@ -155,7 +165,7 @@
 					"viewName": "productMarkups",
 					"routerClass": "sap.m.routing.Router",
 					"async": true,
-					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"viewPath": "tireSelector.view",
 					"controlAggregation": "pages",
 					"controlId": "idAppControl",
 					"clearControlAggregation": false
@@ -165,7 +175,7 @@
 					"viewName": "reportError",
 					"routerClass": "sap.m.routing.Router",
 					"async": true,
-					"viewPath": "app.toyota.tireselector.ui5_tireselector.view",
+					"viewPath": "tireSelector.view",
 					"controlAggregation": "pages",
 					"controlId": "idAppControl",
 					"clearControlAggregation": false

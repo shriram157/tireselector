@@ -2,16 +2,16 @@ sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/resource/ResourceModel',
-	'app/toyota/tireselector/ui5_tireselector/controller/BaseController',
+	'tireSelector/controller/BaseController',
 ], function (Controller, JSONModel, ResourceModel, BaseController) {
 	"use strict";
 
-	return BaseController.extend("app.toyota.tireselector.ui5_tireselector.controller.productMarkups", {
+	return BaseController.extend("tireSelector.controller.productMarkups", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.productMarkups
+		 * @memberOf tireSelector.view.productMarkups
 		 */
 		onInit: function () {
 			_that.oProdMarkupModel = new JSONModel();
@@ -50,18 +50,18 @@ sap.ui.define([
 			_that.getView().setModel(_that.oI18nModel, "i18n");
 
 			if (window.location.search == "?language=fr") {
-				var i18nModel = new sap.ui.model.resource.ResourceModel({
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
 				});
-				_that.getView().setModel(i18nModel, "i18n");
+				_that.getView().setModel(_that.oI18nModel, "i18n");
 				_that.sCurrentLocale = 'FR';
 			} else {
-				var i18nModel = new sap.ui.model.resource.ResourceModel({
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
 				});
-				_that.getView().setModel(i18nModel, "i18n");
+				_that.getView().setModel(_that.oI18nModel, "i18n");
 				_that.sCurrentLocale = 'EN';
 			}
 		},
@@ -89,7 +89,7 @@ sap.ui.define([
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
 		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.productMarkups
+		 * @memberOf tireSelector.view.productMarkups
 		 */
 		//	onBeforeRendering: function() {
 		//
@@ -98,7 +98,7 @@ sap.ui.define([
 		/**
 		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
 		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.productMarkups
+		 * @memberOf tireSelector.view.productMarkups
 		 */
 		//	onAfterRendering: function() {
 		//
@@ -106,7 +106,7 @@ sap.ui.define([
 
 		/**
 		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf app.toyota.tireselector.ui5_tireselector.view.productMarkups
+		 * @memberOf tireSelector.view.productMarkups
 		 */
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
