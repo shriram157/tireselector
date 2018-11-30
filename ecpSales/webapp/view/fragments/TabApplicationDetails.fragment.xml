@@ -1,0 +1,221 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns="sap.m"
+	xmlns:html="http://www.w3.org/1999/xhtml">
+	<VBox class="sapUiSmallMargin">
+		<f:SimpleForm id="idAgreementDetailsFormTop" editable="true" layout="ResponsiveGridLayout"
+			title="{i18n>OriginalAgrDetails} - {LocalDataModel>/AgreementObj/AgreementNumber}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
+			labelSpanS="4" columnsM="2" columnsL="3" columnsXL="3" singleContainerFullSize="false">
+			<f:content>
+				<core:Title text=""/>
+				<Label text="{i18n>EffectiveDate}" id="idEfDate"/>
+				<Text
+					text="{ path: 'LocalDataModel>/AgreementObj/AgreementEffectiveDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>
+				<Label text="{i18n>ExpiryDate}"/>
+				<Text id="idExDate" text="{ path: 'EcpFieldData>/AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>
+				<core:Title text=""/>
+				<Label text="{i18n>SellingDealerCode}"/>
+				<Text id="idSeDealer" text="{LocalDataModel>/AgreementObj/DealershipNumber}"/>
+				<Label text="{i18n>SellingDealerName}"/>
+				<Text id="idSeDealName" text=""/>
+				<core:Title text=""/>
+				<Label text="{i18n>VehicleSurcharge}"/>
+				<Text id="idVeSur" text="{LocalDataModel>/AgreementObj/SurchargeAmount}"/>
+				<Label text="{i18n>PreOwnedCert}"/>
+				<Text id="idPreOwn" text="{LocalDataModel>/AgreementObj/PROWNDCERT}"/>
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+	<l:VerticalLayout width="100%" class="gridWrapper">
+		<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
+			<html:div class="exampleDiv">
+				<f:SimpleForm id="AgrOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
+					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+					columnsM="1" singleContainerFullSize="false">
+					<f:content>
+						<Label text="{i18n>Customer}"/>
+						<Text text=""/>
+						<Label text="{i18n>Type}"/>
+						<Text text=""/>
+						<Label text="{i18n>Language}"/>
+						<Text text=""/>
+						<Label text="{i18n>Name}"/>
+						<Text text=""/>
+						<Label text="{i18n>Address}"/>
+						<Text text=""/>
+						<Label text="{i18n>City}"/>
+						<Text text=""/>
+						<Label text="{i18n>Province}"/>
+						<Text text=""/>
+						<Label text="{i18n>PostalCode}"/>
+						<Text text=""/>
+						<Label text="{i18n>Email}"/>
+						<Text text=""/>
+						<Label text="{i18n>Home}"/>
+						<Text text=""/>
+						<Label text="{i18n>Business}"/>
+						<Text text=""/>
+					</f:content>
+				</f:SimpleForm>
+			</html:div>
+			<html:div class="exampleDiv">
+				<f:SimpleForm id="VeOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleOwner}" labelSpanXL="5" labelSpanL="5"
+					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+					columnsM="1" singleContainerFullSize="false">
+					<f:content>
+						<Label text="{i18n>Customer}"/>
+						<Text id="idVehCustomer" text="{path:'EcpFieldData>/ZecpCustNum'}"/>
+						<Label text="{i18n>Type}"/>
+						<Text text=""/>
+						<Label text="{i18n>Language}"/>
+						<Text text="{LocalDataModel>/BusinessPartnerData/Language}"/>
+						<Label text="{i18n>Name}"/>
+						<Text text="{EcpFieldData>/ZecpCustName} {EcpFieldData>/ZecpLastName}"/>
+						<Label text="{i18n>Address}"/>
+						<Text text="{EcpFieldData>/ZecpAddress}"/>
+						<Label text="{i18n>City}"/>
+						<Text text="{EcpFieldData>/ZecpCity}"/>
+						<Label text="{i18n>Province}"/>
+						<Text text="{EcpFieldData>/ZecpProvince}"/>
+						<Label text="{i18n>PostalCode}"/>
+						<Text text="{EcpFieldData>/ZecpPostalcode}"/>
+						<Label text="{i18n>Email}"/>
+						<Text text="{EcpFieldData>/ZecpEmail}"/>
+						<Label text="{i18n>Home}"/>
+						<Text text="{EcpFieldData>/ZecpHomePhone}"/>
+						<Label text="{i18n>Business}"/>
+						<Text text="{EcpFieldData>/ZecpBusPhone}" id="idFaxNum"/>
+					</f:content>
+				</f:SimpleForm>
+			</html:div>
+			<html:div class="exampleDiv">
+				<f:SimpleForm id="VeDetailsFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleDetails}" labelSpanXL="5" labelSpanL="5"
+					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+					columnsM="1" singleContainerFullSize="false">
+					<f:content>
+						<core:Title text="VIN : {EcpFieldData>/ZecpVin}"/>
+						<Label text="{i18n>Make}"/>
+						<Text text="{EcpFieldData>/ZecpMake}"/>
+						<Label text="{i18n>Model}"/>
+						<Text text="{EcpFieldData>/ZecpModelcode}"/>
+						<Label text="{i18n>Year}"/>
+						<Text text="{LocalDataModel>/PricingModelData/ZZMOYR}"/>
+						<Label text="{i18n>AutoCode}"/>
+						<Text text="{EcpFieldData>/ZecpAutocode}"/>
+						<Label text="{i18n>RegDate}"/>
+						<Text id="idRegDate"
+							text="{ path: 'LocalDataModel>/PricingModelData/REG_DATE', type: 'sap.ui.model.type.Date', constraints: { displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+						<Label text="{i18n>SaleType}"/>
+						<Text text="{EcpFieldData>/ZecpSaletype}"/>
+						<Label text="{i18n>VehiclePrice}"/>
+						<Input type="Number" id="idVPrice" value="{EcpFieldData>/ZecpVehPrice}" required="true" valueState="{LocalDataModel>/VehPriceState}"/>
+						<Label text="{i18n>AmtFinanced}"/>
+						<Input type="Number" value="{EcpFieldData>/ZecpAmtFin}"/>
+						<Label text="{i18n>LienholderName}"/>
+						<Input value="{EcpFieldData>/ZecpLienholder}"/>
+						<Label text="{i18n>LienTerms}"/>
+						<Input type="Number" value="{EcpFieldData>/ZecpLienterms}"/>
+					</f:content>
+				</f:SimpleForm>
+			</html:div>
+		</l:Grid>
+	</l:VerticalLayout>
+	<l:VerticalLayout width="100%" class="gridWrapper">
+		<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
+			<html:div class="exampleDiv">
+				<f:SimpleForm id="PlanDetailsFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>EcpAgreementPrice}" labelSpanXL="5"
+					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+					<f:content>
+						<Label text="{i18n>PlanCode}"/>
+						<Text text="{EcpFieldData>/ZecpPlancode}" id="idPlanCodeText"/>
+						<Label text="{i18n>PlanPurchasePrice}"/>
+						<!--<Input value="{EcpFieldData>/BccAgrmntPrcAmt}" id="idPlanPurchase" required="true"/>-->
+						<!--<Label text="{i18n>RetailPrice}"/>-->
+						<!--<Text text="{EcpFieldData>/ZecpRetPrice}"/>-->
+						<!--<Label text="{i18n>DeferredSurcharge}"/>-->
+						<!--<Text text="{EcpFieldData>/ZecpDefSurchrg}"/>-->
+						<!--<Label text="{i18n>ListPurchasePrice}"/>-->
+						<!--<Text text="{EcpFieldData>/ZecpListpurprice}"/>-->
+						<!--<Label text="{i18n>VehicleSurcharge}"/>-->
+						<!--<Text text="{EcpFieldData>/ZecpVehSurchrgAmt}"/>-->
+						<Input type="Number" value="{EcpFieldData>/ZecpPlanpurchprice}" id="idPlanPurchase" required="true"
+							valueState="{LocalDataModel>/PlanPurchase}"/>
+						<Label text="{i18n>RetailPrice}"/>
+						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_RET_PRICE}"/>
+						<Label text="{i18n>DeferredSurcharge}"/>
+						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_DEF_SURCHRG}"/>
+						<Label text="{i18n>ListPurchasePrice}"/>
+						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_LISTPURPRICE}"/>
+						<Label text="{i18n>VehicleSurcharge}"/>
+						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_VEH_SURCHRG_AMT}"/>
+						<Label text="{i18n>VehicleSurcharge}" visible="{oSetProperty>/oSurcharge}"/>
+						<VBox visible="{oSetProperty>/oSurcharge}">
+							<HBox justifyContent="SpaceBetween">
+								<CheckBox text="4X4 Trucks" wrapping="true"/>
+								<CheckBox text="Cars. Diesel, 8/10 Cyl" wrapping="true"/>
+							</HBox>
+							<HBox justifyContent="SpaceBetween">
+								<CheckBox text="Turbo" wrapping="true"/>
+								<CheckBox text="Supercharge" wrapping="true"/>
+							</HBox>
+						</VBox>
+					</f:content>
+				</f:SimpleForm>
+			</html:div>
+			<html:div class="exampleDiv">
+				<f:SimpleForm id="AppInfoFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>ApplicationInformation}" labelSpanXL="5"
+					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+					<f:content>
+						<Label text="{i18n>EffectiveDate}"/>
+						<Text
+							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+						<Label text="{i18n>Odometer}"/>
+						<Input value="{EcpFieldData>/ZecpOdometer}" id="idOdo" type="Number" required="true"/>
+						<Label text="{i18n>RoadHazard}"/>
+						<Text text="{EcpFieldData>/ZecpRoadhazard}"/>
+						<Label text="{i18n>BenefitsFlag}"/>
+						<Text text="{EcpFieldData>/ZbenefitFlag}"/>
+					</f:content>
+				</f:SimpleForm>
+			</html:div>
+			<html:div class="exampleDiv">
+				<f:SimpleForm id="AgrInfoFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementInformation}" labelSpanXL="5"
+					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
+					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+					<f:content>
+						<Label text="{i18n>Status}"/>
+						<Text text="{EcpFieldData>/ZecpAppStat}"/>
+						<!--<Label text="{i18n>SaleDate}" visible="{oSetProperty>/saleDat01Visible}"/>-->
+						<!--<Text visible="{oSetProperty>/saleDat01Visible}" text="{path:'EcpFieldData>/ZecpSaleDate'}"/>-->
+						<Label text="{i18n>SaleDate}"/>
+						<Text
+							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"/>
+						<Label text="{i18n>SubmissionDate}"/>
+						<Text
+							text="{path:'EcpFieldData>/ZecpSubDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"/>
+						<Label text="{i18n>IssueDealer}"/>
+						<Text text="{EcpFieldData>/BccAplDlrshpNum}"/>
+						<Label text="{i18n>PreOwnedCert}"/>
+						<Input value="{EcpFieldData>/PrOwndCert}"/>
+						<!--<Label text="{i18n>SalesTIN}"/>-->
+						<!--<Input value="{EcpFieldData>/ZecpSalesTin}"/>-->
+					</f:content>
+				</f:SimpleForm>
+			</html:div>
+		</l:Grid>
+		<HBox alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
+			<Button class="sapUiTinyMarginBeginEnd" press="onDelete" text="{i18n>Delete}" type="Reject"/>
+			<Button class="sapUiTinyMarginBeginEnd" press="onBackList" visible="{oSetProperty>/backToList}" text="{i18n>BacktoList}" type="Back"/>
+			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>Back}" visible="{oSetProperty>/backPrimery}" type="Back" press="OnBack"/>
+			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>Back}" visible="{oSetProperty>/backSecondary}" type="Back" press="OnBackSecondary"/>
+			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>Save}" visible="{oSetProperty>/oPrimeryState}" id="idSaveBtn" press="onSaveApp"/>
+			<Button class="sapUiTinyMarginBeginEnd" visible="{oSetProperty>/oPrimeryState01}" text="{i18n>Save}" id="idUpdateSavedBtn"
+				press="onUpdateSavedApp"/>
+			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>PerformCIC}"/>
+			<Button class="sapUiTinyMarginBeginEnd" press="onSubmitApp" visible="{oSetProperty>/oSecondaryState}" text="{i18n>Submit}" id="idSubmitBtn"
+				type="Emphasized"/>
+			<!--<Button class="sapUiTinyMarginBeginEnd" visible="{oSetProperty>/oSecondaryState01}" text="{i18n>Submit}" id="idUpdateSubmitBtn"-->
+			<!--	press="onSubmitApp"/>-->
+		</HBox>
+	</l:VerticalLayout>
+</core:FragmentDefinition>

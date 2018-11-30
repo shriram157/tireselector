@@ -1,0 +1,20 @@
+{
+	"catalog": {
+
+		"categories": [{
+			"name": "Open Claims",
+			"ClaimNumber": 1,
+			"TotalClaim": "88.00"
+		}, {
+			"name": "Rejected Claims",
+			"ClaimNumber": 0,
+			"TotalClaim": "50.00"
+
+		}, {
+			"name": "Paid Claims",
+			"ClaimNumber": 3,
+			"TotalClaim": "88.00"
+		}]
+
+	}
+}

@@ -1,0 +1,15 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns="sap.m">
+	<f:SimpleForm id="sPlanForm" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="2" labelSpanL="2" labelSpanM="2"
+		labelSpanS="12" adjustLabelSpan="false" emptySpanXL="3" emptySpanL="3" emptySpanM="3" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+		singleContainerFullSize="false">
+		<f:content>
+			<Label text="{i18n>PlanCode}"/>
+			<ComboBox id="idPlanCode" items="{LocalDataModel>/PlanValidSet}" showSecondaryValues="true" required="true"
+				value="{EcpFieldData>/ZecpPlancode}" selectionChange="onSelectPlanCode">
+				<core:ListItem key="{LocalDataModel>MGANR}" text="{LocalDataModel>MGANR}" additionalText="{LocalDataModel>GAKTX}"/>
+			</ComboBox>
+			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep4"/>
+			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
+		</f:content>
+	</f:SimpleForm>
+</core:FragmentDefinition>

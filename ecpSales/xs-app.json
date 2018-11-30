@@ -1,0 +1,21 @@
+{
+  "welcomeFile": "/ecpSales/index.html",
+  "authenticationMethod": "none",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/ecpSales/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    },
+       {
+      "source": "/node(.*)",
+      "destination": "ecpsales-node-backend",
+      "csrfProtection": false,
+      "authenticationType": "none"
+    }
+    
+  ]
+}

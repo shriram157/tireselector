@@ -1,0 +1,95 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout" xmlns:uitb="sap.ui.table" xmlns:uxap="sap.uxap"
+	xmlns:u="sap.ui.unified">
+	<Dialog class="sapUiSizeCompact" title=" {i18n>AgreementClaimHistory} - {LocalDataModel>/AgreementNumber}" stretch="true">
+		<content>
+			<!--<uitb:TreeTable id="TreeTableBasic" rows="{path:'ClaimModel>/catalog', parameters: {arrayNames:['categories']}}" enableSelectAll="false"-->
+			<!--	ariaLabelledBy="title" selectionMode="None" title="{LocalDataModel>/VinNumber}">-->
+			<!--	<uitb:columns>-->
+			<!--		<uitb:Column width="18em">-->
+			<!--			<Label text=" "/>-->
+			<!--			<uitb:template>-->
+			<!--				<Label text="{ClaimModel>name}" wrapping="false" design="Bold"/>-->
+			<!--			</uitb:template>-->
+			<!--		</uitb:Column>-->
+			<!--		<uitb:Column >-->
+			<!--			<Label text="# of Claims"/>-->
+			<!--			<uitb:template>-->
+			<!--				<Text text="{ClaimModel>WarrantyLabourRate}" wrapping="false"/>-->
+			<!--				<u:Currency value="{ClaimModel>ClaimNumber}"/>-->
+			<!--			</uitb:template>-->
+			<!--		</uitb:Column>-->
+			<!--		<uitb:Column >-->
+			<!--			<Label text="Total Claims"/>-->
+			<!--			<uitb:template>-->
+			<!--				<Text text="{ClaimModel>TotalClaim}" wrapping="false"/>-->
+			<!--				<u:Currency value="{ClaimModel>DealerAmount}" currency="{ClaimModel>currency}"/>-->
+			<!--			</uitb:template>-->
+			<!--		</uitb:Column>-->
+			<!--	</uitb:columns>-->
+			<!--</uitb:TreeTable>-->
+			<Table headerText="" items="{ path:'LocalDataModel>/ClaimModelData'}">
+				<columns>
+					<Column>
+						<header>
+							<Text text="Dealer"/>
+						</header>
+					</Column>
+					<Column>
+						<header>
+							<Text text="RO#"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
+						<header>
+							<Text text="RO Date"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<header>
+							<Text text="Claim #"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<header>
+							<Text text="Status"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<header>
+							<Text text="Job # "/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+						<header>
+							<Text text="Operation #"/>
+						</header>
+					</Column>
+					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" width="7rem">
+						<header>
+							<Text text="OFP"/>
+						</header>
+					</Column>
+					<Column hAlign="End" width="9rem">
+						<header>
+							<Text text="Agreement #"/>
+						</header>
+					</Column>
+				</columns>
+				<ColumnListItem>
+					<Text text="{LocalDataModel>Partner}"/>
+					<Text text="{LocalDataModel>RepairOrderNumberExternal}"/>
+					<Text text="{LocalDataModel>RegDate}"/>
+					<Text text="{LocalDataModel>NumberOfWarrantyClaim}"/>
+					<Text text="{LocalDataModel>ProcessingStatusOfWarrantyClm}"/>
+					<Text text=""/>
+					<Text text="{LocalDataModel>MainOpsCode}"/>
+					<Text text="{LocalDataModel>OFP}"/>
+					<Text text="{LocalDataModel>AgreementNumber}"/>
+				</ColumnListItem>
+			</Table>
+		</content>
+		<endButton>
+			<Button text="{i18n>Close}" press="onClose"/>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

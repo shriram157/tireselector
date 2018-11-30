@@ -1,0 +1,82 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.ApplicationList"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt">
+	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
+	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true">
+		<uxap:sections>
+			<uxap:ObjectPageSection title="New Application List">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title=" ">
+						<uxap:blocks>
+							<MessageStrip id="idAppListMsgStrip" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
+							<VBox class="sapUiLargeMarginBottom" wrap="Wrap">
+								<f:SimpleForm editable="true" layout="ResponsiveLayout">
+									<core:Title text="{i18n>DateRageText}"/>
+									<VBox wrap="Wrap" width="auto">
+										<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true"/>
+										<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop" alignItems="Center" alignContent="Center">
+											<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"
+												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
+											<Label text="Dealer Code" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
+											<!--<Input type="Text" id="idDealerCode"/>-->
+											<ComboBox showSecondaryValues="true" id="idDealerCode" filterSecondaryValues="true"
+												items="{ path: 'OBusinessModel>/A_BusinessPartner', filters : [ { path : 'BusinessPartnerType', operator : 'EQ', value1 : 'Z001'}], sorter: { path: 'BusinessPartner' }, length:300 }">
+												<core:ListItem key="{OBusinessModel>BusinessPartner}"
+													text="{path:'OBusinessModel>BusinessPartner', formatter:'zecp.utils.formatter.fnFormatCustomer'}"
+													additionalText="{OBusinessModel>BusinessPartnerName}"/>
+											</ComboBox>
+										</HBox>
+										<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop">
+											<RadioButton id="idVinRadio" groupName="GroupA" text="{i18n>VIN}" class="sapUiSmallMarginEnd"/>
+											<!--<Input id="idVin" value=""/>-->
+											<Input required="true" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"
+												valueHelpRequest="handleValueHelp"/>
+											<Button text="{i18n>Search}" type="Emphasized" press="OnSearchApplication" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
+											<Button text="{i18n>CreateNewApp}" press="OnCreateApp"/>
+										</HBox>
+									</VBox>
+								</f:SimpleForm>
+								<VBox class="sapUiLargeMarginBottom">
+									<Table id="idApplicationTable" mode="SingleSelectMaster" selectionChange="onSelectionChange" alternateRowColors="true"
+										items="{ path: 'LocalDataModel>/EcpApplication' }">
+										<columns>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>ApplicationDate}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>VIN}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>Name}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>Status}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>SaleDate}"/>
+											</Column>
+											<Column hAlign="End">
+												<Text text="{i18n>Source}"/>
+											</Column>
+										</columns>
+										<items>
+											<ColumnListItem>
+												<cells>
+													<Text text="{path:'LocalDataModel>SubmissionDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
+													<Text text="{LocalDataModel>VIN}"/>
+													<Text text="{LocalDataModel>CustomerName}"/>
+													<Text text="{LocalDataModel>ApplicationStatus}"/>
+													<Text text="{path:'LocalDataModel>SaleDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
+													<Text text="{LocalDataModel>Source}"/>
+												</cells>
+											</ColumnListItem>
+										</items>
+									</Table>
+								</VBox>
+							</VBox>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+	</uxap:ObjectPageLayout>
+</mvc:View>

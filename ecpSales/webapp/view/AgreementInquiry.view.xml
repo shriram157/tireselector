@@ -1,0 +1,246 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.AgreementInquiry"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:uxap="sap.uxap" xmlns:tnt="sap.tnt">
+	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
+	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true">
+		<uxap:sections>
+			<uxap:ObjectPageSection title="">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection id="idAgreementDetailHeader" title="">
+						<uxap:blocks>
+							<VBox width="100%" class="gridWrapper">
+								<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
+									<html:div class="exampleDiv">
+										<f:SimpleForm id="sAgreementEnq" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
+											labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+											columnsM="1" singleContainerFullSize="false">
+											<f:content>
+												<Label text="{i18n>Customer}"/>
+												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/BusinessPartner'}"/>
+												<Label text="{i18n>Type}"/>
+												<Text text=""/>
+												<Label text="{i18n>Language}"/>
+												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
+												<!--<Label text="{i18n>Name}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/CustomerName}"/>-->
+												<!--<Label text="{i18n>Address}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/Address}"/>-->
+												<!--<Label text="{i18n>City}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/City}"/>-->
+												<!--<Label text="{i18n>Province}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/Province}"/>-->
+												<!--<Label text="{i18n>PostalCode}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/PostalCode}"/>-->
+												<!--<Label text="{i18n>Email}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/Email}"/>-->
+												<!--<Label text="{i18n>Home}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>-->
+												<!--<Label text="{i18n>Business}"/>-->
+												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/BusinessPhone}"/>-->
+												<Label text="{i18n>Name}"/>
+												<Text text="{LocalDataModel>BusinessPartnerName/LastName} {LocalDataModel>BusinessPartnerName/FirstName}"/>
+												<Label text="{i18n>Address}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/StreetName}"/>
+												<Label text="{i18n>City}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/CityName}"/>
+												<Label text="{i18n>Province}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/Region}"/>
+												<Label text="{i18n>PostalCode}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/PostalCode}"/>
+												<Label text="{i18n>Email}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/EmailAddress}"/>
+												<Label text="{i18n>Home}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/PhoneNumber}"/>
+												<Label text="{i18n>Business}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/FaxNumber}"/>
+											</f:content>
+										</f:SimpleForm>
+									</html:div>
+									<html:div class="exampleDiv">
+										<f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleOwner}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
+											labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+											singleContainerFullSize="false">
+											<f:content>
+												<Label text="{i18n>Customer}"/>
+												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/BusinessPartner'}"/>
+												<Label text="{i18n>Type}"/>
+												<Text text=" "/>
+												<Label text="{i18n>Language}"/>
+												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
+												<Label text="{i18n>Name}"/>
+												<Text text="{LocalDataModel>BusinessPartnerName/LastName} {LocalDataModel>BusinessPartnerName/FirstName}"/>
+												<Label text="{i18n>Address}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/StreetName}"/>
+												<Label text="{i18n>City}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/CityName}"/>
+												<Label text="{i18n>Province}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/Region}"/>
+												<Label text="{i18n>PostalCode}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/PostalCode}"/>
+												<Label text="{i18n>Email}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/EmailAddress}"/>
+												<Label text="{i18n>Home}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/PhoneNumber}"/>
+												<Label text="{i18n>Business}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/FaxNumber}"/>
+												<Label text="{i18n>Mobile}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerData/MobileNumber}"/>
+											</f:content>
+										</f:SimpleForm>
+									</html:div>
+									<html:div class="exampleDiv">
+										<f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleDetails}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
+											labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+											singleContainerFullSize="false">
+											<f:content>
+												<Label text="{i18n>Make}"/>
+												<Text text="{LocalDataModel>/PricingModelData/MAKE}"/>
+												<Label text="{i18n>Model}"/>
+												<Text text="{LocalDataModel>/PricingModelData/VEHICLEMODEL}"/>
+												<Label text="{i18n>Year}"/>
+												<Text text="{LocalDataModel>/PricingModelData/ZZMOYR}"/>
+												<Label text="{i18n>AutoCode}"/>
+												<Text text="{LocalDataModel>/PricingModelData/ZECP_DEALCODE}"/>
+												<Label text="{i18n>RegDate}"/>
+												<Text
+													text="{path:'LocalDataModel>/PricingModelData/REG_DATE', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<Label text="{i18n>SaleType}"/>
+												<Text text="{LocalDataModel>/PricingModelData/ZECP_SALETYPE}"/>
+											</f:content>
+										</f:SimpleForm>
+									</html:div>
+								</l:Grid>
+							</VBox>
+						</uxap:blocks>
+						<uxap:actions>
+							<Button text="Claim History" press="handlePressClaim"/>
+						</uxap:actions>
+					</uxap:ObjectPageSubSection>
+					<uxap:ObjectPageSubSection >
+						<uxap:blocks>
+							<VBox width="100%" class="gridWrapper">
+								<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
+									<html:div class="exampleDiv">
+										<f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>EcpAgreementPrice}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
+											labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+											singleContainerFullSize="false">
+											<f:content>
+												<Label text="{i18n>PlanCode}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/PlanType}"/>
+												<Label text="{i18n>TransferFee}"/>
+												<Text text=""/>
+												<Label text="{i18n>Deductible}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/Deductible}"/>
+												<Label text="{i18n>CancelFee}"/>
+												<Text text=""/>
+												<Label text="{i18n>DeferredSurcharge}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/Surcharge}"/>
+												<Label text="{i18n>VehicleSurcharge}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/VehSurchargeAmount}"/>
+											</f:content>
+										</f:SimpleForm>
+									</html:div>
+									<html:div class="exampleDiv">
+										<f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>ApplicationInformation}" labelSpanXL="5" labelSpanL="5"
+											labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+											columnsM="1" singleContainerFullSize="false">
+											<f:content>
+												<Label text="{i18n>EffectiveDate}"/>
+												<Text
+													text="{path : 'LocalDataModel>/AgreementInfo/AgreementEffectiveDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<Label text="{i18n>ExpiryDate}"/>
+												<Text
+													text="{path: 'LocalDataModel>/AgreementInfo/AgreementthruDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<Label text="{i18n>StartOdometer}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/ODMTR}"/>
+												<Label text="{i18n>ExpiryOdometer}"/>
+												<Text text=""/>
+												<Label text="{i18n>RoadHazardExpiry}"/>
+												<Text text=""/>
+												<Label text="{i18n>BenefitsFlag}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/BenefitsFlag}"/>
+											</f:content>
+										</f:SimpleForm>
+									</html:div>
+									<html:div class="exampleDiv">
+										<f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementInformation}" labelSpanXL="5" labelSpanL="5"
+											labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+											columnsM="1" singleContainerFullSize="false">
+											<f:content>
+												<Label text="{i18n>Status}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/AgreementStatus}"/>
+												<Label text="{i18n>StatusDate}"/>
+												<Text
+													text="{path : 'LocalDataModel>/AgreementInfo/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<Label text="{i18n>StatusReason}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/Agreementreasoncode}"/>
+												<Label text="{i18n>Odometer}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/ODMTR}"/>
+												<Label text="{i18n>SaleDate}"/>
+												<Text
+													text="{path:'LocalDataModel>/AgreementInfo/AgreementSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<Label text="{i18n>SubmissionDate}"/>
+												<Text
+													text="{path:'LocalDataModel>/AgreementInfo/Applicationsubmissi', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<Label text="{i18n>IssueDealer}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/DealershipNumber}"/>
+												<Label text="{i18n>Dealership}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/AgreementDealerNumber}"/>
+												<Label text="{i18n>PreOwnedCert}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/PROWNDCERT}"/>
+												<Label text="{i18n>TransferDate}"/>
+												<Text text=""/>
+												<Label text="{i18n>TransferOdometer}"/>
+												<Text text=" "/>
+											</f:content>
+										</f:SimpleForm>
+									</html:div>
+								</l:Grid>
+							</VBox>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="Benefit Coverages">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="Benefit Coverages">
+						<uxap:blocks>
+							<List items="" headerText="Benefit List">
+								<items>
+									<ObjectListItem title="RENTAL - Rental R1 " type="Active"></ObjectListItem>
+									<ObjectListItem title="RENTAL - Rental R1 " type="Active"></ObjectListItem>
+								</items>
+							</List>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection title="Comments">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="Comments">
+						<uxap:blocks>
+							<Text width="100%" text="None"/>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+			<uxap:ObjectPageSection >
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="">
+						<uxap:blocks>
+							<!--<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">-->
+							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>-->
+							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>-->
+							<!--	<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" type="Back" press="onPrintPdf"/>-->
+							<!--</HBox>-->
+							<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
+								<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
+								<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>
+								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"/>
+							</HBox>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+	</uxap:ObjectPageLayout>
+</mvc:View>

@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns="sap.m">
+	<f:SimpleForm id="spVehicleForm" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="2" labelSpanL="2" labelSpanM="2"
+		labelSpanS="12" adjustLabelSpan="false" emptySpanXL="3" emptySpanL="3" emptySpanM="3" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+		singleContainerFullSize="false">
+		<f:content>
+			<Label text="{i18n>VIN}"/>
+			<Input required="true" id="idVinNum" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true"
+				valueHelpOnly="true" valueHelpRequest="handleValueHelp"/>
+			<!--<Input id="idVinNum" showSuggestion="true" change="onVinEnter" suggestionItems="{VinModel>/zc_vehicle}" value="{EcpFieldData>/ZecpVin}">-->
+			<!--	<suggestionItems>-->
+			<!--		<core:Item text="{VinModel>VehicleIdentificationNumber}"/>-->
+			<!--	</suggestionItems>-->
+			<!--</Input>-->
+			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep2"/>
+			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
+		</f:content>
+	</f:SimpleForm>
+</core:FragmentDefinition>

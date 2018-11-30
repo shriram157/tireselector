@@ -1,0 +1,66 @@
+ID: ecpSales
+_schema-version: '3.1'
+description: MTA PRoject for ECP Sales
+version: 0.0.1
+modules:
+  - name: ecpSales_Node
+    type: nodejs
+    path: ecpSales_Node
+    parameters:
+      host: ecpSales_Node
+      register-service-url: true
+      service-name: ecpSales_Node
+      service-url: '${default-url}'
+      disk-quota: 256MB
+      memory: 256MB
+    provides:
+      - name: ecpSales_Node_api
+        public: false
+        properties:
+          url: '${default-url}'
+    requires:
+      - name: ECP_SALES_APIM_CUPS
+      - name: uaa_ecpSales
+    description: This node module provides the data to the UI using CUPS
+  - name: ecpSales
+    type: html5
+    path: ecpSales
+    parameters:
+      host: ecpSales
+      register-service-url: true
+      service-name: ecpSales
+      service-url: '${default-url}'
+      disk-quota: 256MB
+      memory: 256MB
+    build-parameters:
+      builder: grunt
+    requires:
+      - name: uaa_ecpSales
+      - name: dest_ecpSales
+      - name: ecpSales_Node_api
+        group: destinations
+        properties:
+          name: ecpsales-node-backend
+          url: '~{url}'
+          forwardAuthToken: true
+    provides:
+      - name: ecpSales
+    description: UI Module for the ECP Sales Application
+resources:
+  - name: uaa_ecpSales
+    parameters:
+      path: ./xs-security.json
+      service-plan: application
+      service: xsuaa
+    type: org.cloudfoundry.managed-service
+  - name: dest_ecpSales
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
+  - name: ECP_SALES_APIM_CUPS
+    type: org.cloudfoundry.existing-service
+    parameters:
+      service-name: ECP_SALES_APIM_CUPS
+    properties:
+      odata-call-service-name: '${service-name}'

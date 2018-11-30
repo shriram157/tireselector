@@ -1,0 +1,247 @@
+{
+	"_version": "1.8.0",
+	"sap.app": {
+		"id": "zecp",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponentForManifest",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"ZECP_SALES_ODATA_SERVICE_SRV": {
+				"uri": "/node/ZECP_SALES_ODATA_SERVICE_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/metadata.xml"
+				}
+			},
+			"Z_VEHICLE_MASTER_SRV": {
+				"uri": "/node/Z_VEHICLE_MASTER_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/Z_VEHICLE_MASTER_SRV/metadata.xml"
+				}
+			},
+			"API_BUSINESS_PARTNER": {
+				"uri": "/node/API_BUSINESS_PARTNER/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/API_BUSINESS_PARTNER/metadata.xml"
+				}
+			},
+			"ZDLR_CLAIM_SRV": {
+				"uri": "/node/ZDLR_CLAIM_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZDLR_CLAIM_SRV/metadata.xml"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "zecp.view.App",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.30.0",
+			"libs": {
+				"sap.ui.layout": {},
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "zecp.i18n.i18n"
+				}
+			},
+			"": {
+				"uri": "/node/ZECP_SALES_ODATA_SERVICE_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "ZECP_SALES_ODATA_SERVICE_SRV",
+				"preload": true
+			},
+			"VehicleMaster": {
+				"uri": "/node/Z_VEHICLE_MASTER_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "Z_VEHICLE_MASTER_SRV",
+				"preload": true
+			},
+			"ApiBusinessPartner": {
+				"uri": "/node/API_BUSINESS_PARTNER/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "API_BUSINESS_PARTNER",
+				"preload": true
+			},
+			"ZDLR_CLAIM_SRV": {
+				"uri": "/node/ZDLR_CLAIM_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "ZDLR_CLAIM_SRV",
+				"preload": true
+			}
+		},
+		"resources": {
+			"js": [
+				{
+					"uri": "utils/formatter.js"
+				}
+			],
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "zecp.view",
+				"controlAggregation": "pages",
+				"targetAggregation": "content",
+				"clearTarget": true,
+				"controlId": "idAppControl"
+			},
+			"routes": [
+				{
+					"name": "ApplicationList",
+					"pattern": "",
+					"target": [
+						"ApplicationList"
+					]
+				},
+				{
+					"name": "newECPApp",
+					"pattern": "newECPApplication/{vin}/{plan}/{appId}/{appType}/{Odometer}",
+					"target": [
+						"newECPApp"
+					]
+				},
+				{
+					"name": "AgreementInquiryList",
+					"pattern": "AgreementInquiryList",
+					"target": [
+						"AgreementInquiryList"
+					]
+				},
+				{
+					"name": "AgreementInquiry",
+					"pattern": "AgreementInquiry/{AgrNum}/{vin}/{customerNumber}/{odometer}",
+					"target": [
+						"AgreementInquiry"
+					]
+				}
+			],
+			"targets": {
+				"ApplicationList": {
+					"viewType": "XML",
+					"viewName": "ApplicationList",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "zecp.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl"
+				},
+				"newECPApp": {
+					"viewType": "XML",
+					"viewName": "newECPApp",
+					"routerClass": "sap.m.routing.Router",
+					"async": true,
+					"viewPath": "zecp.view",
+					"controlAggregation": "pages",
+					"controlId": "idAppControl",
+					"targetAggregation": "content",
+					"clearTarget": true
+				},
+				"AgreementInquiryList": {
+					"viewType": "XML",
+					"viewName": "AgreementInquiryList",
+					"async": true,
+					"viewPath": "zecp.view",
+					"controlAggregation": "pages",
+					"routerClass": "sap.m.routing.Router",
+					"controlId": "idAppControl",
+					"targetAggregation": "content",
+					"clearTarget": true
+				},
+				"AgreementInquiry": {
+					"viewType": "XML",
+					"viewName": "AgreementInquiry",
+					"async": true,
+					"viewPath": "zecp.view",
+					"controlAggregation": "pages",
+					"routerClass": "sap.m.routing.Router",
+					"controlId": "idAppControl",
+					"targetAggregation": "content",
+					"clearTarget": true
+				}
+			}
+		}
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zecpsales/webapp",
+		"_version": "1.1.0"
+	}
+}

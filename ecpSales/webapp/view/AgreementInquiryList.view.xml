@@ -1,0 +1,79 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.AgreementInquiryList"
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt">
+	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
+	<uxap:ObjectPageLayout id="ObjectAgreementList" enableLazyLoading="true">
+		<uxap:sections>
+			<uxap:ObjectPageSection title="Agreement Inquiry">
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title=" ">
+						<uxap:blocks>
+							<VBox class="sapUiLargeMarginBottom">
+								<MessageStrip id="idAgrInqMsgStrp" text="" showIcon="true" showCloseButton="true" class="sapUiMediumMarginBottom" visible="false"></MessageStrip>
+								<f:SimpleForm id="SimpleFormChange354" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="4" labelSpanL="4" labelSpanM="3"
+									labelSpanS="12" adjustLabelSpan="false" emptySpanXL="2" emptySpanL="2" emptySpanM="0" emptySpanS="0" columnsXL="2" columnsL="2" columnsM="2"
+									singleContainerFullSize="false">
+									<f:content>
+										<core:Title text="{i18n>EnterVinOrAgreement}"/>
+										<Label text="{i18n>SearchBy}" textAlign="Begin"/>
+										<RadioButtonGroup selectedIndex="0" columns="2" id="idSearchByRadio" select="onSelectSearchBy">
+											<buttons>
+												<RadioButton text="{i18n>Agreement#}"/>
+												<RadioButton text=" {i18n>VIN}"/>
+											</buttons>
+										</RadioButtonGroup>
+										<Label text="{i18n>Agreement#}" textAlign="Begin" id="idInqLabel" textDirection="LTR"/>
+										<Input value="" id="idVal"/>
+										<core:Title text=""/>
+										<Button text="Search" type="Emphasized" press="onSearchInquiryList"/>
+										<Button text="Reset" press="onPressResetSearch"/>
+									</f:content>
+								</f:SimpleForm>
+								<VBox class="sapUiLargeMarginBottom">
+									<Table id="idAgreementTable" selectionChange="onNavigate" mode="SingleSelectMaster" inset="false" alternateRowColors="true"
+										items="{ path: '/zc_ecp_agreement', filters : [ { path : 'AgreementElectricVehicletype', operator : 'NE', value1 : 'AGEN'}]}">
+										<columns>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>EcpAgreement}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>PlanCode}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>Status}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>StatusDate}"/>
+											</Column>
+											<Column minScreenWidth="Tablet" demandPopin="true">
+												<Text text="{i18n>ExpiryDate}"/>
+											</Column>
+											<Column >
+												<Text text="{i18n>ExpiryKm}"/>
+											</Column>
+											<Column hAlign="End">
+												<Text text="{i18n>StatusReason}"/>
+											</Column>
+										</columns>
+										<items>
+											<ColumnListItem>
+												<cells>
+													<Text text="{path:'AgreementNumber'}"/>
+													<Text text="{PlanType}"/>
+													<Text text="{AgreementStatus}"/>
+													<Text text="{path:'StatusDate'}"/>
+													<Text text="{path:'AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
+													<Text text="{AgreementthruKMreading}"/>
+													<Text text="{Agreementreasoncode}"/>
+												</cells>
+											</ColumnListItem>
+										</items>
+									</Table>
+								</VBox>
+							</VBox>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
+		</uxap:sections>
+	</uxap:ObjectPageLayout>
+</mvc:View>
