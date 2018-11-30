@@ -20,7 +20,7 @@ context tireSelector {
             Live_Last_Updated    : LocalDate;
 
             @Comment : 'This is the LDAP User ID of the person that set the product markup was set to "Live" (not displayed on the UI)'
-            Live_Last_Updated_By : LocalDate;
+            Live_Last_Updated_By : String(10);
 
             @Comment : 'This is the First Name of the person that set the product markup was set to "Live"'
             User_First_Name      : String(40);
