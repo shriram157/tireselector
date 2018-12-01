@@ -10,14 +10,14 @@ var JWTStrategy = require('@sap/xssec').JWTStrategy;
 var async = require('async');
 
 // vehicle Locator Node Module. 
-module.exports = function() {
+module.exports = function () {
 	var app = express.Router();
 
 	// SAP Calls Start from here
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
 		api: {
-			name: "ECP_SALES_APIM_CUPS" 
+			name: "ECP_SALES_APIM_CUPS"
 		}
 	}));
 
@@ -26,9 +26,8 @@ module.exports = function() {
 		url = options.api.host,
 		APIKey = options.api.APIKey,
 		client = options.api.client;
-		
-     	console.log('The API Management URL', url);
 
+	console.log('The API Management URL', url);
 
 	var auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
 
@@ -44,42 +43,48 @@ module.exports = function() {
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		next();
 	});
-	
-		var csrfToken;
+
+	var csrfToken;
 	// simple version of bridge call
-	app.all('/*', function(req, res, next) {
+	app.all('/*', function (req, res, next) {
 
-    	let headOptions = {};
+		let headOptions = {};
 
-        headOptions.Authorization = auth64;
+		headOptions.Authorization = auth64;
 
-        let method = req.method;
-        let xurl = url +req.url;
-         console.log('Method', method);
-        console.log('Incoming Url', xurl);
-        
-//  if the method = post you need a csrf token.         
- 
-        let xRequest = 
+		let method = req.method;
+		let xurl = url + req.url;
+		console.log('Method', method);
+		console.log('Incoming Url', xurl);
+
+		//  if the method = post you need a csrf token.   
+
+		if (method == 'POST') {
+			reqHeader = {
+				"Authorization": auth64,
+				"Content-Type": "application/json",
+				"APIKey": APIKey,
+				"x-csrf-token": csrfToken
+			};
+		}
+
+		let xRequest =
 			request({
-				method : method,
-				url : xurl,
+				method: method,
+				url: xurl,
 				headers: reqHeader
- 			}
-		);
-        
-        req.pipe(xRequest);
+			});
 
-        xRequest.on('response', (response) => {
-        	// delete response.headers['set-cookie'];
-        		csrfToken = response.headers['x-csrf-token'];
-        	xRequest.pipe(res);
-        }).on('error', (error) => {
-        	next(error);
-       });
+		req.pipe(xRequest);
+
+		xRequest.on('response', (response) => {
+			// delete response.headers['set-cookie'];
+			csrfToken = response.headers['x-csrf-token'];
+			xRequest.pipe(res);
+		}).on('error', (error) => {
+			next(error);
+		});
 	});
-	
+
 	return app;
 };
-
-

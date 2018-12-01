@@ -13,14 +13,13 @@ modules:
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
+    requires:
+      - name: ECP_SALES_APIM_CUPS
     provides:
       - name: ecpSales_Node_api
         public: false
         properties:
           url: '${default-url}'
-    requires:
-      - name: ECP_SALES_APIM_CUPS
-      - name: uaa_ecpSales
     description: This node module provides the data to the UI using CUPS
   - name: ecpSales
     type: html5
@@ -53,11 +52,13 @@ resources:
       service-plan: application
       service: xsuaa
     type: org.cloudfoundry.managed-service
+    
   - name: dest_ecpSales
     parameters:
       service-plan: lite
       service: destination
     type: org.cloudfoundry.managed-service
+    
   - name: ECP_SALES_APIM_CUPS
     type: org.cloudfoundry.existing-service
     parameters:
