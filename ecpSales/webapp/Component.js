@@ -31,8 +31,8 @@ sap.ui.define([
 			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZECP_SALES_ODATA_SERVICE_SRV");
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
-				disableHeadRequestForToken: true,
-				defaultUpdateMethod: 'PUT',
+				// disableHeadRequestForToken: true,
+				// defaultUpdateMethod: 'PUT',
 				json: true
 			});
 			this.setModel(oDataModel, "EcpSalesModel");
@@ -40,8 +40,8 @@ sap.ui.define([
 			var mConfig01 = this.getMetadata().getManifestEntry("/sap.app/dataSources/Z_VEHICLE_MASTER_SRV");
 			var oDataModel01 = new ODataModel(mConfig01.uri, {
 				useBatch: false,
-				disableHeadRequestForToken: true,
-				defaultUpdateMethod: 'PATCH',
+				// disableHeadRequestForToken: true,
+				// defaultUpdateMethod: 'PATCH',
 				json: true
 			});
 			this.setModel(oDataModel01, "ZVehicleMasterModel");
@@ -49,20 +49,19 @@ sap.ui.define([
 			var mConfig02 = this.getMetadata().getManifestEntry("/sap.app/dataSources/API_BUSINESS_PARTNER");
 			var oDataModel02 = new ODataModel(mConfig02.uri, {
 				useBatch: false,
-				disableHeadRequestForToken: true,
-				defaultUpdateMethod: 'PATCH',
+				// disableHeadRequestForToken: true,
+				// defaultUpdateMethod: 'PATCH',
 				json: true
 			});
 			this.setModel(oDataModel02, "ApiBusinessModel");
-
-			var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
-			var oDataModel03 = new ODataModel(mConfig03.uri, {
-				useBatch: false,
-				disableHeadRequestForToken: true,
-				defaultUpdateMethod: 'PATCH',
-				json: true
-			});
-			this.setModel(oDataModel03, "ZdrClaimModel");
+// model not yet in quality. 
+			// var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
+			// var oDataModel03 = new ODataModel(mConfig03.uri, {
+			// 	useBatch: false,
+	
+			// 	json: true
+			// });
+			// this.setModel(oDataModel03, "ZdrClaimModel");
 
 		}
 	});
