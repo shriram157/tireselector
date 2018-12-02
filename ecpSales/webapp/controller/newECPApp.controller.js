@@ -1331,6 +1331,8 @@ sap.ui.define([
 						oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
 							success: function() {
 								if(that.oECPData.ZecpIntApp.charAt(0) === "D") {
+
+									
 									oEcpModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + that.oECPData.ZecpIntApp + "',ZecpVin='" + that.oECPData
 										.ZecpVin +
 										"')", {

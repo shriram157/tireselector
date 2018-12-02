@@ -41,6 +41,8 @@ module.exports = function () {
 	app.use(function (req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+		res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS" );
+		
 		next();
 	});
 
@@ -60,7 +62,7 @@ module.exports = function () {
 	
 			//  if the method = post you need a csrf token.   
 	
-			if (method == 'POST') {
+			if (method == 'POST' || method == 'DELETE') {
 				reqHeader = {
 					"Authorization": auth64,
 					"Content-Type": "application/json",
@@ -82,7 +84,9 @@ module.exports = function () {
 	
 			xRequest.on('response', (response) => {
 				// delete response.headers['set-cookie'];
+				if (response.headers['x-csrf-token']){
 				csrfToken = response.headers['x-csrf-token'];
+				}
 				console.log('Response from sap Received Success for', method);
 				console.log('inside response csrfToken Received from SAP', csrfToken);
 				xRequest.pipe(res);
