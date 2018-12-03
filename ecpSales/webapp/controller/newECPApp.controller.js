@@ -652,7 +652,8 @@ sap.ui.define([
 				success: $.proxy(function(data) {
 
 					this.getModel("LocalDataModel").setProperty("/PlanValidSet", data.results[0].ZC_ECP_PLANSSET.results);
-
+					this.kmOdometerEnd = data.results[0].ZC_ECP_PLANSSET.results[0].KMS;
+					this.durationMonths = data.results[0].ZC_ECP_PLANSSET.results[0].MONTHS;
 				}, this),
 				error: function() {
 					console.log("Error");
@@ -671,15 +672,32 @@ sap.ui.define([
 					this.getModel("LocalDataModel").setProperty("/BusinessPartnerData", data.results[0]);
 					this.oECPData = this.getView().getModel("EcpFieldData").getData();
 					// 	this.oECPData.ZecpCustName = data.results[0].FullName;
-					this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
-					console.log(this.oECPData.ZecpCustNum);
-					this.oECPData.ZecpCity = data.results[0].CityName;
-					this.oECPData.ZecpAddress = data.results[0].StreetName;
-					this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress;
-					this.oECPData.ZecpPostalcode = data.results[0].PostalCode;
-					this.oECPData.ZecpProvince = data.results[0].Region;
-					this.oECPData.ZecpHomePhone = data.results[0].to_PhoneNumber.results[0].PhoneNumber;
-					this.oECPData.ZecpBusPhone = data.results[0].to_FaxNumber.results[0].FaxNumber;
+					if(data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
+						this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
+					}
+					if(data.results[0].CityName != undefined || data.results[0].CityName != "") {
+						this.oECPData.ZecpCity = data.results[0].CityName;
+					}
+					if(data.results[0].StreetName != undefined || data.results[0].StreetName != "") {
+						this.oECPData.ZecpAddress = data.results[0].StreetName;
+					}
+					if(data.results[0].to_EmailAddress.results.length > 0) {
+						this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress;
+					} else {
+						this.oECPData.ZecpEmail = "";
+					}
+					if(data.results[0].PostalCode != undefined || data.results[0].PostalCode != "") {
+						this.oECPData.ZecpPostalcode = data.results[0].PostalCode;
+					}
+					if(data.results[0].Region != undefined || data.results[0].Region != "") {
+						this.oECPData.ZecpProvince = data.results[0].Region;
+					}
+					if(data.results[0].to_PhoneNumber.results.length > 0) {
+						this.oECPData.ZecpHomePhone = data.results[0].to_PhoneNumber.results[0].PhoneNumber;
+					}
+					if(data.results[0].to_FaxNumber.results.length > 0) {
+						this.oECPData.ZecpBusPhone = data.results[0].to_FaxNumber.results[0].FaxNumber;
+					}
 
 				}, this),
 				error: function() {
@@ -692,8 +710,12 @@ sap.ui.define([
 					"$filter": "BusinessPartner eq '" + this.oCustomer + "' "
 				},
 				success: $.proxy(function(data) {
-					this.oECPData.ZecpLastName = data.results[0].LastName;
-					this.oECPData.ZecpCustName = data.results[0].FirstName;
+					if(data.results[0].LastName != undefined || data.results[0].LastName != "") {
+						this.oECPData.ZecpLastName = data.results[0].LastName;
+					}
+					if(data.results[0].FirstName != undefined || data.results[0].FirstName != "") {
+						this.oECPData.ZecpCustName = data.results[0].FirstName;
+					}
 				}, this),
 				error: function() {}
 			});
@@ -723,7 +745,8 @@ sap.ui.define([
 			// 			console.log(oRegDate);
 			this.DifferTime = (oSaleDateTime - oRegDate);
 
-			if(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime > oRegDate && oOdoVal > 0) {
+			if(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
+				0) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -777,15 +800,12 @@ sap.ui.define([
 
 			this.oPlanCode = oEvent.getSource().getSelectedKey();
 			this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
-			this.oAdditionalVal = parseInt(this.oAdditionalText.split(" ")[0].split("/")[1].replace(",", ""));
-			this.oPlanMonth = parseInt(this.oAdditionalText.split(" ")[0].split("/")[0]);
+			this.oAdditionalVal = parseInt(this.kmOdometerEnd.replace(/,/g, ''));
+			this.oPlanMonth = parseInt(this.durationMonths);
 
 			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 
 			var zEcpModel = this.getModel("EcpSalesModel");
-
-			console.log(this.oECPData.ZecpOdometer, this.oECPData.ZecpVin, this.oECPData.ZecpAgrType);
-
 			zEcpModel.read("/zc_ecp_planpricing_dataSet", {
 				urlParameters: {
 					"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +

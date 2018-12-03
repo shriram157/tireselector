@@ -3,7 +3,7 @@ sap.ui.define([
 	"sap/ui/Device",
 	"zecp/model/models",
 	"sap/ui/model/odata/v2/ODataModel"
-], function(UIComponent, Device, models, ODataModel) {
+], function (UIComponent, Device, models, ODataModel) {
 	"use strict";
 
 	return UIComponent.extend("zecp.Component", {
@@ -17,7 +17,7 @@ sap.ui.define([
 		 * @public
 		 * @override
 		 */
-		init: function() {
+		init: function () {
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
 
@@ -28,6 +28,9 @@ sap.ui.define([
 			this.setModel(models.createDeviceModel(), "device");
 			this.setModel(models.createLocalDataModel(), "LocalDataModel");
 
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+
 			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZECP_SALES_ODATA_SERVICE_SRV");
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
@@ -35,6 +38,10 @@ sap.ui.define([
 				defaultUpdateMethod: 'PUT',
 				json: true
 			});
+
+			if (sLocation_conf == 0) {
+				mConfig.uri = "/ECP_Destination" + mConfig.uri;
+			}
 			this.setModel(oDataModel, "EcpSalesModel");
 
 			var mConfig01 = this.getMetadata().getManifestEntry("/sap.app/dataSources/Z_VEHICLE_MASTER_SRV");
@@ -44,6 +51,11 @@ sap.ui.define([
 				defaultUpdateMethod: 'PATCH',
 				json: true
 			});
+
+			if (sLocation_conf == 0) {
+				mConfig01.uri = "/ECP_Destination" + mConfig01.uri;
+			}
+
 			this.setModel(oDataModel01, "ZVehicleMasterModel");
 
 			var mConfig02 = this.getMetadata().getManifestEntry("/sap.app/dataSources/API_BUSINESS_PARTNER");
@@ -53,6 +65,9 @@ sap.ui.define([
 				defaultUpdateMethod: 'PATCH',
 				json: true
 			});
+			if (sLocation_conf == 0) {
+				mConfig02.uri = "/ECP_Destination" + mConfig02.uri;
+			}
 			this.setModel(oDataModel02, "ApiBusinessModel");
 
 			var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
@@ -62,6 +77,10 @@ sap.ui.define([
 				defaultUpdateMethod: 'PATCH',
 				json: true
 			});
+
+			if (sLocation_conf == 0) {
+				mConfig03.uri = "/ECP_Destination" + mConfig03.uri;
+			}
 			this.setModel(oDataModel03, "ZdrClaimModel");
 
 		}
