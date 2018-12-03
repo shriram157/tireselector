@@ -47,7 +47,7 @@ module.exports = function () {
 	});
 
 	var csrfToken;
-	// simple version of bridge call
+
 		app.all('/*', function (req, res, next) {
 	
 			let headOptions = {};
@@ -88,7 +88,7 @@ module.exports = function () {
 				csrfToken = response.headers['x-csrf-token'];
 				}
 				console.log('Response from sap Received Success for', method);
-				console.log('inside response csrfToken Received from SAP', csrfToken);
+			
 				xRequest.pipe(res);
 			}).on('error', (error) => {
 				next(error);

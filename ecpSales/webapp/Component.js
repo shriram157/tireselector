@@ -31,7 +31,7 @@ sap.ui.define([
 			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZECP_SALES_ODATA_SERVICE_SRV");
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
-				// disableHeadRequestForToken: true,
+				 disableHeadRequestForToken: true,
 				// defaultUpdateMethod: 'PUT',
 				json: true
 			});
@@ -40,7 +40,7 @@ sap.ui.define([
 			var mConfig01 = this.getMetadata().getManifestEntry("/sap.app/dataSources/Z_VEHICLE_MASTER_SRV");
 			var oDataModel01 = new ODataModel(mConfig01.uri, {
 				useBatch: false,
-				// disableHeadRequestForToken: true,
+				 disableHeadRequestForToken: true,
 				// defaultUpdateMethod: 'PATCH',
 				json: true
 			});
@@ -49,7 +49,7 @@ sap.ui.define([
 			var mConfig02 = this.getMetadata().getManifestEntry("/sap.app/dataSources/API_BUSINESS_PARTNER");
 			var oDataModel02 = new ODataModel(mConfig02.uri, {
 				useBatch: false,
-				// disableHeadRequestForToken: true,
+				 disableHeadRequestForToken: true,
 				// defaultUpdateMethod: 'PATCH',
 				json: true
 			});
