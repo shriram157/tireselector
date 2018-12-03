@@ -62,7 +62,7 @@ module.exports = function () {
 	
 			//  if the method = post you need a csrf token.   
 	
-			if (method == 'POST' || method == 'DELETE') {
+			if (method == 'POST' || method == 'DELETE' || method == 'PUT') {
 				reqHeader = {
 					"Authorization": auth64,
 					"Content-Type": "application/json",

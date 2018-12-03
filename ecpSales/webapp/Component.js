@@ -69,7 +69,7 @@ sap.ui.define([
 				mConfig02.uri = "/ECP_Destination" + mConfig02.uri;
 			}
 			this.setModel(oDataModel02, "ApiBusinessModel");
-<<<<<<< HEAD
+
 // model not yet in quality. 
 			// var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
 			// var oDataModel03 = new ODataModel(mConfig03.uri, {
@@ -78,21 +78,6 @@ sap.ui.define([
 			// 	json: true
 			// });
 			// this.setModel(oDataModel03, "ZdrClaimModel");
-=======
-
-			var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
-			var oDataModel03 = new ODataModel(mConfig03.uri, {
-				useBatch: false,
-				disableHeadRequestForToken: true,
-				defaultUpdateMethod: 'PATCH',
-				json: true
-			});
-
-			if (sLocation_conf == 0) {
-				mConfig03.uri = "/ECP_Destination" + mConfig03.uri;
-			}
-			this.setModel(oDataModel03, "ZdrClaimModel");
->>>>>>> refs/heads/master
 
 		}
 	});
