@@ -142,7 +142,7 @@ sap.ui.define([
 			var oDateRadioSelected = this.getView().byId("idDateRadio").getSelected();
 			var oVinRadioSelected = this.getView().byId("idVinRadio").getSelected();
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
-			var oDealerCode = this.getView().byId("idDealerCode").getSelectedItem().getKey();
+			var oDealerCode = this.getView().byId("idDealerCode").getSelectedKey();
 
 			if(oDateRadioSelected && !oVinRadioSelected) {
 
