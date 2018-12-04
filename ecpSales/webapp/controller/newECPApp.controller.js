@@ -142,7 +142,7 @@ sap.ui.define([
 						"$filter": "ZecpVin eq '" + this.oViNum + "'and ZecpIntApp eq '" + this.oAppId + "'"
 					},
 					success: $.proxy(function(data) {
-						console.log(data.results[0]);
+					
 						var EcpFieldData = new sap.ui.model.json.JSONModel(data.results[0]);
 						EcpFieldData.setDefaultBindingMode("TwoWay");
 						this.getView().setModel(EcpFieldData, "EcpFieldData");
@@ -159,7 +159,7 @@ sap.ui.define([
 							"'and ZECPAGRTYPE eq'" + this.oAppType + "'"
 					},
 					success: $.proxy(function(data) {
-						console.log(data.results[0]);
+					
 						this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
 
 					}, this),
@@ -173,7 +173,7 @@ sap.ui.define([
 						"$filter": "VIN eq '" + this.oViNum + "' "
 					},
 					success: $.proxy(function(data) {
-						console.log(data);
+					
 						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
 					}, this),
@@ -404,7 +404,7 @@ sap.ui.define([
 
 		_handleValueHelpSearch: function(evt) {
 			var sValue = evt.getParameter("value");
-			console.log(sValue);
+			
 			if(sValue) {
 				var oFilter = new Filter(
 					"VIN",
@@ -429,7 +429,7 @@ sap.ui.define([
 		onSelectAgrRow: function(oEvent) {
 			this.oAgrTable = oEvent.getSource().getSelectedContextPaths()[0];
 			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(this.oAgrTable);
-			console.log(obj);
+			
 			this.oECPData.BccAplDlrshpNum = obj.DealershipNumber;
 
 			this.getModel("LocalDataModel").setProperty("/AgreementObj", obj);
@@ -438,12 +438,12 @@ sap.ui.define([
 
 		OnNextStep2: function() {
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
-			console.log(this.oECPData.ZecpVin);
+			
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oVin = this.getView().byId("idVinNum");
 			var oVal = oVin.getValue();
-			console.log(oVal);
+			
 			if(!($.isEmptyObject(oVal)) && oVal.length === 17) {
 				var obj = {
 					VHVIN: oVal,
@@ -521,7 +521,7 @@ sap.ui.define([
 						console.log(err);
 					}
 				});
-				console.log(this.oECPData.ZecpVin);
+				
 				oZECPModel.read("/zc_ecp_agreement", {
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and AgreementStatus eq 'Active'and AgreementElectricVehicletype ne 'AGEN' "
@@ -642,7 +642,7 @@ sap.ui.define([
 				pattern: "yyyy-MM-ddTHH:mm:ss"
 			});
 			var oFormatedSaleDate = oDateFormat.format(new Date(oSaleDate));
-			console.log(this.oECPData.ZecpVin, oCustomerNum, this.oECPData.ZecpAgrType, oFormatedSaleDate);
+			
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + this.oECPData.ZecpAgrType +
@@ -659,7 +659,7 @@ sap.ui.define([
 					console.log("Error");
 				}
 			});
-			console.log(this.oCustomer);
+			
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			oBusinessModel.read("/A_BusinessPartnerAddress", {
 				urlParameters: {
