@@ -14,52 +14,52 @@
 				value="{EcpFieldData>/ZecpAgrType}">
 				<core:Item key="{i18n>NEWVEHICLEAGREEMENT}" text="{i18n>NEWVEHICLEAGREEMENT}"/>
 				<core:Item key="{i18n>USEDVEHICLEAGREEMENT}" text="{i18n>USEDVEHICLEAGREEMENT}"/>
-				<core:Item key="{i18n>EXTENSION}" text="{i18n>EXTENSION}"/>
+				<!--<core:Item key="{i18n>EXTENSION}" text="{i18n>EXTENSION}"/>-->
 			</ComboBox>
 			<Button text="Next" type="Emphasized" press="OnNextStep3"/>
 			<Button text="Back" type="Back" press="OnBack"/>
 		</f:content>
 	</f:SimpleForm>
-	<VBox id="idExtAgrList">
-		<Text class="sapUiSmallMarginBottom" id="idWarningText" text="{i18n>TableSelectMessage}"/>
-		<Table growing="true" growingThreshold="10" mode="SingleSelectLeft" selectionChange="onSelectAgrRow" id="idAgreementTable"
-			alternateRowColors="true" items="{ path: 'LocalDataModel>/AgreementDataActive' }">
-			<columns>
-				<Column minScreenWidth="Tablet" demandPopin="true" width="11rem">
-					<Text text="{i18n>EcpAgreement}"/>
-				</Column>
-				<Column minScreenWidth="Tablet" demandPopin="true">
-					<Text text="{i18n>Extendable}"/>
-				</Column>
-				<Column minScreenWidth="Tablet" demandPopin="true">
-					<Text text="{i18n>Status}"/>
-				</Column>
-				<Column minScreenWidth="Tablet" demandPopin="true">
-					<Text text="{i18n>StatusDate}"/>
-				</Column>
-				<Column minScreenWidth="Tablet" demandPopin="true">
-					<Text text="{i18n>ExpiryDate}"/>
-				</Column>
-				<Column hAlign="End">
-					<Text text="{i18n>ExpiryKm}"/>
-				</Column>
-				<Column hAlign="End">
-					<Text text="{i18n>StatusReason}"/>
-				</Column>
-			</columns>
-			<items>
-				<ColumnListItem>
-					<cells>
-						<Text text="{LocalDataModel>AgreementNumber}"/>
-						<Text text=""/>
-						<Text text="{LocalDataModel>AgreementStatus}"/>
-						<Text text="{LocalDataModel>StatusDate}"/>
-						<Text text="{path:'LocalDataModel>AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
-						<Text text="{LocalDataModel>AgreementthruKMreading}"/>
-						<Text text=""/>
-					</cells>
-				</ColumnListItem>
-			</items>
-		</Table>
-	</VBox>
+	<!--<VBox id="idExtAgrList">-->
+	<!--	<Text class="sapUiSmallMarginBottom" id="idWarningText" text="{i18n>TableSelectMessage}"/>-->
+	<!--	<Table growing="true" growingThreshold="10" mode="SingleSelectLeft" selectionChange="onSelectAgrRow" id="idAgreementTable"-->
+	<!--		alternateRowColors="true" items="{ path: 'LocalDataModel>/AgreementDataActive' }">-->
+	<!--		<columns>-->
+	<!--			<Column minScreenWidth="Tablet" demandPopin="true" width="11rem">-->
+	<!--				<Text text="{i18n>EcpAgreement}"/>-->
+	<!--			</Column>-->
+	<!--			<Column minScreenWidth="Tablet" demandPopin="true">-->
+	<!--				<Text text="{i18n>Extendable}"/>-->
+	<!--			</Column>-->
+	<!--			<Column minScreenWidth="Tablet" demandPopin="true">-->
+	<!--				<Text text="{i18n>Status}"/>-->
+	<!--			</Column>-->
+	<!--			<Column minScreenWidth="Tablet" demandPopin="true">-->
+	<!--				<Text text="{i18n>StatusDate}"/>-->
+	<!--			</Column>-->
+	<!--			<Column minScreenWidth="Tablet" demandPopin="true">-->
+	<!--				<Text text="{i18n>ExpiryDate}"/>-->
+	<!--			</Column>-->
+	<!--			<Column hAlign="End">-->
+	<!--				<Text text="{i18n>ExpiryKm}"/>-->
+	<!--			</Column>-->
+	<!--			<Column hAlign="End">-->
+	<!--				<Text text="{i18n>StatusReason}"/>-->
+	<!--			</Column>-->
+	<!--		</columns>-->
+	<!--		<items>-->
+	<!--			<ColumnListItem>-->
+	<!--				<cells>-->
+	<!--					<Text text="{LocalDataModel>AgreementNumber}"/>-->
+	<!--					<Text text=""/>-->
+	<!--					<Text text="{LocalDataModel>AgreementStatus}"/>-->
+	<!--					<Text text="{LocalDataModel>StatusDate}"/>-->
+	<!--					<Text text="{path:'LocalDataModel>AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>-->
+	<!--					<Text text="{LocalDataModel>AgreementthruKMreading}"/>-->
+	<!--					<Text text=""/>-->
+	<!--				</cells>-->
+	<!--			</ColumnListItem>-->
+	<!--		</items>-->
+	<!--	</Table>-->
+	<!--</VBox>-->
 </core:FragmentDefinition>
