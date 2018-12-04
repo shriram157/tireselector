@@ -889,7 +889,7 @@ sap.ui.define([
 			//	console.log(this.DifferTime);
 			var oidPlanCode = oidPlanCodeId.getSelectedItem();
 
-			if(!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer < this.oAdditionalVal & this.DifferTime < this.PlanTime) {
+			if(!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal & this.DifferTime <= this.PlanTime) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
