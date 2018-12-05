@@ -934,6 +934,17 @@ sap.ui.define([
 			var that = this;
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			// 			console.log(this.oSelectedTitle);
+			// =======================================Fetch CSRF Token before post Delete==================================================
+				var oEcpModel = that.getModel("EcpSalesModel");
+				     this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
+			
+	
+			
 			var dialog = new Dialog({
 				// title: that.oBundle.getText("DltECPApp"),
 				type: 'Message',
@@ -994,6 +1005,19 @@ sap.ui.define([
 		},
 		onBackList: function() {
 			var that = this;
+			
+			// =======================================Fetch CSRF Token before post==================================================
+				var oEcpModel = that.getModel("EcpSalesModel");
+				     this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
+
+			
+			
+			
 			var dialog = new Dialog({
 				title: that.oBundle.getText("SaveChanges"),
 				type: "Message",
@@ -1222,6 +1246,16 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oEcpModel = this.getModel("EcpSalesModel");
 
+			// =======================================Fetch CSRF Token before update==================================================
+				var oEcpModel = this.getModel("EcpSalesModel");
+				     this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
+
+
 			oEcpModel.create("/zc_ecp_crud_operationsSet", objSave, {
 				success: $.proxy(function() {
 					MessageToast.show(oBundle.getText("DraftCreated") + this.oECPData.ZecpVin);
@@ -1264,6 +1298,9 @@ sap.ui.define([
 				"BccPlnLienHldr": oECPData.BccPlnLienHldr,
 				"ZecpLienterms": oECPData.ZecpLienterms
 			};
+			
+			
+			
 
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.oViNum +
 				"')", obj, {
@@ -1282,6 +1319,24 @@ sap.ui.define([
 			//this._Step04MandatoryFn();
 			var that = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+
+
+
+			// =======================================Fetch CSRF Token before DELETE post==================================================
+				var oEcpModel = that.getModel("EcpSalesModel");
+				     this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
+
+
+
+
+
+
+
 			var dialog = new Dialog({
 				title: oBundle.getText("SubmitApp"),
 				type: "Message",
@@ -1299,6 +1354,8 @@ sap.ui.define([
 						oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
 							success: function() {
 								if(that.oECPData.ZecpIntApp.charAt(0) === "D") {
+
+									
 									oEcpModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + that.oECPData.ZecpIntApp + "',ZecpVin='" + that.oECPData
 										.ZecpVin +
 										"')", {

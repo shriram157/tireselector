@@ -13,7 +13,7 @@
        {
       "source": "/node(.*)",
       "destination": "ecpsales-node-backend",
-      "csrfProtection": false,
+      "csrfProtection": true,
       "authenticationType": "none"
     }
     
