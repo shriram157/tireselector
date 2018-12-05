@@ -1299,8 +1299,16 @@ sap.ui.define([
 				"ZecpLienterms": oECPData.ZecpLienterms
 			};
 			
+						// =======================================Fetch CSRF Token before update==================================================
+				// var oEcpModel = this.getModel("EcpSalesModel");
+				     this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
 			
-			
+	
 
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.oViNum +
 				"')", obj, {

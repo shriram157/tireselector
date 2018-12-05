@@ -36,7 +36,7 @@
 									</VBox>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
-									<Table id="idApplicationTable" mode="SingleSelectMaster" selectionChange="onSelectionChange" alternateRowColors="true"
+									<Table id="idApplicationTable" mode="SingleSelectMaster"  selectionChange="onSelectionChange" alternateRowColors="true"
 										items="{ path: 'LocalDataModel>/EcpApplication' }">
 										<columns>
 											<Column minScreenWidth="Tablet" demandPopin="true">
