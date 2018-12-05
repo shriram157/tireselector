@@ -6,7 +6,7 @@
 			<Label text="{i18n>PlanCode}"/>
 			<ComboBox id="idPlanCode" items="{LocalDataModel>/PlanValidSet}" showSecondaryValues="true" required="true"
 				value="{EcpFieldData>/ZecpPlancode}" selectionChange="onSelectPlanCode">
-				<core:ListItem key="{LocalDataModel>MGANR}" text="{LocalDataModel>MGANR}" additionalText="{LocalDataModel>GAKTX}"/>
+				<core:ListItem key="{LocalDataModel>KMS}/{LocalDataModel>MONTHS}" text="{LocalDataModel>MGANR}" additionalText="{LocalDataModel>GAKTX}"/>
 			</ComboBox>
 			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep4"/>
 			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
