@@ -53,13 +53,19 @@ module.exports = function () {
 			let headOptions = {};
 	
 			headOptions.Authorization = auth64;
-	
+	        
+	        if (csrfToken == "Required") {
+	          csrfToken = "";	
+	        }
+	        
+	        
 			let method = req.method;
 			let xurl = url + req.url;
 			console.log('Method', method);
 			console.log('Incoming Url', xurl);
 			console.log('csrfToken before GET&POST', csrfToken);
 	
+	       
 			//  if the method = post you need a csrf token.   
 	
 			if (method == 'POST' || method == 'DELETE' || method == 'PUT') {
