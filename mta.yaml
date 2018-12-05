@@ -1,3 +1,4 @@
+
 ID: ecpSales
 _schema-version: '3.1'
 description: MTA PRoject for ECP Sales
@@ -7,9 +8,9 @@ modules:
     type: nodejs
     path: ecpSales_Node
     parameters:
-      host: ecpSales_Node
+      host: QAS-ecpSales_Node
       register-service-url: true
-      service-name: ecpSales_Node
+      service-name: QAS-ecpSales_Node
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
@@ -25,9 +26,9 @@ modules:
     type: html5
     path: ecpSales
     parameters:
-      host: ecpSales
+      host: QAS-ecpSales
       register-service-url: true
-      service-name: ecpSales
+      service-name: QAS-ecpSales
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
@@ -35,7 +36,7 @@ modules:
       builder: grunt
     requires:
       - name: uaa_ecpSales
-      - name: dest_ecpSales
+      - name: dest_QAS-ecpSales
       - name: ecpSales_Node_api
         group: destinations
         properties:
@@ -53,7 +54,7 @@ resources:
       service: xsuaa
     type: org.cloudfoundry.managed-service
     
-  - name: dest_ecpSales
+  - name: dest_QAS-ecpSales
     parameters:
       service-plan: lite
       service: destination
