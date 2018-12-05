@@ -7,9 +7,9 @@ modules:
     type: nodejs
     path: ecpSales_Node
     parameters:
-      host: QAS-ecpSales_Node
+      host: ecpSales_Node
       register-service-url: true
-      service-name: QAS-ecpSales_Node
+      service-name: ecpSales_Node
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
@@ -25,9 +25,9 @@ modules:
     type: html5
     path: ecpSales
     parameters:
-      host: QAS-ecpSales
+      host: ecpSales
       register-service-url: true
-      service-name: QAS-ecpSales
+      service-name: ecpSales
       service-url: '${default-url}'
       disk-quota: 256MB
       memory: 256MB
@@ -35,7 +35,7 @@ modules:
       builder: grunt
     requires:
       - name: uaa_ecpSales
-      - name: dest_QAS-ecpSales
+      - name: dest_ecpSales
       - name: ecpSales_Node_api
         group: destinations
         properties:
@@ -53,7 +53,7 @@ resources:
       service: xsuaa
     type: org.cloudfoundry.managed-service
     
-  - name: dest_QAS-ecpSales
+  - name: dest_ecpSales
     parameters:
       service-plan: lite
       service: destination

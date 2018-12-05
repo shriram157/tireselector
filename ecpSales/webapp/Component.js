@@ -76,19 +76,19 @@ sap.ui.define([
 			this.setModel(oDataModel02, "ApiBusinessModel");
 
 
-			var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
-			if (sLocation_conf == 0) {
-				mConfig03.uri = "/ECP_Destination" + mConfig03.uri;
-			}
-			var oDataModel03 = new ODataModel(mConfig03.uri, {
-				useBatch: false,
-				disableHeadRequestForToken: true,
-				defaultUpdateMethod: 'PATCH',
-				json: true
-			});
+			// var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
+			// if (sLocation_conf == 0) {
+			// 	mConfig03.uri = "/ECP_Destination" + mConfig03.uri;
+			// }
+			// var oDataModel03 = new ODataModel(mConfig03.uri, {
+			// 	useBatch: false,
+			// 	disableHeadRequestForToken: true,
+			// 	defaultUpdateMethod: 'PATCH',
+			// 	json: true
+			// });
 
 			
-			this.setModel(oDataModel03, "ZdrClaimModel");
+			// this.setModel(oDataModel03, "ZdrClaimModel");
 
 		}
 	});
