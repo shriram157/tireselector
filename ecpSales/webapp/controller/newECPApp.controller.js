@@ -142,8 +142,13 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "ZecpVin eq '" + this.oViNum + "'and ZecpIntApp eq '" + this.oAppId + "'"
 					},
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 					success: $.proxy(function (data) {
 
+=======
+					success: $.proxy(function(data) {
+					
+>>>>>>> 08b851d fixes done.
 						var EcpFieldData = new sap.ui.model.json.JSONModel(data.results[0]);
 						EcpFieldData.setDefaultBindingMode("TwoWay");
 						this.getView().setModel(EcpFieldData, "EcpFieldData");
@@ -159,8 +164,13 @@ sap.ui.define([
 						"$filter": "MGANR eq '" + this.oPlan + "'and ODMTR eq'" + this.oOdometer + "'and VIN eq '" + this.oViNum +
 							"'and ZECPAGRTYPE eq'" + this.oAppType + "'"
 					},
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 					success: $.proxy(function (data) {
 
+=======
+					success: $.proxy(function(data) {
+					
+>>>>>>> 08b851d fixes done.
 						this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
 
 					}, this),
@@ -173,8 +183,13 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oViNum + "' "
 					},
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 					success: $.proxy(function (data) {
 
+=======
+					success: $.proxy(function(data) {
+					
+>>>>>>> 08b851d fixes done.
 						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
 					}, this),
@@ -387,8 +402,13 @@ sap.ui.define([
 
 		_handleValueHelpSearch: function (evt) {
 			var sValue = evt.getParameter("value");
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 
 			if (sValue) {
+=======
+			
+			if(sValue) {
+>>>>>>> 08b851d fixes done.
 				var oFilter = new Filter(
 					"VIN",
 					sap.ui.model.FilterOperator.EQ, sValue
@@ -412,7 +432,11 @@ sap.ui.define([
 		onSelectAgrRow: function (oEvent) {
 			this.oAgrTable = oEvent.getSource().getSelectedContextPaths()[0];
 			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(this.oAgrTable);
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 
+=======
+			
+>>>>>>> 08b851d fixes done.
 			this.oECPData.BccAplDlrshpNum = obj.DealershipNumber;
 
 			this.getModel("LocalDataModel").setProperty("/AgreementObj", obj);
@@ -421,12 +445,21 @@ sap.ui.define([
 
 		OnNextStep2: function () {
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
+<<<<<<< Upstream, based on origin/changesMade_For_CF
+=======
+			
+>>>>>>> 08b851d fixes done.
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oVin = this.getView().byId("idVinNum");
 			var oVal = oVin.getValue();
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 
 			if (!($.isEmptyObject(oVal)) && oVal.length === 17) {
+=======
+			
+			if(!($.isEmptyObject(oVal)) && oVal.length === 17) {
+>>>>>>> 08b851d fixes done.
 				var obj = {
 					VHVIN: oVal,
 					VGUID: "",
@@ -509,7 +542,11 @@ sap.ui.define([
 						console.log(err);
 					}
 				});
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 
+=======
+				
+>>>>>>> 08b851d fixes done.
 				oZECPModel.read("/zc_ecp_agreement", {
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and AgreementStatus eq 'Active'and AgreementElectricVehicletype ne 'AGEN' "
@@ -630,7 +667,11 @@ sap.ui.define([
 				pattern: "yyyy-MM-ddTHH:mm:ss"
 			});
 			var oFormatedSaleDate = oDateFormat.format(new Date(oSaleDate));
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 
+=======
+			
+>>>>>>> 08b851d fixes done.
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + this.oECPData.ZecpAgrType +
@@ -647,7 +688,11 @@ sap.ui.define([
 					console.log("Error");
 				}
 			});
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 
+=======
+			
+>>>>>>> 08b851d fixes done.
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			oBusinessModel.read("/A_BusinessPartnerAddress", {
 				urlParameters: {
@@ -1247,8 +1292,13 @@ sap.ui.define([
 						var oEcpModel = that.getModel("EcpSalesModel");
 
 						oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
+<<<<<<< Upstream, based on origin/changesMade_For_CF
 							success: function () {
 								if (that.oECPData.ZecpIntApp.charAt(0) === "D") {
+=======
+							success: function() {
+								if(that.oECPData.ZecpIntApp.charAt(0) === "D") {
+>>>>>>> 08b851d fixes done.
 									oEcpModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + that.oECPData.ZecpIntApp + "',ZecpVin='" + that.oECPData
 										.ZecpVin +
 										"')", {
