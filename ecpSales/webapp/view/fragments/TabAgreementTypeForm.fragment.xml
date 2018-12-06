@@ -14,7 +14,7 @@
 				value="{EcpFieldData>/ZecpAgrType}">
 				<core:Item key="{i18n>NEWVEHICLEAGREEMENT}" text="{i18n>NEWVEHICLEAGREEMENT}"/>
 				<core:Item key="{i18n>USEDVEHICLEAGREEMENT}" text="{i18n>USEDVEHICLEAGREEMENT}"/>
-				<!--<core:Item key="{i18n>EXTENSION}" text="{i18n>EXTENSION}"/>-->
+				<core:Item key="{i18n>EXTENSION}" text="{i18n>EXTENSION}" enabled="{oSetProperty>/oFlag}"/>
 			</ComboBox>
 			<Button text="Next" type="Emphasized" press="OnNextStep3"/>
 			<Button text="Back" type="Back" press="OnBack"/>
