@@ -47,17 +47,15 @@ module.exports = function () {
 	});
 
 	var csrfToken;
-
+ 
+        
 		app.all('/*', function (req, res, next) {
 	
+
 			let headOptions = {};
 	
 			headOptions.Authorization = auth64;
-	        
-	        if (csrfToken == "Required") {
-	          csrfToken = "";	
-	        }
-	        
+
 	        
 			let method = req.method;
 			let xurl = url + req.url;
@@ -78,7 +76,7 @@ module.exports = function () {
 				console.log('csrfToken for POST', csrfToken);	
 				console.log('headerData', reqHeader);
 			}
-	
+		
 			let xRequest =
 				request({
 					method: method,
@@ -89,16 +87,23 @@ module.exports = function () {
 			req.pipe(xRequest);
 	
 			xRequest.on('response', (response) => {
-				// delete response.headers['set-cookie'];
-				if (response.headers['x-csrf-token']){
+			   // delete response.headers['set-cookie'];
+			    
+			
+				 if (response.headers['x-csrf-token']){
 				csrfToken = response.headers['x-csrf-token'];
-				}
+				 }
 				console.log('Response from sap Received Success for', method);
 			
 				xRequest.pipe(res);
+					
+				
 			}).on('error', (error) => {
 				next(error);
 			});
+
+			
+			
 		});
 
 	return app;
