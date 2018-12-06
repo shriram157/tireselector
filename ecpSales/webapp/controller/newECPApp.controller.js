@@ -1264,6 +1264,7 @@ sap.ui.define([
 
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.oViNum +
 				"')", obj, {
+					 method: "PUT",
 					success: $.proxy(function(response) {
 						oEcpModel.refresh();
 						this.getRouter().navTo("ApplicationList");
