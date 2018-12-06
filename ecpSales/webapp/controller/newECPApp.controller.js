@@ -47,7 +47,8 @@ sap.ui.define([
 				backSecondary: false,
 				AgreementTable: true,
 				saleDat01Visible: true,
-				saleDat02Visible: false
+				saleDat02Visible: false,
+				oFlag: false
 			});
 			this.getView().setModel(oSetProperty, "oSetProperty");
 
@@ -463,6 +464,23 @@ sap.ui.define([
 				// 		console.log(err);
 				// 	}
 				// });
+				
+					oZECPModel.read("/zc_ecp_valid_plansSet", {
+					urlParameters: {
+						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
+					},
+					success: $.proxy(function(data) {
+						this.oFlag = data.results[0].ZZEXT_FLG;
+						if(this.oFlag === "YES") {
+							this.getView().getModel("oSetProperty").setProperty("/oFlag", true);
+						} else {
+							this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
+						}
+					}, this),
+					error: function() {
+						console.log("Error");
+					}
+				});
 
 				oZECPModel.read("/zc_ecp_vehicle_detailSet", {
 					urlParameters: {
