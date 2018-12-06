@@ -12,7 +12,7 @@ modules:
       register-service-url: true
       service-name: ecpSales_Node
       service-url: '${default-url}'
-      disk-quota: 512MB
+      disk-quota: 256MB
       memory: 256MB
     requires:
       - name: ECP_SALES_APIM_CUPS
@@ -30,7 +30,7 @@ modules:
       register-service-url: true
       service-name: ecpSales
       service-url: '${default-url}'
-      disk-quota: 512MB
+      disk-quota: 256MB
       memory: 256MB
     build-parameters:
       builder: grunt
