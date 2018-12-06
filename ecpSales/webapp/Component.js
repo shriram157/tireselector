@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 sap.ui.define([
 	"sap/ui/core/UIComponent",
 	"sap/ui/Device",
@@ -39,8 +40,8 @@ sap.ui.define([
 			}
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
-				 disableHeadRequestForToken: false,
-				defaultUpdateMethod: 'PUT',
+				// disableHeadRequestForToken: false,
+				 defaultUpdateMethod: 'PUT',
 				json: true
 			});
 
@@ -53,8 +54,8 @@ sap.ui.define([
 			}
 			var oDataModel01 = new ODataModel(mConfig01.uri, {
 				useBatch: false,
-				 disableHeadRequestForToken: false,
-				defaultUpdateMethod: 'PUT',
+				// disableHeadRequestForToken: true,
+				 defaultUpdateMethod: 'PATCH',
 				json: true
 			});
 
@@ -68,8 +69,8 @@ sap.ui.define([
 			}
 			var oDataModel02 = new ODataModel(mConfig02.uri, {
 				useBatch: false,
-				 disableHeadRequestForToken: false,
-				defaultUpdateMethod: 'PUT',
+				// disableHeadRequestForToken: true,
+				 defaultUpdateMethod: 'PATCH',
 				json: true
 			});
 		
@@ -92,4 +93,5 @@ sap.ui.define([
 
 		}
 	});
+
 });
