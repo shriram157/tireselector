@@ -34,6 +34,12 @@ sap.ui.define([
 			this.getView().byId("sAgreementEnq").bindElement("/zc_ecp_agreement(VIN='" + oVin + "',AgreementNumber='" + oAgrNum + "')");
 			// 			this.getView().byId("sAgreementEnq").bindElement("VinModel>/zc_c_vehicle(VIN='" + oVin + "')");
 			var oGetModel = this.getModel("ZVehicleMasterModel");
+			this._oToken = oGetModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
 			oGetModel.read("/zc_c_vehicle", {
 
 				urlParameters: {
@@ -46,6 +52,12 @@ sap.ui.define([
 			});
 
 			var oBusinessModel = this.getModel("ApiBusinessModel");
+			this._oToken = oBusinessModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
 			oBusinessModel.read("/A_BusinessPartnerAddress", {
 				urlParameters: {
 					"$filter": "BusinessPartner eq '" + oCustomerNumber + "' ",
@@ -77,6 +89,12 @@ sap.ui.define([
 				}
 			});
 			var zEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
+				this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
 			zEcpModel.read("/zc_ecp_vehicle_detailSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oVin + "'"
@@ -134,7 +152,12 @@ sap.ui.define([
 			// 			});
 
 			var oZdrClaimModel = this.getOwnerComponent().getModel("ZdrClaimModel");
-
+				this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
 			oZdrClaimModel.read("/ZC_CLAIM_HEAD", {
 				urlParameters: {
 					"$filter": "AgreementNumber eq '" + oAgrNum + "'",

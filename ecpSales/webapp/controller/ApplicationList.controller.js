@@ -2,7 +2,7 @@ sap.ui.define([
 	"zecp/controller/BaseController",
 	'sap/ui/core/Fragment',
 	'sap/ui/model/json/JSONModel'
-], function(Controller, Fragment, JSONModel) {
+], function (Controller, Fragment, JSONModel) {
 	"use strict";
 
 	return Controller.extend("zecp.controller.ApplicationList", {
@@ -12,7 +12,7 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf zecp.view.ApplicationList
 		 */
-		onInit: function() {
+		onInit: function () {
 			var oModelDate = new JSONModel();
 			this.beforedate = new Date();
 
@@ -31,7 +31,7 @@ sap.ui.define([
 
 		},
 
-		onBeforeRendering: function() {
+		onBeforeRendering: function () {
 
 			this.getView().byId("idDealerCode").setSelectedKey("2400042350");
 			this.getView().byId("idDealerCode").setValue("42350");
@@ -39,21 +39,27 @@ sap.ui.define([
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.attachRouteMatched(this._onObjectMatched, this);
 		},
-		_onObjectMatched: function(oEvent) {
+		_onObjectMatched: function (oEvent) {
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
+			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "yyyy-MM-ddTHH:mm:ss"
 			});
 			var oPriorDate = oDateFormat.format(this.priordate);
 			var oCurrentDate = oDateFormat.format(this.beforedate);
-			if(oEvent.getParameters().name === "ApplicationList") {
+			if (oEvent.getParameters().name === "ApplicationList") {
 				this.getOwnerComponent().getModel("EcpSalesModel").refresh();
 				oEcpModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
 							"'and DealerCode eq '2400042350'and ApplicationStatus eq 'PENDING' "
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 						this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
 					}, this)
 				});
@@ -75,11 +81,11 @@ sap.ui.define([
 			}
 		},
 
-		onAfterRendering: function() {
+		onAfterRendering: function () {
 
 		},
 
-		OnCreateApp: function(oEvent) {
+		OnCreateApp: function (oEvent) {
 			var oval = 404;
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
 				vin: oval,
@@ -89,15 +95,15 @@ sap.ui.define([
 				Odometer: oval
 			});
 		},
-		handleValueHelp: function(oController) {
+		handleValueHelp: function (oController) {
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oVinRadioSelected = this.getView().byId("idVinRadio").getSelected();
-			if(oVinRadioSelected) {
+			if (oVinRadioSelected) {
 				this.getView().byId("idAppListMsgStrip").setProperty("visible", false);
 
 				this.inputId = oController.getParameters().id;
 
-				if(!this._valueHelpDialog) {
+				if (!this._valueHelpDialog) {
 					this._valueHelpDialog = sap.ui.xmlfragment(
 						"zecp.view.fragments.VinDialogForApplist",
 						this
@@ -113,10 +119,10 @@ sap.ui.define([
 			}
 		},
 
-		_handleValueHelpSearch: function(evt) {
+		_handleValueHelpSearch: function (evt) {
 			var sValue = evt.getParameter("value");
 
-			if(sValue) {
+			if (sValue) {
 				var oFilter = new sap.ui.model.Filter(
 					"VIN",
 					sap.ui.model.FilterOperator.Contains, sValue
@@ -128,23 +134,29 @@ sap.ui.define([
 			}
 		},
 
-		_handleValueHelpClose: function(evt) {
+		_handleValueHelpClose: function (evt) {
 			this.oSelectedItem = evt.getParameter("selectedItem");
 			this.oSelectedTitle = this.oSelectedItem.getTitle();
-			if(this.oSelectedItem) {
+			if (this.oSelectedItem) {
 				var productInput = this.byId(this.inputId);
 				productInput.setValue(this.oSelectedItem.getTitle());
 			}
 			evt.getSource().getBinding("items").filter([]);
 		},
-		OnSearchApplication: function() {
+		OnSearchApplication: function () {
 
 			var oDateRadioSelected = this.getView().byId("idDateRadio").getSelected();
 			var oVinRadioSelected = this.getView().byId("idVinRadio").getSelected();
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
+			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			var oDealerCode = this.getView().byId("idDealerCode").getSelectedKey();
 
-			if(oDateRadioSelected && !oVinRadioSelected) {
+			if (oDateRadioSelected && !oVinRadioSelected) {
 
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 					pattern: "yyyy-MM-ddTHH:mm:ss"
@@ -161,7 +173,7 @@ sap.ui.define([
 				var RangeDateFrom = oDateFormat.format(new Date(odateFrom));
 				var RangeDateTo = oDateFormat.format(new Date(oDateToFinal));
 
-				if(!$.isEmptyObject(sQuery)) {
+				if (!$.isEmptyObject(sQuery)) {
 
 					oEcpModel.read("/zc_ecp_application", {
 						urlParameters: {
@@ -170,17 +182,17 @@ sap.ui.define([
 								"'and DealerCode eq '" + oDealerCode + "'and ApplicationStatus eq 'PENDING' "
 
 						},
-						success: $.proxy(function(data) {
+						success: $.proxy(function (data) {
 
 							this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
 						}, this)
 					});
 				}
 
-			} else if(!oDateRadioSelected && oVinRadioSelected) {
+			} else if (!oDateRadioSelected && oVinRadioSelected) {
 				var sQuery02 = this.getView().byId("idVin").getValue();
 				//	console.log(sQuery);
-				if(!$.isEmptyObject(sQuery02)) {
+				if (!$.isEmptyObject(sQuery02)) {
 					oEcpModel.read("/zc_ecp_application", {
 						urlParameters: {
 							"$filter": "VIN eq'" + sQuery02 +
@@ -188,7 +200,7 @@ sap.ui.define([
 								"'and DealerCode eq '" + oDealerCode + "'and ApplicationStatus eq 'PENDING' "
 
 						},
-						success: $.proxy(function(data) {
+						success: $.proxy(function (data) {
 
 							this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
 						}, this)
@@ -198,7 +210,7 @@ sap.ui.define([
 			}
 		},
 
-		onSelectionChange: function(oEvent) {
+		onSelectionChange: function (oEvent) {
 			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
 
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
@@ -212,7 +224,7 @@ sap.ui.define([
 			this.getModel("EcpSalesModel").refresh();
 		},
 
-		onExit: function() {
+		onExit: function () {
 			this.destroy();
 			this.getModel("EcpSalesModel").refresh();
 		}

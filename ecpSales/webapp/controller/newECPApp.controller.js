@@ -137,7 +137,12 @@ sap.ui.define([
 				// this.getView().byId("idFilter04").removeAllContent();
 				// this.getView().byId("idFilter04").insertContent(oFragmant);
 				var oZECPModel = this.getModel("EcpSalesModel");
-
+				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-Token': this._oToken
+					}
+				});
 				oZECPModel.read("/zc_ecp_crud_operationsSet", {
 					urlParameters: {
 						"$filter": "ZecpVin eq '" + this.oViNum + "'and ZecpIntApp eq '" + this.oAppId + "'"
@@ -435,7 +440,12 @@ sap.ui.define([
 					SDSTA: ""
 				};
 				var oZECPModel = this.getModel("EcpSalesModel");
-
+				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-Token': this._oToken
+					}
+				});
 				oZECPModel.read("/zc_ecp_valid_plansSet", {
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
@@ -525,6 +535,12 @@ sap.ui.define([
 				});
 
 				var oGetModel = this.getModel("ZVehicleMasterModel");
+				this._oToken = oGetModel.getHeaders()['x-csrf-token'];
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-Token': this._oToken
+					}
+				});
 				oGetModel.read("/zc_c_vehicle", {
 
 					urlParameters: {
@@ -622,6 +638,12 @@ sap.ui.define([
 			var oSaleDateId = this.getView().byId("idDate");
 			var oSaleDate = oSaleDateId.getValue();
 			var zEcpModel = this.getModel("EcpSalesModel");
+			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			if (this.oCustomer) {
 				var oCustomerNum = this.oCustomer.substr(5);
 			}
@@ -649,6 +671,12 @@ sap.ui.define([
 			});
 
 			var oBusinessModel = this.getModel("ApiBusinessModel");
+			this._oToken = oBusinessModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			oBusinessModel.read("/A_BusinessPartnerAddress", {
 				urlParameters: {
 					"$filter": "BusinessPartner eq '" + this.oCustomer + "' ",
@@ -776,17 +804,11 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oAgr.setValueState(sap.ui.core.ValueState.Error);
 			}
-			// 			else if (!($.isEmptyObject(oOdoVal && oSaleDate)) && oAgr.getSelectedKey() === "v3") {
-			// 				alert("enter");
-			// 				this.getView().byId("idWarningText").setProperty("visible", true);
-			// 				this.getView().byId("idFilter03").setProperty("enabled", true);
-			// 			}
-			// 			this.oFax = this.getModel("LocalDataModel").getData().BusinessPartnerData.to_FaxNumber.results[0].FaxNumber;
-			// 			this.getView().byId("idFaxNum").setText(this.oFax);
+
 		},
 		onSelectPlanCode: function (oEvent) {
 
-			this.oPlanCode = oEvent.getSource().getSelectedKey();
+			this.oPlanCode = oEvent.getSource().getValue();
 			this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
 			this.oAdditionalVal = parseInt(this.kmOdometerEnd.replace(/,/g, ''));
 			this.oPlanMonth = parseInt(this.durationMonths);
@@ -794,6 +816,12 @@ sap.ui.define([
 			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 
 			var zEcpModel = this.getModel("EcpSalesModel");
+			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			zEcpModel.read("/zc_ecp_planpricing_dataSet", {
 				urlParameters: {
 					"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
@@ -899,6 +927,12 @@ sap.ui.define([
 					text: oBundle.getText("Yes"),
 					press: function () {
 						var oModel = that.getView().getModel("EcpSalesModel");
+						this._oToken = oModel.getHeaders()['x-csrf-token'];
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-Token': this._oToken
+							}
+						});
 
 						oModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + oECPData.ZecpIntApp + "',ZecpVin='" + oECPData.ZecpVin + "')", {
 							method: "DELETE",
@@ -963,7 +997,12 @@ sap.ui.define([
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
 							var objSave = that._fnObject("SAVE", "PENDING");
 							var oEcpModel = that.getModel("EcpSalesModel");
-
+							this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+							$.ajaxSetup({
+								headers: {
+									'X-CSRF-Token': this._oToken
+								}
+							});
 							oEcpModel.create("/zc_ecp_crud_operationsSet", objSave, {
 								success: $.proxy(function () {
 
@@ -1176,7 +1215,12 @@ sap.ui.define([
 			var objSave = this._fnObject("SAVE", "PENDING");
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oEcpModel = this.getModel("EcpSalesModel");
-
+			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			oEcpModel.create("/zc_ecp_crud_operationsSet", objSave, {
 				success: $.proxy(function () {
 					MessageToast.show(oBundle.getText("DraftCreated") + this.oECPData.ZecpVin);
@@ -1198,6 +1242,12 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			var oEcpModel = this.getModel("EcpSalesModel");
+			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			var obj = {
 				"ZecpIntApp": this.oAppId,
 				"ZecpVin": this.oViNum,
@@ -1245,8 +1295,14 @@ sap.ui.define([
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
 						var oEcpModel = that.getModel("EcpSalesModel");
-
+						this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-Token': this._oToken
+							}
+						});
 						oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
+
 							success: function () {
 								if (that.oECPData.ZecpIntApp.charAt(0) === "D") {
 									oEcpModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + that.oECPData.ZecpIntApp + "',ZecpVin='" + that.oECPData
@@ -1290,29 +1346,7 @@ sap.ui.define([
 			dialog.open();
 		},
 
-		onUpdateSubmitedApp: function (oEvent) {
-
-		},
-
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf zecp.view.newECPApp
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf zecp.view.newECPApp
-		 */
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf zecp.view.newECPApp
-		 */
+	
 		onExit: function () {
 			this.destroy();
 			this.getView().unbindElement();
