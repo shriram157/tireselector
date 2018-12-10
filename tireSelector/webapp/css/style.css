@@ -21,6 +21,7 @@
 .formBtnStyle {float:right; clear:both; padding-top:1.5rem !important;}
 .styleSearchForm .sapUiRespGridBreak.sapUiRespGridSpanL4.sapUiRespGridSpanM4.sapUiRespGridSpanS12.sapUiRespGridSpanXL4 { width: auto;}
 @media only screen and (max-width: 600px) {
+/*.styleColumns.alignRight .sapMListTblCell { text-align: left !important;}*/
 .styleSearchForm .sapUiRespGridBreak.sapUiRespGridSpanL4.sapUiRespGridSpanM4.sapUiRespGridSpanS12.sapUiRespGridSpanXL4 { width: 100%;}
 }
 .styleSearchForm .sapMFlexItem,.styleSearchForm .sapMFlexItem .sapMComboBoxTextField {width:100%;}
@@ -30,5 +31,11 @@
 /*Tire Quotation Screen*/
 .styleColumns .sapMOH {     padding: 0 !important;}
 .styleColumns .sapMListTblCell { padding: .25rem .5rem; vertical-align: bottom; }
+@media only screen and (min-width: 601px) {
+.styleColumns.alignRight .sapMListTblCell { text-align: right !important;}
+}
 .styleColumns .sapMLabel  {color: #FC121D; }
 .noCustomColor {color: #000 !important;}
+.facetStyle>div:nth-child(1) { border-bottom: 1px solid;}
+.facetStyle .sapUiTableTbr { height: 2.5rem !important;}
+.facetStyle .sapUiTableTbr .sapMTB-Transparent-CTX.sapMTB { padding-left: 0 !important;}

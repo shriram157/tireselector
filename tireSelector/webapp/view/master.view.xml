@@ -52,17 +52,11 @@
 								</suggestionItems>
 							</Input>
 							<Input id="searchOptionTireSize" type="Text" visible="{propertiesModel>/enableTireSize}" liveChange="onLiveChangeTireSize" showSuggestion="true"
-								suggest="handleTireSizeSuggest" change="onInputEntryTireSize" suggestionItems="{GlobalJSONModel>/FitmentData}">
+								suggest="handleTireSizeSuggest" change="onInputEntryTireSize" suggestionItems="{FitmentDataModel>/results}">
 								<suggestionItems>
-									<core:Item text="{GlobalJSONModel>TireSize}"/>
+									<core:Item text="{FitmentDataModel>ZtireSize}"/>
 								</suggestionItems>
 							</Input>
-							<!--<Input type="Text" id="searchOptionTireSize" visible="{propertiesModel>/enableTireSize}" valueStateText="Input cannot be blank."-->
-							<!--	liveChange="onLiveChangeTireSize" change="onInputEntryTireSize">-->
-							<!--	<layoutData>-->
-							<!--		<l:GridData span="L2 M12 S12" linebreak="false" linebreakL="false" linebreakM="false" linebreakS="false" linebreakXL="false"/>-->
-							<!--	</layoutData>-->
-							<!--</Input>-->
 							<ComboBox id="VehicleSearchCombo" visible="{propertiesModel>/enableVehicleInputs}" selectionChange="onInputEntryChange"
 								change="onComboInputChange" value="" selectedKey=""
 								items="{ path: 'GlobalJSONModel>/vehicleSeriesData', sorter: { path: 'TCISeriesDescriptionEN' } }">
@@ -100,6 +94,34 @@
 						</HBox>
 					</f:content>
 				</f:SimpleForm>
+				<HBox class="tableSearhResults" visible="{propertiesModel>/enableTable}">
+					<Table id="idSearchresultsTable" inset="false" items="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }">
+						<columns>
+							<Column demandPopin="true">
+								<Text text="{i18n>Model}"/>
+							</Column>
+							<Column minScreenWidth="Tablet" demandPopin="true">
+								<Text text="{i18n>Package}"/>
+							</Column>
+							<Column minScreenWidth="Desktop" demandPopin="true">
+								<Text text="{i18n>TireSize}"/>
+							</Column>
+							<Column minScreenWidth="Desktop" demandPopin="true">
+								<Text text="{i18n>RimSize}"/>
+							</Column>
+						</columns>
+						<items>
+							<ColumnListItem type="Navigation" press="navToSelectTire">
+								<cells>
+									<Text text="{SearchResultModel>Model}"/>
+									<Text text="{SearchResultModel>Zzsuffix}"/>
+									<Text text="{SearchResultModel>ZtireSize}"/>
+									<Text text="{SearchResultModel>ZrimSize}"/>
+								</cells>
+							</ColumnListItem>
+						</items>
+					</Table>
+				</HBox>
 			</content>
 		</Page>
 	</App>

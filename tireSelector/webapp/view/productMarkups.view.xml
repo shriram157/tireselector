@@ -34,55 +34,10 @@
 					<OverflowToolbar class="noBottomBorder">
 						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
-						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateJSONModel"/>
+						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateXSATable"/>
 						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateODataCall"/>
 					</OverflowToolbar>
-					<!--<Table id="ID_ProdMarkupsTable" inset="false" items="{ path: 'ProdMarkupModel>/ProductMarkupList', sorter: { path: 'Manufacturer' } }">-->
-					<!--	<columns>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true">-->
-					<!--			<Text text="{i18n>Manufacturer}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true">-->
-					<!--			<Text text="{i18n>Preview}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true">-->
-					<!--			<Text text="{i18n>Live}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true">-->
-					<!--			<Text text="{i18n>LastUpdated}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true">-->
-					<!--			<Text text="{i18n>LastUpdatedBy}"/>-->
-					<!--		</Column>-->
-					<!--	</columns>-->
-					<!--	<items>-->
-					<!--		<ColumnListItem>-->
-					<!--			<cells>-->
-					<!--				<Text text="{ProdMarkupModel>Manufacturer}"/>-->
-					<!--				<Text text="{ProdMarkupModel>Preview}"/>-->
-					<!--				<Input type="Text" value="{ProdMarkupModel>Live}"/>-->
-					<!--				<Text text="{ProdMarkupModel>LastUpdated}"/>-->
-					<!--				<Text text="{ProdMarkupModel>LastUpdatedBy}"/>-->
-					<!--			</cells>-->
-					<!--		</ColumnListItem>-->
-					<!--	</items>-->
-					<!--</Table>-->
-					<Table id="ID_ProdMarkupsTable" inset="false" items="{ path: 'ProdMarkupModel>/ProductMarkupList', sorter: { path: 'Manufacturer' } }">
-						<!--<headerToolbar>-->
-						<!--	<Toolbar>-->
-						<!--		<content>-->
-						<!--			<Title text="Products" level="H2"/>-->
-						<!--			<ToolbarSpacer/>-->
-						<!--			<ComboBox id="idPopinLayout" placeholder="Popin layout options" change="onPopinLayoutChanged">-->
-						<!--				<items>-->
-						<!--					<core:Item text="Block" key="Block"/>-->
-						<!--					<core:Item text="Grid Large" key="GridLarge"/>-->
-						<!--					<core:Item text="Grid Small" key="GridSmall"/>-->
-						<!--				</items>-->
-						<!--			</ComboBox>-->
-						<!--		</content>-->
-						<!--	</Toolbar>-->
-						<!--</headerToolbar>-->
+					<Table id="ID_ProdMarkupsTable" inset="false" items="{ path: 'ProdMarkupModel>/results', sorter: { path: 'Manufacturer' } }">
 						<columns>
 							<Column demandPopin="true">
 								<Text text="{i18n>Manufacturer}"/>
@@ -103,11 +58,11 @@
 						<items>
 							<ColumnListItem vAlign="Middle">
 								<cells>
-									<Text text="{ProdMarkupModel>Manufacturer}"/>
-									<Text text="{ProdMarkupModel>Preview}"/>
-									<Input type="Text" value="{ProdMarkupModel>Live}"/>
-									<Text text="{ProdMarkupModel>LastUpdated}"/>
-									<Text text="{ProdMarkupModel>LastUpdatedBy}"/>
+									<Text text="{ProdMarkupModel>Manufacturer_code}"/>
+									<Text text="{ProdMarkupModel>Preview_Markup_Percentage}"/>
+									<Input type="Text" value="{ProdMarkupModel>Live_Markup_Percentage}"/>
+									<Text text="{ProdMarkupModel>Live_Last_Updated}"/>
+									<Text text="{ProdMarkupModel>Live_Last_Updated_By}"/>
 								</cells>
 							</ColumnListItem>
 						</items>

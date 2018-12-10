@@ -21,7 +21,8 @@ sap.ui.define([
 				enableSearchBtn: false,
 				enableVin: true,
 				enableTireSize: false,
-				enableVehicleInputs: false
+				enableVehicleInputs: false,
+				enableTable: false
 			});
 
 			_that.getView().setModel(_that._oViewModel, "propertiesModel");
@@ -67,7 +68,7 @@ sap.ui.define([
 			sap.ushell.components.ModelSeriesCombo = _that.oModelSeriesCombo;
 
 			// _that.oForVehicleSearchOnly.setVisible(false);
-
+			// _that.oGlobalJSONModel.getData().FitmentData=[];
 			_that.oGlobalJSONModel.getData().modelDetailsData = [];
 			_that.oGlobalJSONModel.getData().vehicleSeriesData = [];
 			_that.oGlobalJSONModel.getData().vinData = [];
@@ -142,6 +143,20 @@ sap.ui.define([
 			_that.oSearchOptionList.setSelectedKey(_that.oSearchOptionList.getItems()[2].getProperty("key"));
 			_that.oSearchOptionLabel.setText(_that.oSearchOptionList.getItems()[2].getProperty("text"));
 
+			$.ajax({
+				dataType: "json",
+				url: this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet",
+				type: "GET",
+				success: function (oDataResponse) {
+					console.log("Tire Size Data", oDataResponse.d.results);
+					_that.oFitmentDataModel = new JSONModel();
+					_that.getView().setModel(_that.oFitmentDataModel, "FitmentDataModel");
+					_that.oFitmentDataModel.setData(oDataResponse.d);
+					_that.oFitmentDataModel.updateBindings();
+				},
+				error: function (oError) {}
+			});
+
 			// this.nodeJsUrl = "/node";
 			$.ajax({
 				url: this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=30",
@@ -200,29 +215,6 @@ sap.ui.define([
 					console.log("oError", oError);
 				}
 			});
-
-			$.ajax({
-				dataType: "json",
-				url: this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet",
-				type: "GET",
-				success: function (oDataResponse) {
-					_that.tireSizeData = {
-						"results": []
-					};
-					$.each(oDataResponse.d.results, function (i, item) {
-						if (item.ZtireSize != "") {
-							_that.tireSizeData.results.push({
-								"TireSize": item.ZtireSize
-							});
-						}
-					});
-					// vindata.results=[];
-					console.log("Tire Size Data", _that.tireSizeData);
-					_that.oGlobalJSONModel.getData().FitmentData = _that.tireSizeData.results;
-					_that.oGlobalJSONModel.updateBindings();
-				},
-				error: function (oError) {}
-			});
 		},
 
 		handleVINSuggest: function (oEvent) {
@@ -244,7 +236,7 @@ sap.ui.define([
 			// var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
 			if (sTerm) {
-				aFilters.push(new Filter("TireSize", sap.ui.model.FilterOperator.StartsWith, sTerm));
+				aFilters.push(new Filter("ZtireSize", sap.ui.model.FilterOperator.StartsWith, sTerm));
 			}
 			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
 
@@ -308,6 +300,7 @@ sap.ui.define([
 		changeOptionPress: function (oChangeOption) {
 			_that = this;
 			var selectedOption = _that.oSearchOptionList.getSelectedKey();
+			_that._oViewModel.setProperty("/enableTable", false);
 			_that.oSearchOptionList.setValueState(sap.ui.core.ValueState.None);
 			if (selectedOption == "Vehicle Series") {
 				_that.oVehicleSearchCombo.setValueState(sap.ui.core.ValueState.None);
@@ -317,7 +310,6 @@ sap.ui.define([
 			} else {
 				_that.oSearchOptionTireSize.setValueState(sap.ui.core.ValueState.None);
 			}
-			// var oSelectedSearchOption = oChangeOption.getParameter("selectedItem").getText();
 			_that.oSearchOptionLabel.setText(selectedOption);
 			if (selectedOption == "Vehicle Series") {
 				_that.oVehicleSearchCombo.setValue();
@@ -325,31 +317,17 @@ sap.ui.define([
 				_that._oViewModel.setProperty("/enableVehicleInputs", true);
 				_that._oViewModel.setProperty("/enableVin", false);
 				_that._oViewModel.setProperty("/enableTireSize", false);
-
-				// _that.oSearchOptionTireSize.setVisible(false);
-				// _that.oSearchOptionVIN.setVisible(false);
-				// _that.oForVehicleSearchOnly.setVisible(true);
-				// _that.oVehicleSearchCombo.setVisible(true);
 			} else if (selectedOption == "VIN") {
 				_that._oViewModel.setProperty("/enableVin", true);
 				_that.oSearchOptionVIN.setValue();
 				_that._oViewModel.setProperty("/enableTireSize", false);
 				_that._oViewModel.setProperty("/enableVehicleInputs", false);
-
-				// _that.oForVehicleSearchOnly.setVisible(false);
-				// _that.oSearchOptionTireSize.setVisible(false);
-				// _that.oSearchOptionVIN.setVisible(true);
-				// _that.oVehicleSearchCombo.setVisible(false);
 			} else {
 				_that._oViewModel.setProperty("/enableTireSize", true);
 				_that.oSearchOptionTireSize.setValue();
 
 				_that._oViewModel.setProperty("/enableVin", false);
 				_that._oViewModel.setProperty("/enableVehicleInputs", false);
-				// _that.oForVehicleSearchOnly.setVisible(false);
-				// _that.oSearchOptionTireSize.setVisible(true);
-				// _that.oSearchOptionVIN.setVisible(false);
-				// _that.oVehicleSearchCombo.setVisible(false);
 			}
 		},
 
@@ -407,28 +385,30 @@ sap.ui.define([
 					// _that.oSelectJSONModel.updateBindings();
 					_that.oVehicleSearchCombo.setValueState(sap.ui.core.ValueState.Success);
 					_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-					_that.getRouter().navTo("searchResults");
+					// _that.getRouter().navTo("searchResults");
+					_that.showResultsData();
 				} else {
 					if (validateVin(_that.oSearchOptionVIN.getValue())) {
 						// _that.oSelectJSONModel.getData().SearchOptionVal = "";
 						_that.oSearchOptionVIN.setValueState(sap.ui.core.ValueState.Success);
 						// _that.oSelectJSONModel.updateBindings();
 						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-						_that.getRouter().navTo("searchResults");
+						// _that.getRouter().navTo("searchResults");
+						_that.showResultsData();
 					} else {
+						_that._oViewModel.setProperty("/enableTable", false);
 						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
 						_that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
 					}
 				}
-
 			} else if (Searchkey == "Tire Size" && _that.oSearchOptionTireSize.getValue() !== "") {
-				// _that.oSelectJSONModel.getData().SearchOptionVal = "";
-				// _that.oSelectJSONModel.updateBindings();
 				_that.oSearchOptionList.setValueState(sap.ui.core.ValueState.Success);
 				_that.oSearchOptionTireSize.setValueState(sap.ui.core.ValueState.Success);
 				_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-				_that.getRouter().navTo("searchResultsTireNoData");
+				// _that.getRouter().navTo("searchResultsTireNoData");
+				_that.routeToTireSelect(oSearchResults);
 			} else {
+				_that._oViewModel.setProperty("/enableTable", false);
 				_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
 				_that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("ErrTSE00001"));
 				if (_that.oSearchOptionList.getSelectedKey() == "") {
@@ -449,6 +429,55 @@ sap.ui.define([
 			}
 		},
 
+		routeToTireSelect: function (oSearchResults) {
+			var oTireData = oSearchResults.getSource().getModel("FitmentDataModel").getData().results;
+			for (var n = 0; n < oTireData.length; n++) {
+				if (sap.ushell.components.SearchOptionTireSize.getValue() == oTireData[n].ZtireSize) {
+					oTireData[n].FitmentToCharac = "";
+					oTireData[n].__metadata = "";
+					oTireData[n].ZtireSize = oTireData[n].ZtireSize.replace("/", "%2F");
+					var oToBeRoutedTire = oTireData[n];
+				}
+			}
+			_that.getRouter().navTo("searchResultsTireNoData", {
+				tireData: JSON.stringify(oToBeRoutedTire)
+			});
+		},
+
+		showResultsData: function () {
+			_that._oViewModel.setProperty("/enableTable", true);
+			_that.SearchResultModel = new sap.ui.model.json.JSONModel();
+			_that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
+			var serviceURL;
+			if (_that.oSearchOptionVIN.getValue() != "" || _that.oSearchOptionVIN.getValue() !== undefined) {
+				serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
+			} else {
+				serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='" + _that.oVehicleSearchCombo.getValue() + "',Model='" +
+					_that.oModelSeriesCombo.getValue() + "',Zzsuffix='')";
+			}
+			$.ajax({
+				dataType: "json",
+				url: serviceURL,
+				type: "GET",
+				success: function (oData) {
+					console.log("Search Result data", oData.d.results);
+					_that.SearchResultModel.setData(oData.d);
+					_that.SearchResultModel.updateBindings();
+				},
+				error: function (oError) {}
+			});
+		},
+		navToSelectTire: function (oEvtModel) {
+			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getSource().getBindingContext(
+				"SearchResultModel").sPath);
+			oPath.__metadata = "";
+			oPath.FitmentToCharac = "";
+			oPath.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
+			_that.getRouter().navTo("searchResultsTire", {
+				modelData: JSON.stringify(oPath)
+			});
+		},
+
 		/*Function for Routing/Navigating from menu option as per selection */
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
@@ -465,8 +494,8 @@ sap.ui.define([
 		/*Exit Function for refreshing/resetting view */
 		onExit: function () {
 			_that.destroy();
-			_that.oGlobalJSONModel.refresh();
-			_that.oSelectJSONModel.refresh();
+			_that.oGlobalJSONModel.refresh(true);
+			_that.oSelectJSONModel.refresh(true);
 		}
 	});
 });

@@ -31,20 +31,12 @@
 							<Breadcrumbs currentLocationText="{i18n>PrepareQuote}"></Breadcrumbs>
 						</l:content>
 					</l:VerticalLayout>
+					<MessageStrip id="ID_ErrMsgStrip" showIcon="true" showCloseButton="false" visible="false" type="Error" class="customMargin"/>
 					<OverflowToolbar class="noBottomBorder">
 						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>SelectDifferentTire}" type="Emphasized" press="SelectDifferentTire"/>
 					</OverflowToolbar>
-					<!--<l:VerticalLayout class="sapUiContentPadding" width="100%">-->
-					<!--	<l:content>-->
-					<!--		<Image src="images/LexusNew.png" densityAware="false" width="auto">-->
-					<!--			<layoutData>-->
-					<!--				<FlexItemData growFactor="1"/>-->
-					<!--			</layoutData>-->
-					<!--		</Image>-->
-					<!--	</l:content>-->
-					<!--</l:VerticalLayout>-->
 					<f:SimpleForm id="form_TireQuotation" editable="true" layout="ResponsiveGridLayout" adjustLabelSpan="true" columnsXL="2" columnsL="2"
 						columnsM="2" singleContainerFullSize="false" class="form_TireQuotation">
 						<f:content>
@@ -58,9 +50,11 @@
 							<Label text="{i18n>DealerTel}"/>
 							<Input type="Number" value="1234567890"/>
 							<Label text="{i18n>QuoteDate}" required="true"/>
-							<Input type="Number" value=""/>
+							<!--<Input type="Number" value="" required="true" id="id_QuoteDate"/>-->
+							<DatePicker id="id_QuoteDate" value="" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleQuoteDateChange" class="sapUiSmallMarginBottom" />
 							<Label text="{i18n>AfterExpiry}" required="true"/>
-							<Input type="Number" value=""/>
+							<!--<Input type="Number" value="" required="true" id="id_AfterExpiry"/>-->
+							<DatePicker id="id_AfterExpiry" value="" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleExpiryChange" class="sapUiSmallMarginBottom" />
 							<core:Title text=""/>
 							<Label text="{i18n>Vehicle}"/>
 							<Input type="Text" value="Vehicle Details"/>
@@ -78,9 +72,9 @@
 							<Input type="Text" value="Credit App"/>
 						</f:content>
 					</f:SimpleForm>
-					<Table inset="false">
+					<Table inset="false" id="tableQuotation">
 						<columns>
-							<Column minScreenWidth="Tablet" demandPopin="true">
+							<Column demandPopin="true">
 								<Text text=""/>
 							</Column>
 							<Column minScreenWidth="Tablet" demandPopin="true" width="10rem" hAlign="Center">
@@ -100,13 +94,8 @@
 										<Label text="{i18n>Tires}"/>
 										<Text text="Description"/>
 									</VBox>
-									<!--<ObjectHeader title="{i18n>Tires}">-->
-									<!--	<attributes>-->
-									<!--		<ObjectAttribute text="Description"/>-->
-									<!--	</attributes>-->
-									<!--</ObjectHeader>-->
-									<Input value=""/>
-									<Input value=""/>
+									<Input value="" required="true" id="id_tireUnitPrice"/>
+									<Input value="" required="true" id="id_tireQty"/>
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
@@ -114,10 +103,10 @@
 								<cells>
 									<VBox>
 										<HBox>
-											<Label text="{i18n>RoadHazardProtection} "/>
+											<Label text="{i18n>RoadHazardProtection}"/>
 											<Label text=" ({i18n>AgreementText})" class="noCustomColor"/>
 										</HBox>
-										<Select forceSelection="false" selectedKey="">
+										<Select id="id_RHP" forceSelection="false" selectedKey="" width="100%">
 											<core:Item key="{i18n>NoThankYou}" text="{i18n>NoThankYou}"/>
 										</Select>
 									</VBox>
@@ -133,17 +122,17 @@
 									</VBox>
 									<Input value="" visible="{propertiesModel>/enableInput}"/>
 									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value=""/>
+									<Input value="" id="id_MnBPrice"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
 										<Label text="{i18n>Wheels}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="70%"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
-									<Input value=""/>
-									<Input value=""/>
+									<Input value="" required="true" id="id_wheelsUnitPrice"/>
+									<Input value="" required="true" id="id_wheelsQty"/>
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
@@ -151,10 +140,10 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>TPMS}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="70%"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
-									<Input value=""/>
-									<Input value=""/>
+									<Input value="" required="true" id="id_TPMSUnitPrice"/>
+									<Input value="" required="true" id="id_TPMSQty"/>
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
@@ -162,10 +151,10 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>FittingKits}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="70%"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
-									<Input value=""/>
-									<Input value=""/>
+									<Input value="" required="true" id="id_FittingKitUnitPrice"/>
+									<Input value="" required="true" id="id_FittingKitQty"/>
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
@@ -173,80 +162,96 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>OtherItems}"/>
-										<Input value="" width="70%"/>
+										<Input value=""/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value=""/>
+									<Label text=""/>
+									<Label text=""/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<Input value="" required="true" id="id_OtherItemPrice"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
-										<Input value="" width="70%"/>
+										<Input value=""/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value=""/>
+									<Label text=""/>
+									<Label text=""/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<Input value="" required="true" id="id_OtherItem2Price"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
-										<Input value="" width="70%"/>
+										<Input value=""/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value=""/>
+									<Label text=""/>
+									<Label text=""/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<Input value="" required="true" id="id_OtherItem3Price"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
-										<Input value="" width="70%"/>
+										<Input value=""/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value=""/>
+									<Label text=""/>
+									<Label text=""/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<Input value="" required="true" id="id_OtherItem4Price"/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns">
+							<ColumnListItem class="styleColumns alignRight">
 								<cells>
+									<Label text=""/>
+									<Label text=""/>
 									<VBox>
 										<Label text="Fee Description {i18n>FeeDescription}"/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns">
+							<ColumnListItem class="styleColumns alignRight">
 								<cells>
+									<Label text=""/>
+									<Label text=""/>
 									<VBox>
 										<Label text="Federal Tax Code"/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns">
+							<ColumnListItem class="styleColumns alignRight">
 								<cells>
+									<Label text=""/>
+									<Label text=""/>
 									<VBox>
 										<Label text="{i18n>Provincial Tax Code}"/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns">
+							<ColumnListItem class="styleColumns alignRight">
 								<cells>
+									<Label text=""/>
+									<Label text=""/>
 									<VBox>
 										<Label text="{i18n>Total}"/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<Input value=""/>
 								</cells>
 							</ColumnListItem>
@@ -266,7 +271,7 @@
 					<OverflowToolbar class="noBottomBorder">
 						<Label text="{i18n>Disclaimer}"/>
 						<ToolbarSpacer/>
-						<Button text="{i18n>PrintQuote}" type="Emphasized" press="SelectDifferentTire"/>
+						<Button text="{i18n>PrintQuote}" type="Emphasized" press="generatePDF"/>
 					</OverflowToolbar>
 				</content>
 			</Page>

@@ -1,3 +1,4 @@
+var _that;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -14,36 +15,40 @@ sap.ui.define([
 		 * @memberOf tireSelector.view.productMarkups
 		 */
 		onInit: function () {
+			_that = this;
 			_that.oProdMarkupModel = new JSONModel();
-			this.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-			// _that.SearchResultModel = sap.ui.getCore().getModel("SelectJSONModel");
-			// _that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
-			
-			_that.prodMarkupList= {
-				"ProductMarkupList": [{
-					"Manufacturer": "MF1",
-					"Preview": "5.19",
-					"Live": "5.19",
-					"LastUpdated": "03.10.2018",
-					"LastUpdatedBy": "Dealer1"
-				}, {
-					"Manufacturer": "MF2",
-					"Preview": "7.99",
-					"Live": "5.99",
-					"LastUpdated": "03.10.2018",
-					"LastUpdatedBy": "Dealer2"
-				}, {
-					"Manufacturer": "MF1",
-					"Preview": "9.99",
-					"Live": "5.19",
-					"LastUpdated": "03.10.2018",
-					"LastUpdatedBy": "Dealer1"
-				}]
+			// _that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			_that.getRouter().attachRouteMatched(function (oEvent) {
+				_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+
+				_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+				// _that.getView().setModel(_that.oXSOServiceModel, "ProdMarkupModel");
+				console.log("XSO model data", _that.oXSOServiceModel);
+
+				_that.oXSOServiceModel.read("/DealerMarkUp", {
+					success: $.proxy(function (oData) {
+						console.log("XSO data", oData);
+						_that.oProdMarkupModel.setData(oData);
+						_that.oProdMarkupModel.updateBindings();
+					}, _that),
+					error: function (oError) {
+						console.log("Error in fetching table", oError);
+					}
+				});
+			}, _that);
+
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+
+			if (sLocation_conf == 0) {
+				_that.sPrefix = "/tireSelector-dest";
+			} else {
+				_that.sPrefix = "";
+
 			}
-			
-			_that.oProdMarkupModel.setData(_that.prodMarkupList);
-			_that.oProdMarkupModel.updateBindings();
-			
+
+			_that.nodeJsUrl = this.sPrefix + "/node";
+
 			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
@@ -66,48 +71,213 @@ sap.ui.define([
 			}
 		},
 
-		// NavBackToSearch: function () {
-		// 	_that.getRouter().navTo("Routemaster");
-		// 	_that.oSelectJSONModel.refresh();
-		// },
-		
 		onPressBreadCrumb: function (oEvtLink) {
-			//debugger;
-			// var oSelectedLink = oEvtLink.getSource().getProperty("text");
 			_that.getRouter().navTo("Routemaster");
 		},
 
-		updateJSONModel: function (oEvtPreview) {
-			sap.ui.getCore().getModel("SelectJSONModel").updateBindings();
-			_that.getView().getModel("SelectJSONModel").updateBindings();
+		updateXSATable: function () {
+			var modeldata = _that.oProdMarkupModel.getData().results;
+			// _that.oXSOServiceModel.setUseBatch(true);
+			var xsoOBJ = {};
+			// for (var k = 0; k < modeldata.length; k++) {
+			// console.log("K count", k);
+			xsoOBJ.Dealer_Brand= "20";
+			xsoOBJ.Dealer_code= "65023";
+			xsoOBJ.Live_Last_Updated= "2018-11-30T00:00:00";
+			xsoOBJ.Live_Last_Updated_By= "42120Test";
+			xsoOBJ.Live_Markup_Percentage= "1.90";
+			xsoOBJ.Manufacturer_code= "2400100314";
+			xsoOBJ.Preview_Markup_Percentage= "2.50";
+			xsoOBJ.User_First_Name= "FirstName";
+			xsoOBJ.User_Last_Name= "lastName";
+						
+			// xsoOBJ.Dealer_code = "65023";
+			// xsoOBJ.Dealer_Brand = "20";
+			// xsoOBJ.Manufacturer_code = modeldata[0].Manufacturer_code;
+			// xsoOBJ.Preview_Markup_Percentage = modeldata[0].Preview_Markup_Percentage;
+			// xsoOBJ.Live_Markup_Percentage = modeldata[0].Live_Markup_Percentage;
+			// xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
+			// xsoOBJ.Live_Last_Updated_By = modeldata[0].Live_Last_Updated_By;
+			// xsoOBJ.User_First_Name = "FirstName";
+			// xsoOBJ.User_Last_Name = "lastName";
+
+			console.log("xsoOBJ", xsoOBJ);
+			_that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, {
+				success: $.proxy(function (oData) {
+					console.log("XSO table updated", oData);
+					// _that.callUpdatedProdMarkupTab();
+				}, _that),
+				error: function (oError) {
+					console.log("Error in updating table", oError);
+				}
+			});
+			// }
+
+			// var content = _that.oProdMarkupModel.getData().results;
+			// var newObj = [];
+			// var mParams = {};
+			// mParams.groupId = "1001";
+			// _that.oXSOServiceModel.setUseBatch(true);
+			// for (var i = 0; i < content.length; i++) {
+			// 	var xsoOBJ = {};
+			// 	xsoOBJ.Dealer_Brand = "20";
+			// 	xsoOBJ.Dealer_code = "65023";
+			// 	xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
+			// 	xsoOBJ.Live_Last_Updated_By = content[i].Live_Last_Updated_By;
+			// 	xsoOBJ.Live_Markup_Percentage = content[i].Live_Markup_Percentage;
+			// 	xsoOBJ.Manufacturer_code = content[i].Manufacturer_code;
+			// 	xsoOBJ.Preview_Markup_Percentage = content[i].Preview_Markup_Percentage;
+			// 	xsoOBJ.User_First_Name = "FirstName";
+			// 	xsoOBJ.User_Last_Name = "lastName";
+			// 	newObj.push(xsoOBJ);
+
+			// 	_that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, mParams,
+			// 		function (oData) {
+			// 			console.log("XSO table updated", oData);
+			// 		},
+			// 		function (oError) {
+			// 			console.log("Error in updating table", oError);
+			// 		});
+			// }
+		},
+		updateXSATable_old: function (oEvtPreview) {
+			// var modeldata = _that.oProdMarkupModel.getData().results;
+			// _that.oXSOServiceModel.setUseBatch(true);
+			// var xsoOBJ = {};
+			// for (var k = 0; k < modeldata.length; k++) {
+			// 	console.log("K count", k);
+			// xsoOBJ.Dealer_Brand = "20";
+			// xsoOBJ.Dealer_code = "65023";
+			// xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
+			// xsoOBJ.Live_Last_Updated_By = modeldata[k].Live_Last_Updated_By;
+			// xsoOBJ.Live_Markup_Percentage = modeldata[k].Live_Markup_Percentage;
+			// xsoOBJ.Manufacturer_code = modeldata[k].Manufacturer_code;
+			// xsoOBJ.Preview_Markup_Percentage = modeldata[k].Preview_Markup_Percentage;
+			// xsoOBJ.User_First_Name = "FirstName";
+			// xsoOBJ.User_Last_Name = "lastName";
+
+			// console.log("xsoOBJ", xsoOBJ);
+			// _that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, {
+			// 	success: $.proxy(function (oData) {
+			// 		console.log("XSO table updated", oData);
+			// 		// _that.callUpdatedProdMarkupTab();
+			// 	}, _that),
+			// 	error: function (oError) {
+			// 		console.log("Error in updating table", oError);
+			// 	}
+			// });
+			// _that.oXSOServiceModel.submitChanges();
+			// _that.oXSOServiceModel.setUseBatch(false); 
+			// create an entry of the Products collection with the specified properties and values
+			// _that.oXSOServiceModel.createEntry("/DealerMarkUp", {
+			// 	properties: {
+			// 		Dealer_Brand: "20",
+			// 		Dealer_code: "65023",
+			// 		Live_Last_Updated: "2018-12-03T00:00:00",
+			// 		Live_Last_Updated_By: modeldata[k].Live_Last_Updated_By,
+			// 		Live_Markup_Percentage: modeldata[k].Live_Markup_Percentage,
+			// 		Manufacturer_code: modeldata[k].Manufacturer_code,
+			// 		Preview_Markup_Percentage: modeldata[k].Preview_Markup_Percentage,
+			// 		User_First_Name: "FirstName",
+			// 		User_Last_Name: "lastName"
+			// 	}
+			// });
+			// binding against this entity
+			// oForm.setBindingContext(oContext);
+			// submit the changes (creates entity at the backend)
+			// _that.oXSOServiceModel.submitChanges({
+			// 	success: $.proxy(function (oData) {
+			// 		console.log("XSO table updated", oData);
+			// 		// _that.callUpdatedProdMarkupTab();
+			// 	}, _that),
+			// 	error: function (oError) {
+			// 		console.log("Error in updating table", oError);
+			// 	}
+			// });
+
+			var oParams = {};
+			oParams.json = true;
+			oParams.defaultUpdateMethod = "PUT";
+			oParams.useBatch = true;
+
+			var batchModel = new sap.ui.model.odata.v2.ODataModel("/node/tireSelector/xsodata/tireSelector_SRV.xsodata/", oParams);
+			//var batchChanges = [];
+			var mParams = {};
+			mParams.groupId = "001";
+			mParams.success = function () {
+				sap.m.MessageToast.show("Create successful");
+			};
+			mParams.error = this.onErrorCall;
+			var modelData = _that.oProdMarkupModel.getData().results;
+
+			//create an array of batch changes and save
+			_that.newMarkupList = [];
+			for (var k = 0; k < modelData.length; k++) {
+				var xsoOBJ = {};
+				xsoOBJ.Dealer_Brand = "20";
+				xsoOBJ.Dealer_code = "65023";
+				xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
+				xsoOBJ.Live_Last_Updated_By = modelData[k].Live_Last_Updated_By;
+				xsoOBJ.Live_Markup_Percentage = modelData[k].Live_Markup_Percentage;
+				xsoOBJ.Manufacturer_code = modelData[k].Manufacturer_code;
+				xsoOBJ.Preview_Markup_Percentage = modelData[k].Preview_Markup_Percentage;
+				xsoOBJ.User_First_Name = "FirstName";
+				xsoOBJ.User_Last_Name = "lastName";
+				_that.newMarkupList.push(xsoOBJ);
+				// batchModel.create("/DealerMarkUp", xsoOBJ, mParams);
+			}
+
+			for (var i = 0; i<_that.newMarkupList.length; i++) {
+				batchModel.create("/DealerMarkUp", _that.newMarkupList[i], mParams);
+			}
+			batchModel.submitChanges(mParams);
+
+			//https://tireselector.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata/
+
+			// _that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, null,
+			// 	function (oData) {
+			// 		console.log("XSO table updated", oData);
+			// 	},
+			// 	function (oError) {
+			// 		console.log("Error in updating table", oError);
+			// 	});
+
+			// $.ajax({
+			// 	url: _that.xsoUrl + "/tireSelector_SRV.xsodata/DealerMarkUp",
+			// 	type: "POST",
+			// 	data: xsoOBJ,
+			// 	dataType: "json",
+			// 	success: function (oDataResponse) {
+			// 		console.log("XSO table updated", oDataResponse);
+			// 	},
+			// 	error: function (oError) {
+			// 		console.log("Error in updating table", oError);
+			// 	}
+			// });
+		},
+
+		callUpdatedProdMarkupTab: function () {
+			_that.oXSOServiceModel = this.getOwnerComponent().getModel("xsoOdataModel");
+			// _that.getView().setModel(_that.oXSOServiceModel, "ProdMarkupModel");
+			console.log("XSO model data", _that.oXSOServiceModel);
+
+			_that.oXSOServiceModel.read("/DealerMarkUp", {
+				success: $.proxy(function (oData) {
+					console.log("XSO data", oData);
+					_that.oProdMarkupModel.setData(oData);
+					_that.oProdMarkupModel.updateBindings();
+				}, _that),
+				error: function (oError) {
+					console.log("Error in fetching table", oError);
+				}
+			});
 		},
 
 		updateODataCall: function (oEvtLive) {
 			sap.ui.getCore().getModel("SelectJSONModel").updateBindings();
 			_that.getView().getModel("SelectJSONModel").updateBindings();
 		},
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf tireSelector.view.productMarkups
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
 
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf tireSelector.view.productMarkups
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf tireSelector.view.productMarkups
-		 */
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");

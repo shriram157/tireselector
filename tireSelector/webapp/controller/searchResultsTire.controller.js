@@ -5,21 +5,16 @@ sap.ui.define([
 	'sap/ui/model/resource/ResourceModel',
 	'sap/ui/model/Filter',
 	'sap/m/ObjectIdentifier',
-	'tireSelector/controller/BaseController'
-], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController) {
+	'tireSelector/controller/BaseController',
+	"sap/ui/core/routing/History",
+], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History) {
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf tireSelector.view.searchResults
-		 */
 		onInit: function () {
 			_that = this;
-			// _that.serviceURL = "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_VEHICLE_FITMENT_SRV/";
 
-			_that.oSelectTireJSONModel = new JSONModel();
+			_that.oSelectTireJSONModel = new sap.ui.model.json.JSONModel();
 			_that.getView().setModel(_that.oSelectTireJSONModel, "SelectTireJSONModel");
 
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
@@ -54,168 +49,112 @@ sap.ui.define([
 
 			_that.getRouter().attachRouteMatched(function (oEvent) {
 				_that.oTable = _that.getView().byId("idTireSelectionTable");
+				_that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 
-				_that.oTireFitmentJSONModel = new JSONModel();
-				_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-				_that.oTireFitmentJSONModel.getData().FitmentData = [];
 				var sLocation = window.location.host;
 				var sLocation_conf = sLocation.search("webide");
-
 				if (sLocation_conf == 0) {
-					this.sPrefix = "/tireSelector-dest";
+					_that.sPrefix = "/tireSelector-dest";
 				} else {
-					this.sPrefix = "";
+					_that.sPrefix = "";
 				}
-				this.nodeJsUrl = this.sPrefix + "/node";
+				_that.nodeJsUrl = _that.sPrefix + "/node";
+				var filterData;
 
 				if (oEvent.getParameter("arguments").modelData !== undefined) {
-					_that.oSelectedModel = oEvent.getParameter("arguments").modelData;
-					// _that.getView().byId("selectedModelText").setText("Selected Model: " + _that.oSelectedModel + "");
-					 _that.serviceURL = this.nodeJsUrl + "Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='',Zzsuffix='')";
-					// _that.serviceURL =
-						// "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='" +
-						// _that.oSelectedModel + "',Zzsuffix='')";
-				} else {
-					_that.serviceURL = this.nodeJsUrl + "Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='" +_that.oSelectedModel + "',Zzsuffix='')";
-					// _that.serviceURL =
-						// "https://tcid1gwapp1.tci.internal.toyota.ca:44300/sap/opu/odata/sap/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='',Model='',Zzsuffix='')";
+					_that.oModelData = JSON.parse(oEvent.getParameter("arguments").modelData);
+					filterData = "?$filter=ZtireSize eq '" + _that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
+
+				} else if (oEvent.getParameter("arguments").tireData !== undefined) {
+					_that.oTireData = JSON.parse(oEvent.getParameters().arguments.tireData);
+					filterData = "?$filter=ZtireSize eq '" + _that.oTireData.ZtireSize + "'&$expand=FitmentToCharac";
 				}
-				$.ajax({
-					dataType: "json",
-					url: _that.serviceURL,
-					type: "GET",
-					success: function (oData) {
-						console.log("Tire Results Page data", oData.d.results);
-						_that.oTireFitmentJSONModel.getData().FitmentData = oData.d.results;
-						_that.oTireFitmentJSONModel.updateBindings();
-					},
-					error: function (oError) {}
-				});
+				if (filterData !== undefined) {
+					_that.oFitmentModel = _that.getOwnerComponent().getModel("FitmentModel");
+					_that.oFitmentModel.read("/ZC_FitmentSet" + filterData, {
+						success: $.proxy(function (oData) {
+							console.log("Initial load Data", oData);
+							_that.FitmentToCharac = {
+								"results": []
+							};
+							for (var n = 0; n < oData.results[0].FitmentToCharac.results.length; n++) {
+								if (oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT == "PF") {
+									oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT = "Perfect";
+								} else if (oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT == "AF") {
+									oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT = "Acceptable";
+								} else if (oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT == "OE") {
+									oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT = "OE";
+								} else if (oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT == "OF") {
+									oData.results[0].FitmentToCharac.results[n].TIRE_FITMENT = "Other";
+								}
+							}
+
+							_that.tempStorage = oData.results[0].FitmentToCharac.results;
+							_that.Filters = [{
+								"type": "Tire Fitment",
+								"values": []
+							}, {
+								"type": "Tire Brand",
+								"values": []
+							}, {
+								"type": "Tire Speed Rating",
+								"values": []
+							}, {
+								"type": "Tire MFG Part No",
+								"values": []
+							}, {
+								"type": "Tire Category",
+								"values": []
+							}];
+							for (var l = 0; l < oData.results[0].FitmentToCharac.results.length; l++) {
+								_that.Filters[0].values.push({
+									"text": oData.results[0].FitmentToCharac.results[l].TIRE_FITMENT
+								});
+								_that.Filters[1].values.push({
+									"text": oData.results[0].FitmentToCharac.results[l].TIRE_BRAND_NAME
+								});
+								_that.Filters[2].values.push({
+									"text": oData.results[0].FitmentToCharac.results[l].TIRE_SPEED_RATING
+								});
+								_that.Filters[3].values.push({
+									"text": oData.results[0].FitmentToCharac.results[l].TIRE_MFG_PART_NUM
+								});
+								_that.Filters[4].values.push({
+									"text": oData.results[0].FitmentToCharac.results[l].TIRE_CATEGORY
+								});
+							}
+
+							$.each(oData.results[0].FitmentToCharac.results, function (i, item) {
+								_that.FitmentToCharac.results.push({
+									"Tire Fitment": item.TIRE_FITMENT,
+									"Tire Speed Rating": item.TIRE_SPEED_RATING,
+									"Tire Load Rating": item.TIRE_LOAD_RATING,
+									"Tire Brand": item.TIRE_BRAND_NAME,
+									"Tire Category": item.TIRE_CATEGORY,
+									"Tire Brand ID": item.TIRE_BRAND_ID,
+									"Material": item.MATERIAL,
+									"Tire MFG Part No": item.TIRE_MFG_PART_NUM
+								});
+							});
+							_that.oTireFitmentJSONModel.setData(null);
+							_that.oTireFitmentJSONModel.setData(_that.FitmentToCharac);
+							_that.oTireFitmentJSONModel.getData().Filters = _that.Filters;
+							console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
+							_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+							_that.oTireFitmentJSONModel.refresh(true);
+							_that.oTireFitmentJSONModel.updateBindings();
+						}, this),
+						error: function (oError) {
+							console.log("Error in fetching ZC_FitmentSet data", oError);
+						}
+					});
+				}
 			}, _that);
 
 			_that.oTable = _that.getView().byId("idTireSelectionTable");
 			var oBindingInfo = _that.oTable.getBindingInfo("rows");
 			_that.oTable.bindRows(oBindingInfo);
-			// this.byId("idVBox").addItem(_that.oTable);
-
-			_that.objList = {
-				"TireSelectionList": [{
-					"TireFitment": "Other",
-					"TireCategory": "Winter",
-					"TireBrandDesc": "BranDescription1",
-					"LoadRate": "999",
-					"PartNumber": "12345678",
-					"DealerNet": "9.99",
-					"Profit": "15.00",
-					"Retails": "24.99",
-					"Ratings": "3"
-				}, {
-					"TireFitment": "Acceptable",
-					"TireCategory": "All-Weather",
-					"TireBrandDesc": "BranDescription1",
-					"LoadRate": "999",
-					"PartNumber": "12345678",
-					"DealerNet": "9.99",
-					"Profit": "15.00",
-					"Retails": "24.99",
-					"Ratings": "4"
-				}, {
-					"TireFitment": "Perfect",
-					"TireCategory": "Summer",
-					"TireBrandDesc": "BranDescription1",
-					"LoadRate": "999",
-					"PartNumber": "12345678",
-					"DealerNet": "9.99",
-					"Profit": "15.00",
-					"Retails": "24.99",
-					"Ratings": "3"
-				}, {
-					"TireFitment": "OE",
-					"TireCategory": "All-Season",
-					"TireBrandDesc": "BranDescription1",
-					"LoadRate": "999",
-					"PartNumber": "12345678",
-					"DealerNet": "9.99",
-					"Profit": "15.00",
-					"Retails": "24.99",
-					"Ratings": "1"
-				}, {
-					"TireFitment": "Perfect",
-					"TireCategory": "Winter",
-					"TireBrandDesc": "BranDescription1",
-					"LoadRate": "999",
-					"PartNumber": "12345678",
-					"DealerNet": "9.99",
-					"Profit": "15.00",
-					"Retails": "24.99",
-					"Ratings": "5"
-				}],
-				"Filters": [{
-					"type": "TireBrand",
-					"values": [{
-						"text": "Goodyear"
-					}, {
-						"text": "Dunlop"
-					}, {
-						"text": "Kelly"
-					}, {
-						"text": "FireStone"
-					}]
-				}, {
-					"type": "TireFitment",
-					"values": [{
-						"text": "Perfect"
-					}, {
-						"text": "Acceptable"
-					}, {
-						"text": "OE"
-					}, {
-						"text": "Other"
-					}]
-				}, {
-					"type": "TireCategory",
-					"values": [{
-						"text": "All-Season"
-					}, {
-						"text": "Winter"
-					}, {
-						"text": "Summer"
-					}, {
-						"text": "All-Weather"
-					}]
-				}, {
-					"type": "TireStatus",
-					"values": [{
-						"text": "Active"
-					}, {
-						"text": "Discontinued"
-					}]
-				}, {
-					"type": "TirePrice",
-					"values": [{
-						"text": "Under $100"
-					}, {
-						"text": "$100 - $150"
-					}, {
-						"text": "$151 - $200"
-					}, {
-						"text": "$201 - $250"
-					}, {
-						"text": "$251 - $300"
-					}, {
-						"text": "Over $300"
-					}]
-				}, {
-					"type": "Other",
-					"values": [{
-						"text": "Show Dealer Net"
-					}, {
-						"text": "Use Preview Markup"
-					}]
-				}]
-			};
-			_that.oSelectTireJSONModel.setData(_that.objList);
-			_that.oSelectTireJSONModel.updateBindings();
+			this.byId("idVBox").addItem(_that.oTable);
 		},
 
 		/*Functions for Table Checkbox options*/
@@ -226,13 +165,9 @@ sap.ui.define([
 				if (oCheck.getParameter("selected") == true) {
 					_that._oViewModel.setProperty("/enableDealerNet", true);
 					_that._oViewModel.setProperty("/enableProfit", true);
-					// _that.oTable.getColumns()[5].setVisible(true);
-					// _that.oTable.getColumns()[6].setVisible(true);
 				} else {
 					_that._oViewModel.setProperty("/enableDealerNet", false);
 					_that._oViewModel.setProperty("/enableProfit", false);
-					// _that.oTable.getColumns()[5].setVisible(false);
-					// _that.oTable.getColumns()[6].setVisible(false);
 				}
 			}
 		},
@@ -241,80 +176,80 @@ sap.ui.define([
 			// var oSelectedLink = oEvtLink.getSource().getProperty("text");
 			_that.getRouter().navTo("Routemaster");
 		},
+
 		NavBackToSearch: function () {
+			_that.oTireFitmentJSONModel.refresh(true);
 			sap.ushell.components.SearchOptionVIN.setValue("");
 			sap.ushell.components.SearchOptionTireSize.setValue("");
 			sap.ushell.components.ModelSeriesCombo.setSelectedKey();
 			sap.ushell.components.SearchOptionVehicle.setSelectedKey();
-			_that.getRouter().navTo("Routemaster");
+			// var oHistory, sPreviousHash;
+
+			// oHistory = History.getInstance();
+			// sPreviousHash = oHistory.getPreviousHash();
+
+			// if (sPreviousHash !== undefined) {
+			// 	window.history.go(-1);
+			// } else {
+			this.getRouter().navTo("Routemaster", {}, true);
+			// }
 		},
+
+		//Facet Filter logic starts here
+		_applyFilter: function (oFilter) {
+			// Get the table (last thing in the VBox) and apply the filter
+			var aVBoxItems = this.getView().byId("idVBox").getItems();
+			var oTable = aVBoxItems[aVBoxItems.length - 1];
+			// oTable.getBinding("items").filter(oFilter);
+			oTable.getBinding().filter(oFilter);
+		},
+
+		handleFacetFilterReset: function (oEvent) {
+			var oFacetFilter = sap.ui.getCore().byId(oEvent.getParameter("id"));
+			var aFacetFilterLists = oFacetFilter.getLists();
+			for (var i = 0; i < aFacetFilterLists.length; i++) {
+				aFacetFilterLists[i].setSelectedKeys();
+			}
+			this._applyFilter([]);
+		},
+
+		handleListClose: function (oEvent) {
+			// Get the Facet Filter lists and construct a (nested) filter for the binding
+			var oFacetFilter = oEvent.getSource().getParent();
+			this._filterModel(oFacetFilter);
+		},
+
 		handleFacetConfirm: function (oEvent) {
-			// debugger;
-			// _that.oTable.getColumns()[5].setVisible(false);
-			// _that.oTable.getColumns()[6].setVisible(false);
 			// Get the Facet Filter lists and construct a (nested) filter for the binding
 			var oFacetFilter = oEvent.getSource();
-			// this._filterModel(oFacetFilter);
+			this._filterModel(oFacetFilter);
+			// MessageToast.show("confirm event fired");
 		},
 
-		// _filterModel: function (oFacetFilter) {
-		// 	// debugger;
-		// 	var mFacetFilterLists = oFacetFilter.getLists().filter(function (oList) {
-		// 		return oList.getSelectedItems().length;
-		// 	});
+		_filterModel: function (oFacetFilter) {
+			var mFacetFilterLists = oFacetFilter.getLists().filter(function (oList) {
+				return oList.getSelectedItems().length;
+			});
 
-		// 	if (mFacetFilterLists.length) {
-		// 		// Build the nested filter with ORs between the values of each group and
-		// 		// ANDs between each group
-		// 		var oFilter = new Filter(mFacetFilterLists.map(function (oList) {
-		// 			return new Filter(oList.getSelectedItems().map(function (oItem) {
-		// 				return new Filter(oList.getTitle(), "EQ", oItem.getText());
-		// 			}), false);
-		// 		}), true);
-		// 		this._applyFilter(oFilter);
-		// 	} else {
-		// 		this._applyFilter([]);
-		// 	}
-		// },
-		// _applyFilter: function (oFilter) {
-		// 	_that.oTable.getColumns()[5].setVisible(false);
-		// 	_that.oTable.getColumns()[6].setVisible(false);
-		// 	for (var i = 0; i < oFilter.aFilters.length; i++) {
-		// 		console.log(oFilter.aFilters[i]);
-		// 		for (var j = 0; j < oFilter.aFilters[i].aFilters.length; j++) {
-		// 			console.log(oFilter.aFilters[i].aFilters[j]);
-		// 			if (oFilter.aFilters[i].aFilters[j].oValue1 == "Show Dealer Net") {
-		// 				console.log("Show Dealer and Profit Columns");
-		// 				_that.oTable.getColumns()[5].setVisible(true);
-		// 				_that.oTable.getColumns()[6].setVisible(true);
-		// 			} else {
-		// 				_that.oTable.getColumns()[5].setVisible(false);
-		// 				_that.oTable.getColumns()[6].setVisible(false);
-		// 			}
-		// 		}
-		// 	}
-		// 	// Get the table (last thing in the VBox) and apply the filter
-		// 	var aVBoxItems = this.byId("idVBox").getItems();
-		// 	var oTable = aVBoxItems[aVBoxItems.length - 1];
-		// 	oTable.getBinding("rows").filter(oFilter);
-		// },
-		// handleFacetFilterReset: function (oEvent) {
-		// 	var oFacetFilter = sap.ui.getCore().byId(oEvent.getParameter("id"));
-		// 	var aFacetFilterLists = oFacetFilter.getLists();
-		// 	for (var i = 0; i < aFacetFilterLists.length; i++) {
-		// 		aFacetFilterLists[i].setSelectedKeys();
-		// 	}
-		// 	this._applyFilter([]);
-		// },
-		// handleListClose: function (oEvent) {
-		// 	// Get the Facet Filter lists and construct a (nested) filter for the binding
-		// 	var oFacetFilter = oEvent.getSource().getParent();
-		// 	this._filterModel(oFacetFilter);
-		// },
+			if (mFacetFilterLists.length) {
+				// Build the nested filter with ORs between the values of each group and
+				// ANDs between each group
+				var oFilter = new Filter(mFacetFilterLists.map(function (oList) {
+					return new Filter(oList.getSelectedItems().map(function (oItem) {
+						return new Filter(oList.getTitle(), "EQ", oItem.getText());
+					}), false);
+				}), true);
+				this._applyFilter(oFilter);
+			} else {
+				this._applyFilter([]);
+			}
+		},
+		//Facet Filter logic ends here
 
 		onRowPress: function (oRowEvt) {
+			var oPath = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
 			_that.getRouter().navTo("tireQuotation", {
-				rowData: JSON.stringify(oRowEvt.getSource().getModel("SelectTireJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath))
+				rowData: JSON.stringify(oPath)
 			});
 		},
 
@@ -331,7 +266,8 @@ sap.ui.define([
 		},
 		onExit: function () {
 			_that.destroy();
-			_that.oSelectTireJSONModel.refresh();
+			_that.oTireFitmentJSONModel.setData(null);
+			_that.oTireFitmentJSONModel.refresh(true);
 		}
 	});
 });
