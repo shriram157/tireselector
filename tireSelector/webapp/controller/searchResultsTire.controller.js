@@ -6,7 +6,7 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	'sap/m/ObjectIdentifier',
 	'tireSelector/controller/BaseController',
-	"sap/ui/core/routing/History",
+	"sap/ui/core/routing/History"
 ], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History) {
 	"use strict";
 

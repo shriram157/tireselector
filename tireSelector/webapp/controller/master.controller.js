@@ -5,7 +5,7 @@ sap.ui.define([
 	'sap/ui/model/resource/ResourceModel',
 	'tireSelector/controller/BaseController',
 	'sap/m/MessageToast',
-	'sap/ui/model/Filter',
+	'sap/ui/model/Filter'
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter) {
 	"use strict";
 
