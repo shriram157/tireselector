@@ -54,7 +54,7 @@ modules:
    type: nodejs
    path: tireSelector_XSJS
    parameters:
-      host: tireSelector
+      host: tireSelector_xsjs
       register-service-url: true
       service-name: tireSelector
       service-url: '${default-url}'
