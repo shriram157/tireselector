@@ -142,7 +142,7 @@ sap.ui.define([
 							console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
 							_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 							_that.oTireFitmentJSONModel.refresh(true);
-							_that.oTireFitmentJSONModel.updateBindings();
+							_that.oTireFitmentJSONModel.updateBindings(true);
 						}, this),
 						error: function (oError) {
 							console.log("Error in fetching ZC_FitmentSet data", oError);

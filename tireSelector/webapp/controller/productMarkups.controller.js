@@ -76,42 +76,69 @@ sap.ui.define([
 		},
 
 		updateXSATable: function () {
-			var modeldata = _that.oProdMarkupModel.getData().results;
-			// _that.oXSOServiceModel.setUseBatch(true);
-			var xsoOBJ = {};
-			// for (var k = 0; k < modeldata.length; k++) {
-			// console.log("K count", k);
-			xsoOBJ.Dealer_Brand= "20";
-			xsoOBJ.Dealer_code= "65023";
-			xsoOBJ.Live_Last_Updated= "2018-11-30T00:00:00";
-			xsoOBJ.Live_Last_Updated_By= "42120Test";
-			xsoOBJ.Live_Markup_Percentage= "1.90";
-			xsoOBJ.Manufacturer_code= "2400100314";
-			xsoOBJ.Preview_Markup_Percentage= "2.50";
-			xsoOBJ.User_First_Name= "FirstName";
-			xsoOBJ.User_Last_Name= "lastName";
-						
-			// xsoOBJ.Dealer_code = "65023";
-			// xsoOBJ.Dealer_Brand = "20";
-			// xsoOBJ.Manufacturer_code = modeldata[0].Manufacturer_code;
-			// xsoOBJ.Preview_Markup_Percentage = modeldata[0].Preview_Markup_Percentage;
-			// xsoOBJ.Live_Markup_Percentage = modeldata[0].Live_Markup_Percentage;
-			// xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
-			// xsoOBJ.Live_Last_Updated_By = modeldata[0].Live_Last_Updated_By;
-			// xsoOBJ.User_First_Name = "FirstName";
-			// xsoOBJ.User_Last_Name = "lastName";
 
-			console.log("xsoOBJ", xsoOBJ);
-			_that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, {
-				success: $.proxy(function (oData) {
-					console.log("XSO table updated", oData);
-					// _that.callUpdatedProdMarkupTab();
-				}, _that),
-				error: function (oError) {
-					console.log("Error in updating table", oError);
+			// ========================================Insert Functionality using xsodata=================================Begin
+
+			// 	var xsoOBJ = {};
+
+			// xsoOBJ.Dealer_Brand= "10";
+			// xsoOBJ.Dealer_code= "34030";
+			// xsoOBJ.Live_Last_Updated= "2018-11-30T00:00:00";
+			// xsoOBJ.Live_Last_Updated_By= "Dealer_user";
+			// xsoOBJ.Live_Markup_Percentage= "111.90";
+			// xsoOBJ.Manufacturer_code= "2400100314";
+			// xsoOBJ.Preview_Markup_Percentage= "2.50";
+			// xsoOBJ.User_First_Name= "Gunasekhar";
+			// xsoOBJ.User_Last_Name= "Reddy";
+
+			// 			oModel.setHeaders({
+			// 	"content-type": "application/json;charset=utf-8"
+			// });
+			// var mParams = {};
+			// mParams.success = function() {
+			// 	sap.m.MessageToast.show("Create successful");
+			// };
+			// mParams.error = this.onErrorCall;
+			// oModel.create("/DealerMarkUp", xsoOBJ, mParams);
+			// ========================================Insert Functionality using xsodata=================================End			
+
+			/// the below code for update functionality. 
+
+			// ================================================== Update Functionality - Begin =================================
+			var oModel = this.getOwnerComponent().getModel("XsodataModel");
+			var modelData = _that.oProdMarkupModel.getData().results;
+
+			for (var i = 0; i < modelData.length; i++) {
+
+				var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
+					"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
+
+				var sContextPathInfo = "/DealerMarkUp(" + sPrikamryKeyofObject + ")";
+
+				//Define group ID
+				// oModel.setDeferredGroups(["submitChangeGroup"]);		
+
+				var bindingContext = oModel.getContext(sContextPathInfo);
+				var bindingContextPath = bindingContext.getPath();
+				var dataFromModel = bindingContext.getModel().getProperty(bindingContextPath);
+				//			var dataFromModel = oModel.getProperty(sContextPathInfo);
+
+				if (dataFromModel) {
+					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
+					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					dataFromModel.User_First_Name = "Guna";
+					dataFromModel.User_Last_Name = "Test";
+					//  Add all the other fields that you want to update. // TODO: 
+
+					oModel.update(bindingContextPath, dataFromModel, null, function () {
+						// Proper error handling if any thing needed. // TODO: 
+					});
+
 				}
-			});
-			// }
+
+			}
+
+			// ===================================================== Update Functionality - End ===============================
 
 			// var content = _that.oProdMarkupModel.getData().results;
 			// var newObj = [];
@@ -195,42 +222,80 @@ sap.ui.define([
 			// 	}
 			// });
 
-			var oParams = {};
-			oParams.json = true;
-			oParams.defaultUpdateMethod = "PUT";
-			oParams.useBatch = true;
+			// =========================== Guna begin of code ====================================================
 
-			var batchModel = new sap.ui.model.odata.v2.ODataModel("/node/tireSelector/xsodata/tireSelector_SRV.xsodata/", oParams);
-			//var batchChanges = [];
+			//        	var userModel = this.getOwnerComponent().getModel("userModel");
+			// var oTable = this.getView().byId("userTable");
+			// oTable.setModel(userModel);
+
+			var oModel = this.getOwnerComponent().getModel("XsodataModel");
+			var result = this.getView().getModel().getData();
+
+			var modelData = _that.oProdMarkupModel.getData().results;
+			// var oEntry = {};
+			// oEntry.UserId = "0000000000";
+			// oEntry.FirstName = result.FirstName;
+			// oEntry.LastName = result.LastName;
+			// oEntry.Email = result.Email;\
+			var xsoOBJ = {};
+			xsoOBJ.Dealer_Brand = "20";
+			xsoOBJ.Dealer_code = "34031";
+			xsoOBJ.Live_Last_Updated = "2018-11-30T00:00:00";
+			xsoOBJ.Live_Last_Updated_By = "42120Test";
+			xsoOBJ.Live_Markup_Percentage = "1.90";
+			xsoOBJ.Manufacturer_code = "2400100314";
+			xsoOBJ.Preview_Markup_Percentage = "2.50";
+			xsoOBJ.User_First_Name = "Gunasekhar";
+			xsoOBJ.User_Last_Name = "Reddy";
+
+			oModel.setHeaders({
+				"content-type": "application/json;charset=utf-8"
+			});
 			var mParams = {};
-			mParams.groupId = "001";
 			mParams.success = function () {
 				sap.m.MessageToast.show("Create successful");
 			};
 			mParams.error = this.onErrorCall;
-			var modelData = _that.oProdMarkupModel.getData().results;
+			oModel.create("/DealerMarkUp", xsoOBJ, mParams);
 
-			//create an array of batch changes and save
-			_that.newMarkupList = [];
-			for (var k = 0; k < modelData.length; k++) {
-				var xsoOBJ = {};
-				xsoOBJ.Dealer_Brand = "20";
-				xsoOBJ.Dealer_code = "65023";
-				xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
-				xsoOBJ.Live_Last_Updated_By = modelData[k].Live_Last_Updated_By;
-				xsoOBJ.Live_Markup_Percentage = modelData[k].Live_Markup_Percentage;
-				xsoOBJ.Manufacturer_code = modelData[k].Manufacturer_code;
-				xsoOBJ.Preview_Markup_Percentage = modelData[k].Preview_Markup_Percentage;
-				xsoOBJ.User_First_Name = "FirstName";
-				xsoOBJ.User_Last_Name = "lastName";
-				_that.newMarkupList.push(xsoOBJ);
-				// batchModel.create("/DealerMarkUp", xsoOBJ, mParams);
-			}
+			// ======================================Arathy existing code ==========================================
 
-			for (var i = 0; i<_that.newMarkupList.length; i++) {
-				batchModel.create("/DealerMarkUp", _that.newMarkupList[i], mParams);
-			}
-			batchModel.submitChanges(mParams);
+			/*	var oParams = {};
+				oParams.json = true;
+				oParams.defaultUpdateMethod = "PUT";
+				oParams.useBatch = true;
+
+				var batchModel = new sap.ui.model.odata.v2.ODataModel("/node/tireSelector/xsodata/tireSelector_SRV.xsodata/", oParams);
+				//var batchChanges = [];
+				var mParams = {};
+				mParams.groupId = "001";
+				mParams.success = function () {
+					sap.m.MessageToast.show("Create successful");
+				};
+				mParams.error = this.onErrorCall;
+				var modelData = _that.oProdMarkupModel.getData().results;
+
+				//create an array of batch changes and save
+				_that.newMarkupList = [];
+				for (var k = 0; k < modelData.length; k++) {
+					var xsoOBJ = {};
+					xsoOBJ.Dealer_Brand = "20";
+					xsoOBJ.Dealer_code = "65023";
+					xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
+					xsoOBJ.Live_Last_Updated_By = modelData[k].Live_Last_Updated_By;
+					xsoOBJ.Live_Markup_Percentage = modelData[k].Live_Markup_Percentage;
+					xsoOBJ.Manufacturer_code = modelData[k].Manufacturer_code;
+					xsoOBJ.Preview_Markup_Percentage = modelData[k].Preview_Markup_Percentage;
+					xsoOBJ.User_First_Name = "FirstName";
+					xsoOBJ.User_Last_Name = "lastName";
+					_that.newMarkupList.push(xsoOBJ);
+					 
+				}
+
+				for (var i = 0; i<_that.newMarkupList.length; i++) {
+					batchModel.create("/DealerMarkUp", _that.newMarkupList[i], mParams);
+				}
+				batchModel.submitChanges(mParams);*/
 
 			//https://tireselector.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata/
 
