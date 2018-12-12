@@ -131,7 +131,6 @@ sap.ui.define([
 				this.sPrefix = "/tireSelector-dest";
 			} else {
 				this.sPrefix = "";
-
 			}
 
 			this.nodeJsUrl = this.sPrefix + "/node";
@@ -159,7 +158,7 @@ sap.ui.define([
 
 			// this.nodeJsUrl = "/node";
 			$.ajax({
-				url: this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=30",
+				url: this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50",
 				//url: this.nodeJsUrl+"/Z_VEHICLE_MASTER_SRV/zc_c_vehicle",
 				type: "GET",
 				dataType: "json",

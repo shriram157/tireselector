@@ -76,200 +76,33 @@ sap.ui.define([
 		},
 
 		updateXSATable: function () {
-			var modeldata = _that.oProdMarkupModel.getData().results;
-			// _that.oXSOServiceModel.setUseBatch(true);
-			var xsoOBJ = {};
-			// for (var k = 0; k < modeldata.length; k++) {
-			// console.log("K count", k);
-			xsoOBJ.Dealer_Brand= "20";
-			xsoOBJ.Dealer_code= "65023";
-			xsoOBJ.Live_Last_Updated= "2018-11-30T00:00:00";
-			xsoOBJ.Live_Last_Updated_By= "42120Test";
-			xsoOBJ.Live_Markup_Percentage= "1.90";
-			xsoOBJ.Manufacturer_code= "2400100314";
-			xsoOBJ.Preview_Markup_Percentage= "2.50";
-			xsoOBJ.User_First_Name= "FirstName";
-			xsoOBJ.User_Last_Name= "lastName";
-						
-			// xsoOBJ.Dealer_code = "65023";
-			// xsoOBJ.Dealer_Brand = "20";
-			// xsoOBJ.Manufacturer_code = modeldata[0].Manufacturer_code;
-			// xsoOBJ.Preview_Markup_Percentage = modeldata[0].Preview_Markup_Percentage;
-			// xsoOBJ.Live_Markup_Percentage = modeldata[0].Live_Markup_Percentage;
-			// xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
-			// xsoOBJ.Live_Last_Updated_By = modeldata[0].Live_Last_Updated_By;
-			// xsoOBJ.User_First_Name = "FirstName";
-			// xsoOBJ.User_Last_Name = "lastName";
-
-			console.log("xsoOBJ", xsoOBJ);
-			_that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, {
-				success: $.proxy(function (oData) {
-					console.log("XSO table updated", oData);
-					// _that.callUpdatedProdMarkupTab();
-				}, _that),
-				error: function (oError) {
-					console.log("Error in updating table", oError);
-				}
-			});
-			// }
-
-			// var content = _that.oProdMarkupModel.getData().results;
-			// var newObj = [];
-			// var mParams = {};
-			// mParams.groupId = "1001";
-			// _that.oXSOServiceModel.setUseBatch(true);
-			// for (var i = 0; i < content.length; i++) {
-			// 	var xsoOBJ = {};
-			// 	xsoOBJ.Dealer_Brand = "20";
-			// 	xsoOBJ.Dealer_code = "65023";
-			// 	xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
-			// 	xsoOBJ.Live_Last_Updated_By = content[i].Live_Last_Updated_By;
-			// 	xsoOBJ.Live_Markup_Percentage = content[i].Live_Markup_Percentage;
-			// 	xsoOBJ.Manufacturer_code = content[i].Manufacturer_code;
-			// 	xsoOBJ.Preview_Markup_Percentage = content[i].Preview_Markup_Percentage;
-			// 	xsoOBJ.User_First_Name = "FirstName";
-			// 	xsoOBJ.User_Last_Name = "lastName";
-			// 	newObj.push(xsoOBJ);
-
-			// 	_that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, mParams,
-			// 		function (oData) {
-			// 			console.log("XSO table updated", oData);
-			// 		},
-			// 		function (oError) {
-			// 			console.log("Error in updating table", oError);
-			// 		});
-			// }
-		},
-		updateXSATable_old: function (oEvtPreview) {
-			// var modeldata = _that.oProdMarkupModel.getData().results;
-			// _that.oXSOServiceModel.setUseBatch(true);
-			// var xsoOBJ = {};
-			// for (var k = 0; k < modeldata.length; k++) {
-			// 	console.log("K count", k);
-			// xsoOBJ.Dealer_Brand = "20";
-			// xsoOBJ.Dealer_code = "65023";
-			// xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
-			// xsoOBJ.Live_Last_Updated_By = modeldata[k].Live_Last_Updated_By;
-			// xsoOBJ.Live_Markup_Percentage = modeldata[k].Live_Markup_Percentage;
-			// xsoOBJ.Manufacturer_code = modeldata[k].Manufacturer_code;
-			// xsoOBJ.Preview_Markup_Percentage = modeldata[k].Preview_Markup_Percentage;
-			// xsoOBJ.User_First_Name = "FirstName";
-			// xsoOBJ.User_Last_Name = "lastName";
-
-			// console.log("xsoOBJ", xsoOBJ);
-			// _that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, {
-			// 	success: $.proxy(function (oData) {
-			// 		console.log("XSO table updated", oData);
-			// 		// _that.callUpdatedProdMarkupTab();
-			// 	}, _that),
-			// 	error: function (oError) {
-			// 		console.log("Error in updating table", oError);
-			// 	}
-			// });
-			// _that.oXSOServiceModel.submitChanges();
-			// _that.oXSOServiceModel.setUseBatch(false); 
-			// create an entry of the Products collection with the specified properties and values
-			// _that.oXSOServiceModel.createEntry("/DealerMarkUp", {
-			// 	properties: {
-			// 		Dealer_Brand: "20",
-			// 		Dealer_code: "65023",
-			// 		Live_Last_Updated: "2018-12-03T00:00:00",
-			// 		Live_Last_Updated_By: modeldata[k].Live_Last_Updated_By,
-			// 		Live_Markup_Percentage: modeldata[k].Live_Markup_Percentage,
-			// 		Manufacturer_code: modeldata[k].Manufacturer_code,
-			// 		Preview_Markup_Percentage: modeldata[k].Preview_Markup_Percentage,
-			// 		User_First_Name: "FirstName",
-			// 		User_Last_Name: "lastName"
-			// 	}
-			// });
-			// binding against this entity
-			// oForm.setBindingContext(oContext);
-			// submit the changes (creates entity at the backend)
-			// _that.oXSOServiceModel.submitChanges({
-			// 	success: $.proxy(function (oData) {
-			// 		console.log("XSO table updated", oData);
-			// 		// _that.callUpdatedProdMarkupTab();
-			// 	}, _that),
-			// 	error: function (oError) {
-			// 		console.log("Error in updating table", oError);
-			// 	}
-			// });
-
-			var oParams = {};
-			oParams.json = true;
-			oParams.defaultUpdateMethod = "PUT";
-			oParams.useBatch = true;
-
-			var batchModel = new sap.ui.model.odata.v2.ODataModel("/node/tireSelector/xsodata/tireSelector_SRV.xsodata/", oParams);
-			//var batchChanges = [];
-			var mParams = {};
-			mParams.groupId = "001";
-			mParams.success = function () {
-				sap.m.MessageToast.show("Create successful");
-			};
-			mParams.error = this.onErrorCall;
-			var modelData = _that.oProdMarkupModel.getData().results;
-
-			//create an array of batch changes and save
-			_that.newMarkupList = [];
-			for (var k = 0; k < modelData.length; k++) {
-				var xsoOBJ = {};
-				xsoOBJ.Dealer_Brand = "20";
-				xsoOBJ.Dealer_code = "65023";
-				xsoOBJ.Live_Last_Updated = "2018-12-03T00:00:00";
-				xsoOBJ.Live_Last_Updated_By = modelData[k].Live_Last_Updated_By;
-				xsoOBJ.Live_Markup_Percentage = modelData[k].Live_Markup_Percentage;
-				xsoOBJ.Manufacturer_code = modelData[k].Manufacturer_code;
-				xsoOBJ.Preview_Markup_Percentage = modelData[k].Preview_Markup_Percentage;
-				xsoOBJ.User_First_Name = "FirstName";
-				xsoOBJ.User_Last_Name = "lastName";
-				_that.newMarkupList.push(xsoOBJ);
-				// batchModel.create("/DealerMarkUp", xsoOBJ, mParams);
+			var items = []; // intializing an array
+			var oTableData = _that.oProdMarkupModel.getData().results; // getting table data
+			var batchChanges = [];
+			for (var i = 0; i < oTableData.length; i++) {
+				items.push({
+					"Dealer_Brand": "20",
+					"Dealer_code": "65023",
+					"Live_Last_Updated": "2018-12-03T00:00:00",
+					"Live_Last_Updated_By": oTableData[i].Live_Last_Updated_By,
+					"Live_Markup_Percentage": oTableData[i].Live_Markup_Percentage,
+					"Manufacturer_code": oTableData[i].Manufacturer_code,
+					"Preview_Markup_Percentage": oTableData[i].Preview_Markup_Percentage,
+					"User_First_Name": "FirstName",
+					"User_Last_Name": "lastName"
+				});
+				_that.oXSOServiceModel.setUseBatch(true);
+				batchChanges.push(_that.oXSOServiceModel.createBatchOperation("/DealerMarkUp", "POST", items[i]));
 			}
-
-			for (var i = 0; i<_that.newMarkupList.length; i++) {
-				batchModel.create("/DealerMarkUp", _that.newMarkupList[i], mParams);
-			}
-			batchModel.submitChanges(mParams);
-
-			//https://tireselector.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata/
-
-			// _that.oXSOServiceModel.create("/DealerMarkUp", xsoOBJ, null,
-			// 	function (oData) {
-			// 		console.log("XSO table updated", oData);
-			// 	},
-			// 	function (oError) {
-			// 		console.log("Error in updating table", oError);
-			// 	});
-
-			// $.ajax({
-			// 	url: _that.xsoUrl + "/tireSelector_SRV.xsodata/DealerMarkUp",
-			// 	type: "POST",
-			// 	data: xsoOBJ,
-			// 	dataType: "json",
-			// 	success: function (oDataResponse) {
-			// 		console.log("XSO table updated", oDataResponse);
-			// 	},
-			// 	error: function (oError) {
-			// 		console.log("Error in updating table", oError);
-			// 	}
-			// });
-		},
-
-		callUpdatedProdMarkupTab: function () {
-			_that.oXSOServiceModel = this.getOwnerComponent().getModel("xsoOdataModel");
-			// _that.getView().setModel(_that.oXSOServiceModel, "ProdMarkupModel");
-			console.log("XSO model data", _that.oXSOServiceModel);
-
-			_that.oXSOServiceModel.read("/DealerMarkUp", {
-				success: $.proxy(function (oData) {
-					console.log("XSO data", oData);
-					_that.oProdMarkupModel.setData(oData);
-					_that.oProdMarkupModel.updateBindings();
-				}, _that),
-				error: function (oError) {
-					console.log("Error in fetching table", oError);
-				}
+			_that.oXSOServiceModel.addBatchChangeOperations(batchChanges);
+			//submit changes and refresh the table and display message
+			_that.oXSOServiceModel.submitBatch(function (data) {
+				_that.oXSOServiceModel.refresh();
+				sap.ui.commons.MessageBox.show(data.__batchResponses[0].__changeResponses.length + " contacts created", sap.ui.commons.MessageBox
+					.Icon.SUCCESS,
+					"Batch Save", sap.ui.commons.MessageBox.Action.OK);
+			}, function (err) {
+				console.log("Error occurred ");
 			});
 		},
 

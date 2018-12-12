@@ -110,6 +110,7 @@
 							</t:columns>
 						</t:Table>
 					</HBox>
+					<Button text="NextPage" type="Emphasized" press="onRowPress"/>
 				</content>
 			</Page>
 		</pages>

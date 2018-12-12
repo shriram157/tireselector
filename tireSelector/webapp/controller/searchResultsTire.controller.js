@@ -142,7 +142,7 @@ sap.ui.define([
 							console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
 							_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 							_that.oTireFitmentJSONModel.refresh(true);
-							_that.oTireFitmentJSONModel.updateBindings();
+							_that.oTireFitmentJSONModel.updateBindings(true);
 						}, this),
 						error: function (oError) {
 							console.log("Error in fetching ZC_FitmentSet data", oError);
@@ -247,7 +247,17 @@ sap.ui.define([
 		//Facet Filter logic ends here
 
 		onRowPress: function (oRowEvt) {
-			var oPath = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
+			// var oPath = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
+			var oPath = {
+				"Material": "",
+				"TireBrand": "ABC",
+				"TireBrandID": "12345",
+				"TireCategory": "A",
+				"TireFitment": "Perfect",
+				"TireLoadRating": "110",
+				"TireMFGPart No": "1234567",
+				"TireSpeedRating": "H"
+			}
 			_that.getRouter().navTo("tireQuotation", {
 				rowData: JSON.stringify(oPath)
 			});

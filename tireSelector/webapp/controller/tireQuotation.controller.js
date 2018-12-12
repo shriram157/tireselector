@@ -33,14 +33,33 @@ sap.ui.define([
 				_that.oTireQuotationModel.setData(Obj);
 				// console.log("Model",_that.oTireQuotationModel);
 
+				_that.item_01 = this.getView().byId("id_OtherItemPrice");
+				_that.item_02 = this.getView().byId("id_OtherItem2Price");
+				_that.item_03 = this.getView().byId("id_OtherItem3Price");
+				_that.item_04 = this.getView().byId("id_OtherItem4Price");
+
+				_that.tirePrice = this.getView().byId("id_tirePrice");
+				_that.wheelsPrice = this.getView().byId("id_wheelsPrice");
+				_that.TPMSPrice = this.getView().byId("id_TPMSPrice");
+				_that.fittingKitPrice = this.getView().byId("id_FittingKitPrice");
+				_that.RHPPrice = this.getView().byId("id_RHPPrice");
+				_that.MNBPrice = this.getView().byId("id_MnBPrice");
+				_that.SubTotal = this.getView().byId("id_subTotal");
+				_that.TotalAmount = this.getView().byId("id_total");
+				_that.ProTaxCode = this.getView().byId("id_proTaxCode");
+				_that.FedTaxCode = this.getView().byId("id_fedTaxCode");
+
+				_that.arrPrices = [];
+
 			}, this);
+			// _that.sub = Number(_that.item_01.getValue())+Number( _that.item_02.getValue()) + Number( _that.item_03.getValue()) + Number(_that.item_04.getValue()) + Number(_that.tirePrice.getValue()) + Number(_that.wheelsPrice.getValue()) + Number(_that.TPMSPrice.getValue()) + Number(_that.fittingKitPrice.getValue()) + Number(_that.RHPPrice.getValue()) +
+			// 	Number(_that.MNBPrice.getValue());
 
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
 				delay: 0,
 				enableInput: false
 			});
-
 			_that.getView().setModel(_that._oViewModel, "propertiesModel");
 
 			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
@@ -65,21 +84,19 @@ sap.ui.define([
 			}
 		},
 		onPressBreadCrumb: function (oEvtLink) {
-			// var oSelectedLink = oEvtLink.getSource().getProperty("text");
 			_that.getRouter().navTo("Routemaster");
 		},
 
 		SelectDifferentTire: function () {
-			var oHistory, sPreviousHash;
+			// 	var oHistory, sPreviousHash;
+			// 	oHistory = History.getInstance();
+			// 	sPreviousHash = oHistory.getPreviousHash();
 
-			oHistory = History.getInstance();
-			sPreviousHash = oHistory.getPreviousHash();
-
-			if (sPreviousHash !== undefined) {
-				window.history.go(-1);
-			} else {
-				this.getRouter().navTo("searchResultsTireNoData", {}, true);
-			}
+			// 	if (sPreviousHash !== undefined) {
+			// 		window.history.go(-1);
+			// 	} else {
+			this.getRouter().navTo("searchResultsTireNoData", {}, true);
+			// }
 		},
 
 		generatePDF: function () {
@@ -109,10 +126,10 @@ sap.ui.define([
 				"" || tireQty.getValue() == "" || selectRHP.getSelectedKey() == "" || MnBPrice.getValue() == "" || wheelsUnitPrice.getValue() ==
 				"" || wheelsQty.getValue() == "" || TPMSUnitPrice.getValue() == "" ||
 				TPMSQty == "" || FittingKitUnitPrice == "" || FittingKitQty == "") {
-					
+
 				_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
 				_that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("ErrTSE00001"));
-				
+
 				if (item_01.getValue() == "") {
 					item_01.setValueState(sap.ui.core.ValueState.Error);
 				} else if (item_02.getValue() == "") {
@@ -206,6 +223,84 @@ sap.ui.define([
 				_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
 			}
 
+		},
+
+		getUnitPrice: function (oUnit) {
+			var oUnitPrice = oUnit.getParameter("newValue");
+			// if (oUnit.getSource().getId().split("_")[3] == "tireUnitPrice") {
+			// 	_that.oTireUnitPrice = oUnitPrice;
+			// } else 
+			if (oUnit.getSource().getId().split("_")[3] == "wheelsUnitPrice") {
+				_that.oWheelsUnitPrice = oUnitPrice;
+			} else if (oUnit.getSource().getId().split("_")[3] == "TPMSUnitPrice") {
+				_that.oTPMSUnitPrice = oUnitPrice;
+			} else if (oUnit.getSource().getId().split("_")[3] == "FittingKitUnitPrice") {
+				_that.oFittingKitUnitPrice = oUnitPrice;
+			} else if (oUnit.getSource().getId().split("_")[3] == "RHPUnitPrice") {
+				_that.oRHPUnitPrice = oUnitPrice;
+			}
+		},
+		calulcatePrice: function (oQty) {
+			var oQtyVal = oQty.getParameter("newValue");
+			if (oQty.getSource().getId().split("_")[3] == "tireQty") {
+				_that.oTirePrice = _that.getView().byId("id_tirePrice");
+				_that.oTireUnitPrice = _that.getView().byId("id_tireUnitPrice");
+				_that.oTirePrice.setValue(oQtyVal * _that.oTireUnitPrice.getValue());
+				_that.arrPrices.push(Number(_that.oTirePrice.getValue()));
+			} else if (oQty.getSource().getId().split("_")[3] == "wheelsQty") {
+				_that.oWheelsePrice = _that.getView().byId("id_wheelsPrice");
+				_that.oWheelsePrice.setValue(oQtyVal * _that.oWheelsUnitPrice);
+				if (_that.oWheelsePrice.getValue() !== undefined) {
+					_that.arrPrices.push(Number(_that.oWheelsePrice.getValue()));
+				}
+			} else if (oQty.getSource().getId().split("_")[3] == "TPMSQty") {
+				_that.oTPMSPrice = _that.getView().byId("id_TPMSPrice");
+				_that.oTPMSPrice.setValue(oQtyVal * _that.oTPMSUnitPrice);
+				if (_that.oTPMSPrice.getValue() !== undefined) {
+					_that.arrPrices.push(Number(_that.oTPMSPrice.getValue()));
+				}
+			} else if (oQty.getSource().getId().split("_")[3] == "FittingKitQty") {
+				_that.oFittingKitPrice = _that.getView().byId("id_FittingKitPrice");
+				_that.oFittingKitPrice.setValue(oQtyVal * _that.oFittingKitUnitPrice);
+				if (_that.oFittingKitPrice.getValue() !== undefined) {
+					_that.arrPrices.push(Number(_that.oFittingKitPrice.getValue()));
+				}
+			} else if (oQty.getSource().getId().split("_")[3] == "RHPsQty") {
+				_that.RHPPrice = _that.getView().byId("id_RHPPrice");
+				_that.RHPPrice.setValue(oQtyVal * _that.oRHPUnitPrice);
+				if (_that.RHPPrice.getValue() !== undefined) {
+					_that.arrPrices.push(Number(_that.RHPPrice.getValue()));
+				}
+			}
+			var sum = _that.arrPrices.reduce(function (a, b) {
+				return a + b;
+			}, 0);
+			_that.SubTotal.setValue(sum);
+		},
+
+		onValueChange: function (oNewValue) {
+			console.log("subTotal value", _that.SubTotal.getValue());
+			if (oNewValue.getSource().getId().split("_")[3] == "MnBPrice") {
+				_that.arrPrices.push(Number(_that.MNBPrice.getValue()));
+			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItemPrice") {
+				_that.arrPrices.push(Number(_that.item_01.getValue()));
+			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItem2Price") {
+				_that.arrPrices.push(Number(_that.item_02.getValue()));
+			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItem3Price") {
+				_that.arrPrices.push(Number(_that.item_03.getValue()));
+			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItem4Price") {
+				_that.arrPrices.push(Number(_that.item_04.getValue()));
+			} 
+			// else if (oNewValue.getSource().getId().split("_")[3] == "fedTaxCode") {
+			// 	_that.Total = _that.sub + (_that.sub / 100) * Number(_that.FedTaxCode.getValue());
+			// } else if (oNewValue.getSource().getId().split("_")[3] == "proTaxCode") {
+			// 	_that.Total = +_that.sub + (_that.sub / 100) * Number(_that.FedTaxCode.getValue());
+			// }
+			var sum = _that.arrPrices.reduce(function (a, b) {
+				return a + b;
+			}, 0);
+			_that.SubTotal.setValue(sum);
+			_that.TotalAmount.setValue(Number(_that.SubTotal.getValue()));
 		},
 
 		onMenuLinkPress: function (oLink) {

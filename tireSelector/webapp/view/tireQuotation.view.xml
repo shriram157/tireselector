@@ -94,9 +94,9 @@
 										<Label text="{i18n>Tires}"/>
 										<Text text="Description"/>
 									</VBox>
-									<Input value="" required="true" id="id_tireUnitPrice"/>
-									<Input value="" required="true" id="id_tireQty"/>
-									<Input value=""/>
+									<Input value="999" required="true" id="id_tireUnitPrice" editable="false"/>
+									<Input value="" required="true" id="id_tireQty" liveChange="calulcatePrice"/>
+									<Input value="" id="id_tirePrice"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -110,9 +110,9 @@
 											<core:Item key="{i18n>NoThankYou}" text="{i18n>NoThankYou}"/>
 										</Select>
 									</VBox>
-									<Input value=""/>
-									<Input value=""/>
-									<Input value=""/>
+									<Input value="" id="id_RHPUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" id="id_RHPsQty" liveChange="calulcatePrice"/>
+									<Input value="" id="id_RHPPrice" />
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -122,7 +122,7 @@
 									</VBox>
 									<Input value="" visible="{propertiesModel>/enableInput}"/>
 									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" id="id_MnBPrice"/>
+									<Input value="" id="id_MnBPrice" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -131,9 +131,9 @@
 										<Label text="{i18n>Wheels}"/>
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
-									<Input value="" required="true" id="id_wheelsUnitPrice"/>
-									<Input value="" required="true" id="id_wheelsQty"/>
-									<Input value=""/>
+									<Input value="" required="true" id="id_wheelsUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" required="true" id="id_wheelsQty" liveChange="calulcatePrice"/>
+									<Input value="" id="id_wheelsPrice" />
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -142,9 +142,9 @@
 										<Label text="{i18n>TPMS}"/>
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
-									<Input value="" required="true" id="id_TPMSUnitPrice"/>
-									<Input value="" required="true" id="id_TPMSQty"/>
-									<Input value=""/>
+									<Input value="" required="true" id="id_TPMSUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" required="true" id="id_TPMSQty" liveChange="calulcatePrice"/>
+									<Input value="" id="id_TPMSPrice"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -153,9 +153,9 @@
 										<Label text="{i18n>FittingKits}"/>
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
-									<Input value="" required="true" id="id_FittingKitUnitPrice"/>
-									<Input value="" required="true" id="id_FittingKitQty"/>
-									<Input value=""/>
+									<Input value="" required="true" id="id_FittingKitUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" required="true" id="id_FittingKitQty" liveChange="calulcatePrice"/>
+									<Input value="" id="id_FittingKitPrice"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -168,7 +168,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItemPrice"/>
+									<Input value="" required="true" id="id_OtherItemPrice" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -180,7 +180,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItem2Price"/>
+									<Input value="" required="true" id="id_OtherItem2Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -192,7 +192,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItem3Price"/>
+									<Input value="" required="true" id="id_OtherItem3Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -204,7 +204,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItem4Price"/>
+									<Input value="" required="true" id="id_OtherItem4Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -212,11 +212,11 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="Fee Description {i18n>FeeDescription}"/>
+										<Label text="{i18n>SubTotal}"/>
 									</VBox>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value=""/>
+									<Input value="" id="id_subTotal" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -224,11 +224,11 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="Federal Tax Code"/>
+										<Label text="(Fee Description-check for text and transaltion) {i18n>FeeDescription} (Hide entire row if there is no fee for the Dealer's Province)"/>
 									</VBox>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value=""/>
+									<Input value="" id="id_freeDescp"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -236,11 +236,23 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>Provincial Tax Code}"/>
+										<Label text="{i18n>Federal Tax Code} (Hide entire row if the Federal Tax Rate for the Dealer's Province is 0%)"/>
 									</VBox>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value=""/>
+									<Input value="" id="id_fedTaxCode" liveChange="onValueChange"/>
+								</cells>
+							</ColumnListItem>
+							<ColumnListItem class="styleColumns alignRight">
+								<cells>
+									<Label text=""/>
+									<Label text=""/>
+									<VBox>
+										<Label text="{i18n>Provincial Tax Code} (Hide entire row if the Provincial Tax Rate for the Dealer's Province is 0%)"/>
+									</VBox>
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
+									<Input value="" id="id_proTaxCode" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -252,8 +264,8 @@
 									</VBox>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value=""/>
-								</cells>
+									<Input value="" id="id_total"/>
+								</cells> 
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>

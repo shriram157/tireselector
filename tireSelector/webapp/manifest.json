@@ -80,7 +80,7 @@
 			},
 			"XsodataModel": {
 				"uri": "/TireSelector_Xsodata/tireSelector/xsodata/tireSelector_SRV.xsodata/",
-				"type": "sap.ui.model.odata.ODataModel",
+				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "TwoWay",
@@ -91,7 +91,7 @@
 			},
 			"FitmentModel": {
 				"uri": "/tireSelector-dest/node/Z_TIRESELECTOR_SRV/",
-				"type": "sap.ui.model.odata.ODataModel",
+				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "TwoWay",
