@@ -13,6 +13,7 @@
 			"id": "servicecatalog.connectivityComponentForManifest",
 			"version": "0.0.0"
 		},
+
 		"dataSources": {
 			"tireSelector_SRV.xsodata": {
 				"uri": "/TireSelector_Xsodata/tireSelector/xsodata/tireSelector_SRV.xsodata/",
@@ -78,26 +79,27 @@
 					"bundleName": "tireSelector.i18n.i18n"
 				}
 			},
+
 			"XsodataModel": {
-				"uri": "/TireSelector_Xsodata/tireSelector/xsodata/tireSelector_SRV.xsodata/",
-				"type": "sap.ui.model.odata.v2.ODataModel",
-				"settings": {
-					"defaultOperationMode": "Server",
-					"defaultBindingMode": "TwoWay",
-					"defaultCountMode": "Request"
-				},
 				"dataSource": "tireSelector_SRV.xsodata",
-				"preload": true
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"preload": true,
+				"settings": {
+					"useBatch": false,
+					"json": true,
+					"defaultBindingMode": "TwoWay",
+					"defaultUpdateMethod": "PUT"
+				}
 			},
+
 			"FitmentModel": {
-				"uri": "/tireSelector-dest/node/Z_TIRESELECTOR_SRV/",
+				"dataSource": "Z_TIRESELECTOR_SRV",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "TwoWay",
 					"defaultCountMode": "Request"
 				},
-				"dataSource": "Z_TIRESELECTOR_SRV",
 				"preload": true
 			}
 		},

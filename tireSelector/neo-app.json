@@ -34,6 +34,7 @@
         "name": "TireSelector_Xsodata"
       },
       "description": "TireSelector_Xsodata"
+<<<<<<< HEAD
     },
     {
       "path": "/sap/opu/odata",
@@ -43,7 +44,10 @@
         "entryPath": "/sap/opu/odata"
       },
       "description": "DG2 200"
+=======
+>>>>>>> refs/remotes/origin/XSJS_Requirement
     }
+
   ],
   "sendWelcomeFileRedirect": true
 }
