@@ -95,12 +95,12 @@
 			"FitmentModel": {
 				"dataSource": "Z_TIRESELECTOR_SRV",
 				"type": "sap.ui.model.odata.v2.ODataModel",
+				"preload": true,
 				"settings": {
-					"defaultOperationMode": "Server",
+					"json": true,
 					"defaultBindingMode": "TwoWay",
-					"defaultCountMode": "Request"
-				},
-				"preload": true
+					"defaultUpdateMethod": "PUT"
+				}
 			}
 		},
 		"resources": {
