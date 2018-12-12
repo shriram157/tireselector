@@ -662,8 +662,8 @@ sap.ui.define([
 				success: $.proxy(function (data) {
 
 					this.getModel("LocalDataModel").setProperty("/PlanValidSet", data.results[0].ZC_ECP_PLANSSET.results);
-					this.kmOdometerEnd = data.results[0].ZC_ECP_PLANSSET.results[0].KMS;
-					this.durationMonths = data.results[0].ZC_ECP_PLANSSET.results[0].MONTHS;
+					// this.kmOdometerEnd = data.results[0].ZC_ECP_PLANSSET.results[0].KMS;
+					// this.durationMonths = data.results[0].ZC_ECP_PLANSSET.results[0].MONTHS;
 				}, this),
 				error: function () {
 					console.log("Error");
@@ -808,10 +808,14 @@ sap.ui.define([
 		},
 		onSelectPlanCode: function (oEvent) {
 
-			this.oPlanCode = oEvent.getSource().getValue();
+	    	this.oPlanCode = oEvent.getSource().getValue();
+			var oPlanKey = oEvent.getSource().getSelectedKey();
+			var km = oPlanKey.split("/")[0];
+			var mnth = oPlanKey.split("/")[1];
 			this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
-			this.oAdditionalVal = parseInt(this.kmOdometerEnd.replace(/,/g, ''));
-			this.oPlanMonth = parseInt(this.durationMonths);
+			this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
+			this.oPlanMonth = parseInt(mnth);
+
 
 			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 

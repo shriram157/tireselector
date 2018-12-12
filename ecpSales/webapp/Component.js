@@ -40,11 +40,7 @@ sap.ui.define([
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
 				// disableHeadRequestForToken: false,
-<<<<<<< HEAD
-			    defaultUpdateMethod: 'PUT',
-=======
 				defaultUpdateMethod: 'PUT',
->>>>>>> refs/heads/master
 				json: true
 			});
 
@@ -57,11 +53,7 @@ sap.ui.define([
 			}
 			var oDataModel01 = new ODataModel(mConfig01.uri, {
 				useBatch: false,
-<<<<<<< HEAD
-				// disableHeadRequestForToken: false,
-=======
 				// disableHeadRequestForToken: true,
->>>>>>> refs/heads/master
 				defaultUpdateMethod: 'PUT',
 				json: true
 			});
@@ -76,11 +68,7 @@ sap.ui.define([
 			}
 			var oDataModel02 = new ODataModel(mConfig02.uri, {
 				useBatch: false,
-<<<<<<< HEAD
-			//	 disableHeadRequestForToken: false,
-=======
 				// disableHeadRequestForToken: true,
->>>>>>> refs/heads/master
 				defaultUpdateMethod: 'PUT',
 				json: true
 			});

@@ -10,7 +10,6 @@
 		"@sap/jobs-client": "1.1.1",
 		"passport": "0.3.2",
 		"express": "4.12.3",
-		"express-session": "1.15.6",
 		"request": "",
 		"async": "2.5.0",
 		"ws": "1.1.4",
