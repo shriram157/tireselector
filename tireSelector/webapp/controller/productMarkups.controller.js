@@ -126,7 +126,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.User_First_Name = "Guna";
+					dataFromModel.User_First_Name = "Aarti";
 					dataFromModel.User_Last_Name = "Test";
 					//  Add all the other fields that you want to update. // TODO: 
 
@@ -134,6 +134,9 @@ sap.ui.define([
 						// Proper error handling if any thing needed. // TODO: 
 					});
 
+				} else {
+					
+					// insert logic goes here. 
 				}
 
 			}
