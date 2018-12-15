@@ -1,9 +1,9 @@
 <mvc:View xmlns:u="sap.ui.unified" xmlns:tnt="sap.tnt" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" controllerName="tireSelector.controller.tireQuotation"
-	xmlns:html="http://www.w3.org/1999/xhtml">
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:data="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1">
 	<App>
 		<pages>
-			<Page showNavButton="false" class="stylePageSection customStyle">
+			<Page showNavButton="false" class="stylePageSection customStyle" id="idTireQuotation">
 				<customHeader>
 					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
 						<contentLeft>
@@ -13,9 +13,6 @@
 						</contentLeft>
 						<contentMiddle><Text text="" id="selectedModelText"/></contentMiddle>
 						<contentRight>
-							<!--<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
-							<!--<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
-							<!--<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>-->
 							<Button text="{i18n>Logout}" type="Default"/>
 						</contentRight>
 					</Bar>
@@ -42,11 +39,11 @@
 						<f:content>
 							<core:Title text=""/>
 							<Label text=""/>
-							<Text text="Dealer Name"/>
+							<Text text="{DealerModel>/attributes/0/BusinessPartnerName}"/>
 							<Label text=""/>
-							<Text text="Dealer Address"/>
+							<Text text="{DealerModel>/attributes/0/BusinessPartnerAddress}"/>
 							<Label text=""/>
-							<Text text="Dealer Phone"/>
+							<Text text="{DealerModel>/attributes/0/BusinessPartnerPhone}"/>
 							<Label text="{i18n>DealerTel}"/>
 							<Input type="Number" value="1234567890"/>
 							<Label text="{i18n>QuoteDate}" required="true"/>
@@ -57,19 +54,19 @@
 							<DatePicker id="id_AfterExpiry" value="" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleExpiryChange" class="sapUiSmallMarginBottom" />
 							<core:Title text=""/>
 							<Label text="{i18n>Vehicle}"/>
-							<Input type="Text" value="Vehicle Details"/>
+							<Input type="Text" value="{propertiesModel>/vehicleVal} {propertiesModel>/modelval}"/>
 							<Label text="{i18n>VIN}"/>
-							<Input type="Text" value="VIN"/>
+							<Input type="Text" value="{propertiesModel>/vinVal}"/>
 							<Label text="{i18n>Name}"/>
-							<Input type="Text" value="Name"/>
+							<Input type="Text" value=""/>
 							<Label text="{i18n>Address}"/>
-							<Input type="Text" value="Address"/>
+							<Input type="Text" value=""/>
 							<Label text="{i18n>PostalCode}"/>
-							<Input type="Text" value="Postal Code"/>
+							<Input type="Text" value=""/>
 							<Label text="{i18n>Phone}"/>
-							<Input type="Number" value="1234567890"/>
+							<Input type="Number" value=""/>
 							<Label text="{i18n>CreditApp}"/>
-							<Input type="Text" value="Credit App"/>
+							<Input type="Text" value=""/>
 						</f:content>
 					</f:SimpleForm>
 					<Table inset="false" id="tableQuotation">
@@ -92,11 +89,11 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>Tires}"/>
-										<Text text="Description"/>
+										<Text text="{TireQuotationModel>/results/0/Tire Brand}"/>
 									</VBox>
-									<Input value="999" required="true" id="id_tireUnitPrice" editable="false"/>
-									<Input value="" required="true" id="id_tireQty" liveChange="calulcatePrice"/>
-									<Input value="" id="id_tirePrice"/>
+									<Input value="{TireQuotationModel>/results/0/Retails}" required="true" id="id_tireUnitPrice" editable="false"/>
+									<Input value="" required="true" id="id_tireQty" liveChange="calculatePrice"/>
+									<Input value="{TireQuotationModel>/prices/0/TiresPrice}" id="id_tirePrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -106,13 +103,13 @@
 											<Label text="{i18n>RoadHazardProtection}"/>
 											<Label text=" ({i18n>AgreementText})" class="noCustomColor"/>
 										</HBox>
-										<Select id="id_RHP" forceSelection="false" selectedKey="" width="100%">
-											<core:Item key="{i18n>NoThankYou}" text="{i18n>NoThankYou}"/>
+										<Select id="id_RHP" forceSelection="false" selectedKey="" width="100%" items="{ProductCategoryModel>/results}" change="onMatSelection">
+											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR}"/>
 										</Select>
 									</VBox>
-									<Input value="" id="id_RHPUnitPrice" liveChange="getUnitPrice"/>
-									<Input value="" id="id_RHPsQty" liveChange="calulcatePrice"/>
-									<Input value="" id="id_RHPPrice" />
+									<Input value="{TireQuotationModel>/results/0/environmentalFee}" id="id_RHPUnitPrice" editable="false"/>
+									<Input value="" id="id_RHPsQty" liveChange="calculatePrice"/>
+									<Input value="{TireQuotationModel>/prices/0/RHPPrice}" id="id_RHPPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -122,7 +119,7 @@
 									</VBox>
 									<Input value="" visible="{propertiesModel>/enableInput}"/>
 									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" id="id_MnBPrice" liveChange="onValueChange"/>
+									<Input value="{TireQuotationModel>/prices/0/MnBPrice}" id="id_MnBPrice" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -132,8 +129,8 @@
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
 									<Input value="" required="true" id="id_wheelsUnitPrice" liveChange="getUnitPrice"/>
-									<Input value="" required="true" id="id_wheelsQty" liveChange="calulcatePrice"/>
-									<Input value="" id="id_wheelsPrice" />
+									<Input value="" required="true" id="id_wheelsQty" liveChange="calculatePrice"/>
+									<Input value="{TireQuotationModel>/prices/0/WheelsPrice}" id="id_wheelsPrice" editable="false" />
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -143,8 +140,8 @@
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
 									<Input value="" required="true" id="id_TPMSUnitPrice" liveChange="getUnitPrice"/>
-									<Input value="" required="true" id="id_TPMSQty" liveChange="calulcatePrice"/>
-									<Input value="" id="id_TPMSPrice"/>
+									<Input value="" required="true" id="id_TPMSQty" liveChange="calculatePrice"/>
+									<Input value="{TireQuotationModel>/prices/0/TPMSPrice}" id="id_TPMSPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -154,8 +151,8 @@
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
 									</VBox>
 									<Input value="" required="true" id="id_FittingKitUnitPrice" liveChange="getUnitPrice"/>
-									<Input value="" required="true" id="id_FittingKitQty" liveChange="calulcatePrice"/>
-									<Input value="" id="id_FittingKitPrice"/>
+									<Input value="" required="true" id="id_FittingKitQty" liveChange="calculatePrice"/>
+									<Input value="{TireQuotationModel>/prices/0/FittingKitPrice}" id="id_FittingKitPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -168,7 +165,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItemPrice" liveChange="onValueChange"/>
+									<Input value="{TireQuotationModel>/prices/0/otherItemPrice1}" required="true" id="id_OtherItemPrice" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -180,7 +177,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItem2Price" liveChange="onValueChange"/>
+									<Input value="{TireQuotationModel>/prices/0/otherItemPrice2}" required="true" id="id_OtherItem2Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -192,7 +189,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItem3Price" liveChange="onValueChange"/>
+									<Input value="{TireQuotationModel>/prices/0/otherItemPrice3}" required="true" id="id_OtherItem3Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -204,7 +201,7 @@
 									<Label text=""/>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" required="true" id="id_OtherItem4Price" liveChange="onValueChange"/>
+									<Input value="{TireQuotationModel>/prices/0/otherItemPrice4}" required="true" id="id_OtherItem4Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -219,40 +216,36 @@
 									<Input value="" id="id_subTotal" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns alignRight">
+							<ColumnListItem class="styleColumns alignRight" visible="{propertiesModel>/enableFee}">
 								<cells>
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="(Fee Description-check for text and transaltion) {i18n>FeeDescription} (Hide entire row if there is no fee for the Dealer's Province)"/>
+										<Label text="{i18n>FeeDescription}"/>
 									</VBox>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<Input value="" id="id_freeDescp"/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns alignRight">
+							<ColumnListItem class="styleColumns alignRight" visible="{propertiesModel>/enableFTC}">
 								<cells>
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>Federal Tax Code} (Hide entire row if the Federal Tax Rate for the Dealer's Province is 0%)"/>
+										<Label text="{i18n>Federal Tax Code}"/>
 									</VBox>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" id="id_fedTaxCode" liveChange="onValueChange"/>
+									<Input value="{TireQuotationModel>/results/0/FederalTax}" id="id_fedTaxCode" editable="false"/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns alignRight">
+							<ColumnListItem class="styleColumns alignRight" visible="{propertiesModel>/enablePTC}">
 								<cells>
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>Provincial Tax Code} (Hide entire row if the Provincial Tax Rate for the Dealer's Province is 0%)"/>
+										<Label text="{i18n>Provincial Tax Code}"/>
 									</VBox>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" id="id_proTaxCode" liveChange="onValueChange"/>
+									<Input value="{TireQuotationModel>/results/0/ProvincialTax}" id="id_proTaxCode" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -262,8 +255,6 @@
 									<VBox>
 										<Label text="{i18n>Total}"/>
 									</VBox>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<Input value="" id="id_total"/>
 								</cells> 
 							</ColumnListItem>
@@ -283,7 +274,8 @@
 					<OverflowToolbar class="noBottomBorder">
 						<Label text="{i18n>Disclaimer}"/>
 						<ToolbarSpacer/>
-						<Button text="{i18n>PrintQuote}" type="Emphasized" press="generatePDF"/>
+						<!--<Button text="{i18n>PrintQuote}" type="Emphasized" press="generatePDF"/>-->
+						<Button press="generatePDF" icon="sap-icon://print" data:targetId="idTireQuotation" type="Emphasized"  text="{i18n>PrintQuote}"/>
 					</OverflowToolbar>
 				</content>
 			</Page>

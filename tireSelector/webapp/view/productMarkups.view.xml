@@ -11,9 +11,6 @@
 							<Text class="clCustomFont" text="{i18n>PageTitle}"/>
 						</contentLeft>
 						<contentRight>
-							<!--<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
-							<!--<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>-->
-							<!--<Link type="Transparent" text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>-->
 							<Button text="{i18n>Logout}" type="Default"/>
 						</contentRight>
 					</Bar>
@@ -35,7 +32,7 @@
 						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateXSATable"/>
-						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateODataCall"/>
+						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateXSALiveTable"/>
 					</OverflowToolbar>
 					<Table id="ID_ProdMarkupsTable" inset="false" items="{ path: 'ProdMarkupModel>/results', sorter: { path: 'Manufacturer' } }">
 						<columns>

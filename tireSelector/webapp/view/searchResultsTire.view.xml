@@ -55,7 +55,7 @@
 							<t:toolbar>
 								<Toolbar>
 									<CheckBox text="Show Dealer Net" select="onCheckPress"/>
-									<CheckBox text="Use Preview Markup" select="onCheckPress"/>
+									<!--<CheckBox text="Use Preview Markup" select="onCheckPress"/>-->
 								</Toolbar>
 							</t:toolbar>
 							<t:columns>
@@ -83,10 +83,10 @@
 										<Text text="{TireFitmentJSONModel>Tire Speed Rating} {TireFitmentJSONModel>Tire Load Rating}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Tire MFG Part No" filterProperty="Tire MFG Part No">
+								<t:Column sortProperty="Material" filterProperty="Material">
 									<Label text="{i18n>PartNumber}" wrapping="false"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire MFG Part No}" wrapping="false"/>
+										<Text text="{TireFitmentJSONModel>Material}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column id="ID_DealerNet" sortProperty="Dealer Net" filterProperty="Dealer Net" visible="{propertiesModel>/enableDealerNet}">
@@ -110,7 +110,7 @@
 							</t:columns>
 						</t:Table>
 					</HBox>
-					<Button text="NextPage" type="Emphasized" press="onRowPress"/>
+					<!--<Button text="NextPage" type="Emphasized" press="onRowPress"/>-->
 				</content>
 			</Page>
 		</pages>

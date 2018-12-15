@@ -39,7 +39,8 @@ module.exports = function () {
 		"Authorization": auth64,
 		"Content-Type": "application/json",
 		"APIKey": APIKey,
-		"x-csrf-token": "Fetch"
+		"x-csrf-token": "Fetch",
+		"Accept":"application/json"
 	};
 
 	app.use(function (req, res, next) {

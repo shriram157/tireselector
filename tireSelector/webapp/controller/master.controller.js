@@ -15,6 +15,50 @@ sap.ui.define([
 		onInit: function () {
 			_that = this;
 
+			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
+			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			console.log("XSO model data", _that.oXSOServiceModel);
+
+			_that.oXSOServiceModel.read("/DealerMarkUp", {
+				success: $.proxy(function (oData) {
+					console.log("XSO data", oData);
+					_that.oProdMarkupModel.setData(oData);
+					_that.oProdMarkupModel.updateBindings(true);
+				}, _that),
+				error: function (oError) {
+					console.log("Error in fetching table", oError);
+				}
+			});
+			// if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined) {
+			// 	_that.ProductMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
+			// 	console.log("Product Markup Data", _that.ProductMarkupModel.getData());
+			// }
+
+			_that.oDealerData = {
+				"attributes": [{
+					"BusinessPartnerName": "Don Valley North LEXUS",
+					"BusinessPartnerKey": "2400034030",
+					"BusinessPartner": "2400034030",
+					"BusinessPartnerType": "Z001",
+					"BusinessPartnerAddress": "Address",
+					"BusinessPartnerPhone": "1234567890",
+					"Division": "20",
+					"Attribute": "02"
+				}],
+				"samlAttributes": [{
+					"Language": ["English", "English"],
+					"UserType": ["Dealer", "Dealer"],
+					"DealerCode": ["42357", "42357"]
+				}],
+				"legacyDealer": "42357",
+				"legacyDealerName": "Don Valley North LEXUS"
+			};
+
+			_that._oDealerModel = new sap.ui.model.json.JSONModel(_that.oDealerData);
+			_that.getView().setModel(_that._oDealerModel, "DealerModel");
+			sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
+
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
 				delay: 0,
@@ -144,7 +188,7 @@ sap.ui.define([
 
 			$.ajax({
 				dataType: "json",
-				url: this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet",
+				url: this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet", //this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet",
 				type: "GET",
 				success: function (oDataResponse) {
 					console.log("Tire Size Data", oDataResponse.d.results);
@@ -158,7 +202,7 @@ sap.ui.define([
 
 			// this.nodeJsUrl = "/node";
 			$.ajax({
-				url: this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50",
+				url: this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50", //this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50",
 				//url: this.nodeJsUrl+"/Z_VEHICLE_MASTER_SRV/zc_c_vehicle",
 				type: "GET",
 				dataType: "json",
@@ -185,8 +229,8 @@ sap.ui.define([
 			});
 			///sap/opu/odata/sap/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields
 			$.ajax({
+				// url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields",
 				url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields",
-				// url: this.nodeJsUrl+"/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields",
 				type: "GET",
 				dataType: "json",
 				success: function (oDataResponse) {
@@ -201,8 +245,8 @@ sap.ui.define([
 			//sap/opu/odata/sap/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS
 
 			$.ajax({
+				// url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS",
 				url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS",
-				//url: this.nodeJsUrl+"/Z_VEHICLE_MASTER_SRV/zc_c_vehicle",
 				type: "GET",
 				dataType: "json",
 				success: function (oDataResponse) {
