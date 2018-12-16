@@ -19,8 +19,21 @@ sap.ui.define([
 			_that.oProdMarkupModel = new JSONModel();
 			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 			_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+
 			_that.getRouter().attachRouteMatched(function (oEvent) {
-				_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+				var sLocation = window.location.host;
+				var sLocation_conf = sLocation.search("webide");
+
+				// if (sLocation_conf == 0) {
+				// 	_that.sPrefix = "/TireSelector_Xsodata";
+				// } else {
+				// 	_that.sPrefix = "";
+				// }
+				// this.XSJsUrl = this.sPrefix + "/xsodata";
+				_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
+				_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
+
+				// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 
 				_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 				// _that.getView().setModel(_that.oXSOServiceModel, "ProdMarkupModel");
@@ -37,16 +50,6 @@ sap.ui.define([
 					}
 				});
 			}, _that);
-
-			var sLocation = window.location.host;
-			var sLocation_conf = sLocation.search("webide");
-
-			if (sLocation_conf == 0) {
-				_that.sPrefix = "/tireSelector-dest";
-			} else {
-				_that.sPrefix = "";
-			}
-			_that.nodeJsUrl = this.sPrefix + "/node";
 
 			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -77,7 +80,9 @@ sap.ui.define([
 		updateXSALiveTable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
-			var oModel = this.getOwnerComponent().getModel("XsodataModel");
+			// var oModel = this.getOwnerComponent().getModel("XsodataModel");
+
+			var oModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 			var modelData = _that.oProdMarkupModel.getData().results;
 			var UserData = sap.ui.getCore().getModel("DealerModel").getData().attributes[0];
 
@@ -120,7 +125,9 @@ sap.ui.define([
 		updateXSATable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
-			var oModel = this.getOwnerComponent().getModel("XsodataModel");
+			// var oModel = this.getOwnerComponent().getModel("XsodataModel");
+
+			var oModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 			var modelData = _that.oProdMarkupModel.getData().results;
 			var UserData = sap.ui.getCore().getModel("DealerModel").getData().attributes[0];
 
@@ -149,7 +156,6 @@ sap.ui.define([
 					dataFromModel.IsLive = "Y";
 					//  Add all the other fields that you want to update. // TODO: 
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
-						debugger;
 						console.log("Post Response from ECC", oResponse);
 						_that.callUpdatedProdMarkupTab();
 						// Proper error handling if any thing needed. // TODO: 
@@ -161,8 +167,10 @@ sap.ui.define([
 			// ===================================================== Update Functionality - End ===============================
 		},
 		callUpdatedProdMarkupTab: function () {
-			_that.oXSOServiceModel = this.getOwnerComponent().getModel("xsoOdataModel");
+			// _that.oXSOServiceModel = this.getOwnerComponent().getModel("xsoOdataModel");
 			// _that.getView().setModel(_that.oXSOServiceModel, "ProdMarkupModel");
+
+			_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 			console.log("XSO model data", _that.oXSOServiceModel);
 
 			_that.oXSOServiceModel.read("/DealerMarkUp", {

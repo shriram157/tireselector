@@ -48,15 +48,15 @@ sap.ui.define([
 
 				if (oEvent.getParameter("arguments").rowData !== undefined) {
 					_that.oGlobalBusyDialog.open();
-					// console.log("rowData", oEvent.getParameter("arguments").rowData);
+					console.log("rowData", oEvent.getParameter("arguments").rowData);
 					_that.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
-					
+
 					var oMat = _that.rowData.Material;
 					// _that.RHPFlag = "";
 					// _that.getPrices(oMat);
 					var oMaterial = oMat;
 					_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
-					// console.log("Dealer Data", _that.DealerData);
+					console.log("Dealer Data", _that.DealerData);
 					_that.Division = _that.DealerData.attributes[0].Division;
 					_that.Doctype = "ZAF";
 					_that.SalesOrg = "7000";
@@ -69,6 +69,7 @@ sap.ui.define([
 						"'&$format=json";
 					_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
 					_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
+					// _that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
 					_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 						success: $.proxy(function (oPriceData) {
 							for (var n = 0; n < oPriceData.results.length; n++) {
@@ -217,6 +218,7 @@ sap.ui.define([
 				"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
 				"'&$format=json";
 			_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
+			// _that.oPriceServiceModel =  _that.getOwnerComponent().getModel("PriceServiceModel"); 
 			_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
 			_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 				success: $.proxy(function (oData) {
@@ -264,6 +266,7 @@ sap.ui.define([
 				"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
 				"'&$format=json";
 			_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
+			// _that.oPriceServiceModel =  _that.getOwnerComponent().getModel("PriceServiceModel"); 
 			_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
 			_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 				success: $.proxy(function (oPriceData) {

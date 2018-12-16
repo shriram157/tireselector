@@ -15,6 +15,15 @@ sap.ui.define([
 		onInit: function () {
 			_that = this;
 
+			// if (sLocation_conf == 0) {
+			// 	_that.sXSPrefix = "/TireSelector_Xsodata";
+			// } else {
+			// 	_that.sXSPrefix = "";
+			// }
+			// this.XSJsUrl = this.sXSPrefix + "/xsodata";
+			_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
+			_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
+
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
@@ -179,7 +188,7 @@ sap.ui.define([
 
 			this.nodeJsUrl = this.sPrefix + "/node";
 			//for xsodata
-			//     this.nodeJsUrl = this.sPrefix + "/xsodata";
+			// this.nodeJsUrl = this.sPrefix + "/xsodata";
 
 			_that.oSelectJSONModel.setData(_that.objList);
 			_that.oSelectJSONModel.updateBindings();

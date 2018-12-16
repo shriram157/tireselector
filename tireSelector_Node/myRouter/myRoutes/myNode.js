@@ -40,7 +40,8 @@ module.exports = function () {
 		"Content-Type": "application/json",
 		"APIKey": APIKey,
 		"x-csrf-token": "Fetch",
-		"Accept":"application/json"
+		"Accept":"application/json",
+		"InvalidateCache" : "true"
 	};
 
 	app.use(function (req, res, next) {

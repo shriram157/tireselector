@@ -63,10 +63,12 @@ sap.ui.define([
 					_that.oPriceModel = new sap.ui.model.json.JSONModel();
 					// _that.getView().setModel(_that.oPriceModel, "PriceModel");
 					_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
+					// _that.oPriceServiceModel =  _that.getOwnerComponent().getModel("PriceServiceModel"); 
 					_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
 					_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
 
-					if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined) {
+					if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined || sap.ui.getCore().getModel("ProdMarkupModel").getData().length !=
+						undefined) {
 						_that.ProductMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
 						console.log("Product Markup Data", _that.ProductMarkupModel.getData());
 					}
@@ -101,8 +103,8 @@ sap.ui.define([
 					}
 					if (filterData !== undefined) {
 						_that.oGlobalBusyDialog.open();
-						_that.oFitmentModel = new sap.ui.model.odata.ODataModel(
-							this.nodeJsUrl + "/Z_TIRESELECTOR_SRV"); //_that.getOwnerComponent().getModel("FitmentModel");
+						_that.oFitmentModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/Z_TIRESELECTOR_SRV", true);
+						//_that.oFitmentModel = _that.getOwnerComponent().getModel("FitmentModel");
 						_that.tempModel = new sap.ui.model.json.JSONModel();
 						_that.oFitmentModel.read("/ZC_FitmentSet" + filterData, {
 							success: $.proxy(function (oData) {
@@ -145,7 +147,9 @@ sap.ui.define([
 									// _that.tempModel.getData().results[n].MATERIAL = "4261A53341";
 
 									var tireBrand = _that.tempModel.getData().results[n].TIRE_BRAND_ID;
-									if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined) {
+									if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined || sap.ui.getCore().getModel("ProdMarkupModel").getData().length !=
+										undefined) {
+										_that.ProductMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
 										for (var k = 0; k < _that.ProductMarkupModel.getData().results.length; k++) {
 											if (tireBrand == _that.ProductMarkupModel.getData().results[k].Manufacturer_code) {
 												var Live_Markup_Percentage = _that.ProductMarkupModel.getData().results[k].Live_Markup_Percentage;

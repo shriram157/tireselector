@@ -13,7 +13,6 @@
 			"id": "servicecatalog.connectivityComponentForManifest",
 			"version": "0.0.0"
 		},
-
 		"dataSources": {
 			"tireSelector_SRV.xsodata": {
 				"uri": "/TireSelector_Xsodata/tireSelector/xsodata/tireSelector_SRV.xsodata/",
@@ -24,11 +23,19 @@
 				}
 			},
 			"Z_TIRESELECTOR_SRV": {
-				"uri": "/tireSelector-dest/node/Z_TIRESELECTOR_SRV/",
+				"uri": "/node/Z_TIRESELECTOR_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
 					"localUri": "localService/Z_TIRESELECTOR_SRV/metadata.xml"
+				}
+			},
+			"ZMD_PRODUCT_FS_SRV": {
+				"uri": "/node/ZMD_PRODUCT_FS_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZMD_PRODUCT_FS_SRV/metadata.xml"
 				}
 			}
 		}
@@ -48,7 +55,10 @@
 			"tablet": true,
 			"phone": true
 		},
-		"supportedThemes": ["sap_hcb", "sap_belize"]
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_belize"
+		]
 	},
 	"sap.ui5": {
 		"rootView": {
@@ -79,7 +89,6 @@
 					"bundleName": "tireSelector.i18n.i18n"
 				}
 			},
-
 			"XsodataModel": {
 				"dataSource": "tireSelector_SRV.xsodata",
 				"type": "sap.ui.model.odata.v2.ODataModel",
@@ -91,7 +100,6 @@
 					"defaultUpdateMethod": "PUT"
 				}
 			},
-
 			"FitmentModel": {
 				"dataSource": "Z_TIRESELECTOR_SRV",
 				"type": "sap.ui.model.odata.ODataModel",
@@ -101,12 +109,24 @@
 					"defaultBindingMode": "OneWay",
 					"defaultUpdateMethod": "PUT"
 				}
+			},
+			"PriceServiceModel": {
+				"dataSource": "ZMD_PRODUCT_FS_SRV",
+				"preload": true,
+				"type": "sap.ui.model.odata.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				}
 			}
 		},
 		"resources": {
-			"css": [{
-				"uri": "css/style.css"
-			}]
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
 		},
 		"routing": {
 			"config": {
@@ -118,35 +138,43 @@
 				"controlId": "idAppControl",
 				"clearControlAggregation": false
 			},
-			"routes": [{
-				"name": "Routemaster",
-				"pattern": "Routemaster",
-				"target": "Routemaster"
-			}, {
-				"name": "searchResults",
-				"pattern": "searchResults",
-				"target": "searchResults"
-			}, {
-				"name": "searchResultsTire",
-				"pattern": "searchResultsTire/{modelData}",
-				"target": "searchResultsTire"
-			}, {
-				"name": "searchResultsTireNoData",
-				"pattern": "searchResultsTireNoData/{tireData}",
-				"target": "searchResultsTireNoData"
-			}, {
-				"name": "productMarkups",
-				"pattern": "productMarkups",
-				"target": "productMarkups"
-			}, {
-				"name": "reportError",
-				"pattern": "reportError",
-				"target": "reportError"
-			}, {
-				"name": "tireQuotation",
-				"pattern": "tireQuotation/{rowData}",
-				"target": "tireQuotation"
-			}],
+			"routes": [
+				{
+					"name": "Routemaster",
+					"pattern": "Routemaster",
+					"target": "Routemaster"
+				},
+				{
+					"name": "searchResults",
+					"pattern": "searchResults",
+					"target": "searchResults"
+				},
+				{
+					"name": "searchResultsTire",
+					"pattern": "searchResultsTire/{modelData}",
+					"target": "searchResultsTire"
+				},
+				{
+					"name": "searchResultsTireNoData",
+					"pattern": "searchResultsTireNoData/{tireData}",
+					"target": "searchResultsTireNoData"
+				},
+				{
+					"name": "productMarkups",
+					"pattern": "productMarkups",
+					"target": "productMarkups"
+				},
+				{
+					"name": "reportError",
+					"pattern": "reportError",
+					"target": "reportError"
+				},
+				{
+					"name": "tireQuotation",
+					"pattern": "tireQuotation/{rowData}",
+					"target": "tireQuotation"
+				}
+			],
 			"targets": {
 				"Routemaster": {
 					"viewType": "XML",

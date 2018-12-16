@@ -34,6 +34,15 @@
         "name": "TireSelector_Xsodata"
       },
       "description": "TireSelector_Xsodata"
+    },
+    {
+      "path": "/sap/opu/odata",
+      "target": {
+        "type": "destination",
+        "name": "S4HANA_GW",
+        "entryPath": "/sap/opu/odata"
+      },
+      "description": "DG2 200"
     }
   ],
   "sendWelcomeFileRedirect": true
