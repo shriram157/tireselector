@@ -10,17 +10,9 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.master", {
-
 		/* Function for Initialization of model and variables for view */
 		onInit: function () {
 			_that = this;
-
-			// if (sLocation_conf == 0) {
-			// 	_that.sXSPrefix = "/TireSelector_Xsodata";
-			// } else {
-			// 	_that.sXSPrefix = "";
-			// }
-			// this.XSJsUrl = this.sXSPrefix + "/xsodata";
 			_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
 			_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 
@@ -39,10 +31,6 @@ sap.ui.define([
 					console.log("Error in fetching table", oError);
 				}
 			});
-			// if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined) {
-			// 	_that.ProductMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
-			// 	console.log("Product Markup Data", _that.ProductMarkupModel.getData());
-			// }
 
 			_that.oDealerData = {
 				"attributes": [{
@@ -197,7 +185,7 @@ sap.ui.define([
 
 			$.ajax({
 				dataType: "json",
-				url: this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet", //this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet",
+				url: this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?sap-client=200", //this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet",
 				type: "GET",
 				success: function (oDataResponse) {
 					console.log("Tire Size Data", oDataResponse.d.results);
@@ -211,7 +199,7 @@ sap.ui.define([
 
 			// this.nodeJsUrl = "/node";
 			$.ajax({
-				url: this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50", //this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50",
+				url: this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50&?sap-client=200", //this.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/zc_c_vehicle?$top=50",
 				//url: this.nodeJsUrl+"/Z_VEHICLE_MASTER_SRV/zc_c_vehicle",
 				type: "GET",
 				dataType: "json",
@@ -239,7 +227,7 @@ sap.ui.define([
 			///sap/opu/odata/sap/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields
 			$.ajax({
 				// url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields",
-				url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields",
+				url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields?sap-client=200",
 				type: "GET",
 				dataType: "json",
 				success: function (oDataResponse) {
@@ -255,7 +243,7 @@ sap.ui.define([
 
 			$.ajax({
 				// url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS",
-				url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS",
+				url: this.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS?sap-client=200",
 				type: "GET",
 				dataType: "json",
 				success: function (oDataResponse) {
@@ -267,6 +255,10 @@ sap.ui.define([
 					console.log("oError", oError);
 				}
 			});
+			
+			_that.getRouter().attachRouteMatched(function (oEvent) {
+				_that.getView().setModel(_that._oViewModel, "propertiesModel");
+			}, _that);
 		},
 
 		handleVINSuggest: function (oEvent) {

@@ -8,17 +8,12 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
-
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf tireSelector.view.tireQuotation
-		 */
 		onInit: function () {
 			_that = this;
 			_that.oGlobalBusyDialog = new sap.m.BusyDialog();
 
 			this.getRouter().attachRouteMatched(function (oEvent) {
+				_that.oGlobalBusyDialog = new sap.m.BusyDialog();
 				var sLocation = window.location.host;
 				var sLocation_conf = sLocation.search("webide");
 
@@ -66,7 +61,7 @@ sap.ui.define([
 					var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
 						_that.SalesOrg +
 						"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-						"'&$format=json";
+						"'&?sap-client=200";
 					_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
 					_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
 					// _that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
@@ -144,12 +139,13 @@ sap.ui.define([
 				_that.TotalAmount = this.getView().byId("id_total");
 				_that.ProTaxCode = this.getView().byId("id_proTaxCode");
 				_that.FedTaxCode = this.getView().byId("id_fedTaxCode");
+				_that.selectRHP = this.getView().byId("id_RHP");
 
 				// _that.arrPrices = [];
 
 				$.ajax({
 					dataType: "json",
-					url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=PRODH eq 'PARP10F22P101ECPRH'&$format=json",
+					url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
 					type: "GET",
 					success: function (oDataResponse) {
 						console.log("Business Partner Data", oDataResponse.d.results);
@@ -216,7 +212,7 @@ sap.ui.define([
 
 			var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" + _that.SalesOrg +
 				"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-				"'&$format=json";
+				"'&?sap-client=200";
 			_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
 			// _that.oPriceServiceModel =  _that.getOwnerComponent().getModel("PriceServiceModel"); 
 			_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
@@ -264,7 +260,7 @@ sap.ui.define([
 			var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
 				_that.SalesOrg +
 				"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-				"'&$format=json";
+				"'&?sap-client=200";
 			_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
 			// _that.oPriceServiceModel =  _that.getOwnerComponent().getModel("PriceServiceModel"); 
 			_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
@@ -292,11 +288,14 @@ sap.ui.define([
 			sPreviousHash = oHistory.getPreviousHash();
 
 			if (sPreviousHash !== undefined) {
+				_that.selectRHP.setSelectedKey(null);
+				_that.oTireQuotationModel.setData(null);
 				window.history.go(-1);
 			} else {
+				_that.oTireQuotationModel.setData(null);
+				_that.selectRHP.setSelectedKey(null);
 				this.getRouter().navTo("searchResultsTireNoData", {}, true);
 			}
-			_that.oTireQuotationModel.setData(null);
 			_that.oTireQuotationModel.updateBindings(true);
 		},
 

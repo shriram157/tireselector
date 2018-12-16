@@ -50,7 +50,7 @@ sap.ui.define([
 			}
 
 			_that.getRouter().attachRouteMatched(function (oEvent) {
-
+					_that.oGlobalBusyDialog = new sap.m.BusyDialog();
 					var sLocation = window.location.host;
 					var sLocation_conf = sLocation.search("webide");
 					if (sLocation_conf == 0) {
@@ -74,19 +74,34 @@ sap.ui.define([
 					}
 
 					//API_BUSINESS_PARTNER/A_BusinessPartner?$filter=%20zstatus%20eq%20%27%20%27
-					$.ajax({
-						dataType: "json",
-						url: "https://tireselector.cfapps.us10.hana.ondemand.com/node/API_BUSINESS_PARTNER/A_BusinessPartner?$filter= zstatus eq ' '",
-						type: "GET",
-						success: function (oDataResponse) {
+					// $.ajax({
+					// 	dataType: "json",
+					// 	url: "https://tireselector.cfapps.us10.hana.ondemand.com/node/API_BUSINESS_PARTNER/A_BusinessPartner?$filter= zstatus eq ' '",
+					// 	type: "GET",
+					// 	success: function (oDataResponse) {
+					// 		console.log("Business Partner Data", oDataResponse.d.results);
+					// 		_that.oBusinessPartnerModel = new JSONModel();
+					// 		_that.getView().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
+					// 		sap.ui.getCore().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
+					// 		_that.oBusinessPartnerModel.setData(oDataResponse.d);
+					// 		_that.oBusinessPartnerModel.updateBindings(true);
+					// 	},
+					// 	error: function (oError) {}
+					// });
+					_that.oBusinessPartnerModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/API_BUSINESS_PARTNER", true);
+					// _that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
+					_that.oBusinessPartnerModel.read("/A_BusinessPartner?$filter= zstatus eq ' '", {
+						success: $.proxy(function (oDataResponse) {
 							console.log("Business Partner Data", oDataResponse.d.results);
 							_that.oBusinessPartnerModel = new JSONModel();
 							_that.getView().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
 							sap.ui.getCore().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
 							_that.oBusinessPartnerModel.setData(oDataResponse.d);
 							_that.oBusinessPartnerModel.updateBindings(true);
-						},
-						error: function (oError) {}
+						}, _that),
+						error: function (oError) {
+							console.log("Error in fetching A_BusinessPartner", oError);
+						}
 					});
 
 					_that.oTable = _that.getView().byId("idTireSelectionTable");
@@ -99,7 +114,7 @@ sap.ui.define([
 
 					} else if (oEvent.getParameter("arguments").tireData !== undefined) {
 						_that.oTireData = JSON.parse(oEvent.getParameters().arguments.tireData);
-						filterData = "?$filter=ZtireSize eq '" + _that.oTireData.ZtireSize + "'&$expand=FitmentToCharac";
+						filterData = "?$filter=ZtireSize eq '" + _that.oTireData.ZtireSize + "'&$expand=FitmentToCharac&?sap-client=200";
 					}
 					if (filterData !== undefined) {
 						_that.oGlobalBusyDialog.open();
@@ -171,7 +186,7 @@ sap.ui.define([
 									var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype +
 										"' and SalesOrg eq '" + _that.SalesOrg + "' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that
 										.SoldtoParty +
-										"' and Material eq '" + _that.tempModel.getData().results[n].MATERIAL + "'&$format=json";
+										"' and Material eq '" + _that.tempModel.getData().results[n].MATERIAL + "'&?sap-client=200";
 									_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 										success: $.proxy(function (oDataPrice) {
 											for (var l = 0; l < oDataPrice.results.length; l++) {
@@ -266,14 +281,15 @@ sap.ui.define([
 											"Tire Brand ID": item.TIRE_BRAND_ID,
 											"Material": item.MATERIAL,
 											"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
-											"Dealer Net": _that.decimalFormatter(item.DealerNet),
-											"Retails": _that.decimalFormatter(item.Retails),
-											"Profit": _that.decimalFormatter(item.Profit)
+											"Dealer Net": decimalFormatter(item.DealerNet),
+											"Retails": decimalFormatter(item.Retails),
+											"Profit": decimalFormatter(item.Profit)
 										});
 										_that.oGlobalBusyDialog.close();
 									});
-									_that.oTireFitmentJSONModel.setData(null);
+									// _that.oTireFitmentJSONModel.setData(null);
 									_that.oTireFitmentJSONModel.setData(_that.FitmentToCharac);
+									_that.oTireFitmentJSONModel.updateBindings(true);
 									_that.oTireFitmentJSONModel.getData().Filters = _that.Filters;
 									console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
 									_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
@@ -285,6 +301,19 @@ sap.ui.define([
 								console.log("Error in fetching ZC_FitmentSet data", oError);
 							}
 						});
+
+						function decimalFormatter(oDecVal) {
+							if (oDecVal != undefined || oDecVal != null) {
+								var returnVal = parseFloat(oDecVal).toFixed(2);
+								if (returnVal == 0.00) {
+									return "";
+								} else {
+									return returnVal;
+								}
+							} else {
+								return "";
+							}
+						}
 					}
 
 				},
@@ -330,6 +359,8 @@ sap.ui.define([
 		},
 
 		NavBackToSearch: function () {
+			_that.oTireFitmentJSONModel.setData(null);
+			_that.oTireFitmentJSONModel.updateBindings(true);
 			_that.oTireFitmentJSONModel.refresh(true);
 			sap.ushell.components.SearchOptionVIN.setValue("");
 			sap.ushell.components.SearchOptionTireSize.setValue("");
@@ -400,16 +431,6 @@ sap.ui.define([
 
 		onRowPress: function (oRowEvt) {
 			var oPath = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
-			// var oPath = {
-			// 	"Material": "",
-			// 	"TireBrand": "ABC",
-			// 	"TireBrandID": "12345",
-			// 	"TireCategory": "A",
-			// 	"TireFitment": "Perfect",
-			// 	"TireLoadRating": "110",
-			// 	"TireMFGPart No": "1234567",
-			// 	"TireSpeedRating": "H"
-			// }
 			_that.getRouter().navTo("tireQuotation", {
 				rowData: JSON.stringify(oPath)
 			});

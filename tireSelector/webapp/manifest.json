@@ -37,6 +37,14 @@
 					"odataVersion": "2.0",
 					"localUri": "localService/ZMD_PRODUCT_FS_SRV/metadata.xml"
 				}
+			},
+			"API_BUSINESS_PARTNER": {
+				"uri": "/node/API_BUSINESS_PARTNER/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/API_BUSINESS_PARTNER/metadata.xml"
+				}
 			}
 		}
 	},
@@ -92,7 +100,7 @@
 			"XsodataModel": {
 				"dataSource": "tireSelector_SRV.xsodata",
 				"type": "sap.ui.model.odata.v2.ODataModel",
-				"preload": true,
+				"preload": false,
 				"settings": {
 					"useBatch": false,
 					"json": true,
@@ -101,24 +109,52 @@
 				}
 			},
 			"FitmentModel": {
-				"dataSource": "Z_TIRESELECTOR_SRV",
-				"type": "sap.ui.model.odata.ODataModel",
-				"preload": true,
-				"settings": {
-					"json": true,
-					"defaultBindingMode": "OneWay",
-					"defaultUpdateMethod": "PUT"
-				}
-			},
-			"PriceServiceModel": {
-				"dataSource": "ZMD_PRODUCT_FS_SRV",
-				"preload": true,
+				"uri": "/node/Z_TIRESELECTOR_SRV/",
 				"type": "sap.ui.model.odata.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
-					"defaultCountMode": "Request"
-				}
+					"defaultCountMode": "Request",
+					"serviceUrlParams": {
+						"sap-client": "200"
+					},
+					"json": true,
+					"useBatch": false
+				},
+				"dataSource": "Z_TIRESELECTOR_SRV",
+				"preload": false
+			},
+			"PriceServiceModel": {
+				"uri": "/node/ZMD_PRODUCT_FS_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request",
+					"serviceUrlParams": {
+						"sap-client": "200"
+					},
+					"json": true,
+					"useBatch": false
+				},
+				"dataSource": "ZMD_PRODUCT_FS_SRV",
+				"preload": false
+			},
+			"BusinessPartnerModel": {
+				"uri": "/node/API_BUSINESS_PARTNER/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request",
+					"serviceUrlParams": {
+						"sap-client": "200"
+					},
+					"json": true,
+					"useBatch": false
+				},
+				"dataSource": "API_BUSINESS_PARTNER",
+				"preload": false
 			}
 		},
 		"resources": {
