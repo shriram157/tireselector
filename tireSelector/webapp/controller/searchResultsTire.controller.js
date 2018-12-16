@@ -92,11 +92,11 @@ sap.ui.define([
 					// _that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 					_that.oBusinessPartnerModel.read("/A_BusinessPartner?$filter= zstatus eq ' '", {
 						success: $.proxy(function (oDataResponse) {
-							console.log("Business Partner Data", oDataResponse.d.results);
+							console.log("Business Partner Data", oDataResponse.results);
 							_that.oBusinessPartnerModel = new JSONModel();
 							_that.getView().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
 							sap.ui.getCore().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
-							_that.oBusinessPartnerModel.setData(oDataResponse.d);
+							_that.oBusinessPartnerModel.setData(oDataResponse);
 							_that.oBusinessPartnerModel.updateBindings(true);
 						}, _that),
 						error: function (oError) {
@@ -162,7 +162,7 @@ sap.ui.define([
 									// _that.tempModel.getData().results[n].MATERIAL = "4261A53341";
 
 									var tireBrand = _that.tempModel.getData().results[n].TIRE_BRAND_ID;
-									if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined || sap.ui.getCore().getModel("ProdMarkupModel").getData().length !=
+									if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined && sap.ui.getCore().getModel("ProdMarkupModel").getData().length !=
 										undefined) {
 										_that.ProductMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
 										for (var k = 0; k < _that.ProductMarkupModel.getData().results.length; k++) {
@@ -359,9 +359,8 @@ sap.ui.define([
 		},
 
 		NavBackToSearch: function () {
-			_that.oTireFitmentJSONModel.setData(null);
+			_that.oTireFitmentJSONModel.setData();
 			_that.oTireFitmentJSONModel.updateBindings(true);
-			_that.oTireFitmentJSONModel.refresh(true);
 			sap.ushell.components.SearchOptionVIN.setValue("");
 			sap.ushell.components.SearchOptionTireSize.setValue("");
 			sap.ushell.components.ModelSeriesCombo.setSelectedKey();
