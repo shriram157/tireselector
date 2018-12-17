@@ -28,16 +28,17 @@ sap.ui.define([
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			this.getView().setModel(oBusinessModel, "OBusinessModel");
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
-
+			var oEventBus = sap.ui.getCore().getEventBus();
+			oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
 		},
 
 		onBeforeRendering: function () {
-
 			this.getView().byId("idDealerCode").setSelectedKey("2400042350");
 			this.getView().byId("idDealerCode").setValue("42350");
-
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.attachRouteMatched(this._onObjectMatched, this);
+			this.selectedDealer = this.getView().byId("idDealerCode").getSelectedKey();
+			console.log(this.selectedDealer);
 		},
 		_onObjectMatched: function (oEvent) {
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
@@ -57,7 +58,7 @@ sap.ui.define([
 				oEcpModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-							"'and DealerCode eq '2400042350'and ApplicationStatus eq 'PENDING' "
+							"'and DealerCode eq '" + this.selectedDealer + "'and ApplicationStatus eq 'PENDING' "
 					},
 					success: $.proxy(function (data) {
 						this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
@@ -83,6 +84,11 @@ sap.ui.define([
 
 		onAfterRendering: function () {
 
+		},
+		
+		onSelectiDealer : function(oEvent){
+			this.selectedDealer =  oEvent.getSource().getSelectedKey();
+			console.log(this.selectedDealer);
 		},
 
 		OnCreateApp: function (oEvent) {

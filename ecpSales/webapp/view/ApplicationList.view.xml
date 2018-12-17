@@ -18,7 +18,7 @@
 												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
 											<Label text="Dealer Code" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
 											<!--<Input type="Text" id="idDealerCode"/>-->
-											<ComboBox showSecondaryValues="true" id="idDealerCode" filterSecondaryValues="true"
+											<ComboBox showSecondaryValues="true" id="idDealerCode" filterSecondaryValues="true" selectionChange="onSelectiDealer"
 												items="{ path: 'OBusinessModel>/A_BusinessPartner', filters : [ { path : 'BusinessPartnerType', operator : 'EQ', value1 : 'Z001'}], sorter: { path: 'BusinessPartner' }, length:300 }">
 												<core:ListItem key="{OBusinessModel>BusinessPartner}"
 													text="{path:'OBusinessModel>BusinessPartner', formatter:'zecp.utils.formatter.fnFormatCustomer'}"

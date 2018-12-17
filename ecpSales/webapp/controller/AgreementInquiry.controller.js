@@ -25,7 +25,7 @@ sap.ui.define([
 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
 			var oVin = oEvent.getParameters().arguments.vin;
 			var oCustomerNumber = oEvent.getParameters().arguments.customerNumber;
-			var Oodomtr = oEvent.getParameters().arguments.odometer;
+			// var Oodomtr = oEvent.getParameters().arguments.odometer;
 			this.getOwnerComponent().getModel("LocalDataModel").setProperty("/VinNumber", oVin);
 			this.getOwnerComponent().getModel("LocalDataModel").setProperty("/AgreementNumber", oAgrNum);
 			console.log(oAgrNum, oVin, oCustomerNumber);
@@ -67,6 +67,9 @@ sap.ui.define([
 				success: $.proxy(function(data) {
 						console.log(data);
 						this.getModel("LocalDataModel").setProperty("/BusinessPartnerData", data.results[0]);
+						this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress);
+						this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber);
+						this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber);
 					},
 					this),
 				error: function() {
@@ -80,9 +83,8 @@ sap.ui.define([
 				},
 				success: $.proxy(function(data) {
 					console.log(data);
-					this.getModel("LocalDataModel").setProperty("/BusinessPartnerName/LastName", data.results[0].LastName);
-					this.getModel("LocalDataModel").setProperty("/BusinessPartnerName/FirstName", data.results[0].FirstName);
-
+					this.getModel("LocalDataModel").setProperty("/BusinessPartnerName", data.results[0]);
+				
 				}, this),
 				error: function() {
 					console.log("Error");
@@ -125,18 +127,18 @@ sap.ui.define([
 
 			zEcpModel.read("/zc_ecp_agreement", {
 				urlParameters: {
-					"$filter": "VIN eq '" + oVin + "'"
+					"$filter": "AgreementNumber eq '" + oAgrNum + "'"
 				},
 				success: $.proxy(function(data) {
 					console.log(data);
 					this.getModel("LocalDataModel").setProperty("/AgreementInfo", data.results[0]);
-
 				}, this),
 				error: function() {
 					console.log("Error");
 				}
 			});
-
+			
+			
 			// 			zEcpModel.read("/zc_ecp_planpricing_dataSet", {
 			// 				urlParameters: {
 			// 					"$filter": "ODMTR eq '" + Oodomtr + "'"
@@ -151,25 +153,25 @@ sap.ui.define([
 			// 				}
 			// 			});
 
-			var oZdrClaimModel = this.getOwnerComponent().getModel("ZdrClaimModel");
-				this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-							$.ajaxSetup({
-								headers: {
-									'X-CSRF-Token': this._oToken
-								}
-							});
-			oZdrClaimModel.read("/ZC_CLAIM_HEAD", {
-				urlParameters: {
-					"$filter": "AgreementNumber eq '" + oAgrNum + "'",
-					"$expand": "to_claimitem/to_claimprice"
-				},
-				success: $.proxy(function(data) {
-					this.getModel("LocalDataModel").setProperty("/ClaimModelData", data.results);
-				}, this),
-				error: function() {
-					console.log("Error");
-				}
-			});
+			// var oZdrClaimModel = this.getOwnerComponent().getModel("ZdrClaimModel");
+			// 	this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+			// 				$.ajaxSetup({
+			// 					headers: {
+			// 						'X-CSRF-Token': this._oToken
+			// 					}
+			// 				});
+			// oZdrClaimModel.read("/ZC_CLAIM_HEAD", {
+			// 	urlParameters: {
+			// 		"$filter": "AgreementNumber eq '" + oAgrNum + "'",
+			// 		"$expand": "to_claimitem/to_claimprice"
+			// 	},
+			// 	success: $.proxy(function(data) {
+			// 		this.getModel("LocalDataModel").setProperty("/ClaimModelData", data.results);
+			// 	}, this),
+			// 	error: function() {
+			// 		console.log("Error");
+			// 	}
+			// });
 
 		},
 		handlePressClaim: function(oEvent) {

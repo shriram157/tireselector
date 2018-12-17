@@ -17,27 +17,12 @@
 												<Label text="{i18n>Customer}"/>
 												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/BusinessPartner'}"/>
 												<Label text="{i18n>Type}"/>
-												<Text text=""/>
+												<Text id="idType" text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
 												<Label text="{i18n>Language}"/>
 												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
-												<!--<Label text="{i18n>Name}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/CustomerName}"/>-->
-												<!--<Label text="{i18n>Address}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/Address}"/>-->
-												<!--<Label text="{i18n>City}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/City}"/>-->
-												<!--<Label text="{i18n>Province}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/Province}"/>-->
-												<!--<Label text="{i18n>PostalCode}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/PostalCode}"/>-->
-												<!--<Label text="{i18n>Email}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/Email}"/>-->
-												<!--<Label text="{i18n>Home}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>-->
-												<!--<Label text="{i18n>Business}"/>-->
-												<!--<Text text="{LocalDataModel>/AgreementOwnerDetail/BusinessPhone}"/>-->
+												
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>BusinessPartnerName/LastName} {LocalDataModel>BusinessPartnerName/FirstName}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerName/LastName} {LocalDataModel>/BusinessPartnerName/FirstName}"/>
 												<Label text="{i18n>Address}"/>
 												<Text text="{LocalDataModel>/BusinessPartnerData/StreetName}"/>
 												<Label text="{i18n>City}"/>
@@ -60,14 +45,15 @@
 											labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
 											singleContainerFullSize="false">
 											<f:content>
+											
 												<Label text="{i18n>Customer}"/>
 												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/BusinessPartner'}"/>
 												<Label text="{i18n>Type}"/>
-												<Text text=" "/>
+												<Text text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
 												<Label text="{i18n>Language}"/>
 												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>BusinessPartnerName/LastName} {LocalDataModel>BusinessPartnerName/FirstName}"/>
+												<Text text="{LocalDataModel>/BusinessPartnerName/LastName} {LocalDataModel>/BusinessPartnerName/FirstName}"/>
 												<Label text="{i18n>Address}"/>
 												<Text text="{LocalDataModel>/BusinessPartnerData/StreetName}"/>
 												<Label text="{i18n>City}"/>
@@ -92,19 +78,20 @@
 											labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
 											singleContainerFullSize="false">
 											<f:content>
+												<core:Title text="VIN : {LocalDataModel>/AgreementInfo/VIN}"/>
 												<Label text="{i18n>Make}"/>
 												<Text text="{LocalDataModel>/PricingModelData/MAKE}"/>
 												<Label text="{i18n>Model}"/>
 												<Text text="{LocalDataModel>/PricingModelData/VEHICLEMODEL}"/>
 												<Label text="{i18n>Year}"/>
 												<Text text="{LocalDataModel>/PricingModelData/ZZMOYR}"/>
-												<Label text="{i18n>AutoCode}"/>
-												<Text text="{LocalDataModel>/PricingModelData/ZECP_DEALCODE}"/>
+												<!--<Label text="{i18n>AutoCode}"/>-->
+												<!--<Text text="{LocalDataModel>/PricingModelData/ZECP_DEALCODE}"/>-->
 												<Label text="{i18n>RegDate}"/>
 												<Text
 													text="{path:'LocalDataModel>/PricingModelData/REG_DATE', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
-												<Label text="{i18n>SaleType}"/>
-												<Text text="{LocalDataModel>/PricingModelData/ZECP_SALETYPE}"/>
+												<!--<Label text="{i18n>SaleType}"/>-->
+												<!--<Text text="{LocalDataModel>/PricingModelData/ZECP_SALETYPE}"/>-->
 											</f:content>
 										</f:SimpleForm>
 									</html:div>
@@ -127,11 +114,11 @@
 												<Label text="{i18n>PlanCode}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/PlanType}"/>
 												<Label text="{i18n>TransferFee}"/>
-												<Text text=""/>
+												<Text text="{LocalDataModel>/AgreementInfo/Deductible}"/>
 												<Label text="{i18n>Deductible}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/Deductible}"/>
 												<Label text="{i18n>CancelFee}"/>
-												<Text text=""/>
+												<Text text="{LocalDataModel>/AgreementInfo/CancelFee}"/>
 												<Label text="{i18n>DeferredSurcharge}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/Surcharge}"/>
 												<Label text="{i18n>VehicleSurcharge}"/>
@@ -153,9 +140,9 @@
 												<Label text="{i18n>StartOdometer}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/ODMTR}"/>
 												<Label text="{i18n>ExpiryOdometer}"/>
-												<Text text=""/>
+												<Text text="{LocalDataModel>/AgreementInfo/AgreementthruKMreading}"/>
 												<Label text="{i18n>RoadHazardExpiry}"/>
-												<Text text=""/>
+												<Text text="{path:'LocalDataModel>/AgreementInfo/RoadHazardExpiryDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<Label text="{i18n>BenefitsFlag}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/BenefitsFlag}"/>
 											</f:content>
@@ -172,7 +159,7 @@
 												<Text
 													text="{path : 'LocalDataModel>/AgreementInfo/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<Label text="{i18n>StatusReason}"/>
-												<Text text="{LocalDataModel>/AgreementInfo/Agreementreasoncode}"/>
+												<Text text="{path:'LocalDataModel>/AgreementInfo/Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}"/>
 												<Label text="{i18n>Odometer}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/ODMTR}"/>
 												<Label text="{i18n>SaleDate}"/>

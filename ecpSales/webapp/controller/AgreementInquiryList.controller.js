@@ -76,8 +76,8 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiry", {
 				AgrNum: obj.AgreementNumber,
 				vin: obj.VIN,
-				customerNumber: obj.CustomerNumber,
-				odometer: obj.ODMTR
+				customerNumber: obj.CustomerNumber
+				// odometer: obj.ODMTR
 			});
 
 			this.getView().byId("idAgreementTable").removeSelections("true");
