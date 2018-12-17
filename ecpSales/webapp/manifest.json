@@ -184,7 +184,7 @@
 				},
 				{
 					"name": "AgreementInquiry",
-					"pattern": "AgreementInquiry/{AgrNum}/{vin}/{customerNumber}/{odometer}",
+					"pattern": "AgreementInquiry/{AgrNum}/{vin}/{customerNumber}",
 					"target": [
 						"AgreementInquiry"
 					]

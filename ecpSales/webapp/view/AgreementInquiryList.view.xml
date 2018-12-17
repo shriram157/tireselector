@@ -60,7 +60,7 @@
 													<Text text="{path:'AgreementNumber'}"/>
 													<Text text="{PlanType}"/>
 													<Text text="{AgreementStatus}"/>
-													<Text text="{path:'StatusDate'}"/>
+													<Text text="{path:'StatusDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
 													<Text text="{path:'AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
 													<Text text="{AgreementthruKMreading}"/>
 													<Text text="{Agreementreasoncode}"/>
