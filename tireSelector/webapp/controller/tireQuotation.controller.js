@@ -45,11 +45,27 @@ sap.ui.define([
 					_that.oGlobalBusyDialog.open();
 					console.log("rowData", oEvent.getParameter("arguments").rowData);
 					_that.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
+					_that.rowData.TireSize = _that.rowData.TireSize.replace("%2F", "/");
+					_that.rowData.ProvincialTax = "";
+					_that.rowData.FederalTax = "";
 
 					var oMat = _that.rowData.Material;
 					// _that.RHPFlag = "";
 					// _that.getPrices(oMat);
 					var oMaterial = oMat;
+					
+					_that.objPrice = {};
+					_that.objPrice.otherItemPrice1 = this.getView().byId("id_OtherItemPrice").getValue();
+					_that.objPrice.otherItemPrice2 = this.getView().byId("id_OtherItem2Price").getValue();
+					_that.objPrice.otherItemPrice3 = this.getView().byId("id_OtherItem3Price").getValue();
+					_that.objPrice.otherItemPrice4 = this.getView().byId("id_OtherItem4Price").getValue();
+					_that.objPrice.MnBPrice = this.getView().byId("id_MnBPrice").getValue();
+					_that.objPrice.TiresPrice = this.getView().byId("id_tirePrice").getValue();
+					_that.objPrice.WheelsPrice = this.getView().byId("id_wheelsPrice").getValue();
+					_that.objPrice.TPMSPrice = this.getView().byId("id_TPMSPrice").getValue();
+					_that.objPrice.FIttingKitPrice = this.getView().byId("id_FittingKitPrice").getValue();
+					_that.objPrice.RHPPrice = this.getView().byId("id_RHPPrice").getValue();
+					
 					_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
 					console.log("Dealer Data", _that.DealerData);
 					_that.Division = _that.DealerData.attributes[0].Division;
@@ -61,12 +77,13 @@ sap.ui.define([
 					var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
 						_that.SalesOrg +
 						"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-						"'&?sap-client=200";
-					_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
-					_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
-					// _that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
+						"'";
+					// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
+					// _that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
+					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
 					_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 						success: $.proxy(function (oPriceData) {
+							console.log("oPriceData", oPriceData);
 							for (var n = 0; n < oPriceData.results.length; n++) {
 								var CndType = oPriceData.results[n].CndType;
 								if (CndType == "JRC4" || CndType == "JRC5") {
@@ -74,7 +91,6 @@ sap.ui.define([
 								} else if (CndType == "JRC3" || CndType == "JRC2") {
 									_that.rowData.ProvincialTax = _that.decimalFormatter(oPriceData.results[n].Amount);
 								}
-								_that.oGlobalBusyDialog.close();
 							}
 						}, _that),
 						error: function (oError) {
@@ -83,25 +99,15 @@ sap.ui.define([
 					});
 				}
 
-				jQuery.sap.delayedCall(3000, _that, function () {
-					var objPrice = {};
-					objPrice.otherItemPrice1 = this.getView().byId("id_OtherItemPrice").getValue();
-					objPrice.otherItemPrice2 = this.getView().byId("id_OtherItem2Price").getValue();
-					objPrice.otherItemPrice3 = this.getView().byId("id_OtherItem3Price").getValue();
-					objPrice.otherItemPrice4 = this.getView().byId("id_OtherItem4Price").getValue();
-					objPrice.MnBPrice = this.getView().byId("id_MnBPrice").getValue();
-					objPrice.TiresPrice = this.getView().byId("id_tirePrice").getValue();
-					objPrice.WheelsPrice = this.getView().byId("id_wheelsPrice").getValue();
-					objPrice.TPMSPrice = this.getView().byId("id_TPMSPrice").getValue();
-					objPrice.FIttingKitPrice = this.getView().byId("id_FittingKitPrice").getValue();
-					objPrice.RHPPrice = this.getView().byId("id_RHPPrice").getValue();
-
+				jQuery.sap.delayedCall(6000, _that, function () {
 					var Obj = {
 						"results": [_that.rowData],
-						"prices": [objPrice]
+						"prices": [_that.objPrice]
 					};
 					_that.oTireQuotationModel = new JSONModel();
 					_that.oTireQuotationModel.setData(Obj);
+					_that.oTireQuotationModel.refresh(true);
+					_that.oTireQuotationModel.updateBindings(true);
 
 					if (_that.oTireQuotationModel.getData().results[0].FederalTax = "") {
 						_that._oViewModel.setProperty("/enableFTC", false);
@@ -118,10 +124,10 @@ sap.ui.define([
 					_that.getView().setModel(_that.oTireQuotationModel, "TireQuotationModel");
 					console.log("TireQuotation Data", _that.oTireQuotationModel);
 					// var oTable = _that.getView().byId("tableQuotation");
-
+					_that.oTireQuotationModel.refresh(true);
 					_that.oTireQuotationModel.updateBindings(true);
 					console.log("Tire Quote Data", _that.oTireQuotationModel.getData().results[0]);
-
+					_that.oGlobalBusyDialog.close();
 				});
 
 				_that.item_01 = this.getView().byId("id_OtherItemPrice");
@@ -212,10 +218,10 @@ sap.ui.define([
 
 			var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" + _that.SalesOrg +
 				"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-				"'&?sap-client=200";
-			_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
-			// _that.oPriceServiceModel =  _that.getOwnerComponent().getModel("PriceServiceModel"); 
-			_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
+				"'";
+			// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
+			_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
+			// _that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
 			_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 				success: $.proxy(function (oData) {
 					console.log("Initial load price data", oData);
@@ -260,10 +266,10 @@ sap.ui.define([
 			var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
 				_that.SalesOrg +
 				"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-				"'&?sap-client=200";
-			_that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
-			// _that.oPriceServiceModel =  _that.getOwnerComponent().getModel("PriceServiceModel"); 
-			_that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
+				"'";
+			// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
+			_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
+			// _that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
 			_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 				success: $.proxy(function (oPriceData) {
 					for (var n = 0; n < oPriceData.results.length; n++) {
@@ -283,20 +289,23 @@ sap.ui.define([
 		},
 
 		SelectDifferentTire: function () {
-			var oHistory, sPreviousHash;
-			oHistory = History.getInstance();
-			sPreviousHash = oHistory.getPreviousHash();
-
-			if (sPreviousHash !== undefined) {
-				_that.selectRHP.setSelectedKey(null);
-				_that.oTireQuotationModel.setData(null);
-				window.history.go(-1);
-			} else {
-				_that.oTireQuotationModel.setData(null);
-				_that.selectRHP.setSelectedKey(null);
-				this.getRouter().navTo("searchResultsTireNoData", {}, true);
-			}
+			_that.oTireQuotationModel.setData({});
 			_that.oTireQuotationModel.updateBindings(true);
+
+			// var oHistory, sPreviousHash;
+			// oHistory = History.getInstance();
+			// sPreviousHash = oHistory.getPreviousHash();
+
+			// if (sPreviousHash !== undefined) {
+			// 	_that.selectRHP.setSelectedKey();
+			// 	window.history.go(-1);
+			// } else {
+			_that.selectRHP.setSelectedKey();
+			_that.getRouter().navTo("searchResultsTireNoData", {
+				tireData: "selectDifferentTire"
+			}, true);
+			// }
+
 		},
 
 		generatePDF: function (oEvent) {
@@ -425,7 +434,6 @@ sap.ui.define([
 
 			var oTarget = this.getView(oEvent),
 				sTargetId = oEvent.getSource().data("targetId");
-
 			if (sTargetId) {
 				oTarget = oTarget.byId(sTargetId);
 			}
@@ -550,12 +558,9 @@ sap.ui.define([
 				_that.getRouter().navTo("reportError");
 			}
 		},
-		onAfterRendering: function () {
-
-		},
 
 		onExit: function () {
-			_that.oTireQuotationModel.setData(null);
+			_that.oTireQuotationModel.setData({});
 			_that.oTireQuotationModel.updateBindings(true);
 		}
 

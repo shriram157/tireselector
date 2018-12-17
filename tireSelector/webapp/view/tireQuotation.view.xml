@@ -89,7 +89,7 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>Tires}"/>
-										<Text text="{TireQuotationModel>/results/0/Tire Brand}"/>
+										<Text text="{TireQuotationModel>/results/0/TireSize} - {TireQuotationModel>/results/0/Material}"/>
 									</VBox>
 									<Input value="{TireQuotationModel>/results/0/Retails}" required="true" id="id_tireUnitPrice" editable="false"/>
 									<Input value="" required="true" id="id_tireQty" liveChange="calculatePrice"/>

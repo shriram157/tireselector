@@ -255,8 +255,17 @@ sap.ui.define([
 					console.log("oError", oError);
 				}
 			});
-			
+
 			_that.getRouter().attachRouteMatched(function (oEvent) {
+				_that._oViewModel = new sap.ui.model.json.JSONModel({
+					busy: false,
+					delay: 0,
+					enableSearchBtn: false,
+					enableVin: true,
+					enableTireSize: false,
+					enableVehicleInputs: false,
+					enableTable: false
+				});
 				_that.getView().setModel(_that._oViewModel, "propertiesModel");
 			}, _that);
 		},
