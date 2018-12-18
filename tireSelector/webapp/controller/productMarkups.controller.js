@@ -30,7 +30,9 @@ sap.ui.define([
 				// 	_that.sPrefix = "";
 				// }
 				// this.XSJsUrl = this.sPrefix + "/xsodata";
-				_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
+				// changed by ray 
+				//_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
+				_that.oService = "/tireSelector/xsodata/tireSelector_SRV.xsodata";
 				_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 
 				// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");

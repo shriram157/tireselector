@@ -1,83 +1,89 @@
-ID: tireSelector
+ID: tireSelectorS
 _schema-version: '2.1'
 description: MTA Project For Tire Selector
-version: 0.0.1
+version: 0.1.13
 
 modules:
- - name: tireSelector_Node
+ - name: tireSelectorS_Node
    type: nodejs
    path: tireSelector_Node
    parameters:
-      host: tireSelector_Node
+      host: tireSelectorS_Node
       register-service-url: true
-      service-name: tireSelector_Node
+      service-name: tireSelectorS_Node
       service-url: '${default-url}'
       disk-quota: 256MB
-      memory: 256MB
+      memory: 128MB
    provides:
-    - name: tireSelector_Node_api
+    - name: tireSelectorS_Node_api
       properties:
          url: ${default-url}
    requires:
     - name: TIRE_SELECTOR_APIM_CUPS
-    
- - name: tireSelector
+    - name: uaa_tireSelectorS
+
+ - name: tireSelectorS_XSJS
+   type: nodejs
+   path: tireSelector_XSJS
+   parameters:
+      host: tireSelectorS_XSJS
+      register-service-url: true
+      service-name: tireSelectorS_XSJS
+      service-url: '${default-url}'
+      disk-quota: 512M
+      memory: 256M
+   provides:
+    - name: tireSelectorS_XSJS_api
+      properties:
+         url: ${default-url}
+   requires:
+     - name: uaa_tireSelectorS
+     - name: tireSelectorS_hdb
+     - name: hdi_tireSelectorS_hdb
+
+ - name: tireSelectorS_hdb
+   type: hdb
+   path: tireSelector_hdb
+   requires:
+    - name: hdi_tireSelectorS_hdb
+
+ - name: tireSelectorS
    type: html5
    path: tireSelector
    parameters:
-      host: tireSelector
+      host: tireSelectorS
       register-service-url: true
-      service-name: tireSelector
+      service-name: tireSelectorS
       service-url: '${default-url}'
-      disk-quota: 256M
-      memory: 256M
+      disk-quota: 512M
+      memory: 128M
    build-parameters:
       builder: grunt
    requires:
-    - name: uaa_tireSelector
-    - name: dest_tireSelector
-    - name: tireSelector_Node_api
+    - name: uaa_tireSelectorS
+    - name: dest_tireSelectorS
+    - name: tireSelectorS_Node_api
       group: destinations
       properties:
         name: tireSelector-node-backend
         url: '~{url}'
         forwardAuthToken: true
-        
-        
- - name: tireSelector_hdb
-   type: hdb
-   path: tireSelector_hdb
-   requires:
-    - name: hdi_tireSelector_hdb
-
- - name: tireSelector_XSJS
-   type: nodejs
-   path: tireSelector_XSJS
-   parameters:
-      host: tireSelector_xsjs
-      register-service-url: true
-      service-name: tireSelector
-      service-url: '${default-url}'
-      disk-quota: 512M
-      memory: 256M
-   provides:
-    - name: tireSelector_XSJS_api
+    - name: tireSelectorS_XSJS_api
+      group: destinations
       properties:
-         url: ${default-url}
-   requires:
-     - name: tireSelector_hdb
-     - name: hdi_tireSelector_hdb
-     - name: uaa_tireSelector
-     - name: dest_tireSelector
+        name: tireSelector-xsjs-backend
+        url: '~{url}'
+        forwardAuthToken: true
+
 resources:
- - name: uaa_tireSelector
+ - name: uaa_tireSelectorS
    parameters:
       path: ./xs-security.json
       service-plan: application
       service: xsuaa
    type: org.cloudfoundry.managed-service
 
- - name: dest_tireSelector
+ - name: dest_tireSelectorS
    parameters:
       service-plan: lite
       service: destination
@@ -90,10 +96,10 @@ resources:
    properties:
       odata-call-service-name: '${service-name}'
 
- - name: hdi_tireSelector_hdb
+ - name: hdi_tireSelectorS_hdb
    parameters:
       config:
-         schema: tireSelector
+         schema: tireSelectorS
    properties:
       hdi-container-name: ${service-name}
    type: com.sap.xs.hdi-container

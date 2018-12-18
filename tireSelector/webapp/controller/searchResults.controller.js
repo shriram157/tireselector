@@ -56,13 +56,14 @@ sap.ui.define([
 
 				var sLocation = window.location.host;
 				var sLocation_conf = sLocation.search("webide");
-
-				if (sLocation_conf == 0) {
-					this.sPrefix = "/tireSelector-dest";
-				} else {
-					this.sPrefix = "";
-				}
-				this.nodeJsUrl = this.sPrefix + "/node";
+				// Changed by Ray
+				// if (sLocation_conf == 0) {
+				// 	this.sPrefix = "/tireSelector-dest";
+				// } else {
+				// 	this.sPrefix = "";
+				// }
+				// this.nodeJsUrl = this.sPrefix + "/node";
+				this.nodeJsUrl = "/node";
 				_that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
 
 				if (SearchOptionVIN !== "" || SearchOptionVIN !== undefined) {

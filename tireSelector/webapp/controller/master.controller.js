@@ -13,7 +13,9 @@ sap.ui.define([
 		/* Function for Initialization of model and variables for view */
 		onInit: function () {
 			_that = this;
-			_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
+			// changed by Ray 
+			//_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
+			_that.oService = "/tireSelector/xsodata/tireSelector_SRV.xsodata";
 			_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
@@ -167,14 +169,16 @@ sap.ui.define([
 
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
+			
+			// changed by Ray 
+			// if (sLocation_conf == 0) {
+			// 	this.sPrefix = "/tireSelector-dest";
+			// } else {
+			// 	this.sPrefix = "";
+			// }
 
-			if (sLocation_conf == 0) {
-				this.sPrefix = "/tireSelector-dest";
-			} else {
-				this.sPrefix = "";
-			}
-
-			this.nodeJsUrl = this.sPrefix + "/node";
+			//this.nodeJsUrl = this.sPrefix + "/node";
+			this.nodeJsUrl = "/node";
 			//for xsodata
 			// this.nodeJsUrl = this.sPrefix + "/xsodata";
 

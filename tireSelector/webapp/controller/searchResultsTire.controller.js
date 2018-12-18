@@ -64,12 +64,14 @@ sap.ui.define([
 					oTable = _that.getView().byId("idTireSelectionTable");
 					var sLocation = window.location.host;
 					var sLocation_conf = sLocation.search("webide");
-					if (sLocation_conf == 0) {
-						_that.sPrefix = "/tireSelector-dest";
-					} else {
-						_that.sPrefix = "";
-					}
-					_that.nodeJsUrl = _that.sPrefix + "/node";
+					// changed by Ray 
+					// if (sLocation_conf == 0) {
+					// 	_that.sPrefix = "/tireSelector-dest";
+					// } else {
+					// 	_that.sPrefix = "";
+					// }
+					//_that.nodeJsUrl = _that.sPrefix + "/node";
+					_that.nodeJsUrl = "/node";
 
 					_that.oPriceModel = new sap.ui.model.json.JSONModel();
 					// _that.getView().setModel(_that.oPriceModel, "PriceModel");

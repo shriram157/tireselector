@@ -1,19 +1,65 @@
 {
-  "xsappname": "tireSelector",
+  "xsappname": "tireSelectorS",
   "tenant-mode": "dedicated",
-  "description": "Security profile of called application",
+  "description": "Security profile of tire selector application",
   "scopes": [
-    {
-      "name": "uaa.user",
-      "description": "UAA"
+  	{
+        "name": "$XSAPPNAME.ManagerProductMarkups",
+        "description": "Manage Product Markups"
+    }, {
+        "name": "$XSAPPNAME.ViewTireQuotes",
+        "description": "Display Tire Quotes"
+    }
+  ],
+  "attributes": [
+  	{
+        "name": "DealerCode",
+        "description": "Dealer Code",
+        "valueType": "string"
+    }, {
+        "name": "Language",
+        "description": "Language",
+        "valueType": "string"
+    }, {
+        "name": "UserType",
+        "description": "UserType, identifies dealer or not",
+        "valueType": "string"
     }
   ],
   "role-templates": [
     {
-      "name": "tireSelector_Exchange",
-      "description": "UAA",
+      "name": "Internal_TCI_User",
+      "description": "Tire Selector - Internal User",
       "scope-references": [
-        "uaa.user"
+        "$XSAPPNAME.ViewTireQuotes",
+        "$XSAPPNAME.ManagerProductMarkups"
+      ],
+      "attribute-references": [
+        "Language",
+        "UserType"
+      ]
+    },{
+      "name": "Dealer_User",
+      "description": "Tire Selector - Dealer User",
+      "scope-references": [
+        "$XSAPPNAME.ViewTireQuotes"
+      ],
+      "attribute-references": [
+       	"DealerCode",
+        "Language",
+        "UserType"
+      ]
+    }, {
+      "name": "Dealer_Admin",
+      "description": "Tire Selector - Dealer Admin",
+      "scope-references": [
+        "$XSAPPNAME.ViewTireQuotes",
+        "$XSAPPNAME.ManagerProductMarkups"
+      ],
+      "attribute-references": [
+       	"DealerCode",
+        "Language",
+        "UserType"
       ]
     }
   ]

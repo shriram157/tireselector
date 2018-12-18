@@ -20,7 +20,7 @@
       "description": "SAPUI5 Test Resources"
     },
     {
-      "path": "tireSelector-dest",
+      "path": "/node",
       "target": {
         "type": "destination",
         "name": "tireSelector-dest"
@@ -28,7 +28,7 @@
       "description": "tireSelector-dest"
     },
     {
-      "path": "TireSelector_Xsodata",
+      "path": "(.*)(.xsodata)",
       "target": {
         "type": "destination",
         "name": "TireSelector_Xsodata"
