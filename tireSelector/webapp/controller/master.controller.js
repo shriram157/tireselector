@@ -101,13 +101,14 @@ sap.ui.define([
 			_that.oSearchOptionTireSize = _that.getView().byId("searchOptionTireSize");
 			_that.oModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
 			_that.oVehicleSearchCombo = _that.getView().byId("VehicleSearchCombo");
-
+			
 			sap.ushell.components.SearchOption = _that.oSearchOptionList;
 			sap.ushell.components.SearchOptionVIN = _that.oSearchOptionVIN;
 			sap.ushell.components.SearchOptionTireSize = _that.oSearchOptionTireSize;
 			sap.ushell.components.SearchOptionVehicle = _that.oVehicleSearchCombo;
 			sap.ushell.components.ModelSeriesCombo = _that.oModelSeriesCombo;
 
+	
 			// _that.oForVehicleSearchOnly.setVisible(false);
 			// _that.oGlobalJSONModel.getData().FitmentData=[];
 			_that.oGlobalJSONModel.getData().modelDetailsData = [];
@@ -267,6 +268,9 @@ sap.ui.define([
 					enableTable: false
 				});
 				_that.getView().setModel(_that._oViewModel, "propertiesModel");
+				if (oEvent.getParameters("arguments").name == "master") {
+					_that.showResultsData();
+				}
 			}, _that);
 		},
 
@@ -296,12 +300,11 @@ sap.ui.define([
 		},
 		/*Functions for searchOption value change*/
 		onInputEntryChange: function (oEntry) {
-			// console.log("Entry combo input change", oEntry);
-			// _that.oModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
-			// _that.oVehicleSearchCombo= _that.getView().byId("VehicleSearchCombo");
 			if (!_that.oModelSeriesCombo.getValue() || !_that.oVehicleSearchCombo.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
+				sap.ushell.components.SearchOptionVehicle = _that.oVehicleSearchCombo;
+				sap.ushell.components.ModelSeriesCombo = _that.oModelSeriesCombo;
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
@@ -311,6 +314,7 @@ sap.ui.define([
 			if (!_that.oSearchOptionVIN.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
+				sap.ushell.components.SearchOptionVIN = _that.oSearchOptionVIN;
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
@@ -319,6 +323,7 @@ sap.ui.define([
 			if (!_that.oSearchOptionTireSize.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
+				sap.ushell.components.SearchOptionTireSize = _that.oSearchOptionTireSize;
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
@@ -328,6 +333,8 @@ sap.ui.define([
 			if (!_that.oModelSeriesCombo.getValue() || !_that.oVehicleSearchCombo.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
+				sap.ushell.components.SearchOptionVehicle = _that.oVehicleSearchCombo;
+				sap.ushell.components.ModelSeriesCombo = _that.oModelSeriesCombo;
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
@@ -337,6 +344,7 @@ sap.ui.define([
 			if (!_that.oSearchOptionVIN.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
+				sap.ushell.components.SearchOptionVIN = _that.oSearchOptionVIN;
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
@@ -345,6 +353,7 @@ sap.ui.define([
 			if (!_that.oSearchOptionTireSize.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
+				sap.ushell.components.SearchOptionTireSize = _that.oSearchOptionTireSize;
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
@@ -352,6 +361,18 @@ sap.ui.define([
 		/*Function for Change options on Search By Dropdownlist */
 		changeOptionPress: function (oChangeOption) {
 			_that = this;
+			if (sap.ushell.components.SearchOptionTireSize !== undefined) {
+				sap.ushell.components.SearchOptionTireSize = "";
+			}
+			if (sap.ushell.components.SearchOptionVIN !== undefined) {
+				sap.ushell.components.SearchOptionVIN = "";
+			}
+			if (sap.ushell.components.SearchOptionVehicle !== undefined) {
+				sap.ushell.components.SearchOptionVehicle = "";
+				sap.ushell.components.ModelSeriesCombo = "";
+			}
+			sap.ushell.components.SearchOption = "";
+
 			var selectedOption = _that.oSearchOptionList.getSelectedKey();
 			_that._oViewModel.setProperty("/enableTable", false);
 			_that.oSearchOptionList.setValueState(sap.ui.core.ValueState.None);
@@ -378,7 +399,6 @@ sap.ui.define([
 			} else {
 				_that._oViewModel.setProperty("/enableTireSize", true);
 				_that.oSearchOptionTireSize.setValue();
-
 				_that._oViewModel.setProperty("/enableVin", false);
 				_that._oViewModel.setProperty("/enableVehicleInputs", false);
 			}
@@ -502,12 +522,17 @@ sap.ui.define([
 			_that.SearchResultModel = new sap.ui.model.json.JSONModel();
 			_that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
 			var serviceURL;
-			if (_that.oSearchOptionVIN.getValue() != "" || _that.oSearchOptionVIN.getValue() !== undefined) {
-				serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
-			} else {
-				serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet(Zzmoyr='" + _that.oVehicleSearchCombo.getValue() + "',Model='" +
-					_that.oModelSeriesCombo.getValue() + "',Zzsuffix='')";
+			if (sap.ushell.components.SearchOptionVIN !== undefined && sap.ushell.components.SearchOptionVIN !== "") {
+				if (sap.ushell.components.SearchOptionVIN.getValue() != "" || sap.ushell.components.SearchOptionVIN.getValue() !== undefined) {
+					serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
+				}
+				else serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
 			}
+			else if (sap.ushell.components.ModelSeriesCombo !== undefined || sap.ushell.components.SearchOptionVehicle !== undefined) {
+				serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '"+sap.ushell.components.ModelSeriesCombo.getValue() +"'&$format=json";
+				//(Zzmoyr='" +sap.ushell.components.ModelSeriesCombo.getValue() + "',Model='',Zzsuffix='')";
+			}
+
 			$.ajax({
 				dataType: "json",
 				url: serviceURL,
@@ -536,7 +561,7 @@ sap.ui.define([
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");
 			if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("PageTitle")) {
-				_that.getRouter().navTo("Routemaster");
+				_that.getRouter().navTo("");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
 				_that.getRouter().navTo("productMarkups");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ReportError")) {

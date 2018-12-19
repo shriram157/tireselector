@@ -21,6 +21,17 @@ sap.ui.define([
 			_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 
 			_that.getRouter().attachRouteMatched(function (oEvent) {
+				_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
+				_that.oPriceServiceModel.read("/ZC_Product_CategorySet?$filter=PRODH eq 'PARP05' and CHARAC eq 'TIRE_BRAND_NAME' and CLASS eq 'TIRE_INFORMATION' &$expand=CategToCharac&$format=json", {
+					success: $.proxy(function (oECCData) {
+						console.log("ECC manufacturer Data", oECCData);
+						
+					}, _that),
+					error: function (oError) {
+						console.log("Error in fetching table", oError);
+					}
+				});
+
 				var sLocation = window.location.host;
 				var sLocation_conf = sLocation.search("webide");
 
@@ -74,7 +85,7 @@ sap.ui.define([
 		},
 
 		onPressBreadCrumb: function (oEvtLink) {
-			_that.getRouter().navTo("Routemaster");
+			_that.getRouter().navTo("master");
 		},
 
 		updateXSALiveTable: function () {
@@ -189,7 +200,7 @@ sap.ui.define([
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");
 			if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("PageTitle")) {
-				_that.getRouter().navTo("Routemaster");
+				_that.getRouter().navTo("master");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
 				_that.getRouter().navTo("productMarkups");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ReportError")) {

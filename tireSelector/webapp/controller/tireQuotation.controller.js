@@ -11,6 +11,7 @@ sap.ui.define([
 		onInit: function () {
 			_that = this;
 			_that.oGlobalBusyDialog = new sap.m.BusyDialog();
+			sap.ushell.components.oTableQuote = _that.getView().byId("tableQuotation");
 
 			this.getRouter().attachRouteMatched(function (oEvent) {
 				_that.oGlobalBusyDialog = new sap.m.BusyDialog();
@@ -24,17 +25,27 @@ sap.ui.define([
 				}
 
 				this.nodeJsUrl = this.sPrefix + "/node";
+				
+				if(sap.ushell.components.SearchOptionVehicle !=undefined){
+					_that.VIN = sap.ushell.components.SearchOptionVIN.getValue();
+				}
+				if(sap.ushell.components.SearchOptionVehicle !=undefined){
+					_that.Vehicle = sap.ushell.components.SearchOptionVehicle.getValue();
+				}
+				if(sap.ushell.components.SearchOptionVehicle !=undefined){
+					_that.ModelYr = sap.ushell.components.ModelSeriesCombo.getValue();
+				}
 
 				_that._oViewModel = new sap.ui.model.json.JSONModel({
 					busy: false,
 					delay: 0,
 					enableInput: false,
-					vehicleVal: sap.ushell.components.SearchOptionVehicle.getValue(),
-					modelval: sap.ushell.components.ModelSeriesCombo.getValue(),
-					vinVal: sap.ushell.components.SearchOptionVIN.getValue(),
+					vehicleVal: _that.Vehicle,
+					modelval: _that.ModelYr,
+					vinVal: _that.VIN,
 					enableFTC: true,
 					enablePTC: true,
-					enableFee: false
+					enableFee: true
 				});
 				_that.getView().setModel(_that._oViewModel, "propertiesModel");
 
@@ -53,7 +64,7 @@ sap.ui.define([
 					// _that.RHPFlag = "";
 					// _that.getPrices(oMat);
 					var oMaterial = oMat;
-					
+
 					_that.objPrice = {};
 					_that.objPrice.otherItemPrice1 = this.getView().byId("id_OtherItemPrice").getValue();
 					_that.objPrice.otherItemPrice2 = this.getView().byId("id_OtherItem2Price").getValue();
@@ -65,7 +76,8 @@ sap.ui.define([
 					_that.objPrice.TPMSPrice = this.getView().byId("id_TPMSPrice").getValue();
 					_that.objPrice.FIttingKitPrice = this.getView().byId("id_FittingKitPrice").getValue();
 					_that.objPrice.RHPPrice = this.getView().byId("id_RHPPrice").getValue();
-					
+					_that.objPrice.EHFPRice = this.getView().byId("id_freeDescp").getValue();
+
 					_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
 					console.log("Dealer Data", _that.DealerData);
 					_that.Division = _that.DealerData.attributes[0].Division;
@@ -88,8 +100,13 @@ sap.ui.define([
 								var CndType = oPriceData.results[n].CndType;
 								if (CndType == "JRC4" || CndType == "JRC5") {
 									_that.rowData.FederalTax = _that.decimalFormatter(oPriceData.results[n].Amount);
+									_that.rowData.FederalTaxDesc = oPriceData.results[n].CndName;
 								} else if (CndType == "JRC3" || CndType == "JRC2") {
 									_that.rowData.ProvincialTax = _that.decimalFormatter(oPriceData.results[n].Amount);
+									_that.rowData.ProvincialTaxDesc = oPriceData.results[n].CndName;
+								} else if (CndType == "ZPEH" || CndType == "ZPEC") {//Freight Cost
+									_that.rowData.EHFPRice = _that.decimalFormatter(oPriceData.results[n].Amount);
+									_that.rowData.EHFPRiceDesc = oPriceData.results[n].CndName;
 								}
 							}
 						}, _that),
@@ -109,16 +126,21 @@ sap.ui.define([
 					_that.oTireQuotationModel.refresh(true);
 					_that.oTireQuotationModel.updateBindings(true);
 
-					if (_that.oTireQuotationModel.getData().results[0].FederalTax = "") {
-						_that._oViewModel.setProperty("/enableFTC", false);
-					} else {
+					var CheckData = _that.oTireQuotationModel.getData().results[0];
+					if (CheckData.FederalTax != "") {
 						_that._oViewModel.setProperty("/enableFTC", true);
-					}
-					if (_that.oTireQuotationModel.getData().results[0].ProvincialTax = "") {
-						_that._oViewModel.setProperty("/enablePTC", false);
 					} else {
+						_that._oViewModel.setProperty("/enableFTC", false);
+					}
+					if (CheckData.ProvincialTax != "") {
 						_that._oViewModel.setProperty("/enablePTC", true);
-
+					} else {
+						_that._oViewModel.setProperty("/enablePTC", false);
+					}
+					if (CheckData.EHFPRice != "") {
+						_that._oViewModel.setProperty("/enableFee", true);
+					} else {
+						_that._oViewModel.setProperty("/enableFee", false);
 					}
 					// _that.oTireQuotationModel.getData().prices=[];
 					_that.getView().setModel(_that.oTireQuotationModel, "TireQuotationModel");
@@ -146,6 +168,7 @@ sap.ui.define([
 				_that.ProTaxCode = this.getView().byId("id_proTaxCode");
 				_that.FedTaxCode = this.getView().byId("id_fedTaxCode");
 				_that.selectRHP = this.getView().byId("id_RHP");
+				_that.EnvoFee = this.getView().byId("id_freeDescp");
 
 				// _that.arrPrices = [];
 
@@ -203,51 +226,54 @@ sap.ui.define([
 		},
 
 		onPressBreadCrumb: function (oEvtLink) {
-			_that.getRouter().navTo("Routemaster");
+			_that.getRouter().navTo("master");
 		},
 
-		getPrices: function (oMat) {
-			var oMaterial = oMat;
-			_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
-			console.log("Dealer Data", _that.DealerData);
-			_that.Division = _that.DealerData.attributes[0].Division;
-			_that.Doctype = "ZAF";
-			_that.SalesOrg = "7000";
-			_that.DistrChan = "10";
-			_that.SoldtoParty = _that.DealerData.attributes[0].BusinessPartnerKey;
+		// getPrices: function (oMat) {
+		// 	var oMaterial = oMat;
+		// 	_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
+		// 	console.log("Dealer Data", _that.DealerData);
+		// 	_that.Division = _that.DealerData.attributes[0].Division;
+		// 	_that.Doctype = "ZAF";
+		// 	_that.SalesOrg = "7000";
+		// 	_that.DistrChan = "10";
+		// 	_that.SoldtoParty = _that.DealerData.attributes[0].BusinessPartnerKey;
 
-			var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" + _that.SalesOrg +
-				"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-				"'";
-			// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
-			_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
-			// _that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
-			_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
-				success: $.proxy(function (oData) {
-					console.log("Initial load price data", oData);
-					_that.oPriceModel.setData(oData);
-					console.log("oPriceModel data", oData);
-					for (var n = 0; n < _that.oPriceModel.getData().results.length; n++) {
-						var CndType = _that.oPriceModel.getData().results[n].CndType;
-						if (_that.RHPFlag == "Y") {
-							if (CndType == "ZPFB") { //if (CndType == "ZPEC" || CndType == "ZPEH") {
-								_that.rowData.environmentalFee = _that.decimalFormatter(_that.oPriceModel.getData().results[n].Amount);
-							}
-						} else {
-							if (CndType == "CTXJ") {
-								_that.rowData.FederalTax = _that.decimalFormatter(_that.oPriceModel.getData().results[n].Amount);
-							} else if (CndType == "JRC5" || CndType == "JRC4" || CndType == "JRC3" || CndType == "JRC2") {
-								_that.rowData.ProvincialTax = _that.decimalFormatter(_that.oPriceModel.getData().results[n].Amount);
-							}
-						}
-						_that.oPriceModel.updateBindings(true);
-					}
-				}, _that),
-				error: function (oError) {
-					console.log("Error in fetching ZC_PriceSet", oError);
-				}
-			});
-		},
+		// 	var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" + _that.SalesOrg +
+		// 		"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
+		// 		"'";
+		// 	// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
+		// 	_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
+		// 	// _that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
+		// 	_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
+		// 		success: $.proxy(function (oPriceData) {
+		// 			console.log("Initial load price data", oData);
+		// 			_that.oPriceModel.setData(oPriceData);
+		// 			_that.oPriceModel.updateBindings(true);
+		// 			console.log("oPriceModel data", oData);
+		// 			for (var n = 0; n < _that.oPriceModel.getData().results.length; n++) {
+		// 				var CndType = _that.oPriceModel.getData().results[n].CndType;
+		// 				if (_that.RHPFlag == "Y") {
+		// 					if (CndType == "ZPFB") { //if (CndType == "ZPEC" || CndType == "ZPEH") {
+		// 						_that.rowData.RHPPRice = _that.decimalFormatter(_that.oPriceModel.getData().results[n].Amount);
+		// 					}
+		// 				} else {
+		// 					if (CndType == "JRC4" || CndType == "JRC5") {
+		// 						_that.rowData.FederalTax = _that.decimalFormatter(_that.oPriceModel.getData().results[n].Amount);
+		// 					} else if (CndType == "JRC3" || CndType == "JRC2") {
+		// 						_that.rowData.ProvincialTax = _that.decimalFormatter(_that.oPriceModel.getData().results[n].Amount);
+		// 					} else if (CndType == "ZPEH" || CndType == "ZPEC") {
+		// 						_that.rowData.EHFPRice = _that.decimalFormatter(_that.oPriceModel.getData().results[n].Amount);
+		// 					}
+		// 				}
+		// 				_that.oPriceModel.updateBindings(true);
+		// 			}
+		// 		}, _that),
+		// 		error: function (oError) {
+		// 			console.log("Error in fetching ZC_PriceSet", oError);
+		// 		}
+		// 	});
+		// },
 
 		onMatSelection: function (oChange) {
 			_that.oGlobalBusyDialog.open();
@@ -275,9 +301,9 @@ sap.ui.define([
 					for (var n = 0; n < oPriceData.results.length; n++) {
 						var CndType = oPriceData.results[n].CndType;
 						if (CndType == "ZPG4") { //if (CndType == "ZPEC" || CndType == "ZPEH") {
-							_that.rowData.environmentalFee = _that.decimalFormatter(oPriceData.results[n].Amount);
+							_that.rowData.RHPPRice = _that.decimalFormatter(oPriceData.results[n].Amount);
 						}
-						_that.oTireQuotationModel.getData().results[0].environmentalFee = _that.rowData.environmentalFee;
+						_that.oTireQuotationModel.getData().results[0].RHPPRice = _that.rowData.RHPPRice;
 						_that.oTireQuotationModel.updateBindings(true);
 						_that.oGlobalBusyDialog.close();
 					}
@@ -289,18 +315,28 @@ sap.ui.define([
 		},
 
 		SelectDifferentTire: function () {
-			_that.oTireQuotationModel.setData({});
-			_that.oTireQuotationModel.updateBindings(true);
-
-			// var oHistory, sPreviousHash;
-			// oHistory = History.getInstance();
-			// sPreviousHash = oHistory.getPreviousHash();
-
-			// if (sPreviousHash !== undefined) {
-			// 	_that.selectRHP.setSelectedKey();
-			// 	window.history.go(-1);
-			// } else {
+			_that.getView().byId("id_QuoteDate").setValue("");
+			_that.getView().byId("id_AfterExpiry").setValue("");
+			_that.getView().byId("id_tireUnitPrice").setValue("");
+			_that.getView().byId("id_tireQty").setValue("");
+			_that.getView().byId("id_RHPUnitPrice").setValue("");
+			_that.getView().byId("id_RHPsQty").setValue("");
+			_that.getView().byId("id_wheelsUnitPrice").setValue("");
+			_that.getView().byId("id_wheelsQty").setValue("");
+			_that.getView().byId("id_TPMSUnitPrice").setValue("");
+			_that.getView().byId("id_TPMSQty").setValue("");
+			_that.getView().byId("id_FittingKitUnitPrice").setValue("");
+			_that.getView().byId("id_FittingKitQty").setValue("");
+			
+			_that.getView().byId("id_subTotal").setValue("");
+			_that.getView().byId("id_total").setValue("");
+			_that.getView().byId("id_proTaxCode").setValue("");
+			_that.getView().byId("id_fedTaxCode").setValue("");
+			_that.getView().byId("id_freeDescp").setValue("");
+			
 			_that.selectRHP.setSelectedKey();
+			_that.oTireQuotationModel.setData();
+			_that.oTireQuotationModel.updateBindings(true);
 			_that.getRouter().navTo("searchResultsTireNoData", {
 				tireData: "selectDifferentTire"
 			}, true);
@@ -482,8 +518,7 @@ sap.ui.define([
 					_that.oTireQuotationModel.updateBindings(true);
 				} else if (oQty.getSource().getId().split("_")[3] == "FittingKitQty") {
 					_that.oFittingKitPrice = _that.getView().byId("id_FittingKitPrice");
-					_that.oFittingKitPrice.setValue(oQtyVal * _that.oFittingKitUnitPrice);
-					data.TPMSPrice = Number(oQtyVal * _that.oFittingKitUnitPrice);
+					data.FittingKitPrice = Number(oQtyVal * _that.oFittingKitUnitPrice);
 					_that.oTireQuotationModel.updateBindings(true);
 				} else if (oQty.getSource().getId().split("_")[3] == "RHPsQty") {
 					_that.RHPPrice = _that.getView().byId("id_RHPPrice");
@@ -500,6 +535,10 @@ sap.ui.define([
 				summed += Number(arrPrices[key]);
 			}
 			_that.SubTotal.setValue(_that.decimalFormatter(summed));
+			if (_that.EnvoFee.getValue() != "" ||  _that.EnvoFee.getValue() != undefined || _that.EnvoFee.getValue() != null) {
+				var val =Number(_that.SubTotal.getValue()) + Number(_that.EnvoFee.getValue());
+				_that.SubTotal.setValue(_that.decimalFormatter(val));
+			}
 			_that.sub = Number(_that.SubTotal.getValue());
 			// _that.sub = _that.decimalFormatter(_that.sub);
 			if (_that.FedTaxCode.getValue() != "") {
@@ -508,6 +547,7 @@ sap.ui.define([
 			if (_that.ProTaxCode.getValue() != "") {
 				_that.sub = _that.sub + (_that.sub / 100) * Number(_that.ProTaxCode.getValue());
 			}
+
 			_that.TotalAmount.setValue(_that.decimalFormatter((_that.sub)));
 		},
 
@@ -551,7 +591,7 @@ sap.ui.define([
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");
 			if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("PageTitle")) {
-				_that.getRouter().navTo("Routemaster");
+				_that.getRouter().navTo("master");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
 				_that.getRouter().navTo("productMarkups");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ReportError")) {
@@ -563,7 +603,5 @@ sap.ui.define([
 			_that.oTireQuotationModel.setData({});
 			_that.oTireQuotationModel.updateBindings(true);
 		}
-
 	});
-
 });
