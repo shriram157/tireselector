@@ -1,6 +1,6 @@
 sap.ui.define([
 	"zecp/controller/BaseController",
-], function(BaseController) {
+], function (BaseController) {
 	"use strict";
 
 	return BaseController.extend("zecp.controller.AgreementInquiryList", {
@@ -10,25 +10,30 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf zecp.view.AgreementInquiryList
 		 */
-		onInit: function() {
+		onInit: function () {
+			var oRowCount = {
+				rowCount: 0
+			};
+
+			this.getView().setModel(new sap.ui.model.json.JSONModel(oRowCount), "RowCountModel");
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 		},
-		onSelectSearchBy: function(oEvent) {
+		onSelectSearchBy: function (oEvent) {
 			var oSelectedIndex = oEvent.getSource().getSelectedIndex();
-			if(oSelectedIndex === 1) {
+			if (oSelectedIndex === 1) {
 				this.getView().byId("idInqLabel").setText(this.getView().getModel("i18n").getResourceBundle().getText("VIN"));
 			} else {
 				this.getView().byId("idInqLabel").setText(this.getView().getModel("i18n").getResourceBundle().getText("Agreement#"));
 			}
 		},
-		onSearchInquiryList: function() {
+		onSearchInquiryList: function () {
 			var oIndex = this.getView().byId("idSearchByRadio").getSelectedIndex();
 			var sQuery = this.getView().byId("idVal").getValue();
 			var andFilter = [];
 			this.oTable = this.getView().byId("idAgreementTable");
 			var oBindItems = "";
-			if(oIndex === 0) {
-				if(!$.isEmptyObject(sQuery)) {
+			if (oIndex === 0) {
+				if (!$.isEmptyObject(sQuery)) {
 
 					andFilter = new sap.ui.model.Filter({
 						filters: [
@@ -41,11 +46,12 @@ sap.ui.define([
 					andFilter = [];
 				}
 
-				oBindItems = this.oTable.getBinding("items");
+				oBindItems = this.oTable.getBinding("rows");
 				oBindItems.filter(andFilter);
+				this.getView().getModel("RowCountModel").setProperty("/rowCount", 10);
 
-			} else if(oIndex === 1) {
-				if(!$.isEmptyObject(sQuery)) {
+			} else if (oIndex === 1) {
+				if (!$.isEmptyObject(sQuery)) {
 
 					andFilter = new sap.ui.model.Filter({
 						filters: [
@@ -57,30 +63,31 @@ sap.ui.define([
 					andFilter = [];
 				}
 
-				oBindItems = this.oTable.getBinding("items");
+				oBindItems = this.oTable.getBinding("rows");
 				oBindItems.filter(andFilter);
-
+				this.getView().getModel("RowCountModel").setProperty("/rowCount", 10);
 			}
 		},
 
-		onPressResetSearch: function() {
+		onPressResetSearch: function () {
 			this.getOwnerComponent().getModel("EcpSalesModel").refresh();
 			this.getView().byId("idVal").setValue("");
-			var oBindItems = this.oTable.getBinding("items");
+			var oBindItems = this.oTable.getBinding("rows");
 			oBindItems.filter([]);
+			this.getView().getModel("RowCountModel").setProperty("/rowCount", 0);
 
 		},
-		onNavigate: function(oEvent) {
-			var obj = oEvent.getSource().getModel().getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
+		onNavigate: function (oEvent) {
+			var obj = oEvent.getSource().getModel().getProperty(oEvent.getParameters().rowContext.sPath);
 			console.log(obj);
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiry", {
 				AgrNum: obj.AgreementNumber,
 				vin: obj.VIN,
 				customerNumber: obj.CustomerNumber
-				// odometer: obj.ODMTR
+					// odometer: obj.ODMTR
 			});
 
-			this.getView().byId("idAgreementTable").removeSelections("true");
+			//this.getView().byId("idAgreementTable").removeSelections("true");
 
 		}
 

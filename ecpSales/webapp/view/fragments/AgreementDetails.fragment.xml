@@ -150,11 +150,11 @@
 								text="{path:'LocalDataModel>/AgreementData/AgreementSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 							<Label text="{i18n>SubmissionDate}"/>
 							<Text
-								text="{path:'LocalDataModel>/AgreementData/Applicationsubmissi', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+								text="{path:'LocalDataModel>/AgreementData/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 							<Label text="{i18n>IssueDealer}"/>
 							<Text text="{LocalDataModel>/AgreementData/DealershipNumber}"/>
 							<Label text="{i18n>Dealership}"/>
-							<Text text="{LocalDataModel>/AgreementData/AgreementDealerNumber}"/>
+							<Text text="{LocalDataModel>/DealerData/BusinessPartnerName}"/>
 							<Label text="{i18n>PreOwnedCert}"/>
 							<Text text="{LocalDataModel>/AgreementData/PROWNDCERT}"/>
 							<Label text="{i18n>TransferDate}"/>

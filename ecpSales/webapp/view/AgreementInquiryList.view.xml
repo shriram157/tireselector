@@ -1,5 +1,5 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.AgreementInquiryList"
-	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt">
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:table="sap.ui.table">
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
 	<uxap:ObjectPageLayout id="ObjectAgreementList" enableLazyLoading="true">
 		<uxap:sections>
@@ -29,45 +29,55 @@
 									</f:content>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
-									<Table id="idAgreementTable" selectionChange="onNavigate" mode="SingleSelectMaster" inset="false" alternateRowColors="true"
-										items="{ path: '/zc_ecp_agreement', filters : [ { path : 'AgreementElectricVehicletype', operator : 'NE', value1 : 'AGEN'}]}">
-										<columns>
-											<Column minScreenWidth="Tablet" demandPopin="true">
-												<Text text="{i18n>EcpAgreement}"/>
-											</Column>
-											<Column minScreenWidth="Tablet" demandPopin="true">
-												<Text text="{i18n>PlanCode}"/>
-											</Column>
-											<Column minScreenWidth="Tablet" demandPopin="true">
-												<Text text="{i18n>Status}"/>
-											</Column>
-											<Column minScreenWidth="Tablet" demandPopin="true">
-												<Text text="{i18n>StatusDate}"/>
-											</Column>
-											<Column minScreenWidth="Tablet" demandPopin="true">
-												<Text text="{i18n>ExpiryDate}"/>
-											</Column>
-											<Column >
-												<Text text="{i18n>ExpiryKm}"/>
-											</Column>
-											<Column hAlign="End">
-												<Text text="{i18n>StatusReason}"/>
-											</Column>
-										</columns>
-										<items>
-											<ColumnListItem>
-												<cells>
-													<Text text="{path:'AgreementNumber'}"/>
-													<Text text="{PlanType}"/>
-													<Text text="{AgreementStatus}"/>
-													<Text text="{path:'StatusDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
-													<Text text="{path:'AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
-													<Text text="{AgreementthruKMreading}"/>
-													<Text text="{Agreementreasoncode}"/>
-												</cells>
-											</ColumnListItem>
-										</items>
-									</Table>
+									<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single"
+										rows="{ path: '/zc_ecp_agreement', filters : [ { path : 'AgreementElectricVehicletype', operator : 'NE', value1 : 'AGEN'}]}"
+										rowSelectionChange="onNavigate" visibleRowCount="{RowCountModel>/rowCount}" selectionBehavior="Row" showNoData="true"
+										threshold="{RowCountModel>/rowCount}" enableBusyIndicator="true">
+										<table:columns>
+											<table:Column  >
+												<Label text="{i18n>EcpAgreement}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text text="{path:'AgreementNumber'}" textAlign="Center" width="100%"/>
+												</table:template>
+											</table:Column>
+											<table:Column  >
+												<Label text="{i18n>PlanCode}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text text="{path:'PlanType'}" textAlign="Center" width="100%"/>
+												</table:template>
+											</table:Column>
+											<table:Column  >
+												<Label text="{i18n>Status}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text text="{path:'AgreementStatus'}" textAlign="Center" width="100%"/>
+												</table:template>
+											</table:Column>
+											<table:Column  >
+												<Label text="{i18n>StatusDate}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text width="100%" text="{path:'StatusDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}" textAlign="Center"/>
+												</table:template>
+											</table:Column>
+											<table:Column  >
+												<Label text="{i18n>ExpiryDate}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text width="100%" text="{path:'AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}" textAlign="Center"/>
+												</table:template>
+											</table:Column>
+											<table:Column  >
+												<Label text="{i18n>ExpiryKm}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text text="{AgreementthruKMreading}" textAlign="Center" width="100%"/>
+												</table:template>
+											</table:Column>
+											<table:Column  >
+												<Label text="{i18n>StatusReason}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text text="{path:'Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}" textAlign="Center" width="100%"/>
+												</table:template>
+											</table:Column>
+										</table:columns>
+									</table:Table>
 								</VBox>
 							</VBox>
 						</uxap:blocks>
