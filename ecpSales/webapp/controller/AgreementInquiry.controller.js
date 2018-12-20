@@ -1,6 +1,6 @@
 sap.ui.define([
 	"zecp/controller/BaseController"
-], function(Controller) {
+], function (Controller) {
 	"use strict";
 
 	return Controller.extend("zecp.controller.AgreementInquiry", {
@@ -10,7 +10,7 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf zecp.view.AgreementInquiry
 		 */
-		onInit: function() {
+		onInit: function () {
 			var oNodeModel = new sap.ui.model.json.JSONModel();
 			oNodeModel.loadData(jQuery.sap.getModulePath("zecp.utils", "/Nodes.json"));
 			this.getView().setModel(oNodeModel, "ClaimModel");
@@ -21,7 +21,7 @@ sap.ui.define([
 
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._onRoutMatched, this);
 		},
-		_onRoutMatched: function(oEvent) {
+		_onRoutMatched: function (oEvent) {
 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
 			var oVin = oEvent.getParameters().arguments.vin;
 			var oCustomerNumber = oEvent.getParameters().arguments.customerNumber;
@@ -35,17 +35,17 @@ sap.ui.define([
 			// 			this.getView().byId("sAgreementEnq").bindElement("VinModel>/zc_c_vehicle(VIN='" + oVin + "')");
 			var oGetModel = this.getModel("ZVehicleMasterModel");
 			this._oToken = oGetModel.getHeaders()['x-csrf-token'];
-							$.ajaxSetup({
-								headers: {
-									'X-CSRF-Token': this._oToken
-								}
-							});
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			oGetModel.read("/zc_c_vehicle", {
 
 				urlParameters: {
 					"$filter": "VehicleIdentificationNumber eq '" + oVin + "' "
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 					console.log(data);
 					this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
 				}, this)
@@ -53,18 +53,18 @@ sap.ui.define([
 
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			this._oToken = oBusinessModel.getHeaders()['x-csrf-token'];
-							$.ajaxSetup({
-								headers: {
-									'X-CSRF-Token': this._oToken
-								}
-							});
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			oBusinessModel.read("/A_BusinessPartnerAddress", {
 				urlParameters: {
 					"$filter": "BusinessPartner eq '" + oCustomerNumber + "' ",
 					"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress,to_MobilePhoneNumber"
 
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 						console.log(data);
 						this.getModel("LocalDataModel").setProperty("/BusinessPartnerData", data.results[0]);
 						this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress);
@@ -72,7 +72,7 @@ sap.ui.define([
 						this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber);
 					},
 					this),
-				error: function() {
+				error: function () {
 					console.log("Error");
 				}
 			});
@@ -81,32 +81,32 @@ sap.ui.define([
 				urlParameters: {
 					"$filter": "BusinessPartner eq '" + oCustomerNumber + "' "
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 					console.log(data);
 					this.getModel("LocalDataModel").setProperty("/BusinessPartnerName", data.results[0]);
-				
+
 				}, this),
-				error: function() {
+				error: function () {
 					console.log("Error");
 				}
 			});
 			var zEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
-				this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-							$.ajaxSetup({
-								headers: {
-									'X-CSRF-Token': this._oToken
-								}
-							});
+			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			zEcpModel.read("/zc_ecp_vehicle_detailSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oVin + "'"
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 					console.log(data);
 					this.getModel("LocalDataModel").setProperty("/PricingModelData", data.results[0]);
 
 				}, this),
-				error: function() {
+				error: function () {
 					console.log("Error");
 				}
 			});
@@ -115,12 +115,12 @@ sap.ui.define([
 				urlParameters: {
 					"$filter": "VIN eq '" + oVin + "'"
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 					console.log(data);
 					this.getModel("LocalDataModel").setProperty("/AgreementOwnerDetail", data.results[0]);
 
 				}, this),
-				error: function() {
+				error: function () {
 					console.log("Error");
 				}
 			});
@@ -129,16 +129,28 @@ sap.ui.define([
 				urlParameters: {
 					"$filter": "AgreementNumber eq '" + oAgrNum + "'"
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 					console.log(data);
 					this.getModel("LocalDataModel").setProperty("/AgreementInfo", data.results[0]);
+					var oDealer = data.results[0].DealershipNumber;
+					if (oDealer) {
+						oBusinessModel.read("/A_BusinessPartner", {
+							urlParameters: {
+								"$filter": "BusinessPartner eq '" + oDealer + "'"
+							},
+							success: $.proxy(function (businessData) {
+								console.log(businessData);
+								this.getModel("LocalDataModel").setProperty("/DealerData", businessData.results[0]);
+							}, this)
+						});
+					}
+
 				}, this),
-				error: function() {
+				error: function () {
 					console.log("Error");
 				}
 			});
-			
-			
+
 			// 			zEcpModel.read("/zc_ecp_planpricing_dataSet", {
 			// 				urlParameters: {
 			// 					"$filter": "ODMTR eq '" + Oodomtr + "'"
@@ -174,19 +186,19 @@ sap.ui.define([
 			// });
 
 		},
-		handlePressClaim: function(oEvent) {
+		handlePressClaim: function (oEvent) {
 			console.log(oEvent);
 			var oDialogBox = sap.ui.xmlfragment("zecp.view.fragments.ClaimHistory", this);
 			this.getView().addDependent(oDialogBox);
 			oDialogBox.open();
 		},
-		onClose: function(oEvent) {
+		onClose: function (oEvent) {
 			oEvent.getSource().getParent().close();
 		},
-		onBacktoList: function() {
+		onBacktoList: function () {
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 		},
-		onSearchBackList: function() {
+		onSearchBackList: function () {
 				this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 				this.getModel().refresh();
 			}

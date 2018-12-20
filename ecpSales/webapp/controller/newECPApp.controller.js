@@ -57,9 +57,8 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._oRouteNewECP, this);
 			// var oEventBus = sap.ui.getCore().getEventBus();
 			// oEventBus.publish("newECPApp", "Binded", this.onSelectiDealer, this);
-			
+
 		},
-		
 
 		_fnDateFormat02: function (elm) {
 
@@ -71,7 +70,7 @@ sap.ui.define([
 		},
 
 		_fnDateFormat: function (elm) {
-		
+
 			var oNumTime = elm.getTime();
 
 			var saleTime = "\/Date(" + oNumTime + ")\/";
@@ -105,7 +104,7 @@ sap.ui.define([
 				this.getView().getModel("oSetProperty").setProperty("/backSecondary", true);
 				this.getView().getModel("oSetProperty").setProperty("/saleDat01Visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/saleDat02Visible", true);
-				
+
 				var oZECPModel = this.getModel("EcpSalesModel");
 				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
 				$.ajaxSetup({
@@ -189,7 +188,7 @@ sap.ui.define([
 
 				this.EcpFieldData = new sap.ui.model.json.JSONModel({
 					DBOperation: "",
-					BPTYPE : "",
+					BPTYPE: "",
 					ZecpIntApp: "",
 					ZecpMake: "",
 					ZecpAppNum: "",
@@ -1063,7 +1062,7 @@ sap.ui.define([
 
 			var crudObj = {
 				DBOperation: elm,
-				BPTYPE : this.getView().getModel("LocalDataModel").getProperty("/PricingModelData/BPTYPE"),
+				BPTYPE: this.getView().getModel("LocalDataModel").getProperty("/PricingModelData/BPTYPE"),
 				ZecpIntApp: "",
 				ZecpMake: this.oECPData.ZecpMake,
 				ZecpAppNum: "",
@@ -1311,6 +1310,7 @@ sap.ui.define([
 								'X-CSRF-Token': this._oToken
 							}
 						});
+						var oBusinessModel = that.getModel("ApiBusinessModel");
 						oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
 
 							success: function (data, response) {
@@ -1332,32 +1332,43 @@ sap.ui.define([
 								var oAgr = response.data.ZecpAgrNum;
 								var oCustomer = response.data.ZecpCustNum;
 								oEcpModel.read("/zc_ecp_agreement", {
-									urlParameters : {
-										"$filter" : "AgreementNumber eq '"+ oAgr +"'"
+									urlParameters: {
+										"$filter": "AgreementNumber eq '" + oAgr + "'"
 									},
-									success : function(ret){
+									success: function (ret) {
 										console.log(ret);
 										that.getView().getModel("LocalDataModel").setProperty("/AgreementData", ret.results[0]);
+										var oDealer = ret.results[0].DealershipNumber;
+										if (oDealer) {
+											oBusinessModel.read("/A_BusinessPartner", {
+												urlParameters: {
+													"$filter": "BusinessPartner eq '" + oDealer + "'"
+												},
+												success: function (businessData) {
+													console.log(businessData);
+													that.getModel("LocalDataModel").setProperty("/DealerData", businessData.results[0]);
+												}
+											});
+										}
 									},
-									error : function(){}
+									error: function () {}
 								});
-								var oBusinessModel = that.getModel("ApiBusinessModel");
-			oBusinessModel.read("/A_BusinessPartnerAddress", {
-				urlParameters: {
-					"$filter": "BusinessPartner eq '" + oCustomer + "' ",
-					"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
 
-				},
-				success:function (bData) {
+								oBusinessModel.read("/A_BusinessPartnerAddress", {
+									urlParameters: {
+										"$filter": "BusinessPartner eq '" + oCustomer + "' ",
+										"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
 
-					that.getModel("LocalDataModel").setProperty("/BusinessPartnerData", bData.results[0]);
-					
+									},
+									success: function (bData) {
 
-				},
-				error: function () {
-					console.log("Error");
-				}
-			});
+										that.getModel("LocalDataModel").setProperty("/BusinessPartnerData", bData.results[0]);
+
+									},
+									error: function () {
+										console.log("Error");
+									}
+								});
 								// that.getRouter().navTo("ApplicationList");
 								// oEcpModel.refresh();
 								// MessageToast.show(oBundle.getText("ApplicationSubmitted") + that.oECPData.ZecpVin, {
@@ -1377,9 +1388,7 @@ sap.ui.define([
 						dialog.close();
 					}
 				}),
-				onClose: function (oEvent) {
-					oEvent.getSource().getParent().close();
-				},
+
 				endButton: new Button({
 					text: oBundle.getText("Cancel"),
 					press: function () {
@@ -1393,7 +1402,58 @@ sap.ui.define([
 
 			dialog.open();
 		},
-		onPressBackPress : function(){
+		onPrintAgreement: function () {
+			//var oEcpModel = this.getModel("EcpSalesModel");
+			var oAgr = this.getView().getModel("LocalDataModel").getProperty("/AgreementData/AgreementNumber");
+			// var oModel = zc_ecp_agreement_printSet(AGRNUM='F100202NTC04',LANG='E')/$value;
+			// oEcpModel.read("/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value", {
+			// 	success: function () {
+			// 		console.log("generate");
+			// 	}
+			// });
+
+			// ============================
+			//var value = this.getView().byId(“inputValue”).getValue();
+
+			var sRead = "/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value";
+			
+
+			var html = new sap.ui.core.HTML();
+
+			var oModel = this.getModel("EcpSalesModel");
+
+			oModel.read("/zc_ecp_agreement_printSet(AGRNUM='F100202NTC04',LANG='E')/$value", {
+
+				success : function (oData, oResponse) {
+
+					var response = oResponse.requestUri;
+
+					html.setContent("<iframe src=" + response + " width='700' height='700'></iframe>");
+
+					var windows = window.open("", "Agreement PDF", "width='700' height='700'");
+
+					windows.document.write(html);
+
+					windows.print();
+
+					windows.close();
+
+				},
+
+				error: function () {
+
+					alert("Read failed");
+
+				}
+
+			});
+			// ==========================
+
+		},
+		onClose: function (oEvent) {
+			oEvent.getSource().getParent().close();
+		},
+		onPressBackPress: function () {
 			this.getRouter().navTo("ApplicationList");
 		},
 		onExit: function () {
