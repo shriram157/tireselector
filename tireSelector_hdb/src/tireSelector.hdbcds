@@ -8,7 +8,7 @@ context tireSelector {
         key Dealer_Brand         : String(2);
 
             @Comment : 'This is the Brand ID'
-        key Manufacturer_code    : String(10);
+        key Manufacturer_code    : String(30);
 
             @Comment : 'The UI should enforce a range of 0-100  with 2 decimal place.'
             Preview_Markup_Percentage     : Decimal(4, 2);
@@ -27,6 +27,9 @@ context tireSelector {
 
             @Comment : 'This is the Last Name of the person that set the product markup was set to "Live"'
             User_Last_Name       : String(40);
+
+            @Comment : 'IS Live'
+            IsLive               : String(1);            
     }
     technical configuration {
         column store;
