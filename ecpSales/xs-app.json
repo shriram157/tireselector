@@ -36,6 +36,13 @@
 					"$XSAPPNAME.View_ECP_Claim",
 					"$XSAPPNAME.View_ECP_Agreement",
 					"$XSAPPNAME.Inquiry"
+				],
+				"HEAD": [
+					"$XSAPPNAME.Manage_ECP_Application",
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
 				]
 
 			}
@@ -43,7 +50,7 @@
 		}, {
 			"source": "/node(.*)",
 			"destination": "ecpsales-node-backend",
-			"csrfProtection": true,
+			"csrfProtection": false,
 			"authenticationType": "xsuaa",
 			"scope": {
 				"GET": [
@@ -72,24 +79,22 @@
 					"$XSAPPNAME.View_ECP_Agreement",
 					"$XSAPPNAME.Inquiry",
 					"$XSAPPNAME.Manage_ECP_Application"
+				],
+				"HEAD": [
+					"$XSAPPNAME.Manage_ECP_Application",
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
 				]
 
 			}
 		}, {
 			"source": "/userDetails(.*)",
 			"destination": "ecpsales-node-backend",
-			"csrfProtection": true,
-			"authenticationType": "xsuaa",
-	 	"scope": {
-				"GET": [
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry",
-					"$XSAPPNAME.Manage_ECP_Application"
-				] 
+			"csrfProtection": false,
+			"authenticationType": "xsuaa"
 
-			}
 			}
 		
 

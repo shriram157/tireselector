@@ -9,7 +9,7 @@
 		"name": "$XSAPPNAME.View_ECP_Claim",
 		"description": "View ECP Claim"
 	}, {
-		"name": "$XSAPPNAME.Manage_ECP_Applicatioin",
+		"name": "$XSAPPNAME.Manage_ECP_Application",
 		"description": "Manage ECP Application"
 	}, {
 		"name": "$XSAPPNAME.View_ECP_Agreement",

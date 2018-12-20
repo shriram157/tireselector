@@ -51,6 +51,15 @@ module.exports = function () {
 	});
 
 
+	app.get("/scopeCheck", (req, res) => {
+		var scope = `${req.authInfo.xsappname}.Manage_ECP_Application`;
+		console.log('The Selected Scope Check value', scope);
+		if (req.authInfo && !req.authInfo.checkScope(scope)) {
+			return res.type("text/plain").status(403).send("Forbidden");
+		}
+	});
+ 
+
 	app.get("/passport", (req, res) => {
 		res.type("application/json").status(200).send(JSON.stringify(req.authInfo));
 	});

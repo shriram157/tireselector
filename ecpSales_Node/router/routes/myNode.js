@@ -69,7 +69,7 @@ module.exports = function () {
 		//   console.log(req.headers.cookie);
 
 		if (method == 'GET') {
-			//	 delete (req.headers.cookie);  // TODO: to be revisited, if this solvs
+		
 
 			var reqHeader = {
 				"Authorization": auth64,
