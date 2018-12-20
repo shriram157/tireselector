@@ -102,7 +102,7 @@ sap.ui.define([
 								_that.oBusinessPartnerModel.updateBindings(true);
 							}, _that),
 							error: function (oError) {
-								console.log("Error in fetching A_BusinessPartner", oError);
+								console.log("Error in fetching data", oError);
 							}
 						});
 						var filterData;
@@ -352,7 +352,7 @@ sap.ui.define([
 									});
 								}, this),
 								error: function (oError) {
-									console.log("Error in fetching ZC_FitmentSet data", oError);
+									console.log("Error in fetching data", oError);
 								}
 							});
 

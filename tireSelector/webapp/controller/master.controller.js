@@ -123,46 +123,11 @@ sap.ui.define([
 			/* Dummy JSON data */
 			_that.objList = {
 				"SearchOptionsList": [{
-					SearchText: "VIN"
+					SearchText: _that.oI18nModel.getResourceBundle().getText("VIN")
 				}, {
 					SearchText: "Vehicle Series"
 				}, {
-					SearchText: "Tire Size"
-				}],
-				"VehicleSeriesList": [{
-					modelSeries: "Series1"
-				}, {
-					modelSeries: "Series2"
-				}, {
-					modelSeries: "Series3"
-				}],
-				"ModelYearList": [{
-					year: "2017"
-				}, {
-					year: "2018"
-				}, {
-					year: "2019"
-				}],
-				"SelectModelist": [{
-					"Model": "CT",
-					"Package": "Package01",
-					"TireSize": "195/65R15",
-					"RimSize": "5.5Jx15 ET40"
-				}, {
-					"Model": "GS",
-					"Package": "Package01",
-					"TireSize": "235/50R17",
-					"RimSize": "7.5Jx17 ET45"
-				}, {
-					"Model": "ES",
-					"Package": "Package01",
-					"TireSize": "215/55R17",
-					"RimSize": "7Jx17 ET40"
-				}, {
-					"Model": "HS",
-					"Package": "Package01",
-					"TireSize": "215/55ZR17",
-					"RimSize": "7Jx17 ET39"
+					SearchText: _that.oI18nModel.getResourceBundle().getText("TireSize")
 				}]
 			};
 
@@ -181,8 +146,8 @@ sap.ui.define([
 
 			_that.oSelectJSONModel.setData(_that.objList);
 			_that.oSelectJSONModel.updateBindings();
-			_that.oSearchOptionList.setSelectedKey(_that.oSearchOptionList.getItems()[2].getProperty("key"));
-			_that.oSearchOptionLabel.setText(_that.oSearchOptionList.getItems()[2].getProperty("text"));
+			_that.oSearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
+			_that.oSearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
 
 			$.ajax({
 				dataType: "json",
@@ -379,7 +344,7 @@ sap.ui.define([
 			if (selectedOption == "Vehicle Series") {
 				_that.oVehicleSearchCombo.setValueState(sap.ui.core.ValueState.None);
 				_that.oModelSeriesCombo.setValueState(sap.ui.core.ValueState.None);
-			} else if (selectedOption == "VIN") {
+			} else if (selectedOption == _that.oI18nModel.getResourceBundle().getText("VIN")) {
 				_that.oSearchOptionVIN.setValueState(sap.ui.core.ValueState.None);
 			} else {
 				_that.oSearchOptionTireSize.setValueState(sap.ui.core.ValueState.None);
@@ -391,7 +356,7 @@ sap.ui.define([
 				_that._oViewModel.setProperty("/enableVehicleInputs", true);
 				_that._oViewModel.setProperty("/enableVin", false);
 				_that._oViewModel.setProperty("/enableTireSize", false);
-			} else if (selectedOption == "VIN") {
+			} else if (selectedOption == _that.oI18nModel.getResourceBundle().getText("VIN")) {
 				_that._oViewModel.setProperty("/enableVin", true);
 				_that.oSearchOptionVIN.setValue();
 				_that._oViewModel.setProperty("/enableTireSize", false);
@@ -401,7 +366,7 @@ sap.ui.define([
 				_that.oSearchOptionTireSize.setValue();
 				_that._oViewModel.setProperty("/enableVin", false);
 				_that._oViewModel.setProperty("/enableVehicleInputs", false);
-			}
+			}_that.oSearchOptionLabel.setText(selectedOption);
 		},
 
 		/*Function for clearing search criteria when user clicks on Clear Search Fields */
@@ -424,10 +389,10 @@ sap.ui.define([
 					_that.oModelSeriesCombo.setValue();
 					_that.oVehicleSearchCombo.setValueState(sap.ui.core.ValueState.None);
 					_that.oModelSeriesCombo.setValueState(sap.ui.core.ValueState.None);
-				} else if (selectedOption == "VIN") {
+				} else if (selectedOption == _that.oI18nModel.getResourceBundle().getText("VIN")) {
 					_that.oSearchOptionVIN.setValue();
 					_that.oSearchOptionVIN.setValueState(sap.ui.core.ValueState.None);
-				} else if (selectedOption == "Tire Size") {
+				} else if (selectedOption == _that.oI18nModel.getResourceBundle().getText("TireSize")) {
 					_that.oSearchOptionTireSize.setValue();
 					_that.oSearchOptionTireSize.setValueState(sap.ui.core.ValueState.None);
 				}
@@ -449,7 +414,7 @@ sap.ui.define([
 			// debugger;
 			// _that.getRouter().navTo("searchResults");
 			var Searchkey = _that.oSearchOptionList.getSelectedKey();
-			if ((Searchkey == "VIN" || Searchkey == "Vehicle Series") &&
+			if ((Searchkey == _that.oI18nModel.getResourceBundle().getText("VIN") || Searchkey == "Vehicle Series") &&
 				(_that.oSearchOptionTireSize.getValue() != "" || _that.oSearchOptionVIN.getValue() != "" || _that.oVehicleSearchCombo.getSelectedKey() !=
 					"")) {
 				_that.oSearchOptionList.setValueState(sap.ui.core.ValueState.Success);
@@ -474,7 +439,7 @@ sap.ui.define([
 						_that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
 					}
 				}
-			} else if (Searchkey == "Tire Size" && _that.oSearchOptionTireSize.getValue() !== "") {
+			} else if (Searchkey == _that.oI18nModel.getResourceBundle().getText("TireSize") && _that.oSearchOptionTireSize.getValue() !== "") {
 				_that.oSearchOptionList.setValueState(sap.ui.core.ValueState.Success);
 				_that.oSearchOptionTireSize.setValueState(sap.ui.core.ValueState.Success);
 				_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);

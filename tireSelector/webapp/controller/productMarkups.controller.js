@@ -16,17 +16,18 @@ sap.ui.define([
 			_that.userloginCount = 0;
 
 			_that.getRouter().attachRouteMatched(function (oEvent) {
-
 				_that.oProdMarkupModel = new JSONModel();
 				sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 				_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 
-				_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
-				_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
+				// _that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
+				// _that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 
-				_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+				// _that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 				// _that.getView().setModel(_that.oXSOServiceModel, "ProdMarkupModel");
-				console.log("XSO model data", _that.oXSOServiceModel);
+				// console.log("XSO model data", _that.oXSOServiceModel);
+
+				// _that.callUpdatedProdMarkupTab();
 
 				if (_that.userloginCount == 0) {
 					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
@@ -42,10 +43,10 @@ sap.ui.define([
 									_that.tireBrandData.results.push({
 										"Dealer_code": "2400034030",
 										"Dealer_Brand": "10",
-										"Manufacturer_code": "TireBrand", //length is only 10 char for item.CHARAC
+										"Manufacturer_code": "TireBrand", //length is only 10 char for item.CHARAC TIRE_BRAND_DESCP 
 										"Preview_Markup_Percentage": "",
 										"Live_Markup_Percentage": "",
-										"Live_Last_Updated": "2018-12-20T00:00:00",
+										"Live_Last_Updated": "2019-01-01T00:00:00.000Z",
 										"Live_Last_Updated_By": "DonValley",
 										"User_First_Name": "Aarti",
 										"User_Last_Name": "Dhamat"
@@ -114,9 +115,9 @@ sap.ui.define([
 		updateXSALiveTable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
-			// var oModel = this.getOwnerComponent().getModel("XsodataModel");
+			var oModel = this.getOwnerComponent().getModel("XsodataModel");
 
-			var oModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
+			// var oModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 			var modelData = _that.oProdMarkupModel.getData().results;
 			var UserData = sap.ui.getCore().getModel("DealerModel").getData().attributes[0];
 
@@ -145,12 +146,38 @@ sap.ui.define([
 					dataFromModel.IsLive = "Y";
 					//  Add all the other fields that you want to update. // TODO: 
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
-						console.log("Post Response from ECC", oResponse);
+						console.log("Post Response", oResponse);
 						_that.callUpdatedProdMarkupTab();
 						// Proper error handling if any thing needed. // TODO: 
 					});
 				} else {
-					// insert logic goes here. 
+					_that.newDataFromModel.Dealer_code = modelData[i].Dealer_code;
+					_that.newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
+					_that.newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
+					_that.newDataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
+					_that.newDataFromModel.Preview_Markup_Percentage = modelData[i].Live_Markup_Percentage;
+					_that.newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					_that.newDataFromModel.Live_Last_Updated_By = UserData.BusinessPartnerName.split(" ")[0] + " " + UserData.BusinessPartnerName.split(" ")[1];
+					_that.newDataFromModel.User_First_Name = UserData.BusinessPartnerName.split(" ")[0] + " " + UserData.BusinessPartnerName.split(" ")[1];
+					_that.newDataFromModel.User_Last_Name = UserData.BusinessPartnerName.split(" ")[2] + " " + UserData.BusinessPartnerName.split(" ")[3];
+					_that.newDataFromModel.IsLive = "Y";
+
+					// _that.newDataFromModel.Dealer_code = "2400034030";
+					// _that.newDataFromModel.Dealer_Brand = "10";
+					// _that.newDataFromModel.Manufacturer_code = "TireBrand";
+					// _that.newDataFromModel.Live_Last_Updated = "2019-01-01T00:00:00.000Z";
+					// _that.newDataFromModel.Live_Last_Updated_By = "Don Valley";
+					// _that.newDataFromModel.Live_Markup_Percentage = "1.90";
+					// _that.newDataFromModel.Preview_Markup_Percentage = "2.50";
+					// _that.newDataFromModel.User_First_Name = "Don Valley";
+					// _that.newDataFromModel.User_Last_Name = "North LEXUS";
+					// _that.newDataFromModel.IsLive = "";
+					//  Add all the other fields that you want to update. // TODO: 
+					oModel.create("/DealerMarkUp", _that.newDataFromModel, function (oResponse) { //bindingContextPath
+						console.log("Post Response from ECC", oResponse);
+						_that.callUpdatedProdMarkupTab();
+						// Proper error handling if any thing needed. // TODO: 
+					});
 				}
 			}
 			// ===================================================== Update Functionality - End ===============================
@@ -159,14 +186,15 @@ sap.ui.define([
 		updateXSATable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
-			// var oModel = this.getOwnerComponent().getModel("XsodataModel");
+			var oModel = this.getOwnerComponent().getModel("XsodataModel");
 
-			var oModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
+			// var oModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
+			// oModel.setUseBatch(false);
 			var modelData = _that.oProdMarkupModel.getData().results;
 			var UserData = sap.ui.getCore().getModel("DealerModel").getData().attributes[0];
 			_that.newDataFromModel = {};
 
-			for (var i = 0; i < 5; i++) { //modelData.length
+			for (var i = 0; i < modelData.length; i++) { //modelData.length
 
 				var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
 					"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
@@ -178,7 +206,7 @@ sap.ui.define([
 
 				var bindingContext = oModel.getContext(sContextPathInfo);
 				var bindingContextPath = bindingContext.getPath();
-				var dataFromModel = bindingContext.getModel().getContext(bindingContextPath); //bindingContext.getModel().getProperty(bindingContextPath);
+				var dataFromModel = bindingContext.getModel().getProperty(bindingContextPath); //bindingContext.getModel().getContext(bindingContextPath); //Updated by RT 20-12-2018 //bindingContext.getModel().getProperty(bindingContextPath); 
 				//			var dataFromModel = oModel.getProperty(sContextPathInfo);
 
 				if (dataFromModel) {
@@ -189,27 +217,43 @@ sap.ui.define([
 					dataFromModel.User_First_Name = UserData.BusinessPartnerName.split(" ")[0] + " " + UserData.BusinessPartnerName.split(" ")[1];
 					dataFromModel.User_Last_Name = UserData.BusinessPartnerName.split(" ")[2] + " " + UserData.BusinessPartnerName.split(" ")[3];
 					dataFromModel.IsLive = "";
+
 					//  Add all the other fields that you want to update. // TODO: 
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
-						console.log("Post Response from ECC", oResponse);
+						console.log("", oResponse);
 						_that.callUpdatedProdMarkupTab();
 						// Proper error handling if any thing needed. // TODO: 
 					});
 				} else {
+					_that.newDataFromModel.Dealer_code = modelData[i].Dealer_code;
+					_that.newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
+					_that.newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
+					_that.newDataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
+					_that.newDataFromModel.Preview_Markup_Percentage = modelData[i].Live_Markup_Percentage;
+					_that.newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					_that.newDataFromModel.Live_Last_Updated_By = UserData.BusinessPartnerName.split(" ")[0] + " " + UserData.BusinessPartnerName.split(" ")[1];
+					_that.newDataFromModel.User_First_Name = UserData.BusinessPartnerName.split(" ")[0] + " " + UserData.BusinessPartnerName.split(" ")[1];
+					_that.newDataFromModel.User_Last_Name = UserData.BusinessPartnerName.split(" ")[2] + " " + UserData.BusinessPartnerName.split(" ")[3];
+					_that.newDataFromModel.IsLive = "";
 
-					// _that.newDataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
-					// _that.newDataFromModel.Preview_Markup_Percentage = modelData[i].Live_Markup_Percentage;
-					// _that.newDataFromModel.Live_Last_Updated = "2018-12-03T00:00:00";
-					// _that.newDataFromModel.Live_Last_Updated_By = UserData.BusinessPartnerName.split(" ")[0] + " " + UserData.BusinessPartnerName.split(
-					// 	" ")[1];
-					// _that.newDataFromModel.User_First_Name = UserData.BusinessPartnerName.split(" ")[0] + " " + UserData.BusinessPartnerName.split(
-					// 	" ")[1];
-					// _that.newDataFromModel.User_Last_Name = UserData.BusinessPartnerName.split(" ")[2] + " " + UserData.BusinessPartnerName.split(" ")[
-					// 	3];
+					// _that.newDataFromModel.Dealer_code = "2400034030";
+					// _that.newDataFromModel.Dealer_Brand = "10";
+					// _that.newDataFromModel.Manufacturer_code = "TireBrand";
+					// _that.newDataFromModel.Live_Last_Updated = "2019-01-01T00:00:00.000Z";
+					// _that.newDataFromModel.Live_Last_Updated_By = "Don Valley";
+					// _that.newDataFromModel.Live_Markup_Percentage = "1.90";
+					// _that.newDataFromModel.Preview_Markup_Percentage = "2.50";
+					// _that.newDataFromModel.User_First_Name = "Don Valley";
+					// _that.newDataFromModel.User_Last_Name = "North LEXUS";
 					// _that.newDataFromModel.IsLive = "";
-					// //  Add all the other fields that you want to update. // TODO: 
+					//  Add all the other fields that you want to update. // TODO: 
+					oModel.create("/DealerMarkUp", _that.newDataFromModel, function (oResponse) { //bindingContextPath
+						console.log("Post Response from ECC", oResponse);
+						_that.callUpdatedProdMarkupTab();
+						// Proper error handling if any thing needed. // TODO: 
+					});
 					// oModel.update(bindingContextPath, _that.newDataFromModel, null, function (oResponse) {
-					// 	console.log("Post Response from ECC", oResponse);
+					// 	console.log("Post Response", oResponse);
 					// 	_that.callUpdatedProdMarkupTab();
 					// 	// Proper error handling if any thing needed. // TODO: 
 					// });

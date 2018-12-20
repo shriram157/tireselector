@@ -11,7 +11,7 @@ sap.ui.define([
 		onInit: function () {
 			_that = this;
 			_that.oGlobalBusyDialog = new sap.m.BusyDialog();
-			sap.ushell.components.oTableQuote = _that.getView().byId("tableQuotation");
+			// sap.ushell.components.oTableQuote = _that.getView().byId("tableQuotation");
 
 			this.getRouter().attachRouteMatched(function (oEvent) {
 				_that.oGlobalBusyDialog = new sap.m.BusyDialog();
@@ -25,14 +25,14 @@ sap.ui.define([
 				}
 
 				this.nodeJsUrl = this.sPrefix + "/node";
-				
-				if(sap.ushell.components.SearchOptionVehicle !=undefined){
+
+				if (sap.ushell.components.SearchOptionVehicle != "") {
 					_that.VIN = sap.ushell.components.SearchOptionVIN.getValue();
 				}
-				if(sap.ushell.components.SearchOptionVehicle !=undefined){
+				if (sap.ushell.components.SearchOptionVehicle != "") {
 					_that.Vehicle = sap.ushell.components.SearchOptionVehicle.getValue();
 				}
-				if(sap.ushell.components.SearchOptionVehicle !=undefined){
+				if (sap.ushell.components.SearchOptionVehicle != "") {
 					_that.ModelYr = sap.ushell.components.ModelSeriesCombo.getValue();
 				}
 
@@ -50,19 +50,17 @@ sap.ui.define([
 				_that.getView().setModel(_that._oViewModel, "propertiesModel");
 
 				_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"));
-				console.log("DealerData", _that.getView().getModel("DealerModel"));
+				// console.log("DealerData", _that.getView().getModel("DealerModel"));
 
 				if (oEvent.getParameter("arguments").rowData !== undefined) {
 					_that.oGlobalBusyDialog.open();
-					console.log("rowData", oEvent.getParameter("arguments").rowData);
+					// console.log("rowData", oEvent.getParameter("arguments").rowData);
 					_that.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
 					_that.rowData.TireSize = _that.rowData.TireSize.replace("%2F", "/");
 					_that.rowData.ProvincialTax = "";
 					_that.rowData.FederalTax = "";
 
 					var oMat = _that.rowData.Material;
-					// _that.RHPFlag = "";
-					// _that.getPrices(oMat);
 					var oMaterial = oMat;
 
 					_that.objPrice = {};
@@ -79,7 +77,7 @@ sap.ui.define([
 					_that.objPrice.EHFPRice = this.getView().byId("id_freeDescp").getValue();
 
 					_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
-					console.log("Dealer Data", _that.DealerData);
+					// console.log("Dealer Data", _that.DealerData);
 					_that.Division = _that.DealerData.attributes[0].Division;
 					_that.Doctype = "ZAF";
 					_that.SalesOrg = "7000";
@@ -87,29 +85,23 @@ sap.ui.define([
 					_that.SoldtoParty = _that.DealerData.attributes[0].BusinessPartnerKey;
 
 					var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
-						_that.SalesOrg +
-						"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
-						"'";
-					// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
-					// _that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
+						_that.SalesOrg +"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +"'";
 					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
 					_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 						success: $.proxy(function (oPriceData) {
-							console.log("oPriceData", oPriceData);
-							for (var n = 0; n < oPriceData.results.length; n++) {
-								var CndType = oPriceData.results[n].CndType;
-								if (CndType == "JRC4" || CndType == "JRC5") {
-									_that.rowData.FederalTax = _that.decimalFormatter(oPriceData.results[n].Amount);
-									_that.rowData.FederalTaxDesc = oPriceData.results[n].CndName;
-								} else if (CndType == "JRC3" || CndType == "JRC2") {
-									_that.rowData.ProvincialTax = _that.decimalFormatter(oPriceData.results[n].Amount);
-									_that.rowData.ProvincialTaxDesc = oPriceData.results[n].CndName;
-								} else if (CndType == "ZPEH" || CndType == "ZPEC") {//Freight Cost
-									_that.rowData.EHFPRice = _that.decimalFormatter(oPriceData.results[n].Amount);
-									_that.rowData.EHFPRiceDesc = oPriceData.results[n].CndName;
+								console.log("oPriceData", oPriceData);
+								for (var n = 0; n < oPriceData.results.length; n++) {
+									var CndType = oPriceData.results[n].CndType;
+									if (CndType == "JRC4" || CndType == "JRC5") {
+										_that.rowData.FederalTax = _that.decimalFormatter(oPriceData.results[n].Amount);
+									} else if (CndType == "JRC3" || CndType == "JRC2") {
+										_that.rowData.ProvincialTax = _that.decimalFormatter(oPriceData.results[n].Amount);
+									} else if (CndType == "ZPEH"  || CndType == "ZPEC") { //Freight Cost
+										_that.rowData.EHFPRice = _that.decimalFormatter(oPriceData.results[n].Amount);
+									} 
 								}
-							}
-						}, _that),
+							},
+							_that),
 						error: function (oError) {
 							console.log("Error in fetching ZC_PriceSet", oError);
 						}
@@ -142,10 +134,8 @@ sap.ui.define([
 					} else {
 						_that._oViewModel.setProperty("/enableFee", false);
 					}
-					// _that.oTireQuotationModel.getData().prices=[];
 					_that.getView().setModel(_that.oTireQuotationModel, "TireQuotationModel");
 					console.log("TireQuotation Data", _that.oTireQuotationModel);
-					// var oTable = _that.getView().byId("tableQuotation");
 					_that.oTireQuotationModel.refresh(true);
 					_that.oTireQuotationModel.updateBindings(true);
 					console.log("Tire Quote Data", _that.oTireQuotationModel.getData().results[0]);
@@ -169,8 +159,6 @@ sap.ui.define([
 				_that.FedTaxCode = this.getView().byId("id_fedTaxCode");
 				_that.selectRHP = this.getView().byId("id_RHP");
 				_that.EnvoFee = this.getView().byId("id_freeDescp");
-
-				// _that.arrPrices = [];
 
 				$.ajax({
 					dataType: "json",
@@ -327,13 +315,13 @@ sap.ui.define([
 			_that.getView().byId("id_TPMSQty").setValue("");
 			_that.getView().byId("id_FittingKitUnitPrice").setValue("");
 			_that.getView().byId("id_FittingKitQty").setValue("");
-			
+
 			_that.getView().byId("id_subTotal").setValue("");
 			_that.getView().byId("id_total").setValue("");
 			_that.getView().byId("id_proTaxCode").setValue("");
 			_that.getView().byId("id_fedTaxCode").setValue("");
 			_that.getView().byId("id_freeDescp").setValue("");
-			
+
 			_that.selectRHP.setSelectedKey();
 			_that.oTireQuotationModel.setData();
 			_that.oTireQuotationModel.updateBindings(true);
@@ -535,8 +523,8 @@ sap.ui.define([
 				summed += Number(arrPrices[key]);
 			}
 			_that.SubTotal.setValue(_that.decimalFormatter(summed));
-			if (_that.EnvoFee.getValue() != "" ||  _that.EnvoFee.getValue() != undefined || _that.EnvoFee.getValue() != null) {
-				var val =Number(_that.SubTotal.getValue()) + Number(_that.EnvoFee.getValue());
+			if (_that.EnvoFee.getValue() != "" || _that.EnvoFee.getValue() != undefined || _that.EnvoFee.getValue() != null) {
+				var val = Number(_that.SubTotal.getValue()) + Number(_that.EnvoFee.getValue());
 				_that.SubTotal.setValue(_that.decimalFormatter(val));
 			}
 			_that.sub = Number(_that.SubTotal.getValue());

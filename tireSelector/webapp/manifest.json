@@ -15,7 +15,7 @@
 		},
 		"dataSources": {
 			"tireSelector_SRV.xsodata": {
-				"uri": "/tireSelector/xsodata/tireSelector_SRV.xsodata/",
+				"uri": "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
