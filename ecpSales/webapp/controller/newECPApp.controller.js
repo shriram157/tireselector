@@ -57,6 +57,7 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._oRouteNewECP, this);
 			// var oEventBus = sap.ui.getCore().getEventBus();
 			// oEventBus.publish("newECPApp", "Binded", this.onSelectiDealer, this);
+
 			
 		},
 		
@@ -107,12 +108,12 @@ sap.ui.define([
 				this.getView().getModel("oSetProperty").setProperty("/saleDat02Visible", true);
 				
 				var oZECPModel = this.getModel("EcpSalesModel");
-				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
+				// this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
+				// $.ajaxSetup({
+				// 	headers: {
+				// 		'X-CSRF-Token': this._oToken
+				// 	}
+				// });
 				oZECPModel.read("/zc_ecp_crud_operationsSet", {
 					urlParameters: {
 						"$filter": "ZecpVin eq '" + this.oViNum + "'and ZecpIntApp eq '" + this.oAppId + "'"
@@ -422,12 +423,12 @@ sap.ui.define([
 					SDSTA: ""
 				};
 				var oZECPModel = this.getModel("EcpSalesModel");
-				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
+				// this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
+				// $.ajaxSetup({
+				// 	headers: {
+				// 		'X-CSRF-Token': this._oToken
+				// 	}
+				// });
 				oZECPModel.read("/zc_ecp_valid_plansSet", {
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
@@ -527,12 +528,12 @@ sap.ui.define([
 				});
 
 				var oGetModel = this.getModel("ZVehicleMasterModel");
-				this._oToken = oGetModel.getHeaders()['x-csrf-token'];
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
+				// this._oToken = oGetModel.getHeaders()['x-csrf-token'];
+				// $.ajaxSetup({
+				// 	headers: {
+				// 		'X-CSRF-Token': this._oToken
+				// 	}
+				// });
 				oGetModel.read("/zc_c_vehicle", {
 
 					urlParameters: {
@@ -630,12 +631,12 @@ sap.ui.define([
 			var oSaleDateId = this.getView().byId("idDate");
 			var oSaleDate = oSaleDateId.getValue();
 			var zEcpModel = this.getModel("EcpSalesModel");
-			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-Token': this._oToken
-				}
-			});
+			// this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+			// $.ajaxSetup({
+			// 	headers: {
+			// 		'X-CSRF-Token': this._oToken
+			// 	}
+			// });
 			if (this.oCustomer) {
 				var oCustomerNum = this.oCustomer.substr(5);
 			}
@@ -663,12 +664,12 @@ sap.ui.define([
 			});
 
 			var oBusinessModel = this.getModel("ApiBusinessModel");
-			this._oToken = oBusinessModel.getHeaders()['x-csrf-token'];
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-Token': this._oToken
-				}
-			});
+			// this._oToken = oBusinessModel.getHeaders()['x-csrf-token'];
+			// $.ajaxSetup({
+			// 	headers: {
+			// 		'X-CSRF-Token': this._oToken
+			// 	}
+			// });
 			oBusinessModel.read("/A_BusinessPartnerAddress", {
 				urlParameters: {
 					"$filter": "BusinessPartner eq '" + this.oCustomer + "' ",
@@ -811,12 +812,12 @@ sap.ui.define([
 			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 
 			var zEcpModel = this.getModel("EcpSalesModel");
-			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-Token': this._oToken
-				}
-			});
+			// this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+			// $.ajaxSetup({
+			// 	headers: {
+			// 		'X-CSRF-Token': this._oToken
+			// 	}
+			// });
 			zEcpModel.read("/zc_ecp_planpricing_dataSet", {
 				urlParameters: {
 					"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +

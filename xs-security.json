@@ -1,20 +1,109 @@
 {
-  "xsappname": "ecpSales",
-  "tenant-mode": "dedicated",
-  "description": "Security profile of called application",
-  "scopes": [
-    {
-      "name": "uaa.user",
-      "description": "UAA"
-    }
-  ],
-  "role-templates": [
-    {
-      "name": "Token_Exchange",
-      "description": "UAA",
-      "scope-references": [
-        "uaa.user"
-      ]
-    }
-  ]
+	"xsappname": "ecpSales",
+	"tenant-mode": "dedicated",
+	"description": "Security profile of called application",
+	"scopes": [{
+		"name": "$XSAPPNAME.View_ECP_Application",
+		"description": "View ECP Application"
+	}, {
+		"name": "$XSAPPNAME.View_ECP_Claim",
+		"description": "View ECP Claim"
+	}, {
+		"name": "$XSAPPNAME.Manage_ECP_Applicatioin",
+		"description": "Manage ECP Application"
+	}, {
+		"name": "$XSAPPNAME.View_ECP_Agreement",
+		"description": "View ECP Agreement"
+	}, {
+		"name": "$XSAPPNAME.Inquiry",
+		"description": "Inquiry"
+	}],
+	"attributes": [{
+		"name": "DealerCode",
+		"description": "Dealer Code",
+		"valueType": "s"
+	}, {
+		"name": "Language",
+		"description": "Language",
+		"valueType": "s"
+	}, {
+		"name": "UserType",
+		"description": "UserType, identifies dealer or not",
+		"valueType": "s"
+	}, {
+		"name": "Zone",
+		"description": "restrict based on Zone",
+		"valueType": "s"
+	}],
+
+	"role-templates": [{
+			"name": "Dealer_Sales_User",
+			"description": "Dealer Sales User, this has all the Authorizations",
+			"scope-references": [
+				"$XSAPPNAME.View_ECP_Application",
+				"$XSAPPNAME.View_ECP_Claim",
+				"$XSAPPNAME.Manage_ECP_Application",
+				"$XSAPPNAME.View_ECP_Agreement",
+				"$XSAPPNAME.Inquiry"
+			],
+			"attribute-references": [
+				"DealerCode",
+				"Language",
+				"UserType"
+			]
+		}, {
+			"name": "Dealer_Service_User",
+			"description": "This is a dealerService User",
+			"scope-references": [
+				"$XSAPPNAME.View_ECP_Claim",
+				"$XSAPPNAME.View_ECP_Agreement",
+				"$XSAPPNAME.Inquiry"
+			],
+			"attribute-references": [
+				"DealerCode",
+				"Language",
+				"UserType"
+			]
+		}, {
+			"name": "TCI_Admin_user",
+			"description": "This is a TCI Admin User",
+			"scope-references": [
+				"$XSAPPNAME.View_ECP_Application",
+				"$XSAPPNAME.View_ECP_Claim",
+				"$XSAPPNAME.View_ECP_Agreement",
+				"$XSAPPNAME.Inquiry"
+			],
+			"attribute-references": [
+				"Language",
+				"UserType"
+			]
+
+		}, {
+			"name": "TCI_Zone_user",
+			"description": "This is a TCI Zone User",
+			"scope-references": [
+				"$XSAPPNAME.View_ECP_Application",
+				"$XSAPPNAME.View_ECP_Claim",
+				"$XSAPPNAME.View_ECP_Agreement",
+				"$XSAPPNAME.Inquiry"
+			],
+			"attribute-references": [
+				"Zone",
+				"Language",
+				"UserType"
+			]
+		}, {
+			"name": "TCI_user",
+			"description": "This is a TCI Zone User",
+			"scope-references": [
+				"$XSAPPNAME.View_ECP_Claim",
+				"$XSAPPNAME.View_ECP_Agreement",
+				"$XSAPPNAME.Inquiry"
+			],
+			"attribute-references": [
+				"Language",
+				"UserType"
+			]
+		}
+	]
 }

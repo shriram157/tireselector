@@ -2,5 +2,5 @@
 'use strict';
 module.exports = (app, server) => {
 	app.use('/node', require('./routes/myNode')());
-//    app.use('/xsodata'), require('./xsodata')());
+	app.use("/userDetails", require("./routes/userDetails")());
 };

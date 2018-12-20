@@ -1,21 +1,97 @@
 {
-  "welcomeFile": "/ecpSales/index.html",
-  "authenticationMethod": "none",
-  "logout": {
-    "logoutEndpoint": "/do/logout"
-  },
-  "routes": [
-    {
-      "source": "^/ecpSales/(.*)$",
-      "target": "$1",
-      "localDir": "webapp"
-    },
-       {
-      "source": "/node(.*)",
-      "destination": "ecpsales-node-backend",
-      "csrfProtection": false,
-      "authenticationType": "none"
-    }
-    
-  ]
+	"welcomeFile": "/ecpSales/index.html",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout"
+	},
+	"routes": [{
+			"source": "^/ecpSales/(.*)$",
+			"target": "$1",
+			"localDir": "webapp",
+			"authenticationType": "xsuaa",
+			"scope": {
+				"GET": [
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
+				],
+				"POST": [
+					"$XSAPPNAME.Manage_ECP_Application",
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
+				],
+				"PUT": [
+					"$XSAPPNAME.Manage_ECP_Application",
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
+				],
+				"DELETE": [
+					"$XSAPPNAME.Manage_ECP_Application",
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
+				]
+
+			}
+
+		}, {
+			"source": "/node(.*)",
+			"destination": "ecpsales-node-backend",
+			"csrfProtection": true,
+			"authenticationType": "xsuaa",
+			"scope": {
+				"GET": [
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
+				],
+				"POST": [
+					"$XSAPPNAME.Manage_ECP_Application",
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry"
+				],
+				"PUT": [
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry",
+					"$XSAPPNAME.Manage_ECP_Application"
+				],
+				"DELETE": [
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry",
+					"$XSAPPNAME.Manage_ECP_Application"
+				]
+
+			}
+		}, {
+			"source": "/userDetails(.*)",
+			"destination": "ecpsales-node-backend",
+			"csrfProtection": true,
+			"authenticationType": "xsuaa",
+	 	"scope": {
+				"GET": [
+					"$XSAPPNAME.View_ECP_Application",
+					"$XSAPPNAME.View_ECP_Claim",
+					"$XSAPPNAME.View_ECP_Agreement",
+					"$XSAPPNAME.Inquiry",
+					"$XSAPPNAME.Manage_ECP_Application"
+				] 
+
+			}
+			}
+		
+
+	]
 }

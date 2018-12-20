@@ -30,6 +30,96 @@ sap.ui.define([
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			var oEventBus = sap.ui.getCore().getEventBus();
 			oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
+			
+//======================================================================================================================//			
+		//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
+//======================================================================================================================//		
+//  get the Scopes to the UI 
+       this.sPrefix ="";
+       var that = this;
+		$.ajax({
+				url: this.sPrefix + "/userDetails/currentScopesForUser",
+				type: "GET",
+				dataType: "json",
+				success: function (oData) {
+					var userScopes = [];
+
+
+
+				}.bind(this),
+				});
+// get the attributes and BP Details - Minakshi to confirm if BP details needed		// TODO: 
+			$.ajax({
+				url: this.sPrefix + "/userDetails/attributes",
+				type: "GET",
+				dataType: "json",
+
+				success: function (oData) {
+					var BpDealer = [];
+					var userAttributes = [];
+
+					$.each(oData.attributes, function (i, item) {
+						var BpLength = item.BusinessPartner.length;
+
+						BpDealer.push({
+							"BusinessPartnerKey": item.BusinessPartnerKey,
+							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
+							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
+							"Division": item.Division,
+							"BusinessPartnerType": item.BusinessPartnerType,
+							"searchTermReceivedDealerName":item.SearchTerm2
+						});
+
+					});
+					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
+					// read the saml attachments the same way 
+					$.each(oData.samlAttributes, function (i, item) {
+						userAttributes.push({
+							"UserType": item.UserType[0],
+							"DealerCode": item.DealerCode[0],
+							"Language": item.Language[0],
+							"Zone": item.Zone[0]
+						});
+
+					});
+
+					that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");
+				 
+
+					//	that._getTheUserAttributes();
+
+				}.bind(this),
+				error: function (response) {
+					sap.ui.core.BusyIndicator.hide();
+				}
+			});
+
+// scopes to be used as below. // TODO: Minakshi to continue the below integration
+
+   //if you see scopes   Manage_ECP_Application,  then treat the user as Dealer Sales USer,  this is the only user with manage application
+      // TODO:  in the ui for this user,  everything is available and default landing page need to be set view/update application page
+   
+   // if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a ECP Service user. 
+      // TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
+      
+  //if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
+      // TODO: Make view/update application as the landing page,  suppress new applicaiton creation button  ( Internal user cannot create an application but view/update is allowed)
+      
+   //if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and  zone then this is a  ECP ZONE USER
+      // TODO: For ECP Zone user restrict the Drop down of dealers only from that zone you received from the attribute. 
+               //suppress new application creation button and make landing page as view/update application
+               
+   // if you see scopes View ECP Claim, view ECP Agreement, Inqyiry with no delaer code no zone then this is a Internal TCI User
+       // TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
+      
+      
+		
+//======================================================================================================================//			
+		//  on init method,  get the token attributes and authentication details to the UI from node layer.  - End
+//======================================================================================================================//				
+			
+ 
+			
 		},
 
 		onBeforeRendering: function () {
