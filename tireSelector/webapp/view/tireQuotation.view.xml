@@ -221,7 +221,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{TireQuotationModel>/results/0/EHFPRiceDesc}" id="id_EHFDescp"/>
+										<Label text="{i18n>EHFCharges}" id="id_EHFDescp"/>
 									</VBox>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
@@ -233,7 +233,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{TireQuotationModel>/results/0/FederalTaxDesc}" id="id_fedTaxCodeDesc"/>
+										<Label text="{i18n>FederalTax}" id="id_fedTaxCodeDesc"/>
 									</VBox>
 									<Input value="{TireQuotationModel>/results/0/FederalTax}" id="id_fedTaxCode" editable="false"/>
 								</cells>
@@ -243,7 +243,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{TireQuotationModel>/results/0/ProvincialTaxDesc}" id="id_proTaxCodeDesc"/>
+										<Label text="{i18n>ProvincialTax}" id="id_proTaxCodeDesc"/>
 									</VBox>
 									<Input value="{TireQuotationModel>/results/0/ProvincialTax}" id="id_proTaxCode" editable="false"/>
 								</cells>
