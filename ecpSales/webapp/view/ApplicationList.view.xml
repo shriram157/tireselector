@@ -17,13 +17,11 @@
 											<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"
 												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
 											<Label text="Dealer Code" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
-											<!--<Input type="Text" id="idDealerCode"/>-->
-											<ComboBox showSecondaryValues="true" id="idDealerCode" filterSecondaryValues="true" selectionChange="onSelectiDealer"
-												items="{ path: 'OBusinessModel>/A_BusinessPartner', filters : [ { path : 'BusinessPartnerType', operator : 'EQ', value1 : 'Z001'}], sorter: { path: 'BusinessPartner' }, length:300 }">
-												<core:ListItem key="{OBusinessModel>BusinessPartner}"
-													text="{path:'OBusinessModel>BusinessPartner', formatter:'zecp.utils.formatter.fnFormatCustomer'}"
-													additionalText="{OBusinessModel>BusinessPartnerName}"/>
-											</ComboBox>
+											<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer" items="{LocalDataModel>/BpDealerModel}"
+												selectedKey="{LocalDataModel>/BpDealerModel/0/BusinessPartnerKey}">
+												<core:ListItem key="{LocalDataModel>BusinessPartnerKey}" text="{path:'LocalDataModel>BusinessPartner'}"
+													additionalText="{LocalDataModel>BusinessPartnerName}"/>
+											</Select>
 										</HBox>
 										<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop">
 											<RadioButton id="idVinRadio" groupName="GroupA" text="{i18n>VIN}" class="sapUiSmallMarginEnd"/>
@@ -31,13 +29,13 @@
 											<Input required="true" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"
 												valueHelpRequest="handleValueHelp"/>
 											<Button text="{i18n>Search}" type="Emphasized" press="OnSearchApplication" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
-											<Button text="{i18n>CreateNewApp}" press="OnCreateApp"/>
+											<Button text="{i18n>CreateNewApp}" press="OnCreateApp" enabled="{oDateModel>/oCreateButton}"/>
 										</HBox>
 									</VBox>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
-									<Table id="idApplicationTable" enableBusyIndicator="true"  mode="SingleSelectMaster" selectionChange="onSelectionChange" alternateRowColors="true"
-										items="{ path: 'LocalDataModel>/EcpApplication' }" >
+									<Table id="idApplicationTable" enableBusyIndicator="true" mode="SingleSelectMaster" selectionChange="onSelectionChange"
+										alternateRowColors="true" items="{ path: 'LocalDataModel>/EcpApplication' }">
 										<columns>
 											<Column minScreenWidth="Tablet" demandPopin="true">
 												<Text text="{i18n>ApplicationDate}"/>

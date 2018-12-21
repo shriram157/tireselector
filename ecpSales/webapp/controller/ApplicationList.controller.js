@@ -21,45 +21,52 @@ sap.ui.define([
 				dateFormatDRS1: "yyyy/MM/dd",
 				dateValueDRS2: this.priordate,
 				secondDateValueDRS2: this.beforedate,
-				oDealer: "2400042350"
+				oCreateButton: true
 			});
 			this.getView().setModel(oModelDate, "oDateModel");
-			
-			
+
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
-						if (sLocation_conf == 0) {
-				 this.sPrefix= "/ecpSales_node_secured"; //ecpSales_node_secured
-				 this.attributeUrl = "/userDetails/attributesforlocaltesting";   
-			} else  {
-				  this.sPrefix ="";
-				  this.attributeUrl = "/userDetails/attributes";   
-			}	
+			if (sLocation_conf == 0) {
+				this.sPrefix = "/ecpSales_node_secured"; //ecpSales_node_secured
+				this.attributeUrl = "/userDetails/attributesforlocaltesting";
+			} else {
+				this.sPrefix = "";
+				this.attributeUrl = "/userDetails/attributes";
+			}
 
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			this.getView().setModel(oBusinessModel, "OBusinessModel");
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			var oEventBus = sap.ui.getCore().getEventBus();
 			oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
-			
-//======================================================================================================================//			
-		//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
-//======================================================================================================================//		
-//  get the Scopes to the UI 
-       //this.sPrefix ="";
-       var that = this;
-		$.ajax({
+
+			//======================================================================================================================//			
+			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
+			//======================================================================================================================//		
+			//  get the Scopes to the UI 
+			//this.sPrefix ="";
+			var that = this;
+			$.ajax({
 				url: this.sPrefix + "/userDetails/currentScopesForUser",
 				type: "GET",
 				dataType: "json",
 				success: function (oData) {
-					var userScopes = [];
+					var userScopes = oData;
+					userScopes.forEach(function (data) {
+						if (data === "ecpSales!t1188.Manage_ECP_Application") {
+							that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
+							that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						} else {
+							that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+							that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						}
 
-
+					});
 
 				}.bind(this),
-				});
-// get the attributes and BP Details - Minakshi to confirm if BP details needed		// TODO: 
+			});
+			// get the attributes and BP Details - Minakshi to confirm if BP details needed		// TODO: 
 			$.ajax({
 				url: this.sPrefix + this.attributeUrl,
 				type: "GET",
@@ -78,24 +85,24 @@ sap.ui.define([
 							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
 							"Division": item.Division,
 							"BusinessPartnerType": item.BusinessPartnerType,
-							"searchTermReceivedDealerName":item.SearchTerm2
+							"searchTermReceivedDealerName": item.SearchTerm2
 						});
 
 					});
-					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
+					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
+					//that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
 					// read the saml attachments the same way 
 					$.each(oData.samlAttributes, function (i, item) {
 						userAttributes.push({
 							"UserType": item.UserType[0],
 							"DealerCode": item.DealerCode[0],
 							"Language": item.Language[0]
-							// "Zone": item.Zone[0]   ---    Not yet available
+								// "Zone": item.Zone[0]   ---    Not yet available
 						});
 
 					});
 
 					that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");
-				 
 
 					//	that._getTheUserAttributes();
 
@@ -105,41 +112,38 @@ sap.ui.define([
 				}
 			});
 
-// scopes to be used as below. // TODO: Minakshi to continue the below integration
+			// scopes to be used as below. // TODO: Minakshi to continue the below integration
 
-   //if you see scopes   Manage_ECP_Application,  then treat the user as Dealer Sales USer,  this is the only user with manage application
-      // TODO:  in the ui for this user,  everything is available and default landing page need to be set view/update application page
-   
-   // if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a ECP Service user. 
-      // TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
-      
-  //if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
-      // TODO: Make view/update application as the landing page,  suppress new applicaiton creation button  ( Internal user cannot create an application but view/update is allowed)
-      
-   //if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and  zone then this is a  ECP ZONE USER
-      // TODO: For ECP Zone user restrict the Drop down of dealers only from that zone you received from the attribute. 
-               //suppress new application creation button and make landing page as view/update application
-               
-   // if you see scopes View ECP Claim, view ECP Agreement, Inqyiry with no delaer code no zone then this is a Internal TCI User
-       // TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
-      
-      
-		
-//======================================================================================================================//			
-		//  on init method,  get the token attributes and authentication details to the UI from node layer.  - End
-//======================================================================================================================//				
-			
- 
-			
+			//if you see scopes   Manage_ECP_Application,  then treat the user as Dealer Sales USer,  this is the only user with manage application
+			// TODO:  in the ui for this user,  everything is available and default landing page need to be set view/update application page
+
+			// if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a ECP Service user. 
+			// TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
+
+			//if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
+			// TODO: Make view/update application as the landing page,  suppress new applicaiton creation button  ( Internal user cannot create an application but view/update is allowed)
+
+			//if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and  zone then this is a  ECP ZONE USER
+			// TODO: For ECP Zone user restrict the Drop down of dealers only from that zone you received from the attribute. 
+			//suppress new application creation button and make landing page as view/update application
+
+			// if you see scopes View ECP Claim, view ECP Agreement, Inqyiry with no delaer code no zone then this is a Internal TCI User
+			// TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
+
+			//======================================================================================================================//			
+			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - End
+			//======================================================================================================================//				
+
 		},
 
 		onBeforeRendering: function () {
-			this.getView().byId("idDealerCode").setSelectedKey("2400042350");
-			this.getView().byId("idDealerCode").setValue("42350");
+			//this.getView().byId("idDealerCode").setSelectedKey("2400042350");
+		//	this.getView().byId("idDealerCode").setValue("42350");
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.attachRouteMatched(this._onObjectMatched, this);
 			this.selectedDealer = this.getView().byId("idDealerCode").getSelectedKey();
-			console.log(this.selectedDealer);
+			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", this.selectedDealer);
+		//	console.log(this.selectedDealer);
 		},
 		_onObjectMatched: function (oEvent) {
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
@@ -186,9 +190,9 @@ sap.ui.define([
 		onAfterRendering: function () {
 
 		},
-		
-		onSelectiDealer : function(oEvent){
-			this.selectedDealer =  oEvent.getSource().getSelectedKey();
+
+		onSelectiDealer: function (oEvent) {
+			this.selectedDealer = oEvent.getSource().getSelectedKey();
 			console.log(this.selectedDealer);
 		},
 
@@ -318,17 +322,20 @@ sap.ui.define([
 		},
 
 		onSelectionChange: function (oEvent) {
-			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
+			var oProp = this.getModel("LocalDataModel").getProperty("/newAppLink");
+			if (oProp == true) {
+				var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
 
-			this.getOwnerComponent().getRouter().navTo("newECPApp", {
-				vin: obj.VIN,
-				plan: obj.ECPPlanCode,
-				appId: obj.InternalApplicationID,
-				appType: obj.AgreementType,
-				Odometer: obj.Odometer
-			});
-			this.getView().byId("idApplicationTable").removeSelections("true");
-			this.getModel("EcpSalesModel").refresh();
+				this.getOwnerComponent().getRouter().navTo("newECPApp", {
+					vin: obj.VIN,
+					plan: obj.ECPPlanCode,
+					appId: obj.InternalApplicationID,
+					appType: obj.AgreementType,
+					Odometer: obj.Odometer
+				});
+				this.getView().byId("idApplicationTable").removeSelections("true");
+				this.getModel("EcpSalesModel").refresh();
+			}
 		},
 
 		onExit: function () {
