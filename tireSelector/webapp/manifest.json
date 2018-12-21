@@ -108,6 +108,16 @@
 					"defaultUpdateMethod": "PUT"
 				}
 			},
+			"XsodataModelPost": {
+				"dataSource": "tireSelector_SRV.xsodata",
+				"type": "sap.ui.model.odata.ODataModel",
+				"preload": false,
+				"settings": {
+					"useBatch": false,
+					"json": true,
+					"defaultBindingMode": "TwoWay"
+				}
+			},
 			"FitmentModel": {
 				"uri": "/node/Z_TIRESELECTOR_SRV/",
 				"type": "sap.ui.model.odata.ODataModel",
@@ -176,9 +186,9 @@
 			},
 			"routes": [
 				{
-					"name": "Routemaster",
-					"pattern": "Routemaster",
-					"target": "Routemaster"
+					"name": "master",
+					"pattern": "master",
+					"target": "master"
 				},
 				{
 					"name": "searchResults",
@@ -212,7 +222,7 @@
 				}
 			],
 			"targets": {
-				"Routemaster": {
+				"master": {
 					"viewType": "XML",
 					"transition": "slide",
 					"clearControlAggregation": false,

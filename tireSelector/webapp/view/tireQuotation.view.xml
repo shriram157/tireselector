@@ -107,7 +107,7 @@
 											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR}"/>
 										</Select>
 									</VBox>
-									<Input value="{TireQuotationModel>/results/0/environmentalFee}" id="id_RHPUnitPrice" editable="false"/>
+									<Input value="{TireQuotationModel>/results/0/RHPPRice}" id="id_RHPUnitPrice" editable="false"/>
 									<Input value="" id="id_RHPsQty" liveChange="calculatePrice"/>
 									<Input value="{TireQuotationModel>/prices/0/RHPPrice}" id="id_RHPPrice" editable="false"/>
 								</cells>
@@ -221,11 +221,11 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>FeeDescription}"/>
+										<Label text="{i18n>EHFCharges}" id="id_EHFDescp"/>
 									</VBox>
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" id="id_freeDescp"/>
+									<Input value="{TireQuotationModel>/results/0/EHFPRice}" id="id_freeDescp"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight" visible="{propertiesModel>/enableFTC}">
@@ -233,7 +233,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>Federal Tax Code}"/>
+										<Label text="{i18n>FederalTax}" id="id_fedTaxCodeDesc"/>
 									</VBox>
 									<Input value="{TireQuotationModel>/results/0/FederalTax}" id="id_fedTaxCode" editable="false"/>
 								</cells>
@@ -243,7 +243,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>Provincial Tax Code}"/>
+										<Label text="{i18n>ProvincialTax}" id="id_proTaxCodeDesc"/>
 									</VBox>
 									<Input value="{TireQuotationModel>/results/0/ProvincialTax}" id="id_proTaxCode" editable="false"/>
 								</cells>
