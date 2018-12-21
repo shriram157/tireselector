@@ -177,9 +177,14 @@ sap.ui.define([
 											undefined) {
 											_that.ProductMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
 											for (var k = 0; k < _that.ProductMarkupModel.getData().results.length; k++) {
-												if (tireBrand == _that.ProductMarkupModel.getData().results[k].Manufacturer_code) {
-													var Live_Markup_Percentage = _that.ProductMarkupModel.getData().results[k].Live_Markup_Percentage;
-													_that.tempModel.getData().results[n].Live_Markup_Percentage = Live_Markup_Percentage;
+												if (_that.ProductMarkupModel.getData().results[k].IsLive == "Y") {
+													if (tireBrand == _that.ProductMarkupModel.getData().results[k].Manufacturer_code) {
+														var Live_Markup_Percentage = _that.ProductMarkupModel.getData().results[k].Live_Markup_Percentage;
+														_that.tempModel.getData().results[n].Live_Markup_Percentage = Live_Markup_Percentage;
+													}
+												}
+												else {
+													_that.tempModel.getData().results[n].Live_Markup_Percentage = null;
 												}
 											}
 										} else {
@@ -326,24 +331,13 @@ sap.ui.define([
 												"TireSize": item.TIRE_SIZE
 											});
 										});
-										// _that.oTireFitmentJSONModel.setData(null);
 										_that.oTireFitmentJSONModel.setData(_that.FitmentToCharac);
 										_that.oTireFitmentJSONModel.getData().Filters = _that.Filters;
-										// if (oTable != undefined) {
-										// 	oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-										// 	// var oBindingInfo = oTable.getBindingInfo("rows");
-										// 	// oTable.bindRows(oBindingInfo);
-										// 	// _that.byId("idVBox").addItem(oTable);
-										// }
-										// else {
+										
 										_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.FacetFilters.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-										// sap.ushell.components.oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-										// 	_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-										// 	var oBindingInfo = sap.ushell.components.oTable.getBindingInfo("rows");
-										// 	_that.byId("idVBox").addItem(sap.ushell.components.oTable);
-										// }
+										
 										_that.oTireFitmentJSONModel.refresh(true);
 										_that.oTireFitmentJSONModel.updateBindings(true);
 										console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
@@ -507,8 +501,6 @@ sap.ui.define([
 			}
 		},
 		onExit: function () {
-			// _that.oTireFitmentJSONModel.setData();
-			// _that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 			_that.oTireFitmentJSONModel.refresh(true);
 			_that.destroy();
 		}
