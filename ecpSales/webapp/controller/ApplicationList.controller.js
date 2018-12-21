@@ -24,6 +24,17 @@ sap.ui.define([
 				oDealer: "2400042350"
 			});
 			this.getView().setModel(oModelDate, "oDateModel");
+			
+			
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+						if (sLocation_conf == 0) {
+				 this.sPrefix= "/ecpSales_node_secured"; //ecpSales_node_secured
+				 this.attributeUrl = "/userDetails/attributesforlocaltesting";   
+			} else  {
+				  this.sPrefix ="";
+				  this.attributeUrl = "/userDetails/attributes";   
+			}	
 
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			this.getView().setModel(oBusinessModel, "OBusinessModel");
@@ -35,7 +46,7 @@ sap.ui.define([
 		//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
 //======================================================================================================================//		
 //  get the Scopes to the UI 
-       this.sPrefix ="";
+       //this.sPrefix ="";
        var that = this;
 		$.ajax({
 				url: this.sPrefix + "/userDetails/currentScopesForUser",
@@ -50,7 +61,7 @@ sap.ui.define([
 				});
 // get the attributes and BP Details - Minakshi to confirm if BP details needed		// TODO: 
 			$.ajax({
-				url: this.sPrefix + "/userDetails/attributes",
+				url: this.sPrefix + this.attributeUrl,
 				type: "GET",
 				dataType: "json",
 
@@ -77,8 +88,8 @@ sap.ui.define([
 						userAttributes.push({
 							"UserType": item.UserType[0],
 							"DealerCode": item.DealerCode[0],
-							"Language": item.Language[0],
-							"Zone": item.Zone[0]
+							"Language": item.Language[0]
+							// "Zone": item.Zone[0]   ---    Not yet available
 						});
 
 					});
