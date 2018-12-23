@@ -33,7 +33,7 @@ sap.ui.define([
 
 			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZECP_SALES_ODATA_SERVICE_SRV");
 				if (sLocation_conf == 0) {
-				mConfig.uri = "/ECP_Destination" + mConfig.uri;
+				mConfig.uri = "/ecpSales_node_secured" + mConfig.uri;  //ecpSales_node_secured
 			} else  {
 					mConfig.uri = mConfig.uri;
 			}
@@ -49,7 +49,7 @@ sap.ui.define([
 
 			var mConfig01 = this.getMetadata().getManifestEntry("/sap.app/dataSources/Z_VEHICLE_MASTER_SRV");
 			if (sLocation_conf == 0) {
-				mConfig01.uri = "/ECP_Destination" + mConfig01.uri;
+				mConfig01.uri = "/ecpSales_node_secured" + mConfig01.uri;
 			}
 			var oDataModel01 = new ODataModel(mConfig01.uri, {
 				useBatch: false,
@@ -64,7 +64,7 @@ sap.ui.define([
 
 			var mConfig02 = this.getMetadata().getManifestEntry("/sap.app/dataSources/API_BUSINESS_PARTNER");
 			if (sLocation_conf == 0) {
-				mConfig02.uri = "/ECP_Destination" + mConfig02.uri;
+				mConfig02.uri = "/ecpSales_node_secured" + mConfig02.uri;
 			}
 			var oDataModel02 = new ODataModel(mConfig02.uri, {
 				useBatch: false,
@@ -78,7 +78,7 @@ sap.ui.define([
 
 			// var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
 			// if (sLocation_conf == 0) {
-			// 	mConfig03.uri = "/ECP_Destination" + mConfig03.uri;
+			// 	mConfig03.uri = "/ecpSales_node_secured" + mConfig03.uri;
 			// }
 			// var oDataModel03 = new ODataModel(mConfig03.uri, {
 			// 	useBatch: false,

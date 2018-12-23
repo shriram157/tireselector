@@ -20,12 +20,12 @@
       "description": "SAPUI5 Test Resources"
     },
     {
-       "path": "ECP_Destination",
+       "path": "ecpSales_node_secured",
        "target": {
            "type": "destination",
-           "name": "ECP_Destination"
+           "name": "ecpSales_node_secured"
        },
-       "description":"ECP_Destination"
+       "description":"ecpSales_node_secured"
    }
   ],
   "sendWelcomeFileRedirect": true
