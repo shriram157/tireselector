@@ -1,61 +1,33 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns="sap.m"
 	xmlns:html="http://www.w3.org/1999/xhtml">
-	<!--<VBox class="sapUiSmallMargin">-->
-	<!--	<f:SimpleForm id="idAgreementDetailsFormTop" editable="true" layout="ResponsiveGridLayout"-->
-	<!--		title="{i18n>OriginalAgrDetails} - {LocalDataModel>/AgreementObj/AgreementNumber}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"-->
-	<!--		labelSpanS="4" columnsM="2" columnsL="3" columnsXL="3" singleContainerFullSize="false">-->
-	<!--		<f:content>-->
-	<!--			<core:Title text=""/>-->
-	<!--			<Label text="{i18n>EffectiveDate}" id="idEfDate"/>-->
-	<!--			<Text-->
-	<!--				text="{ path: 'LocalDataModel>/AgreementObj/AgreementEffectiveDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>-->
-	<!--			<Label text="{i18n>ExpiryDate}"/>-->
-	<!--			<Text id="idExDate" text="{ path: 'EcpFieldData>/AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>-->
-	<!--			<core:Title text=""/>-->
-	<!--			<Label text="{i18n>SellingDealerCode}"/>-->
-	<!--			<Text id="idSeDealer" text="{LocalDataModel>/AgreementObj/DealershipNumber}"/>-->
-	<!--			<Label text="{i18n>SellingDealerName}"/>-->
-	<!--			<Text id="idSeDealName" text=""/>-->
-	<!--			<core:Title text=""/>-->
-	<!--			<Label text="{i18n>VehicleSurcharge}"/>-->
-	<!--			<Text id="idVeSur" text="{LocalDataModel>/AgreementObj/SurchargeAmount}"/>-->
-	<!--			<Label text="{i18n>PreOwnedCert}"/>-->
-	<!--			<Text id="idPreOwn" text="{LocalDataModel>/AgreementObj/PROWNDCERT}"/>-->
-	<!--		</f:content>-->
-	<!--	</f:SimpleForm>-->
-	<!--</VBox>-->
+<VBox class="sapUiSmallMargin" visible="{oSetProperty>/oAgrTopDetails}">
+		<f:SimpleForm id="idAgreementDetailsFormTop" editable="true" layout="ResponsiveGridLayout"
+			title="{i18n>OriginalAgrDetails} - {LocalDataModel>/AgreementObj/AgreementNumber}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
+			labelSpanS="4" columnsM="2" columnsL="3" columnsXL="3" singleContainerFullSize="false">
+			<f:content>
+				<core:Title text=""/>
+				<Label text="{i18n>EffectiveDate}" id="idEfDate"/>
+				<Text
+					text="{ path: 'LocalDataModel>/AgreementObj/AgreementEffectiveDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>
+				<Label text="{i18n>ExpiryDate}"/>
+				<Text id="idExDate"
+					text="{ path: 'LocalDataModel>/AgreementObj/AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium' } }"/>
+				<core:Title text=""/>
+				<Label text="{i18n>SellingDealerCode}"/>
+				<Text id="idSeDealer" text="{LocalDataModel>/AgreementObj/DealershipNumber}"/>
+				<Label text="{i18n>SellingDealerName}"/>
+				<Text id="idSeDealName" text=""/>
+				<core:Title text=""/>
+				<Label text="{i18n>VehicleSurcharge}"/>
+				<Text id="idVeSur" text="{LocalDataModel>/AgreementObj/SurchargeAmount}"/>
+				<Label text="{i18n>PreOwnedCert}"/>
+				<Text id="idPreOwn" text="{LocalDataModel>/AgreementObj/PROWNDCERT}"/>
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
 	<l:VerticalLayout width="100%" class="gridWrapper">
 		<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
-			<!--<html:div class="exampleDiv">-->
-			<!--	<f:SimpleForm id="AgrOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"-->
-			<!--		labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"-->
-			<!--		columnsM="1" singleContainerFullSize="false">-->
-			<!--		<f:content>-->
-			<!--			<Label text="{i18n>Customer}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Type}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Language}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Name}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Address}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>City}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Province}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>PostalCode}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Email}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Home}"/>-->
-			<!--			<Text text=""/>-->
-			<!--			<Label text="{i18n>Business}"/>-->
-			<!--			<Text text=""/>-->
-			<!--		</f:content>-->
-			<!--	</f:SimpleForm>-->
-			<!--</html:div>-->
+		
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="VeOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleOwner}" labelSpanXL="5" labelSpanL="5"
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
@@ -116,7 +88,36 @@
 					</f:content>
 				</f:SimpleForm>
 			</html:div>
-			
+			<html:div class="exampleDiv">
+				<f:SimpleForm id="AgrOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
+					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+					columnsM="1" singleContainerFullSize="false" visible="{oSetProperty>/oAgrOwner}">
+					<f:content>
+						<Label text="{i18n>Customer}"/>
+						<Text text="{LocalDataModel>/OwnerData/BusinessPartner}"/>
+						<Label text="{i18n>Type}"/>
+						<Text text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
+						<Label text="{i18n>Language}"/>
+						<Text text="{LocalDataModel>/OwnerData/Language}"/>
+						<Label text="{i18n>Name}"/>
+						<Text text="{LocalDataModel>/AgreementOwnerName/LastName} {LocalDataModel>/AgreementOwnerName/FirstName}"/>
+						<Label text="{i18n>Address}"/>
+						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
+						<Label text="{i18n>City}"/>
+						<Text text="{LocalDataModel>/OwnerData/CityName}"/>
+						<Label text="{i18n>Province}"/>
+						<Text text="{LocalDataModel>/OwnerData/Region}"/>
+						<Label text="{i18n>PostalCode}"/>
+						<Text text="{LocalDataModel>/OwnerData/PostalCode}"/>
+						<Label text="{i18n>Email}"/>
+						<Text text="{LocalDataModel>/OwnerData/EmailAddress}"/>
+						<Label text="{i18n>Home}"/>
+						<Text text="{LocalDataModel>/OwnerData/PhoneNumber}"/>
+						<Label text="{i18n>Business}"/>
+						<Text text="{LocalDataModel>/OwnerData/FaxNumber}"/>
+					</f:content>
+				</f:SimpleForm>
+			</html:div>
 				
 		</l:Grid>
 	</l:VerticalLayout>
