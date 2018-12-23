@@ -24,37 +24,6 @@ sap.ui.define([
 				oCreateButton: true
 			});
 			this.getView().setModel(oModelDate, "oDateModel");
-			
-			
-			var sLocation = window.location.host;
-			var sLocation_conf = sLocation.search("webide");
-						if (sLocation_conf == 0) {
-				 this.sPrefix= "/ecpSales_node_secured"; //ecpSales_node_secured
-				 this.attributeUrl = "/userDetails/attributesforlocaltesting";   
-			} else  {
-				  this.sPrefix ="";
-				  this.attributeUrl = "/userDetails/attributes";   
-			}	
-
-			var sLocation = window.location.host;
-			var sLocation_conf = sLocation.search("webide");
-			if (sLocation_conf == 0) {
-				this.sPrefix = "/ecpSales_node_secured"; //ecpSales_node_secured
-				this.attributeUrl = "/userDetails/attributesforlocaltesting";
-			} else {
-				this.sPrefix = "";
-				this.attributeUrl = "/userDetails/attributes";
-			}
-
-			var sLocation = window.location.host;
-			var sLocation_conf = sLocation.search("webide");
-			if (sLocation_conf == 0) {
-				this.sPrefix = "/ecpSales_node_secured"; //ecpSales_node_secured
-				this.attributeUrl = "/userDetails/attributesforlocaltesting";
-			} else {
-				this.sPrefix = "";
-				this.attributeUrl = "/userDetails/attributes";
-			}
 
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
@@ -78,6 +47,7 @@ sap.ui.define([
 			//  get the Scopes to the UI 
 			//this.sPrefix ="";
 			var that = this;
+			$.ajax({
 				url: this.sPrefix + "/userDetails/currentScopesForUser",
 				type: "GET",
 				dataType: "json",

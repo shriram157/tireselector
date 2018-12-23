@@ -94,7 +94,7 @@
 			]
 		}, {
 			"name": "TCI_user",
-			"description": "This is a TCI User",
+			"description": "This is a TCI Zone User",
 			"scope-references": [
 				"$XSAPPNAME.View_ECP_Claim",
 				"$XSAPPNAME.View_ECP_Agreement",
