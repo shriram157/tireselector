@@ -52,26 +52,62 @@ sap.ui.define([
 				type: "GET",
 				dataType: "json",
 				success: function (oData) {
-					var userScopes = oData;
-					userScopes.forEach(function (data) {
-						if (data === "ecpSales!t1188.Manage_ECP_Application") {
-							that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
-							that.getModel("LocalDataModel").setProperty("/newAppLink", true);
-						} 
+					// var userScopes = oData;
+					// userScopes.forEach(function (data) {
 
-					});
+					var userType = oData.loggedUserType[0];
+					switch (userType) {
+					case "DealerSalesUSer":
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 
-				}.bind(this),
+						break;
+					case "DealerServiceUser":
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+
+						break;
+
+					case "TCIAdminECPDept":
+
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+
+						break;
+					case "internalTCIUser":
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
+						break;
+					case "TCIZoneUser":
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+						break;
+					default:
+						// raise a message, because this should not be allowed. 
+
+					}
+				}
+
+				// if (data === "ecpSales!t1188.Manage_ECP_Application") {
+				// 	that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
+				// 	that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+				// } 
+
 			});
+
 			// get the attributes and BP Details - Minakshi to confirm if BP details needed		// TODO: 
-			var BpDealer = [];
 			$.ajax({
 				url: this.sPrefix + this.attributeUrl,
 				type: "GET",
 				dataType: "json",
 
 				success: function (oData) {
-					
+					var BpDealer = [];
 					var userAttributes = [];
 
 					$.each(oData.attributes, function (i, item) {
@@ -108,6 +144,27 @@ sap.ui.define([
 				error: function (response) {
 					sap.ui.core.BusyIndicator.hide();
 				}
+			}).done(function (data, textStatus, jqXHR) {
+				that.getModel("LocalDataModel").setProperty("/currentIssueDealer", data.attributes[0].BusinessPartnerKey);
+				var oEcpModel = that.getOwnerComponent().getModel("EcpSalesModel");
+				var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
+				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+					pattern: "yyyy-MM-ddTHH:mm:ss"
+				});
+				var oPriorDate = oDateFormat.format(that.priordate);
+				var oCurrentDate = oDateFormat.format(that.beforedate);
+
+				oEcpModel.read("/zc_ecp_application", {
+					urlParameters: {
+						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
+							"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
+					},
+					success: function (edata) {
+						that.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
+					}
+				});
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+				oRouter.attachRouteMatched(that._onObjectMatched, that);
 			});
 
 			// scopes to be used as below. // TODO: Minakshi to continue the below integration
@@ -115,7 +172,7 @@ sap.ui.define([
 			//if you see scopes   Manage_ECP_Application,  then treat the user as Dealer Sales USer,  this is the only user with manage application
 			// TODO:  in the ui for this user,  everything is available and default landing page need to be set view/update application page
 
-			// if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a ECP Service user. 
+			// if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a Dealer Service user. 
 			// TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
 
 			//if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
@@ -131,27 +188,18 @@ sap.ui.define([
 			//======================================================================================================================//			
 			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - End
 			//======================================================================================================================//				
-			
+
 		},
 
 		onBeforeRendering: function () {
 			//this.getView().byId("idDealerCode").setSelectedKey("2400042350");
-		//	this.getView().byId("idDealerCode").setValue("42350");
-			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
-			oRouter.attachRouteMatched(this._onObjectMatched, this);
-			
-		//	console.log(this.selectedDealer);
+			//	this.getView().byId("idDealerCode").setValue("42350");
+
+			//	console.log(this.selectedDealer);
 		},
 		_onObjectMatched: function (oEvent) {
-			var oSelectedDealer = this.getModel("LocalDataModel").getProperty("/BpDealerModel/0/BusinessPartnerKey");
-	
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
-			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-Token': this._oToken
-				}
-			});
+			var issueDealer = this.getModel("LocalDataModel").getProperty("/currentIssueDealer");
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "yyyy-MM-ddTHH:mm:ss"
 			});
@@ -162,31 +210,19 @@ sap.ui.define([
 				oEcpModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-							"'and DealerCode eq '" + oSelectedDealer + "'and ApplicationStatus eq 'PENDING' "
+							"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
 					},
 					success: $.proxy(function (data) {
 						this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
 					}, this)
 				});
-				// var oArr = [];
-				// oEcpModel.read("/zc_ecp_application", {
 
-				// 	success: $.proxy(function(data) {
-				// 		console.log(data);
-				// 		var dataRes = data.results;
-				// 		for(var i = 0; i < dataRes.length; i++) {
-				// 			if(oArr.indexOf(dataRes[i].VIN) < 0 && !$.isEmptyObject(dataRes[i].VIN)) {
-				// 				debugger;
-				// 				oArr.push(dataRes[i].VIN);
-				// 			}
-				// 		}
-				// 		this.getModel("LocalDataModel").setProperty("/FilteredVin", oArr);
-				// 	}, this)
-				// });
 			}
 		},
 
-		
+		onAfterRendering: function () {
+
+		},
 
 		onSelectiDealer: function (oEvent) {
 			this.selectedDealer = oEvent.getSource().getSelectedKey();
@@ -194,8 +230,6 @@ sap.ui.define([
 		},
 
 		OnCreateApp: function (oEvent) {
-			var oSelectedDealer = this.getModel("LocalDataModel").getProperty("/BpDealerModel/0/BusinessPartnerKey");
-			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oSelectedDealer);
 			var oval = 404;
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
 				vin: oval,
@@ -203,7 +237,7 @@ sap.ui.define([
 				appId: oval,
 				appType: oval,
 				Odometer: oval,
-				oDealer : oSelectedDealer
+				ODealer : this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
 			});
 		},
 		handleValueHelp: function (oController) {
@@ -322,8 +356,6 @@ sap.ui.define([
 		},
 
 		onSelectionChange: function (oEvent) {
-			var oSelectedDealer = this.getModel("LocalDataModel").getProperty("/BpDealerModel/0/BusinessPartnerKey");
-			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oSelectedDealer);
 			var oProp = this.getModel("LocalDataModel").getProperty("/newAppLink");
 			if (oProp == true) {
 				var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
@@ -334,7 +366,7 @@ sap.ui.define([
 					appId: obj.InternalApplicationID,
 					appType: obj.AgreementType,
 					Odometer: obj.Odometer,
-					oDealer : oSelectedDealer
+					ODealer : this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
 				});
 				this.getView().byId("idApplicationTable").removeSelections("true");
 				this.getModel("EcpSalesModel").refresh();

@@ -40,7 +40,119 @@ module.exports = function () {
 	});
 
 	app.get("/currentScopesForUser", (req, res) => {
-		res.type("application/json").status(200).send(JSON.stringify(req.authInfo.scopes));
+
+		// 		[
+		//   "ecpSales!t1188.View_ECP_Application",
+		//   "ecpSales!t1188.Manage_ECP_Application",
+		//   "openid",
+		//   "ecpSales!t1188.View_ECP_Agreement",
+		//   "ecpSales!t1188.View_ECP_Claim",
+		//   "ecpSales!t1188.Inquiry"
+		// ]
+
+		var parsedData = JSON.stringify(req.authInfo.userAttributes);
+		var obj_data = JSON.parse(parsedData);
+
+		let legacyDealerCode;
+		try {
+			legacyDealerCode = obj_data.DealerCode[0];
+			var legacyDealerCodeAvailable = true;
+			console.log('Dealer code from the SAML Token is', legacyDealerCodeAvailable, legacyDealerCode)
+		} catch (e) {
+			console.log("Dealer Code is blank or is a local testing run")
+				// return;
+			var legacyDealerCodeAvailable = false;
+		}
+
+		var scopeData = req.authInfo.scopes;
+		var viewECPApplication = false;
+		var viewECPAgreement = false;
+		var inquiry = false;
+		var viewEcpClaim = false;
+
+		var sendUserData = {
+			"loggedUserType": []
+		};
+
+		for (var i = 0; i < scopeData.length; i++) {
+
+			if (scopeData[i] == "ecpSales!t1188.Manage_ECP_Application") {
+				var userType = "DealerSalesUSer";
+				sendUserData.loggedUserType.push(userType);
+
+				return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
+				break;
+			}
+
+			if (scopeData[i] == "ecpSales!t1188.View_ECP_Application") {
+				viewECPApplication = true;
+			}
+			if (scopeData[i] == "ecpSales!t1188.View_ECP_Agreement") {
+				viewECPAgreement = true;
+			}
+			if (scopeData[i] == "ecpSales!t1188.Inquiry") {
+				inquiry = true;
+			}
+			if (scopeData[i] == "ecpSales!t1188.View_ECP_Claim") {
+				viewEcpClaim = true;
+			}
+
+		}; // enf for for loop. 
+
+		console.log('viewECPApplication', viewECPApplication);
+		console.log('viewECPAgreement', viewECPAgreement);
+		console.log('inquiry', inquiry);
+		console.log('legacyDealerCodeAvailable', legacyDealerCodeAvailable);
+		console.log('viewEcpClaim', viewEcpClaim);
+
+		if (viewECPApplication == false && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == true && viewEcpClaim ==
+			true) {
+			// if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a ECP Service user. 
+
+			var userType = "DealerServiceUser";
+			sendUserData.loggedUserType.push(userType);
+
+			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
+
+		}
+
+		//if you see scopes view ecp application, view ecp claim, view ecp agreement, 
+		// view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
+		if (viewECPApplication == true && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
+			true) {
+			var userType = "TCIAdminECPDept";
+
+			sendUserData.loggedUserType.push(userType);
+
+			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
+
+		}
+
+		// if you see scopes View ECP Claim, view ECP Agreement, Inqyiry with no delaer code no zone then this is a Internal TCI User
+		if (viewECPApplication == false && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
+			true) {
+			var userType = "internalTCIUser"; //
+			sendUserData.loggedUserType.push(userType);
+
+			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
+		}
+
+		//if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and  zone then this is a  ECP ZONE USER
+		if (viewECPApplication == true && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
+			true) {
+			var userType = "TCIZoneUser"; // TODO: the zone data right now not available. 
+			sendUserData.loggedUserType.push(userType);
+
+			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
+		}
+
+		// var scope = `${req.authInfo.xsappname}.Manage_ECP_Application`;
+		// if (req.authInfo && req.authInfo.checkScope(scope)) {
+		// 	var userType = "DealerSalesUSer";
+		// 	return res.type("text/plain").status(403).send("DealerSalesUSer");
+		// }
+
+		// res.type("application/json").status(200).send(JSON.stringify(req.authInfo.scopes));
 	});
 
 	// user Information to UI.

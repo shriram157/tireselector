@@ -170,7 +170,7 @@
 				},
 				{
 					"name": "newECPApp",
-					"pattern": "newECPApplication/{vin}/{plan}/{appId}/{appType}/{Odometer}",
+					"pattern": "newECPApplication/{vin}/{plan}/{appId}/{appType}/{Odometer}/{ODealer}",
 					"target": [
 						"newECPApp"
 					]

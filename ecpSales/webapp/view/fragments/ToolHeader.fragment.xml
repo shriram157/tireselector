@@ -5,7 +5,7 @@
 				<OverflowToolbarLayoutData priority="High"/>
 			</layoutData>
 		</Button>
-		<Button text="{i18n>ViewUpdateApp}" id="idViewUpdate" press="handleLinkPress" type="Transparent">
+		<Button text="{i18n>ViewUpdateApp}" id="idViewUpdate" press="handleLinkPress" type="Transparent" visible="{LocalDataModel>/viewUpdateLink}">
 			<layoutData>
 				<OverflowToolbarLayoutData priority="High"/>
 			</layoutData>

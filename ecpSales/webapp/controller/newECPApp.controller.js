@@ -89,7 +89,7 @@ sap.ui.define([
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			this.oAppType = oEvent.getParameters().arguments.appType;
 			this.oOdometer = oEvent.getParameters().arguments.Odometer;
-
+			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
 			if (this.oViNum != 404 && this.oViNum != undefined) {
 
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
