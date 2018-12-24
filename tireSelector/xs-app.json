@@ -18,6 +18,12 @@
       "authenticationType": "xsuaa"
     },
     {
+      "source": "/appdata(.*)",
+      "destination": "tireSelector-node-backend",
+      "csrfProtection": false,
+      "authenticationType": "xsuaa"
+    },    
+    {
       "source": "/xsodata(.*)",
       "destination": "tireSelector-xsjs-backend",
       "csrfProtection": false,
