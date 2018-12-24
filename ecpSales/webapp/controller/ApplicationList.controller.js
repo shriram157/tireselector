@@ -24,6 +24,17 @@ sap.ui.define([
 				oCreateButton: true
 			});
 			this.getView().setModel(oModelDate, "oDateModel");
+			
+			
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+						if (sLocation_conf == 0) {
+				 this.sPrefix= "/ecpSales_node_secured"; //ecpSales_node_secured
+				 this.attributeUrl = "/userDetails/attributesforlocaltesting";   
+			} else  {
+				  this.sPrefix ="";
+				  this.attributeUrl = "/userDetails/attributes";   
+			}	
 
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
@@ -41,13 +52,13 @@ sap.ui.define([
 			var oEventBus = sap.ui.getCore().getEventBus();
 			oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
 
-			//======================================================================================================================//			
-			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
-			//======================================================================================================================//		
-			//  get the Scopes to the UI 
-			//this.sPrefix ="";
-			var that = this;
-			$.ajax({
+//======================================================================================================================//			
+		//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
+//======================================================================================================================//		
+//  get the Scopes to the UI 
+       //this.sPrefix ="";
+       var that = this;
+		$.ajax({
 				url: this.sPrefix + "/userDetails/currentScopesForUser",
 				type: "GET",
 				dataType: "json",
@@ -97,7 +108,8 @@ sap.ui.define([
 							"UserType": item.UserType[0],
 							"DealerCode": item.DealerCode[0],
 							"Language": item.Language[0]
-								// "Zone": item.Zone[0]   ---    Not yet available
+
+							// "Zone": item.Zone[0]   ---    Not yet available
 						});
 
 					});

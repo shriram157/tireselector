@@ -40,6 +40,8 @@ module.exports = function () {
 	});
 
 	app.get("/currentScopesForUser", (req, res) => {
+		
+		
 		res.type("application/json").status(200).send(JSON.stringify(req.authInfo.scopes));
 	});
 
