@@ -7,7 +7,7 @@ sap.ui.define([
 	'sap/ui/model/Filter',
 	"zecp/controller/BaseController",
 	'sap/m/MessageBox'
-], function(Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox) {
+], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox) {
 	"use strict";
 
 	return Controller.extend("zecp.controller.newECPApp", {
@@ -17,7 +17,7 @@ sap.ui.define([
 		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
 		 * @memberOf zecp.view.newECPApp
 		 */
-		onInit: function() {
+		onInit: function () {
 			var oDateModel = new sap.ui.model.json.JSONModel();
 			oDateModel.setData({
 				dateValueDRS2: new Date(2018, 1, 1),
@@ -64,7 +64,7 @@ sap.ui.define([
 
 		},
 
-		_fnDateFormat02: function(elm) {
+		_fnDateFormat02: function (elm) {
 
 			var oNumTime = elm.getTime();
 
@@ -73,7 +73,7 @@ sap.ui.define([
 			return saleTime;
 		},
 
-		_fnDateFormat: function(elm) {
+		_fnDateFormat: function (elm) {
 
 			var oNumTime = elm.getTime();
 
@@ -82,7 +82,7 @@ sap.ui.define([
 			return saleTime;
 		},
 
-		_oRouteNewECP: function(oEvent) {
+		_oRouteNewECP: function (oEvent) {
 			// 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
 			this.oViNum = oEvent.getParameters().arguments.vin;
 			this.oPlan = oEvent.getParameters().arguments.plan;
@@ -90,7 +90,7 @@ sap.ui.define([
 			this.oAppType = oEvent.getParameters().arguments.appType;
 			this.oOdometer = oEvent.getParameters().arguments.Odometer;
 
-			if(this.oViNum != 404 && this.oViNum != undefined) {
+			if (this.oViNum != 404 && this.oViNum != undefined) {
 
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
@@ -120,14 +120,14 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "ZecpVin eq '" + this.oViNum + "'and ZecpIntApp eq '" + this.oAppId + "'"
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						var EcpFieldData = new sap.ui.model.json.JSONModel(data.results[0]);
 						EcpFieldData.setDefaultBindingMode("TwoWay");
 						this.getView().setModel(EcpFieldData, "EcpFieldData");
 						//this.getModel("LocalDataModel").setProperty("/ApplicationDetailsModel", data);
 					}, this),
-					error: function(err) {
+					error: function (err) {
 						console.log(err);
 					}
 				});
@@ -137,12 +137,12 @@ sap.ui.define([
 						"$filter": "MGANR eq '" + this.oPlan + "'and ODMTR eq'" + this.oOdometer + "'and VIN eq '" + this.oViNum +
 							"'and ZECPAGRTYPE eq'" + this.oAppType + "'"
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
 
 					}, this),
-					error: function(err) {
+					error: function (err) {
 						console.log(err);
 					}
 				});
@@ -151,12 +151,12 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oViNum + "' "
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
 					}, this),
-					error: function(err) {
+					error: function (err) {
 						console.log(err);
 					}
 				});
@@ -165,12 +165,12 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oViNum + "'"
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						this.getModel("LocalDataModel").setProperty("/PricingModelData", data.results[0]);
 
 					}, this),
-					error: function() {
+					error: function () {
 						console.log("Error");
 					}
 				});
@@ -182,7 +182,7 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VehicleIdentificationNumber eq '" + this.oViNum + "' "
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 						this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
 
 					}, this)
@@ -352,12 +352,12 @@ sap.ui.define([
 
 		},
 
-		handleValueHelp: function(oController) {
+		handleValueHelp: function (oController) {
 			//debugger;
 			this.inputId = oController.getParameters().id;
 			//console.log(this.inputId);
 			// create value help dialog
-			if(!this._valueHelpDialog) {
+			if (!this._valueHelpDialog) {
 				this._valueHelpDialog = sap.ui.xmlfragment(
 					"zecp.view.fragments.VinListDialog",
 					this
@@ -369,10 +369,10 @@ sap.ui.define([
 			this._valueHelpDialog.open();
 		},
 
-		_handleValueHelpSearch: function(evt) {
+		_handleValueHelpSearch: function (evt) {
 			var sValue = evt.getParameter("value");
 
-			if(sValue) {
+			if (sValue) {
 				var oFilter = new Filter(
 					"VIN",
 					sap.ui.model.FilterOperator.EQ, sValue
@@ -384,24 +384,24 @@ sap.ui.define([
 			}
 		},
 
-		_handleValueHelpClose: function(evt) {
+		_handleValueHelpClose: function (evt) {
 			this.oSelectedItem = evt.getParameter("selectedItem");
 			this.oSelectedTitle = this.oSelectedItem.getTitle();
-			if(this.oSelectedItem) {
+			if (this.oSelectedItem) {
 				var productInput = this.byId(this.inputId);
 				productInput.setValue(this.oSelectedItem.getTitle());
 			}
 			evt.getSource().getBinding("items").filter([]);
 		},
 
-		OnNextStep2: function() {
+		OnNextStep2: function () {
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oVin = this.getView().byId("idVinNum");
 			var oVal = oVin.getValue();
 
-			if(!($.isEmptyObject(oVal)) && oVal.length === 17) {
+			if (!($.isEmptyObject(oVal)) && oVal.length === 17) {
 				var obj = {
 					VHVIN: oVal,
 					VGUID: "",
@@ -420,9 +420,9 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 						this.oFlag = data.results[0].ZZEXT_FLG;
-						if(this.oFlag === "YES") {
+						if (this.oFlag === "YES") {
 							this.getView().getModel("oSetProperty").setProperty("/oFlag", true);
 
 						} else {
@@ -430,7 +430,7 @@ sap.ui.define([
 
 						}
 					}, this),
-					error: function() {
+					error: function () {
 						console.log("Error");
 					}
 				});
@@ -439,11 +439,11 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						this.getModel("LocalDataModel").setProperty("/PricingModelData", data.results[0]);
 
-						if(data.results[0].REG_DATE != "" || data.results[0].REG_DATE != undefined) {
+						if (data.results[0].REG_DATE != "" || data.results[0].REG_DATE != undefined) {
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 							this.BccAgrmntPrtDt = data.results[0].REG_DATE;
 
@@ -452,16 +452,16 @@ sap.ui.define([
 							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("InvalidRegistrationDate"));
 							this.getView().byId("idNewECPMsgStrip").setType("Error");
 						}
-						if(data.results[0].MAKE != "" || data.results[0].MAKE != undefined) {
+						if (data.results[0].MAKE != "" || data.results[0].MAKE != undefined) {
 							this.oECPData.ZecpMake = data.results[0].MAKE;
 						}
-						if(data.results[0].VEHICLEMODEL != "" || data.results[0].VEHICLEMODEL != undefined) {
+						if (data.results[0].VEHICLEMODEL != "" || data.results[0].VEHICLEMODEL != undefined) {
 							this.oECPData.ZecpModelcode = data.results[0].VEHICLEMODEL;
 						}
 						// if (data.results[0].ZECP_SALETYPE != "" || data.results[0].ZECP_SALETYPE != undefined) {
 						// 	this.oECPData.ZecpSaletype = data.results[0].ZECP_SALETYPE;
 						// }
-						if(data.results[0].ZAUTO_CODE != "" || data.results[0].ZAUTO_CODE != undefined) {
+						if (data.results[0].ZAUTO_CODE != "" || data.results[0].ZAUTO_CODE != undefined) {
 							this.oECPData.ZecpAutocode = data.results[0].ZAUTO_CODE;
 						}
 						// if (data.results[0].BPTYPE != "" || data.results[0].BPTYPE != undefined) {
@@ -469,14 +469,14 @@ sap.ui.define([
 						// }
 
 					}, this),
-					error: $.proxy(function() {
+					error: $.proxy(function () {
 
 						var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
 						MessageBox.error(
 							this.oBundle.getText("InvalidRegistrationDate"), {
 
 								styleClass: bCompact ? "sapUiSizeCompact" : "",
-								onClose: function(sAction) {
+								onClose: function (sAction) {
 									MessageToast.show(sAction);
 								}
 							}
@@ -490,14 +490,14 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "' "
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
 						this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
 					}, this),
-					error: function(err) {
+					error: function (err) {
 						console.log(err);
 					}
 				});
@@ -507,7 +507,7 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and AgreementElectricVehicletype ne 'AGEN' "
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						var filterTasks = (taskArray, obj) => taskArray.filter(task => Object.keys(task).some(key => obj[key] && obj[key] == task[
 							key]));
@@ -527,7 +527,7 @@ sap.ui.define([
 						this.getModel("LocalDataModel").setProperty("/AgreementDataActive", oResults);
 
 					}, this),
-					error: function(err) {
+					error: function (err) {
 						console.log(err);
 					}
 				});
@@ -544,10 +544,10 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VehicleIdentificationNumber eq '" + this.oECPData.ZecpVin + "' "
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						this.CustomerNumberLength = data.results.length;
-						if(data.results.length <= 0) {
+						if (data.results.length <= 0) {
 
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("CustomerNumberNotFound"));
@@ -616,12 +616,12 @@ sap.ui.define([
 
 				//	this.getView().byId("idFilter02").setProperty("enabled", true);
 
-			} else if($.isEmptyObject(oVal)) {
+			} else if ($.isEmptyObject(oVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("EnterVINNUM"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oVin.setValueState(sap.ui.core.ValueState.Error);
-			} else if(oVal.length < 17) {
+			} else if (oVal.length < 17) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PlsEnterValVIN"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
@@ -629,26 +629,27 @@ sap.ui.define([
 			}
 		},
 
-		onSelectAgrType: function(oEvent) {
+		onSelectAgrType: function (oEvent) {
 			this.oSelectedAgrTypeKey = oEvent.getSource().getSelectedKey();
 			var oSelectedText = this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION");
 			var oAgrTableData = this.getView().getModel("LocalDataModel").getProperty("/AgreementDataActive");
-			if(this.oSelectedAgrTypeKey === oSelectedText) {
+			if (this.oSelectedAgrTypeKey === oSelectedText) {
 				this.getView().getModel("oSetProperty").setProperty("/oAgreementTable", true);
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oAgreementTable", false);
 			}
-			if(oAgrTableData != "" && this.oSelectedAgrTypeKey === oSelectedText) {
+			if (oAgrTableData != "" && this.oSelectedAgrTypeKey === oSelectedText) {
 				this.getView().getModel("oSetProperty").setProperty("/ostep3", false);
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/ostep3", true);
 			}
 		},
 
-		onSelectAgrRow: function(oEvent) {
+		onSelectAgrRow: function (oEvent) {
 			this.oAgrTable = oEvent.getParameters().rowContext.sPath;
+			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(this.oAgrTable);
-			if(obj.bcc_agr_st_cd == "A") {
+			if (obj.bcc_agr_st_cd == "A") {
 				this.getView().getModel("oSetProperty").setProperty("/ostep3", true);
 				this.getView().getModel("oSetProperty").setProperty("/oAgrTopDetails", true);
 				this.getView().getModel("oSetProperty").setProperty("/oAgrOwner", true);
@@ -663,16 +664,16 @@ sap.ui.define([
 						"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
 
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 
 						this.getModel("LocalDataModel").setProperty("/OwnerData", data.results[0]);
-						if(data.results != "") {
+						if (data.results != "") {
 							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress);
 							this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber);
 							this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber);
 						}
 					}, this),
-					error: function() {
+					error: function () {
 						console.log("Error");
 					}
 				});
@@ -681,24 +682,28 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "BusinessPartner eq '" + oDealer + "' "
 					},
-					success: $.proxy(function(data) {
+					success: $.proxy(function (data) {
 						console.log(data);
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", data.results[0]);
 
 					}, this),
-					error: function() {
+					error: function () {
 						console.log("Error");
 					}
 				});
 			} else {
 
 				MessageBox.error(
-					this.oBundle.getText("StatusCanceled");
+					this.oBundle.getText("StatusCanceled"), {
+						onClose: function (sAction) {
+							MessageToast.show(sAction);
+						}
+					}
 				);
 			}
 		},
 
-		OnNextStep3: function(oEvent) {
+		OnNextStep3: function (oEvent) {
 
 			var oOdometer = this.getView().byId("idOdoVal");
 			var oOdoVal = oOdometer.getValue();
@@ -711,7 +716,7 @@ sap.ui.define([
 					'X-CSRF-Token': this._oToken
 				}
 			});
-			if(this.oCustomer) {
+			if (this.oCustomer) {
 				var oCustomerNum = this.oCustomer.substr(5);
 			}
 
@@ -726,13 +731,13 @@ sap.ui.define([
 						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
 					"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 
 					this.getModel("LocalDataModel").setProperty("/PlanValidSet", data.results[0].ZC_ECP_PLANSSET.results);
 					// this.kmOdometerEnd = data.results[0].ZC_ECP_PLANSSET.results[0].KMS;
 					// this.durationMonths = data.results[0].ZC_ECP_PLANSSET.results[0].MONTHS;
 				}, this),
-				error: function() {
+				error: function () {
 					console.log("Error");
 				}
 			});
@@ -750,40 +755,40 @@ sap.ui.define([
 					"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
 
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 
 					this.getModel("LocalDataModel").setProperty("/BusinessPartnerData", data.results[0]);
 					this.oECPData = this.getView().getModel("EcpFieldData").getData();
 					// 	this.oECPData.ZecpCustName = data.results[0].FullName;
-					if(data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
+					if (data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
 						this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
 					}
-					if(data.results[0].CityName != undefined || data.results[0].CityName != "") {
+					if (data.results[0].CityName != undefined || data.results[0].CityName != "") {
 						this.oECPData.ZecpCity = data.results[0].CityName;
 					}
-					if(data.results[0].StreetName != undefined || data.results[0].StreetName != "") {
+					if (data.results[0].StreetName != undefined || data.results[0].StreetName != "") {
 						this.oECPData.ZecpAddress = data.results[0].StreetName;
 					}
-					if(data.results[0].to_EmailAddress.results.length > 0) {
+					if (data.results[0].to_EmailAddress.results.length > 0) {
 						this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress;
 					} else {
 						this.oECPData.ZecpEmail = "";
 					}
-					if(data.results[0].PostalCode != undefined || data.results[0].PostalCode != "") {
+					if (data.results[0].PostalCode != undefined || data.results[0].PostalCode != "") {
 						this.oECPData.ZecpPostalcode = data.results[0].PostalCode;
 					}
-					if(data.results[0].Region != undefined || data.results[0].Region != "") {
+					if (data.results[0].Region != undefined || data.results[0].Region != "") {
 						this.oECPData.ZecpProvince = data.results[0].Region;
 					}
-					if(data.results[0].to_PhoneNumber.results.length > 0) {
+					if (data.results[0].to_PhoneNumber.results.length > 0) {
 						this.oECPData.ZecpHomePhone = data.results[0].to_PhoneNumber.results[0].PhoneNumber;
 					}
-					if(data.results[0].to_FaxNumber.results.length > 0) {
+					if (data.results[0].to_FaxNumber.results.length > 0) {
 						this.oECPData.ZecpBusPhone = data.results[0].to_FaxNumber.results[0].FaxNumber;
 					}
 
 				}, this),
-				error: function() {
+				error: function () {
 					console.log("Error");
 				}
 			});
@@ -792,15 +797,15 @@ sap.ui.define([
 				urlParameters: {
 					"$filter": "BusinessPartner eq '" + this.oCustomer + "' "
 				},
-				success: $.proxy(function(data) {
-					if(data.results[0].LastName != undefined || data.results[0].LastName != "") {
+				success: $.proxy(function (data) {
+					if (data.results[0].LastName != undefined || data.results[0].LastName != "") {
 						this.oECPData.ZecpLastName = data.results[0].LastName;
 					}
-					if(data.results[0].FirstName != undefined || data.results[0].FirstName != "") {
+					if (data.results[0].FirstName != undefined || data.results[0].FirstName != "") {
 						this.oECPData.ZecpCustName = data.results[0].FirstName;
 					}
 				}, this),
-				error: function() {}
+				error: function () {}
 			});
 
 			//var oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -828,7 +833,7 @@ sap.ui.define([
 			// 			console.log(oRegDate);
 			this.DifferTime = (oSaleDateTime - oRegDate);
 
-			if(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
+			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
 				0) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
@@ -839,33 +844,33 @@ sap.ui.define([
 				oAgr.setValueState(sap.ui.core.ValueState.None);
 				oOdometer.setValueState(sap.ui.core.ValueState.None);
 				oSaleDateId.setValueState(sap.ui.core.ValueState.None);
-			} else if($.isEmptyObject(oSaleDate)) {
+			} else if ($.isEmptyObject(oSaleDate)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleasePutDate"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-			} else if(oSaleDateTime > oCurrentDate) {
+			} else if (oSaleDateTime > oCurrentDate) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectSaleDate"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-			} else if(oSaleDateTime < oRegDate) {
+			} else if (oSaleDateTime < oRegDate) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + new Date(
 					this.BccAgrmntPrtDt).toDateString() + ")");
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-			} else if($.isEmptyObject(oOdoVal)) {
+			} else if ($.isEmptyObject(oOdoVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterOdometer"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oOdometer.setValueState(sap.ui.core.ValueState.Error);
-			} else if(oOdoVal <= 0) {
+			} else if (oOdoVal <= 0) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oOdometer.setValueState(sap.ui.core.ValueState.Error);
-			} else if($.isEmptyObject(oAgrItem)) {
+			} else if ($.isEmptyObject(oAgrItem)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectAgreementType"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
@@ -873,7 +878,7 @@ sap.ui.define([
 			}
 
 		},
-		onSelectPlanCode: function(oEvent) {
+		onSelectPlanCode: function (oEvent) {
 
 			this.oPlanCode = oEvent.getSource().getValue();
 			var oPlanKey = oEvent.getSource().getSelectedKey();
@@ -897,7 +902,7 @@ sap.ui.define([
 					"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
 						"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'"
 				},
-				success: $.proxy(function(data) {
+				success: $.proxy(function (data) {
 
 					this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
 					this.oECPData.ZecpRetPrice = data.results[0].ZECP_RET_PRICE;
@@ -906,7 +911,7 @@ sap.ui.define([
 					this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
 
 				}, this),
-				error: function(err) {
+				error: function (err) {
 					console.log(err);
 				}
 			});
@@ -915,10 +920,10 @@ sap.ui.define([
 
 			//console.log(oEvent);
 		},
-		onChangePreownedCert: function(oEvent) {
+		onChangePreownedCert: function (oEvent) {
 			var oVal = oEvent.getSource().getValue();
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
-			if(oVal.length > 10) {
+			if (oVal.length > 10) {
 				this.getModel("LocalDataModel").setProperty("/PreownedState", "Error");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("MaximumLength10"));
@@ -929,7 +934,7 @@ sap.ui.define([
 				this.getModel("LocalDataModel").setProperty("/PreownedState", "None");
 			}
 		},
-		_fnDayHrSecond: function(milliseconds) {
+		_fnDayHrSecond: function (milliseconds) {
 			var day, hour, minute, seconds, month;
 			seconds = Math.floor(milliseconds / 1000);
 			minute = Math.floor(seconds / 60);
@@ -948,8 +953,8 @@ sap.ui.define([
 				seconds: seconds
 			};
 		},
-		OnNextStep4: function(oEvent) {
-			if(this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+		OnNextStep4: function (oEvent) {
+			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", true);
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
@@ -959,7 +964,7 @@ sap.ui.define([
 			//	console.log(this.DifferTime);
 			var oidPlanCode = oidPlanCodeId.getSelectedItem();
 
-			if(!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal & this.DifferTime <= this.PlanTime) {
+			if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal & this.DifferTime <= this.PlanTime) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -967,12 +972,12 @@ sap.ui.define([
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
 
-			} else if($.isEmptyObject(oidPlanCode)) {
+			} else if ($.isEmptyObject(oidPlanCode)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-			} else if(this.oECPData.ZecpOdometer > this.oAdditionalVal) {
+			} else if (this.oECPData.ZecpOdometer > this.oAdditionalVal) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
 					(this.oECPData.ZecpOdometer - this.oAdditionalVal) + this.oBundle
@@ -980,7 +985,7 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 
-			} else if(this.DifferTime > this.PlanTime) {
+			} else if (this.DifferTime > this.PlanTime) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				var oTimeDiffer = this.DifferTime - this.PlanTime;
 
@@ -996,7 +1001,7 @@ sap.ui.define([
 			}
 
 		},
-		onDelete: function() {
+		onDelete: function () {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var that = this;
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -1009,7 +1014,7 @@ sap.ui.define([
 				}),
 				beginButton: new Button({
 					text: oBundle.getText("Yes"),
-					press: function() {
+					press: function () {
 						var oModel = that.getView().getModel("EcpSalesModel");
 						this._oToken = oModel.getHeaders()['x-csrf-token'];
 						$.ajaxSetup({
@@ -1020,11 +1025,11 @@ sap.ui.define([
 
 						oModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + oECPData.ZecpIntApp + "',ZecpVin='" + oECPData.ZecpVin + "')", {
 							method: "DELETE",
-							success: function(data) {
+							success: function (data) {
 								oModel.refresh();
 								MessageToast.show(oBundle.getText("AppDeleted") + oECPData.ZecpVin);
 							},
-							error: function(e) {
+							error: function (e) {
 								alert("error");
 							}
 						});
@@ -1035,22 +1040,22 @@ sap.ui.define([
 				}),
 				endButton: new Button({
 					text: oBundle.getText("Cancel"),
-					press: function() {
+					press: function () {
 						dialog.close();
 					}
 				}),
-				afterClose: function() {
+				afterClose: function () {
 					dialog.destroy();
 				}
 			});
 
 			dialog.open();
 		},
-		OnBack: function() {
+		OnBack: function () {
 			this.ogetSelectedKey = this.getView().byId("idIconTabBarNoIcons").getSelectedKey();
 			var ogetKey = this.ogetSelectedKey.split("Tab")[1];
 
-			if(ogetKey > 1 && ogetKey <= 6) {
+			if (ogetKey > 1 && ogetKey <= 6) {
 				var oSelectedNum = ogetKey - 1;
 				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab" + oSelectedNum + "");
 			} else {
@@ -1061,11 +1066,11 @@ sap.ui.define([
 			}
 		},
 
-		OnBackSecondary: function() {
+		OnBackSecondary: function () {
 			this.getRouter().navTo("ApplicationList");
 			this.getModel("EcpSalesModel").refresh();
 		},
-		onBackList: function() {
+		onBackList: function () {
 			var that = this;
 			var dialog = new Dialog({
 				title: that.oBundle.getText("SaveChanges"),
@@ -1077,7 +1082,7 @@ sap.ui.define([
 				buttons: [
 					new Button({
 						text: that.oBundle.getText("Yes"),
-						press: function() {
+						press: function () {
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
 							var objSave = that._fnObject("SAVE", "PENDING");
 							var oEcpModel = that.getModel("EcpSalesModel");
@@ -1088,13 +1093,13 @@ sap.ui.define([
 								}
 							});
 							oEcpModel.create("/zc_ecp_crud_operationsSet", objSave, {
-								success: $.proxy(function() {
+								success: $.proxy(function () {
 
 									oEcpModel.refresh();
 									MessageToast.show(that.oBundle.getText("RecordSaved"));
 									that.getRouter().navTo("ApplicationList");
 								}, that),
-								error: function() {
+								error: function () {
 									console.log("error");
 								}
 							});
@@ -1105,7 +1110,7 @@ sap.ui.define([
 
 					new Button({
 						text: that.oBundle.getText("No"),
-						press: function() {
+						press: function () {
 
 							that.getRouter().navTo("ApplicationList");
 							dialog.close();
@@ -1113,14 +1118,14 @@ sap.ui.define([
 					}),
 					new Button({
 						text: that.oBundle.getText("Cancel"),
-						press: function() {
+						press: function () {
 							dialog.close();
 						}
 					})
 
 				],
 
-				afterClose: function() {
+				afterClose: function () {
 					dialog.destroy();
 				}
 			});
@@ -1133,7 +1138,7 @@ sap.ui.define([
 
 		// 		},
 
-		_fnObject: function(elm, stat) {
+		_fnObject: function (elm, stat) {
 			var currentDate = new Date();
 
 			var crudObj = {
@@ -1269,20 +1274,20 @@ sap.ui.define([
 
 			return crudObj;
 		},
-		onSaveApp: function() {
-			if($.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
+		onSaveApp: function () {
+			if ($.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "Error");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterMandatoryFields"));
-			} else if(!$.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
+			} else if (!$.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterMandatoryFields"));
-			} else if($.isEmptyObject(this.oECPData.ZecpVehPrice) && !$.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
+			} else if ($.isEmptyObject(this.oECPData.ZecpVehPrice) && !$.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "Error");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1307,7 +1312,7 @@ sap.ui.define([
 				}
 			});
 			oEcpModel.create("/zc_ecp_crud_operationsSet", objSave, {
-				success: $.proxy(function() {
+				success: $.proxy(function () {
 					MessageToast.show(oBundle.getText("DraftCreated") + this.oECPData.ZecpVin);
 					oEcpModel.refresh();
 					this.getRouter().navTo("ApplicationList");
@@ -1317,13 +1322,13 @@ sap.ui.define([
 					this.getModel("EcpSalesModel").refresh(true);
 
 				}, this),
-				error: function() {
+				error: function () {
 
 				}
 			});
 		},
 
-		onUpdateSavedApp: function(oEvent) {
+		onUpdateSavedApp: function (oEvent) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			var oEcpModel = this.getModel("EcpSalesModel");
@@ -1352,18 +1357,18 @@ sap.ui.define([
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.oViNum +
 				"')", obj, {
 					method: "PUT",
-					success: $.proxy(function(response) {
+					success: $.proxy(function (response) {
 						oEcpModel.refresh();
 						this.getRouter().navTo("ApplicationList");
 						MessageToast.show(oBundle.getText("UpdatedDataHasbeenSavedSuccessFully"));
 					}, this),
-					error: function() {
+					error: function () {
 						MessageToast.show(oBundle.getText("PleaseTryAgainToSave"));
 					}
 				});
 		},
 
-		onSubmitApp: function() {
+		onSubmitApp: function () {
 			//this._Step04MandatoryFn();
 			var that = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -1375,7 +1380,7 @@ sap.ui.define([
 				}),
 				beginButton: new Button({
 					text: oBundle.getText("Yes"),
-					press: function() {
+					press: function () {
 
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
@@ -1389,18 +1394,18 @@ sap.ui.define([
 						var oBusinessModel = that.getModel("ApiBusinessModel");
 						oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
 
-							success: function(data, response) {
+							success: function (data, response) {
 								console.log(response.data);
 								that.getView().getModel("LocalDataModel").setProperty("/responseData", response.data);
-								if(that.oECPData.ZecpIntApp.charAt(0) === "D") {
+								if (that.oECPData.ZecpIntApp.charAt(0) === "D") {
 									oEcpModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + that.oECPData.ZecpIntApp + "',ZecpVin='" + that.oECPData
 										.ZecpVin +
 										"')", {
 											method: "DELETE",
-											success: function(data) {
+											success: function (data) {
 												oEcpModel.refresh();
 											},
-											error: function(e) {
+											error: function (e) {
 												console.log("error");
 											}
 										});
@@ -1411,23 +1416,23 @@ sap.ui.define([
 									urlParameters: {
 										"$filter": "AgreementNumber eq '" + oAgr + "'"
 									},
-									success: function(ret) {
+									success: function (ret) {
 										console.log(ret);
 										that.getView().getModel("LocalDataModel").setProperty("/AgreementData", ret.results[0]);
 										var oDealer = ret.results[0].DealershipNumber;
-										if(oDealer) {
+										if (oDealer) {
 											oBusinessModel.read("/A_BusinessPartner", {
 												urlParameters: {
 													"$filter": "BusinessPartner eq '" + oDealer + "'"
 												},
-												success: function(businessData) {
+												success: function (businessData) {
 													console.log(businessData);
 													that.getModel("LocalDataModel").setProperty("/DealerData", businessData.results[0]);
 												}
 											});
 										}
 									},
-									error: function() {}
+									error: function () {}
 								});
 
 								oBusinessModel.read("/A_BusinessPartnerAddress", {
@@ -1436,12 +1441,12 @@ sap.ui.define([
 										"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
 
 									},
-									success: function(bData) {
+									success: function (bData) {
 
 										that.getModel("LocalDataModel").setProperty("/BusinessPartnerData", bData.results[0]);
 
 									},
-									error: function() {
+									error: function () {
 										console.log("Error");
 									}
 								});
@@ -1456,7 +1461,7 @@ sap.ui.define([
 								that.getView().addDependent(oDialogBox);
 								oDialogBox.open();
 							},
-							error: function() {
+							error: function () {
 								MessageToast.show(oBundle.getText("ApplicationIsnotSubmitted"));
 							}
 						});
@@ -1467,18 +1472,18 @@ sap.ui.define([
 
 				endButton: new Button({
 					text: oBundle.getText("Cancel"),
-					press: function() {
+					press: function () {
 						dialog.close();
 					}
 				}),
-				afterClose: function() {
+				afterClose: function () {
 					dialog.destroy();
 				}
 			});
 
 			dialog.open();
 		},
-		onPrintAgreement: function() {
+		onPrintAgreement: function () {
 			//var oEcpModel = this.getModel("EcpSalesModel");
 			var oAgr = this.getView().getModel("LocalDataModel").getProperty("/AgreementData/AgreementNumber");
 			// var oModel = zc_ecp_agreement_printSet(AGRNUM='F100202NTC04',LANG='E')/$value;
@@ -1499,7 +1504,7 @@ sap.ui.define([
 
 			oModel.read("/zc_ecp_agreement_printSet(AGRNUM='F100202NTC04',LANG='E')/$value", {
 
-				success: function(oData, oResponse) {
+				success: function (oData, oResponse) {
 
 					var response = oResponse.requestUri;
 
@@ -1515,7 +1520,7 @@ sap.ui.define([
 
 				},
 
-				error: function() {
+				error: function () {
 
 					alert("Read failed");
 
@@ -1525,13 +1530,13 @@ sap.ui.define([
 			// ==========================
 
 		},
-		onClose: function(oEvent) {
+		onClose: function (oEvent) {
 			oEvent.getSource().getParent().close();
 		},
-		onPressBackPress: function() {
+		onPressBackPress: function () {
 			this.getRouter().navTo("ApplicationList");
 		},
-		onExit: function() {
+		onExit: function () {
 			this.destroy();
 			this.getView().unbindElement();
 			this.getModel("EcpSalesModel").refresh();

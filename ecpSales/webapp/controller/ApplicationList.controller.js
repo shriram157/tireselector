@@ -38,8 +38,8 @@ sap.ui.define([
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			this.getView().setModel(oBusinessModel, "OBusinessModel");
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
-			var oEventBus = sap.ui.getCore().getEventBus();
-			oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
+			// var oEventBus = sap.ui.getCore().getEventBus();
+			// oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
 
 			//======================================================================================================================//			
 			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
@@ -57,23 +57,21 @@ sap.ui.define([
 						if (data === "ecpSales!t1188.Manage_ECP_Application") {
 							that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
 							that.getModel("LocalDataModel").setProperty("/newAppLink", true);
-						} else {
-							that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
-							that.getModel("LocalDataModel").setProperty("/newAppLink", false);
-						}
+						} 
 
 					});
 
 				}.bind(this),
 			});
 			// get the attributes and BP Details - Minakshi to confirm if BP details needed		// TODO: 
+			var BpDealer = [];
 			$.ajax({
 				url: this.sPrefix + this.attributeUrl,
 				type: "GET",
 				dataType: "json",
 
 				success: function (oData) {
-					var BpDealer = [];
+					
 					var userAttributes = [];
 
 					$.each(oData.attributes, function (i, item) {
@@ -133,7 +131,7 @@ sap.ui.define([
 			//======================================================================================================================//			
 			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - End
 			//======================================================================================================================//				
-
+			
 		},
 
 		onBeforeRendering: function () {
@@ -141,11 +139,12 @@ sap.ui.define([
 		//	this.getView().byId("idDealerCode").setValue("42350");
 			var oRouter = sap.ui.core.UIComponent.getRouterFor(this);
 			oRouter.attachRouteMatched(this._onObjectMatched, this);
-			this.selectedDealer = this.getView().byId("idDealerCode").getSelectedKey();
-			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", this.selectedDealer);
+			
 		//	console.log(this.selectedDealer);
 		},
 		_onObjectMatched: function (oEvent) {
+			var oSelectedDealer = this.getModel("LocalDataModel").getProperty("/BpDealerModel/0/BusinessPartnerKey");
+	
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 			$.ajaxSetup({
@@ -163,7 +162,7 @@ sap.ui.define([
 				oEcpModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-							"'and DealerCode eq '" + this.selectedDealer + "'and ApplicationStatus eq 'PENDING' "
+							"'and DealerCode eq '" + oSelectedDealer + "'and ApplicationStatus eq 'PENDING' "
 					},
 					success: $.proxy(function (data) {
 						this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
@@ -187,9 +186,7 @@ sap.ui.define([
 			}
 		},
 
-		onAfterRendering: function () {
-
-		},
+		
 
 		onSelectiDealer: function (oEvent) {
 			this.selectedDealer = oEvent.getSource().getSelectedKey();
@@ -197,13 +194,16 @@ sap.ui.define([
 		},
 
 		OnCreateApp: function (oEvent) {
+			var oSelectedDealer = this.getModel("LocalDataModel").getProperty("/BpDealerModel/0/BusinessPartnerKey");
+			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oSelectedDealer);
 			var oval = 404;
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
 				vin: oval,
 				plan: oval,
 				appId: oval,
 				appType: oval,
-				Odometer: oval
+				Odometer: oval,
+				oDealer : oSelectedDealer
 			});
 		},
 		handleValueHelp: function (oController) {
@@ -322,6 +322,8 @@ sap.ui.define([
 		},
 
 		onSelectionChange: function (oEvent) {
+			var oSelectedDealer = this.getModel("LocalDataModel").getProperty("/BpDealerModel/0/BusinessPartnerKey");
+			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oSelectedDealer);
 			var oProp = this.getModel("LocalDataModel").getProperty("/newAppLink");
 			if (oProp == true) {
 				var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
@@ -331,7 +333,8 @@ sap.ui.define([
 					plan: obj.ECPPlanCode,
 					appId: obj.InternalApplicationID,
 					appType: obj.AgreementType,
-					Odometer: obj.Odometer
+					Odometer: obj.Odometer,
+					oDealer : oSelectedDealer
 				});
 				this.getView().byId("idApplicationTable").removeSelections("true");
 				this.getModel("EcpSalesModel").refresh();
