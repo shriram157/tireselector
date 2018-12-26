@@ -13,10 +13,21 @@ sap.ui.define([
 		/* Function for Initialization of model and variables for view */
 		onInit: function () {
 			_that = this;
+			
+			//appdata
+			$.ajax({
+                dataType: "json",
+                url: "/appdata/userProfile",
+                type: "GET",
+                success: function (userData) {
+                    console.log("User Data", userData);
+                },
+                error: function (oError) {}
+            });
 			// changed by Ray 
 			//_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
-			_that.oService = "/tireSelector/xsodata/tireSelector_SRV.xsodata";
-			_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
+			// _that.oService = "/tireSelector/xsodata/tireSelector_SRV.xsodata";
+			// _that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
 
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();

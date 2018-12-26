@@ -52,61 +52,11 @@ sap.ui.define([
 			}
 
 			_that.getRouter().attachRouteMatched(function (oEvent) {
-<<<<<<< HEAD
-				oTable = _that.getView().byId("idTireSelectionTable");
-				_that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
-				// _that.oGlobalBusyDialog = new sap.m.BusyDialog();
-
-				if (oEvent.getParameter("arguments").tireData == "selectDifferentTire") {
-					_that.oTireFitmentJSONModel.refresh(true);
-					_that.oTireFitmentJSONModel.updateBindings(true);
-				} else {
-
-					oTable = _that.getView().byId("idTireSelectionTable");
-					var sLocation = window.location.host;
-					var sLocation_conf = sLocation.search("webide");
-					// changed by Ray 
-					// if (sLocation_conf == 0) {
-					// 	_that.sPrefix = "/tireSelector-dest";
-					// } else {
-					// 	_that.sPrefix = "";
-					// }
-					//_that.nodeJsUrl = _that.sPrefix + "/node";
-					_that.nodeJsUrl = "/node";
-
-					_that.oPriceModel = new sap.ui.model.json.JSONModel();
-					// _that.getView().setModel(_that.oPriceModel, "PriceModel");
-					// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
-					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
-					// _that.oPriceServiceModel = new sap.ui.model.odata.ODataModel(_that.oService, true);
-					_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
-
-					if (sap.ui.getCore().getModel("ProdMarkupModel") != undefined && sap.ui.getCore().getModel("ProdMarkupModel").getData().length !=
-						undefined) {
-						_that.ProductMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
-						console.log("Product Markup Data", _that.ProductMarkupModel.getData());
-					}
-					// _that.oBusinessPartnerModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/API_BUSINESS_PARTNER", true);
-					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
-					_that.oBusinessPartnerModel.read("/A_BusinessPartner?$filter= zstatus eq ' '", {
-						success: $.proxy(function (oDataResponse) {
-							console.log("Business Partner Data", oDataResponse.results);
-							_that.oBusinessPartnerModel = new JSONModel();
-							_that.getView().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
-							sap.ui.getCore().setModel(_that.oBusinessPartnerModel, "BusinessPartnerModel");
-							_that.oBusinessPartnerModel.setData(oDataResponse);
-							_that.oBusinessPartnerModel.updateBindings(true);
-						}, _that),
-						error: function (oError) {
-							console.log("Error in fetching A_BusinessPartner", oError);
-						}
-=======
 					_that._oViewModel = new sap.ui.model.json.JSONModel({
 						busy: false,
 						delay: 0,
 						enableDealerNet: false,
 						enableProfit: false
->>>>>>> refs/remotes/origin/master
 					});
 
 					_that.getView().setModel(_that._oViewModel, "propertiesModel");

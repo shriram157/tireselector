@@ -103,29 +103,6 @@ sap.ui.define([
 				// 	_that.sPrefix = "";
 				// }
 				// this.XSJsUrl = this.sPrefix + "/xsodata";
-<<<<<<< HEAD
-				// changed by ray 
-				//_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
-				_that.oService = "/tireSelector/xsodata/tireSelector_SRV.xsodata";
-				_that.oXSOServiceModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
-
-				// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
-
-				_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-				// _that.getView().setModel(_that.oXSOServiceModel, "ProdMarkupModel");
-				console.log("XSO model data", _that.oXSOServiceModel);
-
-				_that.oXSOServiceModel.read("/DealerMarkUp", {
-					success: $.proxy(function (oData) {
-						console.log("XSO data", oData);
-						_that.oProdMarkupModel.setData(oData);
-						_that.oProdMarkupModel.updateBindings(true);
-					}, _that),
-					error: function (oError) {
-						console.log("Error in fetching table", oError);
-					}
-				});
-=======
 				else {
 					_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 					_that.oXSOServiceModel.read("/DealerMarkUp", {
@@ -139,7 +116,6 @@ sap.ui.define([
 						}
 					});
 				}
->>>>>>> refs/remotes/origin/master
 			}, _that);
 
 			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
