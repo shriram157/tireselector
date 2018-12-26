@@ -86,24 +86,6 @@ module.exports = function () {
        });
 	});
 	
-	app.get('/userProfile', (req, res) => {
-		var userContext = req.authInfo;
-		var result = JSON.stringify({
-			userContext: userContext
-		});
-		res.type('application/json').status(200).send(result);
-	});
-
-	app.get('/configuration', (req, res) => {
-		let options = {};
-		options = Object.assign(options, xsenv.getServices({
-			api: {
-				name: "TIRE_SELECTOR_APIM_CUPS"
-			}
-		}));
-		res.json(options);
-	});
-	
 	return app;
 };
 

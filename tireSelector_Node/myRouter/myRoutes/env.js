@@ -28,7 +28,7 @@ module.exports = function() {
 		let options = {};
 		options = Object.assign(options, xsenv.getServices({
 			api: {
-				name: "PARTS_ORDERING_APIM_CUPS"
+				name: "TIRE_SELECTOR_APIM_CUPS"
 			}
 		}));
 		res.json(options);
