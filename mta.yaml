@@ -1,8 +1,7 @@
 ID: tireSelectorS
 _schema-version: '2.1'
 description: MTA Project For Tire Selector
-version: 0.1.14
-
+version: 0.1.15
 modules:
  - name: tireSelectorS_Node
    type: nodejs
@@ -21,7 +20,6 @@ modules:
    requires:
     - name: TIRE_SELECTOR_APIM_CUPS
     - name: uaa_tireSelectorS
-
  - name: tireSelectorS_XSJS
    type: nodejs
    path: tireSelector_XSJS
@@ -40,13 +38,11 @@ modules:
      - name: uaa_tireSelectorS
      - name: tireSelectorS_hdb
      - name: hdi_tireSelectorS_hdb
-
  - name: tireSelectorS_hdb
    type: hdb
    path: tireSelector_hdb
    requires:
     - name: hdi_tireSelectorS_hdb
-
  - name: tireSelectorS
    type: html5
    path: tireSelector
@@ -74,7 +70,6 @@ modules:
         name: tireSelector-xsjs-backend
         url: '~{url}'
         forwardAuthToken: true
-
 resources:
  - name: uaa_tireSelectorS
    parameters:
@@ -82,7 +77,6 @@ resources:
       service-plan: application
       service: xsuaa
    type: org.cloudfoundry.managed-service
-
  - name: dest_tireSelectorS
    parameters:
       service-plan: lite
@@ -95,7 +89,6 @@ resources:
      service-name: TIRE_SELECTOR_APIM_CUPS
    properties:
       odata-call-service-name: '${service-name}'
-
  - name: hdi_tireSelectorS_hdb
    parameters:
       config:

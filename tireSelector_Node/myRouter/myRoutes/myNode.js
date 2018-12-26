@@ -6,7 +6,6 @@ var request = require('request');
 var xsenv = require("@sap/xsenv");
 var passport = require('passport');
 // var JWTStrategy = require('@sap/xssec').JWTStrategy; 
-
 var async = require('async');
 module.exports = function () {
 	var app = express.Router();
@@ -24,8 +23,6 @@ module.exports = function () {
 			name: "TIRE_SELECTOR_APIM_CUPS"
 		}
 	}));
-
-
 	var uname = options.api.user,
 		pwd = options.api.password,
 		url = options.api.host,
@@ -34,7 +31,6 @@ module.exports = function () {
      	console.log('The API Management URL', url);
         
 	var auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
-
 	var reqHeader = {
 		"Authorization": auth64,
 		"Content-Type": "application/json",
@@ -42,7 +38,6 @@ module.exports = function () {
 		"x-csrf-token": "Fetch",
 		"InvalidateCache" : "true"
 	};
-
 	app.use(function (req, res, next) {
 		res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -51,7 +46,6 @@ module.exports = function () {
 	
 	// simple version of bridge call
 	app.all('/*', function(req, res, next) {
-
     	let headOptions = {};
 			var csrfToken;
 		// prepare the magic reverse proxy header for odata service to work. 
@@ -59,10 +53,8 @@ module.exports = function () {
         // if (!!req.headers.host){
         //     headOptions.host = req.headers.host;
         // }
-
 		//only support the basic auth
         headOptions.Authorization = auth64;
-
         let method = req.method;
         let xurl = url +req.url;
          console.log('Method', method);
@@ -76,7 +68,6 @@ module.exports = function () {
 		);
         
         req.pipe(xRequest);
-
         xRequest.on('response', (response) => {
         	// delete response.headers['set-cookie'];
         		csrfToken = response.headers['x-csrf-token'];
@@ -88,5 +79,3 @@ module.exports = function () {
 	
 	return app;
 };
-
-

@@ -1,4 +1,4 @@
-var _that, DealerNet, oTable, tempData;
+var _that, DealerNet, oTable, tempData, objData;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -182,8 +182,7 @@ sap.ui.define([
 														var Live_Markup_Percentage = _that.ProductMarkupModel.getData().results[k].Live_Markup_Percentage;
 														_that.tempModel.getData().results[n].Live_Markup_Percentage = Live_Markup_Percentage;
 													}
-												}
-												else {
+												} else {
 													_that.tempModel.getData().results[n].Live_Markup_Percentage = null;
 												}
 											}
@@ -195,11 +194,11 @@ sap.ui.define([
 
 									function getDealerNet(oMaterial) {
 										// tempData = [];
-										_that.Division = _that.DealerData.attributes[0].Division;
+										_that.Division = objData.Division;
 										_that.Doctype = "ZAF";
 										_that.SalesOrg = "7000";
 										_that.DistrChan = "10";
-										_that.SoldtoParty = _that.DealerData.attributes[0].BusinessPartnerKey;
+										_that.SoldtoParty = objData.BusinessPartnerKey;
 										var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype +
 											"' and SalesOrg eq '" + _that.SalesOrg + "' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that
 											.SoldtoParty + "' and Material eq '" + oMaterial + "'";
@@ -231,6 +230,62 @@ sap.ui.define([
 									}
 									for (var n = 0; n < _that.tempModel.getData().results.length; n++) {
 										var oMat = _that.tempModel.getData().results[n].MATERIAL;
+										_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
+
+										_that.dealerCode = _that.DealerData.userContext.userAttributes.DealerCode[0];
+										_that.UserName = _that.DealerData.userContext.userInfo.logonName;
+
+										_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
+										var queryString = "/?$format=json&$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_Customer";
+										_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString, {
+											success: $.proxy(function (oDealerData) {
+												console.log("Business Partner Data", oDealerData.results);
+												for (var i = 0; i < oDealerData.results.length; i++) {
+													objData = {};
+
+													var BpLength = oDealerData.results[i].BusinessPartner.length;
+													objData.BusinessPartnerFullName = oDealerData.results[i].BusinessPartnerFullName;
+													objData.BusinessPartnerName = oDealerData.results[i].OrganizationBPName1;
+													objData.BusinessPartnerName2 = oDealerData.results[i].OrganizationBPName2;
+													objData.BusinessPartnerKey = oDealerData.results[i].BusinessPartner;
+													objData.BusinessPartner = oDealerData.results[i].BusinessPartner.substring(5, BpLength);
+													objData.BusinessPartnerType = oDealerData.results[i].BusinessPartnerType;
+													objData.SearchTerm2 = oDealerData.results[i].SearchTerm2;
+
+													var attributeFromSAP;
+													attributeFromSAP = oDealerData.results[i].to_Customer.Attribute1;
+
+													switch (attributeFromSAP) {
+													case "01":
+														objData.Division = "10";
+														objData.Attribute = "01";
+														break;
+													case "02":
+														objData.Division = "20";
+														objData.Attribute = "02";
+														break;
+													case "03":
+														objData.Division = "Dual";
+														objData.Attribute = "03";
+														break;
+													case "04":
+														objData.Division = "10";
+														objData.Attribute = "04";
+														break;
+													case "05":
+														objData.Division = "Dual";
+														objData.Attribute = "05";
+														break;
+													default:
+														objData.Division = "10"; //  lets put that as a toyota dealer
+														objData.Attribute = "01";
+													}
+												}
+											}, _that),
+											error: function (oError) {
+												console.log("Error in fetching data", oError);
+											}
+										});
 										getDealerNet(oMat);
 										console.log("dealernetPrice", tempData);
 									}
@@ -333,11 +388,11 @@ sap.ui.define([
 										});
 										_that.oTireFitmentJSONModel.setData(_that.FitmentToCharac);
 										_that.oTireFitmentJSONModel.getData().Filters = _that.Filters;
-										
+
 										_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.FacetFilters.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-										
+
 										_that.oTireFitmentJSONModel.refresh(true);
 										_that.oTireFitmentJSONModel.updateBindings(true);
 										console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
@@ -364,7 +419,6 @@ sap.ui.define([
 							}
 						}
 					}
-
 				},
 				_that);
 

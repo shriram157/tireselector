@@ -1,4 +1,4 @@
-var _that;
+var _that,objData;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -77,15 +77,71 @@ sap.ui.define([
 					_that.objPrice.EHFPRice = this.getView().byId("id_freeDescp").getValue();
 
 					_that.DealerData = sap.ui.getCore().getModel("DealerModel").getData();
-					// console.log("Dealer Data", _that.DealerData);
-					_that.Division = _that.DealerData.attributes[0].Division;
+
+					_that.dealerCode = _that.DealerData.userContext.userAttributes.DealerCode[0];
+					_that.UserName = _that.DealerData.userContext.userInfo.logonName;
+
+					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
+					var queryString = "/?$format=json&$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_Customer";
+					_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString, {
+						success: $.proxy(function (oDealerData) {
+							console.log("Business Partner Data", oDealerData.results);
+							for (var i = 0; i < oDealerData.results.length; i++) {
+								objData = {};
+
+								var BpLength = oDealerData.results[i].BusinessPartner.length;
+								objData.BusinessPartnerFullName = oDealerData.results[i].BusinessPartnerFullName;
+								objData.BusinessPartnerName = oDealerData.results[i].OrganizationBPName1;
+								objData.BusinessPartnerName2 = oDealerData.results[i].OrganizationBPName2;
+								objData.BusinessPartnerKey = oDealerData.results[i].BusinessPartner;
+								objData.BusinessPartner = oDealerData.results[i].BusinessPartner.substring(5, BpLength);
+								objData.BusinessPartnerType = oDealerData.results[i].BusinessPartnerType;
+								objData.SearchTerm2 = oDealerData.results[i].SearchTerm2;
+
+								var attributeFromSAP;
+								attributeFromSAP = oDealerData.results[i].to_Customer.Attribute1;
+
+								switch (attributeFromSAP) {
+								case "01":
+									objData.Division = "10";
+									objData.Attribute = "01";
+									break;
+								case "02":
+									objData.Division = "20";
+									objData.Attribute = "02";
+									break;
+								case "03":
+									objData.Division = "Dual";
+									objData.Attribute = "03";
+									break;
+								case "04":
+									objData.Division = "10";
+									objData.Attribute = "04";
+									break;
+								case "05":
+									objData.Division = "Dual";
+									objData.Attribute = "05";
+									break;
+								default:
+									objData.Division = "10"; //  lets put that as a toyota dealer
+									objData.Attribute = "01";
+								}
+							}
+						}, _that),
+						error: function (oError) {
+							console.log("Error in fetching data", oError);
+						}
+					});
+					console.log("objData", objData);
+					_that.Division = objData.Division;
 					_that.Doctype = "ZAF";
 					_that.SalesOrg = "7000";
 					_that.DistrChan = "10";
-					_that.SoldtoParty = _that.DealerData.attributes[0].BusinessPartnerKey;
+					_that.SoldtoParty = objData.BusinessPartner;
 
 					var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
-						_that.SalesOrg +"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +"'";
+						_that.SalesOrg + "' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty +
+						"' and Material eq '" + oMaterial + "'";
 					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
 					_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 						success: $.proxy(function (oPriceData) {
@@ -96,9 +152,9 @@ sap.ui.define([
 										_that.rowData.FederalTax = _that.decimalFormatter(oPriceData.results[n].Amount);
 									} else if (CndType == "JRC3" || CndType == "JRC2") {
 										_that.rowData.ProvincialTax = _that.decimalFormatter(oPriceData.results[n].Amount);
-									} else if (CndType == "ZPEH"  || CndType == "ZPEC") { //Freight Cost
+									} else if (CndType == "ZPEH" || CndType == "ZPEC") { //Freight Cost
 										_that.rowData.EHFPRice = _that.decimalFormatter(oPriceData.results[n].Amount);
-									} 
+									}
 								}
 							},
 							_that),

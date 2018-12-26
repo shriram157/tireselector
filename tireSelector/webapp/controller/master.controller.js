@@ -13,17 +13,22 @@ sap.ui.define([
 		/* Function for Initialization of model and variables for view */
 		onInit: function () {
 			_that = this;
-			
+
 			//appdata
 			$.ajax({
-                dataType: "json",
-                url: "/appdata/userProfile",
-                type: "GET",
-                success: function (userData) {
-                    console.log("User Data", userData);
-                },
-                error: function (oError) {}
-            });
+				dataType: "json",
+				url: "/appdata/whoAmI",
+				type: "GET",
+				success: function (userData) {
+					console.log("User Data", userData);
+					// dealerNumber = userData.userContext.userAttributes.DealerCode[0];
+
+					_that._oDealerModel = new sap.ui.model.json.JSONModel(userData);
+					_that.getView().setModel(_that._oDealerModel, "DealerModel");
+					sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
+				},
+				error: function (oError) {}
+			});
 			// changed by Ray 
 			//_that.oService = "https://tireselector-xsjs.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata";
 			// _that.oService = "/tireSelector/xsodata/tireSelector_SRV.xsodata";
@@ -45,29 +50,25 @@ sap.ui.define([
 				}
 			});
 
-			_that.oDealerData = {
-				"attributes": [{
-					"BusinessPartnerName": "Don Valley North LEXUS",
-					"BusinessPartnerKey": "2400034030",
-					"BusinessPartner": "2400034030",
-					"BusinessPartnerType": "Z001",
-					"BusinessPartnerAddress": "Address",
-					"BusinessPartnerPhone": "1234567890",
-					"Division": "20",
-					"Attribute": "02"
-				}],
-				"samlAttributes": [{
-					"Language": ["English", "English"],
-					"UserType": ["Dealer", "Dealer"],
-					"DealerCode": ["42357", "42357"]
-				}],
-				"legacyDealer": "42357",
-				"legacyDealerName": "Don Valley North LEXUS"
-			};
-
-			_that._oDealerModel = new sap.ui.model.json.JSONModel(_that.oDealerData);
-			_that.getView().setModel(_that._oDealerModel, "DealerModel");
-			sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
+			// _that.oDealerData = {
+			// 	"attributes": [{
+			// 		"BusinessPartnerName": "Don Valley North LEXUS",
+			// 		"BusinessPartnerKey": "2400034030",
+			// 		"BusinessPartner": "2400034030",
+			// 		"BusinessPartnerType": "Z001",
+			// 		"BusinessPartnerAddress": "Address",
+			// 		"BusinessPartnerPhone": "1234567890",
+			// 		"Division": "20",
+			// 		"Attribute": "02"
+			// 	}],
+			// 	"samlAttributes": [{
+			// 		"Language": ["English", "English"],
+			// 		"UserType": ["Dealer", "Dealer"],
+			// 		"DealerCode": ["42357", "42357"]
+			// 	}],
+			// 	"legacyDealer": "42357",
+			// 	"legacyDealerName": "Don Valley North LEXUS"
+			// };
 
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
@@ -114,14 +115,13 @@ sap.ui.define([
 			_that.oSearchOptionTireSize = _that.getView().byId("searchOptionTireSize");
 			_that.oModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
 			_that.oVehicleSearchCombo = _that.getView().byId("VehicleSearchCombo");
-			
+
 			sap.ushell.components.SearchOption = _that.oSearchOptionList;
 			sap.ushell.components.SearchOptionVIN = _that.oSearchOptionVIN;
 			sap.ushell.components.SearchOptionTireSize = _that.oSearchOptionTireSize;
 			sap.ushell.components.SearchOptionVehicle = _that.oVehicleSearchCombo;
 			sap.ushell.components.ModelSeriesCombo = _that.oModelSeriesCombo;
 
-	
 			// _that.oForVehicleSearchOnly.setVisible(false);
 			// _that.oGlobalJSONModel.getData().FitmentData=[];
 			_that.oGlobalJSONModel.getData().modelDetailsData = [];
@@ -146,7 +146,7 @@ sap.ui.define([
 
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
-			
+
 			// changed by Ray 
 			// if (sLocation_conf == 0) {
 			// 	this.sPrefix = "/tireSelector-dest";
@@ -381,7 +381,8 @@ sap.ui.define([
 				_that.oSearchOptionTireSize.setValue();
 				_that._oViewModel.setProperty("/enableVin", false);
 				_that._oViewModel.setProperty("/enableVehicleInputs", false);
-			}_that.oSearchOptionLabel.setText(selectedOption);
+			}
+			_that.oSearchOptionLabel.setText(selectedOption);
 		},
 
 		/*Function for clearing search criteria when user clicks on Clear Search Fields */
@@ -505,11 +506,10 @@ sap.ui.define([
 			if (sap.ushell.components.SearchOptionVIN !== undefined && sap.ushell.components.SearchOptionVIN !== "") {
 				if (sap.ushell.components.SearchOptionVIN.getValue() != "" || sap.ushell.components.SearchOptionVIN.getValue() !== undefined) {
 					serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
-				}
-				else serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
-			}
-			else if (sap.ushell.components.ModelSeriesCombo !== undefined || sap.ushell.components.SearchOptionVehicle !== undefined) {
-				serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '"+sap.ushell.components.ModelSeriesCombo.getValue() +"'&$format=json";
+				} else serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet";
+			} else if (sap.ushell.components.ModelSeriesCombo !== undefined || sap.ushell.components.SearchOptionVehicle !== undefined) {
+				serviceURL = this.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + sap.ushell.components.ModelSeriesCombo.getValue() +
+					"'&$format=json";
 				//(Zzmoyr='" +sap.ushell.components.ModelSeriesCombo.getValue() + "',Model='',Zzsuffix='')";
 			}
 
