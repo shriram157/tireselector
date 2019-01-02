@@ -539,6 +539,7 @@ sap.ui.define([
 						'X-CSRF-Token': this._oToken
 					}
 				});
+
 				oGetModel.read("/zc_c_vehicle", {
 
 					urlParameters: {
@@ -547,24 +548,41 @@ sap.ui.define([
 					success: $.proxy(function (data) {
 
 						this.CustomerNumberLength = data.results.length;
-						if (data.results.length <= 0) {
 
-							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("CustomerNumberNotFound"));
-							this.getView().byId("idNewECPMsgStrip").setType("Error");
-							this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
-							this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-						} else {
-							this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
-							this.oCustomer = data.results[0].EndCustomer;
-							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+						oZECPModel.read("/zc_ecp_application", {
+							urlParameters: {
+								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and DealerCode eq '" + this.getModel("LocalDataModel").getProperty(
+									"/currentIssueDealer") + "' "
+							},
+							success: $.proxy(function (odata) {
+								this.oAppdata = odata.results.length;
+								if (data.results.length <= 0) {
 
-							this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
-							this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-							//this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-							this.getView().byId("idNewECPMsgStrip").setType("None");
-							oVin.setValueState(sap.ui.core.ValueState.None);
-						}
+									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("CustomerNumberNotFound"));
+									this.getView().byId("idNewECPMsgStrip").setType("Error");
+									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+								} else if (this.oAppdata > 0) {
+									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("VinAlreadySaved"));
+									this.getView().byId("idNewECPMsgStrip").setType("Error");
+									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+								} else {
+									this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
+									this.oCustomer = data.results[0].EndCustomer;
+									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+
+									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
+									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+									//this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+									this.getView().byId("idNewECPMsgStrip").setType("None");
+									oVin.setValueState(sap.ui.core.ValueState.None);
+								}
+							}, this)
+
+						});
 
 					}, this)
 				});
@@ -1486,48 +1504,18 @@ sap.ui.define([
 		onPrintAgreement: function () {
 			//var oEcpModel = this.getModel("EcpSalesModel");
 			var oAgr = this.getView().getModel("LocalDataModel").getProperty("/AgreementData/AgreementNumber");
-			// var oModel = zc_ecp_agreement_printSet(AGRNUM='F100202NTC04',LANG='E')/$value;
-			// oEcpModel.read("/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value", {
-			// 	success: function () {
-			// 		console.log("generate");
-			// 	}
-			// });
 
-			// ============================
-			//var value = this.getView().byId(“inputValue”).getValue();
-
-			var sRead = "/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value";
-
-			var html = new sap.ui.core.HTML();
-
-			var oModel = this.getModel("EcpSalesModel");
-
-			oModel.read("/zc_ecp_agreement_printSet(AGRNUM='F100202NTC04',LANG='E')/$value", {
-
-				success: function (oData, oResponse) {
-
-					var response = oResponse.requestUri;
-
-					html.setContent("<iframe src=" + response + " width='700' height='700'></iframe>");
-
-					var windows = window.open("", "Agreement PDF", "width='700' height='700'");
-
-					windows.document.write(html);
-
-					windows.print();
-
-					windows.close();
-
-				},
-
-				error: function () {
-
-					alert("Read failed");
-
-				}
-
-			});
-			// ==========================
+			var isProxy = "";
+			if (window.document.domain == "localhost") {
+				isProxy = "proxy";
+			}
+			var w = window.open(isProxy +
+				"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value",
+				'_blank');
+			if (w == null) {
+				console.log("Error");
+				//MessageBox.warning(oBundle.getText("Error.PopUpBloqued"));
+			}
 
 		},
 		onClose: function (oEvent) {

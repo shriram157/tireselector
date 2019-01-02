@@ -2,7 +2,7 @@ sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/routing/History",
 	"sap/ui/Device"
-], function(Controller, History, Device) {
+], function (Controller, History, Device) {
 	"use strict";
 
 	return Controller.extend("zecp.controller.BaseController", {
@@ -11,7 +11,8 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.core.routing.Router} the router for this component
 		 */
-		getRouter: function() {
+
+		getRouter: function () {
 			return this.getOwnerComponent().getRouter();
 		},
 
@@ -21,55 +22,105 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.model.Model} the model instance
 		 */
-		getModel: function(sName) {
+		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
+		getDealerFn: function () {
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+			if (sLocation_conf == 0) {
+				this.sPrefix = "/ecpSales_node_secured"; //ecpSales_node_secured
+				this.attributeUrl = "/userDetails/attributesforlocaltesting";
+			} else {
+				this.sPrefix = "";
+				this.attributeUrl = "/userDetails/attributes";
+			}
+			var that = this;
+			var oDealer;
+			var myAjaxCall = $.ajax({
+				url: this.sPrefix + this.attributeUrl,
+				type: "GET",
+				dataType: "json",
 
-		handleLinkPress: function(oEvent) {
+				success: function (oData) {
+					var BpDealer = [];
+					var userAttributes = [];
 
-			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
+					$.each(oData.attributes, function (i, item) {
+						var BpLength = item.BusinessPartner.length;
+
+						BpDealer.push({
+							"BusinessPartnerKey": item.BusinessPartnerKey,
+							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
+							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
+							"Division": item.Division,
+							"BusinessPartnerType": item.BusinessPartnerType,
+							"searchTermReceivedDealerName": item.SearchTerm2
+						});
+
+					});
+					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
+					that.getModel("LocalDataModel").setProperty("/currentIssueDealer", BpDealer[0].BusinessPartnerKey);
+					//that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
+					// read the saml attachments the same way 
+
+				},
+				error: function (response) {
+					sap.ui.core.BusyIndicator.hide();
+				}
+			});
+
+			// return myAjaxCall.then(function (result) {
+			// 	console.log(result);
+			// });
+
+		},
+		handleLinkPress: function (oEvent) {
+
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oGetText = oEvent.getSource().getText();
-			// 			var oNewAppId = this.getView().byId("idNewApp");
-			// 			var oViewUpdateId = this.getView().byId("idViewUpdate");
-			// 			var oAgrInqId = this.getView().byId("idAgrInq");
 			var oval = 404;
-			if(oGetText === this.oBundle.getText("NewApplication")) {
-				this.EcpFieldData = new sap.ui.model.json.JSONModel({
-					ZecpVin: "",
-					ZecpVehPrice: "",
-					ZecpAmtFin: "",
-					ZecpLienholder: "",
-					ZecpLienterms: "",
-					ZecpSalesTin: "",
-					PrOwndCert: "",
-					BccAgrmntPrcAmt: "",
-					ZecpOdometer: "",
-					ZecpSaleDate: ""
-				});
-				this.EcpFieldData.setDefaultBindingMode("TwoWay");
+			this.getDealerFn();
 
-				this.getView().setModel(this.EcpFieldData, "EcpFieldData");
+			if (oGetText === oBundle.getText("NewApplication")) {
+
+				// this.EcpFieldData = new sap.ui.model.json.JSONModel({
+				// 	ZecpVin: "",
+				// 	ZecpVehPrice: "",
+				// 	ZecpAmtFin: "",
+				// 	ZecpLienholder: "",
+				// 	ZecpLienterms: "",
+				// 	ZecpSalesTin: "",
+				// 	PrOwndCert: "",
+				// 	BccAgrmntPrcAmt: "",
+				// 	ZecpOdometer: "",
+				// 	ZecpSaleDate: ""
+				// });
+				// this.EcpFieldData.setDefaultBindingMode("TwoWay");
+
+				// this.getView().setModel(this.EcpFieldData, "EcpFieldData");
 				this.getOwnerComponent().getRouter().navTo("newECPApp", {
 					vin: oval,
 					plan: oval,
 					appId: oval,
 					appType: oval,
-					Odometer: oval
-				});
+					Odometer: oval,
+					ODealer: this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
 
-			} else if(oGetText === this.oBundle.getText("ViewUpdateApp")) {
+				});
+			} else if (oGetText === oBundle.getText("ViewUpdateApp")) {
 				this._resetView();
 				this.getOwnerComponent().getRouter().navTo("ApplicationList");
-				//this.getView().getModel("EcpFieldData").setData("");
-			} else if(oGetText === this.oBundle.getText("AgreementInquiry")) {
+
+			} else if (oGetText === oBundle.getText("AgreementInquiry")) {
 				this._resetView();
 				this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
-				//this.getModel("ZVehicleMasterModel").refresh();
-				//this.getView().getModel("EcpFieldData").setData("");
+
 			}
+
 		},
 
-		_resetView: function() {
+		_resetView: function () {
 			var oSetProperty = new sap.ui.model.json.JSONModel();
 			oSetProperty.setData({
 				oPrimeryState: true,
@@ -101,7 +152,7 @@ sap.ui.define([
 		 * @param {string} sName the model name
 		 * @returns {sap.ui.mvc.View} the view instance
 		 */
-		setModel: function(oModel, sName) {
+		setModel: function (oModel, sName) {
 			return this.getView().setModel(oModel, sName);
 		},
 
@@ -110,7 +161,7 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.model.resource.ResourceModel} the resourceModel of the component
 		 */
-		getResourceBundle: function() {
+		getResourceBundle: function () {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 
@@ -120,13 +171,13 @@ sap.ui.define([
 		 * If not, it will replace the current entry of the browser history with the master route.
 		 * @public
 		 */
-		onNavBack: function() {
+		onNavBack: function () {
 			var oHistory, sPreviousHash;
 
 			oHistory = History.getInstance();
 			sPreviousHash = oHistory.getPreviousHash();
 
-			if(sPreviousHash !== undefined) {
+			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {
 				this.getRouter().navTo("ApplicationList", {}, true);
