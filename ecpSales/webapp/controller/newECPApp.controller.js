@@ -551,7 +551,7 @@ sap.ui.define([
 
 						oZECPModel.read("/zc_ecp_application", {
 							urlParameters: {
-								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and DealerCode eq '" + this.getModel("LocalDataModel").getProperty(
+								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel("LocalDataModel").getProperty(
 									"/currentIssueDealer") + "' "
 							},
 							success: $.proxy(function (odata) {
@@ -563,7 +563,9 @@ sap.ui.define([
 									this.getView().byId("idNewECPMsgStrip").setType("Error");
 									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-								} else if (this.oAppdata > 0) {
+								}
+								
+								if (this.oAppdata > 0) {
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("VinAlreadySaved"));
 									this.getView().byId("idNewECPMsgStrip").setType("Error");

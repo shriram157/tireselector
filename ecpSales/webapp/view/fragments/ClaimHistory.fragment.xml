@@ -89,6 +89,7 @@
 			</Table>
 		</content>
 		<endButton>
+			
 			<Button text="{i18n>Close}" press="onClose"/>
 		</endButton>
 	</Dialog>
