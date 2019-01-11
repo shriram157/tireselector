@@ -19,7 +19,7 @@
 				</customHeader>
 				<tnt:ToolHeader backgroundDesign="Translucent">
 					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
-					<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link text="{i18n>ProductMarkups}" visible="{FitmentPageModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
 					<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
 				</tnt:ToolHeader>
 				<content>
@@ -31,7 +31,7 @@
 						</l:content>
 					</l:VerticalLayout>
 					<OverflowToolbar class="noBottomBorder">
-						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
+						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/DealerName}" design="Bold" class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>BackToSearch}" type="Emphasized" press="NavBackToSearch"/>
 					</OverflowToolbar>
@@ -54,8 +54,8 @@
 							rows="{TireFitmentJSONModel>/results}" visibleRowCount="7">
 							<t:toolbar>
 								<Toolbar>
-									<CheckBox text="Show Dealer Net" select="onCheckPress"/>
-									<!--<CheckBox text="Use Preview Markup" select="onCheckPress"/>-->
+									<CheckBox text="Show Dealer Net" select="onCheckPress" id="checkDealerNet"/>
+									<CheckBox text="Use Preview Markup" select="onCheckPreview" id="checkPreview"/>
 								</Toolbar>
 							</t:toolbar>
 							<t:columns>
@@ -89,22 +89,22 @@
 										<Text text="{TireFitmentJSONModel>Material}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_DealerNet" sortProperty="Dealer Net" filterProperty="Dealer Net" visible="{propertiesModel>/enableDealerNet}">
+								<t:Column id="ID_DealerNet" sortProperty="DealerNet" filterProperty="DealerNet" visible="{FitmentPageModel>/enableDealerNet}">
 									<Label text="{i18n>DealerNet}" wrapping="false"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Dealer Net}" wrapping="false"/>
+										<Text text="{path:'TireFitmentJSONModel>DealerNet', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_Profit" sortProperty="Profit" filterProperty="Profit" visible="{propertiesModel>/enableProfit}">
+								<t:Column id="ID_Profit" sortProperty="Profit" filterProperty="Profit" visible="{FitmentPageModel>/enableProfit}">
 									<Label text="{i18n>Profit}" wrapping="false"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Profit}" wrapping="false"/>
+										<Text text="{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="Retails" filterProperty="Retails">
 									<Label text="{i18n>Retails}" wrapping="false"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Retails}" wrapping="false"/>
+										<Text text="{path:'TireFitmentJSONModel>Retails', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 							</t:columns>

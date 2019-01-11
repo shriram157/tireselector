@@ -19,7 +19,8 @@
 				</customHeader>
 				<tnt:ToolHeader backgroundDesign="Translucent">
 					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
-					<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link text="{i18n>ProductMarkups}" visible="{TireQuoteModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin"
+						press="onMenuLinkPress"/>
 					<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
 				</tnt:ToolHeader>
 				<content>
@@ -30,7 +31,7 @@
 					</l:VerticalLayout>
 					<MessageStrip id="ID_ErrMsgStrip" showIcon="true" showCloseButton="false" visible="false" type="Error" class="customMargin"/>
 					<OverflowToolbar class="noBottomBorder">
-						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
+						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/DealerName}" design="Bold" class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>SelectDifferentTire}" type="Emphasized" press="SelectDifferentTire"/>
 					</OverflowToolbar>
@@ -39,24 +40,24 @@
 						<f:content>
 							<core:Title text=""/>
 							<Label text=""/>
-							<Text text="{DealerModel>/attributes/0/BusinessPartnerName}"/>
+							<Text text="{DealerModel>/DealerData/BusinessPartnerName}"/>
 							<Label text=""/>
-							<Text text="{DealerModel>/attributes/0/BusinessPartnerAddress}"/>
-							<Label text=""/>
-							<Text text="{DealerModel>/attributes/0/BusinessPartnerPhone}"/>
+							<Text text="{DealerModel>/DealerData/BusinessPartnerAddress} - {DealerModel>/DealerData/Region}"/>
 							<Label text="{i18n>DealerTel}"/>
-							<Input type="Number" value="1234567890"/>
+							<!--<Input type="Number" value="{TireQuoteModel>/PhoneNumber}"/>-->
+							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"/>
+							
 							<Label text="{i18n>QuoteDate}" required="true"/>
-							<!--<Input type="Number" value="" required="true" id="id_QuoteDate"/>-->
-							<DatePicker id="id_QuoteDate" value="" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleQuoteDateChange" class="sapUiSmallMarginBottom" />
+							<DatePicker id="id_QuoteDate" value="{TireQuoteModel>/CurrentDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleQuoteDateChange"
+								class="sapUiSmallMarginBottom"/>
 							<Label text="{i18n>AfterExpiry}" required="true"/>
-							<!--<Input type="Number" value="" required="true" id="id_AfterExpiry"/>-->
-							<DatePicker id="id_AfterExpiry" value="" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleExpiryChange" class="sapUiSmallMarginBottom" />
+							<DatePicker id="id_AfterExpiry" value="{TireQuoteModel>/expiryDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleExpiryChange"
+								class="sapUiSmallMarginBottom"/>
 							<core:Title text=""/>
 							<Label text="{i18n>Vehicle}"/>
-							<Input type="Text" value="{propertiesModel>/vehicleVal} {propertiesModel>/modelval}"/>
+							<Input type="Text" value="{TireQuoteModel>/vehicleVal} {TireQuoteModel>/modelval}"/>
 							<Label text="{i18n>VIN}"/>
-							<Input type="Text" value="{propertiesModel>/vinVal}"/>
+							<Input type="Text" value="{TireQuoteModel>/vinVal}"/>
 							<Label text="{i18n>Name}"/>
 							<Input type="Text" value=""/>
 							<Label text="{i18n>Address}"/>
@@ -64,7 +65,7 @@
 							<Label text="{i18n>PostalCode}"/>
 							<Input type="Text" value=""/>
 							<Label text="{i18n>Phone}"/>
-							<Input type="Number" value=""/>
+							<Input type="Text" value=""/>
 							<Label text="{i18n>CreditApp}"/>
 							<Input type="Text" value=""/>
 						</f:content>
@@ -77,7 +78,7 @@
 							<Column minScreenWidth="Tablet" demandPopin="true" width="10rem" hAlign="Center">
 								<Text text="{i18n>UnitPrice}"/>
 							</Column>
-							<Column minScreenWidth="Desktop" demandPopin="true" width="10rem" hAlign="Center">
+							<Column minScreenWidth="Desktop" demandPopin="true" width="15rem" hAlign="Center">
 								<Text text="{i18n>Quantity}"/>
 							</Column>
 							<Column minScreenWidth="Desktop" demandPopin="true" width="10rem" hAlign="Center">
@@ -89,11 +90,17 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>Tires}"/>
-										<Text text="{TireQuotationModel>/results/0/TireSize} - {TireQuotationModel>/results/0/Material}"/>
+										<!--Tire Brand plus Model plus Tire category -->
+										<Text id="TireTxt1" text="{TireQuotationModel>/Tire Brand} - {TireQuotationModel>/Model} - {TireQuotationModel>/Tire Category}"/>
+										<!--Tire Size + Load Rating + Speed Rating -->
+										<Text id="TireTxt2" text="{TireQuotationModel>/TireSize} - {TireQuotationModel>/Tire Load Rating} - {TireQuotationModel>/Tire Speed Rating}"/>
+										<!--TCI Part Number -->
+										<Text id="TireTxt3" text="{TireQuotationModel>/Material}"/>
 									</VBox>
-									<Input value="{TireQuotationModel>/results/0/Retails}" required="true" id="id_tireUnitPrice" editable="false"/>
-									<Input value="" required="true" id="id_tireQty" liveChange="calculatePrice"/>
-									<Input value="{TireQuotationModel>/prices/0/TiresPrice}" id="id_tirePrice" editable="false"/>
+									<!--"{TirePriceModel>/TiresPrice}" -->
+									<Input  type="Text" value="{TireQuotationModel>/Retails}" id="id_tireUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" id="id_tireQty" liveChange="calculatePrice"/>
+									<Input value="{path:'TirePriceModel>/TiresPrice'}" id="id_tirePrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -107,9 +114,9 @@
 											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR}"/>
 										</Select>
 									</VBox>
-									<Input value="{TireQuotationModel>/results/0/RHPPRice}" id="id_RHPUnitPrice" editable="false"/>
-									<Input value="" id="id_RHPsQty" liveChange="calculatePrice"/>
-									<Input value="{TireQuotationModel>/prices/0/RHPPrice}" id="id_RHPPrice" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/RHPPRice'}" id="id_RHPUnitPrice" editable="false"/>
+									<Input value="" id="id_RHPsQty" editable="false"/>
+									<Input value="{path:'TirePriceModel>/RHPPriceSum'}" id="id_RHPPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -117,91 +124,91 @@
 									<VBox>
 										<Label text="{i18n>MountingAndBalancing}"/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="{TireQuotationModel>/prices/0/MnBPrice}" id="id_MnBPrice" liveChange="onValueChange"/>
+									<Input value="" visible="{TireQuoteModel>/enableInput}"/>
+									<Input value="" visible="{TireQuoteModel>/enableInput}"/>
+									<Input value="{path:'TirePriceModel>/MnBPrice'}" id="id_MnBPrice" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
 										<Label text="{i18n>Wheels}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="wheelsText"/>
 									</VBox>
 									<Input value="" required="true" id="id_wheelsUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_wheelsQty" liveChange="calculatePrice"/>
-									<Input value="{TireQuotationModel>/prices/0/WheelsPrice}" id="id_wheelsPrice" editable="false" />
+									<Input value="{path:'TirePriceModel>/WheelsPrice'}" id="id_wheelsPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
 										<Label text="{i18n>TPMS}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="tmpsTxt"/>
 									</VBox>
 									<Input value="" required="true" id="id_TPMSUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_TPMSQty" liveChange="calculatePrice"/>
-									<Input value="{TireQuotationModel>/prices/0/TPMSPrice}" id="id_TPMSPrice" editable="false"/>
+									<Input value="{path:'TirePriceModel>/TPMSPrice'}" id="id_TPMSPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
 										<Label text="{i18n>FittingKits}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%"/>
+										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="fittingkitTxt"/>
 									</VBox>
 									<Input value="" required="true" id="id_FittingKitUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_FittingKitQty" liveChange="calculatePrice"/>
-									<Input value="{TireQuotationModel>/prices/0/FittingKitPrice}" id="id_FittingKitPrice" editable="false"/>
+									<Input value="{path:'TirePriceModel>/FittingKitPrice'}" id="id_FittingKitPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
 										<Label text="{i18n>OtherItems}"/>
-										<Input value=""/>
+										<Input value="" id="valItem1"/>
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="{TireQuotationModel>/prices/0/otherItemPrice1}" required="true" id="id_OtherItemPrice" liveChange="onValueChange"/>
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<Input value="{path:'TirePriceModel>/otherItemPrice1'}" required="true" id="id_OtherItemPrice" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
-										<Input value=""/>
+										<Input value="" id="valItem2"/>
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="{TireQuotationModel>/prices/0/otherItemPrice2}" required="true" id="id_OtherItem2Price" liveChange="onValueChange"/>
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<Input value="{path:'TirePriceModel>/otherItemPrice2'}" required="true" id="id_OtherItem2Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
-										<Input value=""/>
+										<Input value="" id="valItem3"/>
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="{TireQuotationModel>/prices/0/otherItemPrice3}" required="true" id="id_OtherItem3Price" liveChange="onValueChange"/>
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<Input value="{path:'TirePriceModel>/otherItemPrice3'}" required="true" id="id_OtherItem3Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
-										<Input value=""/>
+										<Input value="" id="valItem4"/>
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="{TireQuotationModel>/prices/0/otherItemPrice4}" required="true" id="id_OtherItem4Price" liveChange="onValueChange"/>
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<Input value="{path:'TirePriceModel>/otherItemPrice4'}" required="true" id="id_OtherItem4Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -211,41 +218,39 @@
 									<VBox>
 										<Label text="{i18n>SubTotal}"/>
 									</VBox>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="" id="id_subTotal" liveChange="onValueChange"/>
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
+									<Input value="{path:'TireQuotationModel>/subTotal'}" id="id_subTotal" editable="false"/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns alignRight" visible="{propertiesModel>/enableFee}">
+							<ColumnListItem class="styleColumns alignRight" visible="{TireTaxModel>/enableFee}">
 								<cells>
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>EHFCharges}" id="id_EHFDescp"/>
+										<Label text="{path:'TireQuotationModel>/EHFPRice'} {i18n>FeeDescription} {i18n>EHFCharges}" id="id_EHFDescp"/>
 									</VBox>
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{propertiesModel>/enableInput}"/>-->
-									<Input value="{TireQuotationModel>/results/0/EHFPRice}" id="id_freeDescp"/>
+									<Input value="{path:'TireQuotationModel>/EHFPriceSum'}" id="id_freeDescp" editable="false"/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns alignRight" visible="{propertiesModel>/enableFTC}">
+							<ColumnListItem class="styleColumns alignRight" visible="{TireTaxModel>/enableFTC}">
 								<cells>
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>FederalTax}" id="id_fedTaxCodeDesc"/>
+										<Label text="{i18n>FederalTax} ({path:'TireQuotationModel>/FederalTax'})" id="id_fedTaxCodeDesc"/>
 									</VBox>
-									<Input value="{TireQuotationModel>/results/0/FederalTax}" id="id_fedTaxCode" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/FederalTaxSum'}" id="id_fedTaxCode" editable="false"/>
 								</cells>
 							</ColumnListItem>
-							<ColumnListItem class="styleColumns alignRight" visible="{propertiesModel>/enablePTC}">
+							<ColumnListItem class="styleColumns alignRight" visible="{TireTaxModel>/enablePTC}">
 								<cells>
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>ProvincialTax}" id="id_proTaxCodeDesc"/>
+										<Label text="{i18n>ProvincialTax} ({path:'TireQuotationModel>/ProvincialTax'})" id="id_proTaxCodeDesc"/>
 									</VBox>
-									<Input value="{TireQuotationModel>/results/0/ProvincialTax}" id="id_proTaxCode" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/ProvincialTaxSum'}" id="id_proTaxCode" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -255,18 +260,18 @@
 									<VBox>
 										<Label text="{i18n>Total}"/>
 									</VBox>
-									<Input value="" id="id_total"/>
-								</cells> 
+									<Input value="{path:'TireQuotationModel>/Total'}" id="id_total" editable="false"/>
+								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
 								<cells>
 									<VBox>
 										<Label text="{i18n>DealerMessage}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" maxLength="1000" showExceededText="true" width="100%"/>
+										<TextArea id="dealerTxt" placeholder="Enter Text" growing="true" growingMaxLines="3" maxLength="1000" showExceededText="true" width="100%"/>
 									</VBox>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
-									<Input value="" visible="{propertiesModel>/enableInput}"/>
+									<Input value="" visible="{TireQuoteModel>/enableInput}"/>
+									<Input value="" visible="{TireQuoteModel>/enableInput}"/>
+									<Input value="" visible="{TireQuoteModel>/enableInput}"/>
 								</cells>
 							</ColumnListItem>
 						</items>
@@ -275,7 +280,7 @@
 						<Label text="{i18n>Disclaimer}"/>
 						<ToolbarSpacer/>
 						<!--<Button text="{i18n>PrintQuote}" type="Emphasized" press="generatePDF"/>-->
-						<Button press="generatePDF" icon="sap-icon://print" data:targetId="idTireQuotation" type="Emphasized"  text="{i18n>PrintQuote}"/>
+						<Button press="generatePDF" icon="sap-icon://print" data:targetId="idTireQuotation" type="Emphasized" text="{i18n>PrintQuote}"/>
 					</OverflowToolbar>
 				</content>
 			</Page>

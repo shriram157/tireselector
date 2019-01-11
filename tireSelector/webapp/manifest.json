@@ -202,6 +202,11 @@
 				},
 				{
 					"name": "searchResultsTireNoData",
+					"pattern": "searchResultsTireNoData/:tireData:",
+					"target": "searchResultsTireNoData"
+				},
+				{
+					"name": "searchResultsTireNoData",
 					"pattern": "searchResultsTireNoData/{tireData}",
 					"target": "searchResultsTireNoData"
 				},

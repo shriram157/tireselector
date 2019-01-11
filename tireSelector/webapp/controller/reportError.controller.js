@@ -45,8 +45,8 @@ sap.ui.define([
 			}
 		},
 		NavBackToSearch: function () {
+			// _that.oSelectJSONModel.refresh();
 			_that.getRouter().navTo("master");
-			_that.oSelectJSONModel.refresh();
 		},
 
 		/**

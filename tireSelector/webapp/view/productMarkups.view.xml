@@ -17,7 +17,7 @@
 				</customHeader>
 				<tnt:ToolHeader backgroundDesign="Translucent">
 					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
-					<Link text="{i18n>ProductMarkups}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link text="{i18n>ProductMarkups}" visible="{propertiesModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
 					<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
 				</tnt:ToolHeader>
 				<content>
@@ -29,7 +29,7 @@
 						</l:content>
 					</l:VerticalLayout>
 					<OverflowToolbar class="noBottomBorder">
-						<Label text="{i18n>DealerCodeName}" design="Bold" class="styleFontSize customMargin"/>
+						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/DealerName}" design="Bold" class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateXSATable"/>
 						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateXSALiveTable"/>
@@ -56,8 +56,9 @@
 							<ColumnListItem vAlign="Middle">
 								<cells>
 									<Text text="{ProdMarkupModel>Manufacturer_code}"/>
-									<Text text="{ProdMarkupModel>Preview_Markup_Percentage}"/>
-									<Input type="Text" value="{ProdMarkupModel>Live_Markup_Percentage}"/>
+									<!--<Text text="{ProdMarkupModel>Preview_Markup_Percentage}"/>-->
+									<Input type="Text" value="{ProdMarkupModel>Preview_Markup_Percentage}"/>
+									<Text text="{ProdMarkupModel>Live_Markup_Percentage}"/>
 									<Text text="{ProdMarkupModel>Live_Last_Updated}"/>
 									<Text text="{ProdMarkupModel>Live_Last_Updated_By}"/>
 								</cells>

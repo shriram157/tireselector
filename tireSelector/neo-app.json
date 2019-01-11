@@ -28,6 +28,14 @@
       "description": "tireSelector-dest"
     },
     {
+      "path": "/tireSelector-dest",
+      "target": {
+        "type": "destination",
+        "name": "tireSelector-dest"
+      },
+      "description": "tireSelector-dest"
+    },
+    {
       "path": "(.*)(.xsodata)",
       "target": {
         "type": "destination",
