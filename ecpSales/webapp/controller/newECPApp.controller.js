@@ -551,7 +551,8 @@ sap.ui.define([
 
 						oZECPModel.read("/zc_ecp_application", {
 							urlParameters: {
-								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel("LocalDataModel").getProperty(
+								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel(
+									"LocalDataModel").getProperty(
 									"/currentIssueDealer") + "' "
 							},
 							success: $.proxy(function (odata) {
@@ -564,7 +565,7 @@ sap.ui.define([
 									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
 								}
-								
+
 								if (this.oAppdata > 0) {
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("VinAlreadySaved"));
@@ -852,6 +853,21 @@ sap.ui.define([
 			var oRegDate = new Date(this.BccAgrmntPrtDt).getTime();
 			// 			console.log(oRegDate);
 			this.DifferTime = (oSaleDateTime - oRegDate);
+
+			if (this.DifferTime <= 94670778000 && oOdoVal <= 50000) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+			} else if (this.DifferTime > 94670778000 || oOdoVal > 50000) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
+			}
+
+			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
+			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
+
+			if (this.DifferTime < oDayMili) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "Yes");
+			} else if (this.DifferTime > oDayMili) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
+			}
 
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
 				0) {
@@ -1197,7 +1213,7 @@ sap.ui.define([
 				ZecpVehSurchrgAmt: this.oECPData.ZecpVehSurchrgAmt || "0.00",
 				ZecpListpurprice: this.oECPData.ZecpListpurprice,
 				ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt,
-				ZecpRoadhazard: "",
+				ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
 				ZecpBenefitsFlg: this.oECPData.ZecpBenefitsFlg,
 				BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
 				ZecpSource: "ECP",
