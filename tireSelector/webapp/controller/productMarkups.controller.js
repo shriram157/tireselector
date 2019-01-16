@@ -308,9 +308,9 @@ sap.ui.define([
 				}
 			});
 			if (flagNoData == true) {
-				sap.m.MessageBox.error(
-					"No data found in Product Markup Table"
-				);
+				// sap.m.MessageBox.error(
+				// 	"No data found in Product Markup Table"
+				// );
 			}
 		},
 

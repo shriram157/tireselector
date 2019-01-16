@@ -47,6 +47,20 @@ sap.ui.define([
 			}
 			// this.sPrefix = "";
 			_that.nodeJsUrl = this.sPrefix + "/node";
+			
+			_that._oViewModel = new sap.ui.model.json.JSONModel({
+				busy: false,
+				delay: 0,
+				enableSearchBtn: false,
+				enableVin: true,
+				enableTireSize: false,
+				enableVehicleInputs: false,
+				enableTable: false,
+				enableProdMarkup: false
+			});
+
+			_that.getView().setModel(_that._oViewModel, "MasterModel");
+			
 			//appdata
 			$.ajax({
 				dataType: "json",
@@ -63,11 +77,15 @@ sap.ui.define([
 					}
 					_that.dealerName = _that.userData.userContext.userInfo.logonName;
 					var scopes = _that.userData.userContext.scopes;
-					if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
-						_that._oViewModel.setProperty("/enableProdMarkup", true);
-					} else {
-						_that._oViewModel.setProperty("/enableProdMarkup", false);
+					console.log("scopes", scopes);
+					for (var s = 0; s < scopes.length; s++) {
+						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+							_that._oViewModel.setProperty("/enableProdMarkup", true);
+						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+							_that._oViewModel.setProperty("/enableProdMarkup", false);
+						}
 					}
+
 					_that.DealerData = {};
 					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 					var queryString1 = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
@@ -151,35 +169,22 @@ sap.ui.define([
 										}
 									}, _that),
 									error: function (oError) {
-										sap.m.MessageBox.error(
-											"NO Data found for BusinessPartner"
-										);
+										// sap.m.MessageBox.error(
+										// 	"NO Data found for BusinessPartner"
+										// );
 									}
 								});
 							}
 						}, _that),
 						error: function (oError) {
-							sap.m.MessageBox.error(
-								"NO Data found for BusinessPartner Address"
-							);
+							// sap.m.MessageBox.error(
+							// 	"NO Data found for BusinessPartner Address"
+							// );
 						}
 					});
 				},
 				error: function (oError) {}
 			});
-
-			_that._oViewModel = new sap.ui.model.json.JSONModel({
-				busy: false,
-				delay: 0,
-				enableSearchBtn: false,
-				enableVin: true,
-				enableTireSize: false,
-				enableVehicleInputs: false,
-				enableTable: false,
-				enableProdMarkup: false
-			});
-
-			_that.getView().setModel(_that._oViewModel, "MasterModel");
 
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
@@ -193,15 +198,15 @@ sap.ui.define([
 						_that.oProdMarkupModel.setData(oData);
 						_that.oProdMarkupModel.updateBindings(true);
 					} else {
-						sap.m.MessageBox.error(
-							"NO Data found for Product Markup"
-						);
+						// sap.m.MessageBox.error(
+						// 	"NO Data found for Product Markup"
+						// );
 					}
 				}, _that),
 				error: function (oError) {
-					sap.m.MessageBox.error(
-						"NO Data found for Product Markup"
-					);
+					// sap.m.MessageBox.error(
+					// 	"NO Data found for Product Markup"
+					// );
 				}
 			});
 
@@ -288,9 +293,9 @@ sap.ui.define([
 					_that.DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
 				}, _that),
 				error: function (oError) {
-					sap.m.MessageBox.error(
-						"NO Data found for BusinessPartner Phone Number"
-					);
+					// sap.m.MessageBox.error(
+					// 	"NO Data found for BusinessPartner Phone Number"
+					// );
 				}
 			});
 		},
@@ -553,9 +558,9 @@ sap.ui.define([
 							_that.oFitmentDataModel.setData(oDataResponse.d);
 							_that.oFitmentDataModel.updateBindings();
 						} else {
-							sap.m.MessageBox.error(
-								"NO Data found for Tire Size"
-							);
+							// sap.m.MessageBox.error(
+							// 	"NO Data found for Tire Size"
+							// );
 						}
 					},
 					error: function (oError) {

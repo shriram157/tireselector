@@ -242,9 +242,9 @@ sap.ui.define([
 								_that.getView().byId("id_RHP").setSelectedKey(_that.getView().byId("id_RHP").getItems()[0].getKey());
 							}
 						} else {
-							sap.m.MessageBox.error(
-								"NO Material found for category PRODH"
-							);
+							// sap.m.MessageBox.error(
+							// 	"NO Material found for category PRODH"
+							// );
 						}
 					},
 					error: function (oError) {
@@ -368,9 +368,9 @@ sap.ui.define([
 								_that.oGlobalBusyDialog.close();
 							}
 						} else {
-							sap.m.MessageBox.error(
-								"NO Pricing data found for Material"
-							);
+							// sap.m.MessageBox.error(
+							// 	"NO Pricing data found for Material"
+							// );
 							_that.oGlobalBusyDialog.close();
 						}
 					}, _that),
