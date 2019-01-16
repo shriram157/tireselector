@@ -509,21 +509,28 @@ sap.ui.define([
 					},
 					success: $.proxy(function (data) {
 
-						var filterTasks = (taskArray, obj) => taskArray.filter(task => Object.keys(task).some(key => obj[key] && obj[key] == task[
-							key]));
-						var oResults = filterTasks(data.results, {
-							PlanType: "NTC34"
-						}, {
-							PlanType: "NLC46"
-						}, {
-							PlanType: "NTC94"
-						}, {
-							PlanType: "NTC45"
-						}, {
-							PlanType: "NTC46"
-						}, {
-							PlanType: "NTC47"
+						// var filterTasks = (taskArray, obj) => taskArray.filter(task => Object.keys(task).some(key => obj[key] && obj[key] == task[
+						// 	key]));
+						// var oResults = filterTasks(data.results, {
+						// 	PlanType: "NTC34"
+						// }, {
+						// 	PlanType: "NLC46"
+						// }, {
+						// 	PlanType: "NTC94"
+						// }, {
+						// 	PlanType: "NTC45"
+						// }, {
+						// 	PlanType: "NTC46"
+						// }, {
+						// 	PlanType: "NTC47"
+						// });
+
+						var oDataRes = data.results;
+
+						var oResults = oDataRes.filter(function (v, i) {
+							return ((v["PlanType"] == "NTC34" || v["PlanType"] == "NLC46") || v["PlanType"] == "NTC94" || v["PlanType"] == "NTC45" || v["PlanType"] == "NTC46" || v["PlanType"] == "NTC47");
 						});
+
 						this.getModel("LocalDataModel").setProperty("/AgreementDataActive", oResults);
 
 					}, this),
@@ -654,7 +661,7 @@ sap.ui.define([
 			this.oSelectedAgrTypeKey = oEvent.getSource().getSelectedKey();
 			var oSelectedText = this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION");
 			var oAgrTableData = this.getView().getModel("LocalDataModel").getProperty("/AgreementDataActive");
-			if (this.oSelectedAgrTypeKey === oSelectedText) {
+			if (this.oSelectedAgrTypeKey == oSelectedText) {
 				this.getView().getModel("oSetProperty").setProperty("/oAgreementTable", true);
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oAgreementTable", false);
