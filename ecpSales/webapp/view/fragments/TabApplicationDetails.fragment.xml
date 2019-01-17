@@ -76,7 +76,7 @@
 						<Text id="idRegDate"
 							text="{ path: 'LocalDataModel>/PricingModelData/REG_DATE', type: 'sap.ui.model.type.Date', constraints: { displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 						<Label text="{i18n>DealType}"/>
-						<Text text="{LocalDataModel>/VehicleDetails/DealType}"/>
+						<Text text="{LocalDataModel>/PricingModelData/DEALTYPEDESC}"/>
 						<Label text="{i18n>VehiclePrice}"/>
 						<Input type="Number" id="idVPrice" value="{EcpFieldData>/ZecpVehPrice}" required="true" valueState="{LocalDataModel>/VehPriceState}"/>
 						<Label text="{i18n>AmtFinanced}"/>

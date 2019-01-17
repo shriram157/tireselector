@@ -579,7 +579,13 @@ sap.ui.define([
 									this.getView().byId("idNewECPMsgStrip").setType("Error");
 									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-								} else {
+								} else if(this.getView().getModel("EcpFieldData").getProperty("/ZecpModelcode") == "Imported US Vehicle"){
+									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+									this.getView().byId("idNewECPMsgStrip").setText("ECP Sale foreign vins are not allowed");
+									this.getView().byId("idNewECPMsgStrip").setType("Error");
+									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+								}else {
 									this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
 									this.oCustomer = data.results[0].EndCustomer;
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
