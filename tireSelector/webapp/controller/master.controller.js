@@ -78,14 +78,26 @@ sap.ui.define([
 					_that.dealerName = _that.userData.userContext.userInfo.logonName;
 					var scopes = _that.userData.userContext.scopes;
 					console.log("scopes", scopes);
+					var accessAll = false,
+						accesslimited = false;
+
 					for (var s = 0; s < scopes.length; s++) {
 						if (scopes[s] != "openid") {
 							if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-								_that._oViewModel.setProperty("/enableProdMarkup", true);
+								accessAll = true;
 							} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-								_that._oViewModel.setProperty("/enableProdMarkup", false);
+								accesslimited = true;
+							}
+							else{
+								accessAll=false;
+								accesslimited = false;
 							}
 						}
+					}
+					if (accessAll == true && accesslimited == true) {
+						_that._oViewModel.setProperty("/enableProdMarkup", true);
+					} else {
+						_that._oViewModel.setProperty("/enableProdMarkup", false);
 					}
 
 					_that.DealerData = {};
