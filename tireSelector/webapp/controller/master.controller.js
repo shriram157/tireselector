@@ -47,7 +47,7 @@ sap.ui.define([
 			}
 			// this.sPrefix = "";
 			_that.nodeJsUrl = this.sPrefix + "/node";
-			
+
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
 				delay: 0,
@@ -60,7 +60,7 @@ sap.ui.define([
 			});
 
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
-			
+
 			//appdata
 			$.ajax({
 				dataType: "json",
@@ -79,10 +79,12 @@ sap.ui.define([
 					var scopes = _that.userData.userContext.scopes;
 					console.log("scopes", scopes);
 					for (var s = 0; s < scopes.length; s++) {
-						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-							_that._oViewModel.setProperty("/enableProdMarkup", true);
-						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-							_that._oViewModel.setProperty("/enableProdMarkup", false);
+						if (scopes[s] != "openid") {
+							if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+								_that._oViewModel.setProperty("/enableProdMarkup", true);
+							} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+								_that._oViewModel.setProperty("/enableProdMarkup", false);
+							}
 						}
 					}
 
