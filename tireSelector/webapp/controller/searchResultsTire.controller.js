@@ -12,122 +12,144 @@ sap.ui.define([
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
-			onInit: function () {
-				_that = this;
-				// oTable = _that.getView().byId("idTireSelectionTable");
-				sap.ushell.components.oTable = _that.getView().byId("idTireSelectionTable");
+		onInit: function () {
+			_that = this;
+			// oTable = _that.getView().byId("idTireSelectionTable");
+			sap.ushell.components.oTable = _that.getView().byId("idTireSelectionTable");
 
-				var sLocation = window.location.host;
-				var sLocation_conf = sLocation.search("webide");
-				if (sLocation_conf == 0) {
-					this.sPrefix = "/tireSelector-dest"; //ecpSales_node_secured
-					_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-				} else {
-					this.sPrefix = "";
-					// this.attributeUrl = "/userDetails/attributes";
-				}
-				// this.sPrefix = "";
-				_that.nodeJsUrl = this.sPrefix + "/node";
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+			if (sLocation_conf == 0) {
+				this.sPrefix = "/tireSelector-dest"; //ecpSales_node_secured
+				_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
+			} else {
+				this.sPrefix = "";
+				// this.attributeUrl = "/userDetails/attributes";
+			}
+			// this.sPrefix = "";
+			_that.nodeJsUrl = this.sPrefix + "/node";
 
+			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			_that.getView().setModel(_that.oI18nModel, "i18n");
+
+			if (window.location.search == "?language=fr") {
 				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties"
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
 				});
 				_that.getView().setModel(_that.oI18nModel, "i18n");
+				_that.sCurrentLocale = 'FR';
+			} else {
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				_that.getView().setModel(_that.oI18nModel, "i18n");
+				_that.sCurrentLocale = 'EN';
+			}
 
-				if (window.location.search == "?language=fr") {
-					_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-						bundleUrl: "i18n/i18n.properties",
-						bundleLocale: ("fr")
-					});
-					_that.getView().setModel(_that.oI18nModel, "i18n");
-					_that.sCurrentLocale = 'FR';
-				} else {
-					_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-						bundleUrl: "i18n/i18n.properties",
-						bundleLocale: ("en")
-					});
-					_that.getView().setModel(_that.oI18nModel, "i18n");
-					_that.sCurrentLocale = 'EN';
-				}
+			_that.getOwnerComponent().getRouter().attachRoutePatternMatched(_that._oSelectTireRoute, _that);
 
-				_that.getOwnerComponent().getRouter().attachRoutePatternMatched(_that._oSelectTireRoute, _that);
+			_that.oTable = _that.getView().byId("idTireSelectionTable");
+			var oBindingInfo = _that.oTable.getBindingInfo("rows");
+			_that.oTable.bindRows(oBindingInfo);
+			this.byId("idVBox").addItem(_that.oTable);
+			sap.ushell.components.FacetFilters = _that.byId("idVBox");
+		},
 
-				_that.oTable = _that.getView().byId("idTireSelectionTable");
-				var oBindingInfo = _that.oTable.getBindingInfo("rows");
-				_that.oTable.bindRows(oBindingInfo);
-				this.byId("idVBox").addItem(_that.oTable);
-				sap.ushell.components.FacetFilters = _that.byId("idVBox");
-			},
+		_oSelectTireRoute: function (oEvent) {
+			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
+			_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			console.log("XSO model data", _that.oXSOServiceModel);
 
-			_oSelectTireRoute: function (oEvent) {
-				_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
-				_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
-				_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-				sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-				console.log("XSO model data", _that.oXSOServiceModel);
-
-				_that.oXSOServiceModel.read("/DealerMarkUp", {
-					success: $.proxy(function (oData) {
-						if (oData.results.length > 0) {
-							console.log("XSO data", oData);
-							_that.oProdMarkupModel.setData(oData);
-							_that.oProdMarkupModel.updateBindings(true);
-							_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-						} else {
-							// sap.m.MessageBox.error(
-							// 	"NO Data found for Product Markup"
-							// );
-						}
-					}, _that),
-					error: function (oError) {
+			_that.oXSOServiceModel.read("/DealerMarkUp", {
+				success: $.proxy(function (oData) {
+					if (oData.results.length > 0) {
+						console.log("XSO data", oData);
+						_that.oProdMarkupModel.setData(oData);
+						_that.oProdMarkupModel.updateBindings(true);
+						_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+					} else {
 						// sap.m.MessageBox.error(
 						// 	"NO Data found for Product Markup"
 						// );
 					}
-				});
-
-				sap.ushell.components.oTable.getColumns()[5].setVisible(false);
-				sap.ushell.components.oTable.getColumns()[6].setVisible(false);
-				sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
-				sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
-
-				_that._oViewModel = new sap.ui.model.json.JSONModel({
-					busy: false,
-					delay: 0,
-					enableDealerNet: false,
-					enableProfit: false,
-					enableProdMarkup: false
-				});
-
-				_that.getView().setModel(_that._oViewModel, "FitmentPageModel");
-
-				_that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
-				_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-				// _that.dealerCode = _that.userDetails.userContext.userAttributes.DealerCode[0];
-				// _that.UserName = _that.userDetails.userContext.userInfo.logonName;
-
-				//uncomment below for cloud testing
-				var scopes = _that.userDetails.userContext.scopes;
-				if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
-					_that._oViewModel.setProperty("/enableProdMarkup", true);
-				} else {
-					_that._oViewModel.setProperty("/enableProdMarkup", false);
+				}, _that),
+				error: function (oError) {
+					// sap.m.MessageBox.error(
+					// 	"NO Data found for Product Markup"
+					// );
 				}
+			});
 
-				_that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
-				oTable = _that.getView().byId("idTireSelectionTable");
-				// var sLocation = window.location.host;
-				// var sLocation_conf = sLocation.search("webide");
-				// if (sLocation_conf == 0) {
-				// 	_that.sPrefix = "/tireSelector-dest";
-				// } else {
-				// 	_that.sPrefix = "";
-				// }
-				// _that.nodeJsUrl = _that.sPrefix + "/node";
-				if (oEvent.getParameter("arguments").tireData == "selectDifferentTire") {
-					_that.oTireFitmentJSONModel.refresh(true);
-					_that.oTireFitmentJSONModel.updateBindings(true);
-				} else {
+			sap.ushell.components.oTable.getColumns()[5].setVisible(false);
+			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
+			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
+			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
+
+			_that._oViewModel = new sap.ui.model.json.JSONModel({
+				busy: false,
+				delay: 0,
+				enableDealerNet: false,
+				enableProfit: false,
+				enableProdMarkup: false
+			});
+
+			_that.getView().setModel(_that._oViewModel, "FitmentPageModel");
+
+			_that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
+			_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
+			// _that.dealerCode = _that.userDetails.userContext.userAttributes.DealerCode[0];
+			// _that.UserName = _that.userDetails.userContext.userInfo.logonName;
+
+			//uncomment below for cloud testing
+			var scopes = _that.userDetails.userContext.scopes;
+			// var scopes = _that.userData.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
+
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				_that._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				_that._oViewModel.setProperty("/enableProdMarkup", false);
+			}
+			// if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
+			// 	_that._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	_that._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
+
+			_that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
+			oTable = _that.getView().byId("idTireSelectionTable");
+			// var sLocation = window.location.host;
+			// var sLocation_conf = sLocation.search("webide");
+			// if (sLocation_conf == 0) {
+			// 	_that.sPrefix = "/tireSelector-dest";
+			// } else {
+			// 	_that.sPrefix = "";
+			// }
+			// _that.nodeJsUrl = _that.sPrefix + "/node";
+			if (oEvent.getParameter("arguments").tireData == "selectDifferentTire") {
+				_that.oTireFitmentJSONModel.refresh(true);
+				_that.oTireFitmentJSONModel.updateBindings(true);
+			} else {
 				_that.oPriceModel = new sap.ui.model.json.JSONModel();
 				_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
 
@@ -210,15 +232,15 @@ sap.ui.define([
 														_that.oProdMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
 														for (var k = 0; k < _that.oProdMarkupModel.getData().results.length; k++) {
 															// if (_that.oProdMarkupModel.getData().results[k].IsLive == "Y") {
-																if (temp.TIRE_BRAND_NAME == _that.oProdMarkupModel.getData().results[k].Manufacturer_code) {
-																	if (_that.oProdMarkupModel.getData().results[k].Live_Markup_Percentage != undefined) {
-																		temp.Live_Markup_Percentage = _that.oProdMarkupModel.getData().results[k].Live_Markup_Percentage;
-																		_that.tempModel.updateBindings(true);
-																	} else {
-																		temp.Live_Markup_Percentage = 0;
-																		_that.tempModel.updateBindings(true);
-																	}
+															if (temp.TIRE_BRAND_NAME == _that.oProdMarkupModel.getData().results[k].Manufacturer_code) {
+																if (_that.oProdMarkupModel.getData().results[k].Live_Markup_Percentage != undefined) {
+																	temp.Live_Markup_Percentage = _that.oProdMarkupModel.getData().results[k].Live_Markup_Percentage;
+																	_that.tempModel.updateBindings(true);
+																} else {
+																	temp.Live_Markup_Percentage = 0;
+																	_that.tempModel.updateBindings(true);
 																}
+															}
 															// }
 															// if (_that.ProductMarkupModel.getData().results[k].IsLive == "") {
 															if (temp.TIRE_BRAND_NAME == _that.oProdMarkupModel.getData().results[k].Manufacturer_code) {
@@ -296,9 +318,9 @@ sap.ui.define([
 											}, _that),
 											error: function (oError) {
 												sap.ui.core.BusyIndicator.hide();
-												sap.m.MessageBox.error(
-													"NO Data found for Pricing"
-												);
+												// sap.m.MessageBox.error(
+												// 	"NO Data found for Pricing"
+												// );
 											}
 										});
 									}
@@ -472,9 +494,9 @@ sap.ui.define([
 						}, _that),
 						error: function (oError) {
 							sap.ui.core.BusyIndicator.hide();
-							sap.m.MessageBox.error(
-								"NO Data found for Fitment"
-							);
+							// sap.m.MessageBox.error(
+							// 	"NO Data found for Fitment"
+							// );
 						}
 					});
 				}

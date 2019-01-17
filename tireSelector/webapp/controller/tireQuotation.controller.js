@@ -95,14 +95,36 @@ sap.ui.define([
 				_that.oTirePriceModel.refresh(true);
 				_that.getView().setModel(_that.oTireQuotationModel, "TireQuotationModel");
 				_that.getView().setModel(_that.oTirePriceModel, "TirePriceModel");
-				
+
 				//uncomment below for cloud testing
 				var scopes = _that.userData.userContext.scopes;
-				if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
+				// var scopes = _that.userData.userContext.scopes;
+				console.log("scopes", scopes);
+				var accessAll = false,
+					accesslimited = false;
+
+				for (var s = 0; s < scopes.length; s++) {
+					if (scopes[s] != "openid") {
+						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+							accessAll = true;
+						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+							accesslimited = true;
+						} else {
+							accessAll = false;
+							accesslimited = false;
+						}
+					}
+				}
+				if (accessAll == true && accesslimited == true) {
 					_that._oViewModel.setProperty("/enableProdMarkup", true);
 				} else {
 					_that._oViewModel.setProperty("/enableProdMarkup", false);
 				}
+				// if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
+				// 	_that._oViewModel.setProperty("/enableProdMarkup", true);
+				// } else {
+				// 	_that._oViewModel.setProperty("/enableProdMarkup", false);
+				// }
 
 				_that.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -248,9 +270,9 @@ sap.ui.define([
 						}
 					},
 					error: function (oError) {
-						sap.m.MessageBox.error(
-							"NO Material found for category PRODH"
-						);
+						// sap.m.MessageBox.error(
+						// 	"NO Material found for category PRODH"
+						// );
 					}
 				});
 			}, this);
@@ -306,7 +328,8 @@ sap.ui.define([
 				_that.SoldtoParty = _that.userData.DealerData.BusinessPartner;
 
 				var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
-					_that.SalesOrg +"' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" + oMaterial +
+					_that.SalesOrg + "' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty + "' and Material eq '" +
+					oMaterial +
 					"'";
 				// _that.oService = this.nodeJsUrl + "/MD_PRODUCT_FS_SRV";
 				_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
@@ -319,7 +342,8 @@ sap.ui.define([
 								if (CndType == "ZPG4") { //if (CndType == "ZPEC" || CndType == "ZPEH") {
 									_that.oTireQuotationModel.getData().RHPPRice = parseFloat(oPriceData.results[n].Amount).toFixed(2);
 									if (_that.oTireQuotationModel.getData().RHPPRice != "") {
-										_that.oTirePriceModel.getData().RHPPriceSum = (Number(_that.oTireQuotationModel.getData().RHPPRice) * Number(_that.getView().byId("id_RHPsQty").getValue())).toString();
+										_that.oTirePriceModel.getData().RHPPriceSum = (Number(_that.oTireQuotationModel.getData().RHPPRice) * Number(_that.getView()
+											.byId("id_RHPsQty").getValue())).toString();
 										console.log("Updated prices", _that.oTirePriceModel.getData());
 										var arrPrices = _that.oTirePriceModel.getData();
 										var summed = 0;
@@ -375,9 +399,9 @@ sap.ui.define([
 						}
 					}, _that),
 					error: function (oError) {
-						sap.m.MessageBox.error(
-							"NO Pricing data found for Material"
-						);
+						// sap.m.MessageBox.error(
+						// 	"NO Pricing data found for Material"
+						// );
 						_that.oGlobalBusyDialog.close();
 					}
 				});
