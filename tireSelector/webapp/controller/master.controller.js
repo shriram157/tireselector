@@ -362,7 +362,7 @@ sap.ui.define([
 				},
 				error: function (oError) {
 					console.log("oError", oError);
-					MessageBox.error(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
+					// MessageBox.error(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
 				}
 			});
 		},
