@@ -1,4 +1,4 @@
-var _that;
+var _that, count=0;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -346,11 +346,12 @@ sap.ui.define([
 		_forhandleVINSuggesCallData: function (oTerm) {
 			//Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN('01010101010101010')
 			$.ajax({
-				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + oTerm + "')",
+				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + oTerm + "')&$top=100&$skip="+count+"",
 				type: "GET",
 				dataType: "json",
 				success: function (oDataResponse) {
 					if (oDataResponse.d.results.length <= 0) {
+						count += 100;
 						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
 						_that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("NoData"));
 					} else {

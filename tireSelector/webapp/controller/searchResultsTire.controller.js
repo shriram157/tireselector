@@ -280,6 +280,20 @@ sap.ui.define([
 
 										tempData = [];
 										_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
+										
+										// _that.oPriceServiceModel.setDeferredGroups(["pricebatch"]);
+										// var mParameters = {
+										// 	groupId: "pricebatch",
+										// 	success: function (odata, resp) {
+										// 		console.log("response from bacth call",resp);
+										// 	},
+										// 	error: function (odata, resp) {
+										// 		console.log("error from bacth call",resp);
+										// 	}
+										// };
+										// _that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, mParameters);
+										var pricedata =  _that.getOwnerComponent().getModel("PriceServiceModel");
+										console.log("pricedata",pricedata);
 										_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 											success: $.proxy(function (oDataPrice) {
 												if (oDataPrice.results.length > 0) {
@@ -318,9 +332,9 @@ sap.ui.define([
 											}, _that),
 											error: function (oError) {
 												sap.ui.core.BusyIndicator.hide();
-												// sap.m.MessageBox.error(
-												// 	"NO Data found for Pricing"
-												// );
+												//coming multiple times, set flag and use it
+												// var err = JSON.parse(oError.response.body);
+												// sap.m.MessageBox.error(err.error.message.value);
 											}
 										});
 									}

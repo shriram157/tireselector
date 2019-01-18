@@ -145,7 +145,7 @@
 						"sap-client": "200"
 					},
 					"json": true,
-					"useBatch": false
+					"useBatch": true
 				},
 				"dataSource": "MD_PRODUCT_FS_SRV",
 				"preload": false
