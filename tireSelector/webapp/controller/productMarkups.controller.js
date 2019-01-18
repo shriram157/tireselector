@@ -43,40 +43,37 @@ sap.ui.define([
 				});
 
 				function callECCData() {
+					// "/ZC_Product_CategorySet?$filter=PRODH eq 'PARP05' and CHARAC eq 'TIRE_BRAND_NAME' and CLASS eq 'TIRE_INFORMATION' &$expand=CategToCharac&$format=json", {
 					_that.oProdMarkupModel.setData();
 					_that.oProdMarkupModel.updateBindings(true);
 					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
-					_that.oPriceServiceModel.read(
-						"/ZC_Product_CategorySet?$filter=PRODH eq 'PARP05' and CHARAC eq 'TIRE_BRAND_NAME' and CLASS eq 'TIRE_INFORMATION' &$expand=CategToCharac&$format=json", {
-							success: $.proxy(function (oECCData) {
-								_that.tireBrandData = {
-									"results": []
-								};
-								console.log("ECC manufacturer Data", oECCData);
-								// DealerData.DealerCode = _that.dealerCode;
-								// DealerData.DealerName = _that.dealerName;
-								var data = oECCData.results[0].CategToCharac;
-								$.each(data.results, function (i, item) {
-									_that.tireBrandData.results.push({
-										"Dealer_code": _that.userData.DealerData.DealerCode,
-										"Dealer_Brand": _that.userData.DealerData.Division,
-										"Manufacturer_code": item.VALUE, //TIRE_BRAND_DESCP, //length is only 10 char for  
-										"Preview_Markup_Percentage": "",
-										"Live_Markup_Percentage": "",
-										"Live_Last_Updated": _that.oDateFormat.format(new Date()),
-										"Live_Last_Updated_By": _that.userData.DealerData.DealerName,
-										"User_First_Name": _that.userData.DealerData.BusinessPartnerName,
-										"User_Last_Name": _that.userData.DealerData.BusinessPartnerName2
-									});
+					_that.oPriceServiceModel.read("/ZC_TireBrandSet?$format=json", {
+						success: $.proxy(function (data) {
+							_that.tireBrandData = {
+								"results": []
+							};
+							// var data = oECCData.results[0].CategToCharac;
+							$.each(data.results, function (i, item) {
+								_that.tireBrandData.results.push({
+									"Dealer_code": _that.userData.DealerData.DealerCode,
+									"Dealer_Brand": _that.userData.DealerData.Division,
+									"Manufacturer_code": item.VALUE, //TIRE_BRAND_DESCP, //length is only 10 char for  
+									"Preview_Markup_Percentage": "",
+									"Live_Markup_Percentage": "",
+									"Live_Last_Updated": _that.oDateFormat.format(new Date()),
+									"Live_Last_Updated_By": _that.userData.DealerData.DealerName,
+									"User_First_Name": _that.userData.DealerData.BusinessPartnerName,
+									"User_Last_Name": _that.userData.DealerData.BusinessPartnerName2
 								});
-								_that.oProdMarkupModel.setData(_that.tireBrandData);
-								_that.oProdMarkupModel.updateBindings(true);
-								console.log("ECC Manufaturer Data", _that.oProdMarkupModel);
-							}, _that),
-							error: function (oError) {
-								console.log("Error in fetching table", oError);
-							}
-						});
+							});
+							_that.oProdMarkupModel.setData(_that.tireBrandData);
+							_that.oProdMarkupModel.updateBindings(true);
+							console.log("ECC Manufaturer Data", _that.oProdMarkupModel);
+						}, _that),
+						error: function (oError) {
+							console.log("Error in fetching table", oError);
+						}
+					});
 				}
 
 				_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
@@ -161,7 +158,8 @@ sap.ui.define([
 						// updateSuccessFlag = true;
 						// _that.callUpdatedProdMarkupTab();
 						// Proper error handling if any thing needed. // TODO: 
-					});updateSuccessFlag = true;
+					});
+					updateSuccessFlag = true;
 				} else {
 					_that.newDataFromModel.Dealer_code = modelData[i].Dealer_code;
 					_that.newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
@@ -177,7 +175,8 @@ sap.ui.define([
 						console.log("Post Response from ECC", oResponse);
 						// postSuccessFlag = true;
 
-					});postSuccessFlag = true;
+					});
+					postSuccessFlag = true;
 				}
 			}
 
@@ -247,7 +246,8 @@ sap.ui.define([
 						console.log("updated data", oResponse);
 						// updateSuccessFlag =true;
 						// Proper error handling if any thing needed. // TODO: 
-					});updateSuccessFlag =true;
+					});
+					updateSuccessFlag = true;
 				} else {
 					_that.newDataFromModel.Dealer_code = modelData[i].Dealer_code;
 					_that.newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
@@ -263,7 +263,8 @@ sap.ui.define([
 					oModel2.create("/DealerMarkUp", _that.newDataFromModel, function (oResponse) { //bindingContextPath
 						console.log("Post Response from ECC", oResponse);
 						// postSuccessFlag = true;
-					});postSuccessFlag = true;
+					});
+					postSuccessFlag = true;
 				}
 			}
 			if (postSuccessFlag == true) {
@@ -294,17 +295,16 @@ sap.ui.define([
 			var flagNoData = false;
 			_that.oXSOServiceModel.read("/DealerMarkUp", {
 				success: $.proxy(function (oData) {
-					if(oData.results.length>0){
-					console.log("XSO data", oData);
-					_that.oProdMarkupModel.setData(oData);
-					_that.oProdMarkupModel.updateBindings(true);
-					}
-					else {
-						flagNoData =true;
+					if (oData.results.length > 0) {
+						console.log("XSO data", oData);
+						_that.oProdMarkupModel.setData(oData);
+						_that.oProdMarkupModel.updateBindings(true);
+					} else {
+						flagNoData = true;
 					}
 				}, _that),
 				error: function (oError) {
-					flagNoData =true;
+					flagNoData = true;
 				}
 			});
 			if (flagNoData == true) {

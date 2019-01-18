@@ -70,6 +70,14 @@ sap.ui.define([
 				_that.userData = sap.ui.getCore().getModel("DealerModel").getData();
 				_that.phoneNumber = _that.userData.DealerData.PhoneNumber;
 
+				jQuery.sap.require("sap.ui.core.format.DateFormat");
+				_that.oDateFormatShort = sap.ui.core.format.DateFormat.getDateTimeInstance({
+					pattern: "MM-dd-YYYY"
+				});
+				_that.currDate = _that.oDateFormatShort.format(new Date());
+				var expiry = new Date().setDate(new Date(_that.currDate).getDate() + 15);
+				_that.expDate = _that.oDateFormatShort.format(new Date(expiry));
+
 				_that._oViewModel = new sap.ui.model.json.JSONModel({
 					busy: false,
 					delay: 0,
@@ -456,7 +464,9 @@ sap.ui.define([
 		},
 
 		SelectDifferentTire: function () {
-			_that.getView().byId("id_QuoteDate").setValue("");
+			if (_that.getView().byId("id_QuoteDate") != undefined) {
+				_that.getView().byId("id_QuoteDate").setValue("");
+			}
 			_that.getView().byId("id_AfterExpiry").setValue("");
 			_that.getView().byId("id_tireUnitPrice").setValue("");
 			_that.getView().byId("id_tireQty").setValue("");

@@ -280,7 +280,7 @@ sap.ui.define([
 
 										tempData = [];
 										_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
-										
+
 										// _that.oPriceServiceModel.setDeferredGroups(["pricebatch"]);
 										// var mParameters = {
 										// 	groupId: "pricebatch",
@@ -292,8 +292,8 @@ sap.ui.define([
 										// 	}
 										// };
 										// _that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, mParameters);
-										var pricedata =  _that.getOwnerComponent().getModel("PriceServiceModel");
-										console.log("pricedata",pricedata);
+										// var pricedata =  _that.getOwnerComponent().getModel("PriceServiceModel");
+										// console.log("pricedata",pricedata);
 										_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 											success: $.proxy(function (oDataPrice) {
 												if (oDataPrice.results.length > 0) {
@@ -689,11 +689,13 @@ sap.ui.define([
 			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
-			_that.oTireFitmentJSONModel.setData(null);
-			_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-			sap.ushell.components.oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-			sap.ushell.components.FacetFilters.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-			_that.oTireFitmentJSONModel.updateBindings(true);
+			if (_that.oTireFitmentJSONModel != undefined) {
+				_that.oTireFitmentJSONModel.setData(null);
+				_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+				sap.ushell.components.oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+				sap.ushell.components.FacetFilters.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+				_that.oTireFitmentJSONModel.updateBindings(true);
+			}
 			_that.destroy();
 		}
 	});

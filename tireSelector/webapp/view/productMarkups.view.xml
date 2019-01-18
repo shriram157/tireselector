@@ -34,7 +34,7 @@
 						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateXSATable"/>
 						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateXSALiveTable"/>
 					</OverflowToolbar>
-					<Table id="ID_ProdMarkupsTable" inset="false" items="{ path: 'ProdMarkupModel>/results', sorter: { path: 'Manufacturer' } }">
+					<Table id="ID_ProdMarkupsTable" inset="false" items="{ path: 'ProdMarkupModel>/results', sorter: { path: 'Manufacturer' } }" growing="true" growingThreshold ="5" growingScrollToLoad="false">
 						<columns>
 							<Column demandPopin="true">
 								<Text text="{i18n>Manufacturer}"/>
