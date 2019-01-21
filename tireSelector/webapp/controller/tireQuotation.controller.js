@@ -128,11 +128,6 @@ sap.ui.define([
 				} else {
 					_that._oViewModel.setProperty("/enableProdMarkup", false);
 				}
-				// if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
-				// 	_that._oViewModel.setProperty("/enableProdMarkup", true);
-				// } else {
-				// 	_that._oViewModel.setProperty("/enableProdMarkup", false);
-				// }
 
 				_that.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -467,7 +462,9 @@ sap.ui.define([
 			if (_that.getView().byId("id_QuoteDate") != undefined) {
 				_that.getView().byId("id_QuoteDate").setValue("");
 			}
-			_that.getView().byId("id_AfterExpiry").setValue("");
+			if (_that.getView().byId("id_AfterExpiry") != undefined) {
+				_that.getView().byId("id_AfterExpiry").setValue("");
+			}
 			_that.getView().byId("id_tireUnitPrice").setValue("");
 			_that.getView().byId("id_tireQty").setValue("");
 			_that.getView().byId("id_RHPUnitPrice").setValue("");

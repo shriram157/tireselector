@@ -330,6 +330,24 @@ sap.ui.define([
 				enableMore: false
 			});
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
+			if (_that.getView().byId("searchOptionList") != undefined) {
+				_that.getView().byId("searchOptionList").setValue();
+				_that.getView().byId("searchOptionLabel").setText();
+			}
+			if (_that.getView().byId("VehicleSearchCombo") != undefined) {
+				_that.getView().byId("ModelSeriesCombo").setValue();
+				_that.getView().byId("VehicleSearchCombo").setValue();
+			}
+			if (_that.getView().byId("searchOptionVIN") != undefined) {
+				_that.getView().byId("searchOptionVIN").setValue();
+			}
+			if (_that.getView().byId("searchOptionTireSize") != undefined) {
+				_that.getView().byId("searchOptionTireSize").setValue();
+			}
+			if (_that.getView().byId("searchOptionList") != undefined) {
+				_that.oSearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
+				_that.oSearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
+			}
 		},
 
 		onBeforeRendering: function () {
@@ -949,6 +967,20 @@ sap.ui.define([
 
 		/*Exit Function for refreshing/resetting view */
 		onExit: function () {
+			if (_that.getView().byId("searchOptionList") != undefined) {
+				_that.getView().byId("searchOptionList").setValue();
+				_that.getView().byId("searchOptionLabel").setText();
+			}
+			if (_that.getView().byId("VehicleSearchCombo") != undefined) {
+				_that.getView().byId("ModelSeriesCombo").setValue();
+				_that.getView().byId("VehicleSearchCombo").setValue();
+			}
+			if (_that.getView().byId("searchOptionVIN") != undefined) {
+				_that.getView().byId("searchOptionVIN").setValue();
+			}
+			if (_that.getView().byId("searchOptionTireSize") != undefined) {
+				_that.getView().byId("searchOptionTireSize").setValue();
+			}
 			_that.SearchResultModel.refresh(true);
 			_that.oGlobalJSONModel.refresh(true);
 			_that.oSelectJSONModel.refresh(true);

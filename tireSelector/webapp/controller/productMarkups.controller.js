@@ -155,7 +155,7 @@ sap.ui.define([
 					//  Add all the other fields that you want to update. // TODO: 
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
 						console.log("Post Response", oResponse);
-						// updateSuccessFlag = true;
+						updateSuccessFlag = true;
 						// _that.callUpdatedProdMarkupTab();
 						// Proper error handling if any thing needed. // TODO: 
 					});
@@ -173,7 +173,7 @@ sap.ui.define([
 					_that.newDataFromModel.IsLive = "Y";
 					oModel2.create("/DealerMarkUp", _that.newDataFromModel, function (oResponse) { //bindingContextPath
 						console.log("Post Response from ECC", oResponse);
-						// postSuccessFlag = true;
+						postSuccessFlag = true;
 
 					});
 					postSuccessFlag = true;
@@ -244,7 +244,7 @@ sap.ui.define([
 					//  Add all the other fields that you want to update. // TODO: 
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
 						console.log("updated data", oResponse);
-						// updateSuccessFlag =true;
+						updateSuccessFlag =true;
 						// Proper error handling if any thing needed. // TODO: 
 					});
 					updateSuccessFlag = true;
@@ -262,7 +262,7 @@ sap.ui.define([
 
 					oModel2.create("/DealerMarkUp", _that.newDataFromModel, function (oResponse) { //bindingContextPath
 						console.log("Post Response from ECC", oResponse);
-						// postSuccessFlag = true;
+						postSuccessFlag = true;
 					});
 					postSuccessFlag = true;
 				}
