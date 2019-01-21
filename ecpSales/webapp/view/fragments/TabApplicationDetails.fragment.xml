@@ -27,7 +27,6 @@
 	</VBox>
 	<l:VerticalLayout width="100%" class="gridWrapper">
 		<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
-		
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="VeOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleOwner}" labelSpanXL="5" labelSpanL="5"
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
@@ -118,7 +117,6 @@
 					</f:content>
 				</f:SimpleForm>
 			</html:div>
-				
 		</l:Grid>
 	</l:VerticalLayout>
 	<l:VerticalLayout width="100%" class="gridWrapper">
@@ -204,8 +202,8 @@
 		<HBox alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
 			<Button class="sapUiTinyMarginBeginEnd" press="onDelete" text="{i18n>Delete}" type="Reject"/>
 			<Button class="sapUiTinyMarginBeginEnd" press="onBackList" visible="{oSetProperty>/backToList}" text="{i18n>BacktoList}" type="Back"/>
-			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>Back}" visible="{oSetProperty>/backPrimery}" type="Back" press="OnBack"/>
-			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>Back}" visible="{oSetProperty>/backSecondary}" type="Back" press="OnBackSecondary"/>
+			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>Back}"  type="Back" press="OnBack"/>
+			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>BacktoList}" visible="{oSetProperty>/backSecondary}" type="Back" press="OnBackSecondary"/>
 			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>Save}" visible="{oSetProperty>/oPrimeryState}" id="idSaveBtn" press="onSaveApp"/>
 			<Button class="sapUiTinyMarginBeginEnd" visible="{oSetProperty>/oPrimeryState01}" text="{i18n>Save}" id="idUpdateSavedBtn"
 				press="onUpdateSavedApp"/>

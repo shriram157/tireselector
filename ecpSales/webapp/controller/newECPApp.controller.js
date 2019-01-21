@@ -91,7 +91,9 @@ sap.ui.define([
 			this.oOdometer = oEvent.getParameters().arguments.Odometer;
 			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
 			if (this.oViNum != 404 && this.oViNum != undefined) {
-
+				this.getView().getModel("oSetProperty").setProperty("/oPlan", this.oPlan);
+				this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.oOdometer);
+				this.getView().getModel("oSetProperty").setProperty("/oAppType", this.oAppType);
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
@@ -427,7 +429,6 @@ sap.ui.define([
 
 						} else {
 							this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
-
 						}
 					}, this),
 					error: function () {
@@ -528,7 +529,8 @@ sap.ui.define([
 						var oDataRes = data.results;
 
 						var oResults = oDataRes.filter(function (v, i) {
-							return ((v["PlanType"] == "NTC34" || v["PlanType"] == "NLC46") || v["PlanType"] == "NTC94" || v["PlanType"] == "NTC45" || v["PlanType"] == "NTC46" || v["PlanType"] == "NTC47");
+							return ((v["PlanType"] == "NTC34" || v["PlanType"] == "NLC46") || v["PlanType"] == "NTC94" || v["PlanType"] == "NTC45" ||
+								v["PlanType"] == "NTC46" || v["PlanType"] == "NTC47");
 						});
 
 						this.getModel("LocalDataModel").setProperty("/AgreementDataActive", oResults);
@@ -579,13 +581,13 @@ sap.ui.define([
 									this.getView().byId("idNewECPMsgStrip").setType("Error");
 									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-								} else if(this.getView().getModel("EcpFieldData").getProperty("/ZecpModelcode") == "Imported US Vehicle"){
+								} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpModelcode") == "Imported US Vehicle") {
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 									this.getView().byId("idNewECPMsgStrip").setText("ECP Sale For Foreign VINs are Not Allowed");
 									this.getView().byId("idNewECPMsgStrip").setType("Error");
 									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-								}else {
+								} else {
 									this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
 									this.oCustomer = data.results[0].EndCustomer;
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
@@ -862,6 +864,7 @@ sap.ui.define([
 			var oAgrItem = this.getView().byId("idAgrType").getSelectedItem();
 
 			var oSaleDateTime = new Date(oSaleDate).getTime();
+
 			var oCurrentDate = new Date().getTime();
 			var oRegDate = new Date(this.BccAgrmntPrtDt).getTime();
 			// 			console.log(oRegDate);
@@ -881,6 +884,8 @@ sap.ui.define([
 			} else if (this.DifferTime > oDayMili) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 			}
+
+			
 
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
 				0) {
@@ -924,6 +929,26 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectAgreementType"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oAgr.setValueState(sap.ui.core.ValueState.Error);
+			}
+			
+			if (this.oSelectedAgrTypeKey == this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+				var oSaleYear = new Date(oSaleDate).getFullYear();
+				var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
+				var oyearGap = parseInt(oSaleYear - oModelYr);
+				if (oyearGap > 8) {
+					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+					this.getView().byId("idNewECPMsgStrip").setText("Model year exceeds by " + parseInt(oyearGap - 8) + " years");
+					this.getView().byId("idNewECPMsgStrip").setType("Error");
+				} else if (oyearGap <= 8) {
+					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+					this.getView().byId("idNewECPMsgStrip").setType("None");
+					//this.getView().byId("idFilter03").setProperty("enabled", true);
+					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
+					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+					oAgr.setValueState(sap.ui.core.ValueState.None);
+					oOdometer.setValueState(sap.ui.core.ValueState.None);
+					oSaleDateId.setValueState(sap.ui.core.ValueState.None);
+				}
 			}
 
 		},
@@ -1103,10 +1128,20 @@ sap.ui.define([
 		OnBack: function () {
 			this.ogetSelectedKey = this.getView().byId("idIconTabBarNoIcons").getSelectedKey();
 			var ogetKey = this.ogetSelectedKey.split("Tab")[1];
-
+			// var oPlan = this.getView().getModel("oSetProperty").getProperty("/oPlan");
+			// var oOdometer = this.getView().getModel("oSetProperty").getProperty("/oOdometer");
+			// var oAppType = this.getView().getModel("oSetProperty").getProperty("/oAppType");
+			// if (oPlan != 404) {
+			// 	this.getView().getModel("EcpFieldData").setProperty("/ZecpPlancode", oPlan);
+			// 	this.getView().getModel("EcpFieldData").setProperty("/ZecpOdometer", oOdometer);
+			// 	this.getView().getModel("EcpFieldData").setProperty("/ZecpAgrType", oAppType);
+			// 	this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate");
+			// }
 			if (ogetKey > 1 && ogetKey <= 6) {
 				var oSelectedNum = ogetKey - 1;
+				this.getView().getModel("oSetProperty").setProperty("/oTab" + oSelectedNum + "visible", true);
 				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab" + oSelectedNum + "");
+
 			} else {
 				this.getModel("EcpSalesModel").refresh();
 
