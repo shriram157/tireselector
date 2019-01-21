@@ -1,4 +1,5 @@
-var _that, count = 0;
+var _that, count = 0,
+	sTerm;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -41,6 +42,8 @@ sap.ui.define([
 				// _that.getPhoneNumber(dealer, addressID);
 				// _that._oDealerModel.getData().DealerData = _that.DealerData;
 				// _that._oDealerModel.updateBindings(true);
+				// _that.getView().setModel(_that._oDealerModel, "DealerModel");
+				// sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
 			} else {
 				this.sPrefix = "";
 				// this.attributeUrl = "/userDetails/attributes";
@@ -56,7 +59,8 @@ sap.ui.define([
 				enableTireSize: false,
 				enableVehicleInputs: false,
 				enableTable: false,
-				enableProdMarkup: false
+				enableProdMarkup: false,
+				enableMore: false
 			});
 
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
@@ -224,6 +228,7 @@ sap.ui.define([
 			});
 
 			_that.oGlobalJSONModel = new sap.ui.model.json.JSONModel();
+			_that.oGlobalJSONModel.setSizeLimit(5000);
 			_that.getView().setModel(_that.oGlobalJSONModel, "GlobalJSONModel");
 			// _that.oGlobalJSONModel.setData();
 			_that.oGlobalJSONModel.updateBindings();
@@ -314,21 +319,6 @@ sap.ui.define([
 		},
 
 		_oMasterRoute: function (oRoute) {
-			sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
-			// if (_that.oSearchOptionList != undefined) {
-			// 	var selectedOption = _that.oSearchOptionList.getSelectedKey();
-			// 	if (selectedOption == "Vehicle Series") {
-			// 		_that.oVehicleSearchCombo.setValue();
-			// 		_that.oModelSeriesCombo.setValue();
-			// 	} else if (selectedOption == _that.oI18nModel.getResourceBundle().getText("VIN")) {
-			// 		_that.oSearchOptionVIN.setValue();
-			// 	} else if (selectedOption == _that.oI18nModel.getResourceBundle().getText("TireSize")) {
-			// 		_that.oSearchOptionTireSize.setValue();
-			// 	}
-			// 	_that.oSearchOptionList.setSelectedKey();
-			// 	_that.oSearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
-			// 	_that.oSearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
-			// }
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
 				delay: 0,
@@ -336,7 +326,8 @@ sap.ui.define([
 				enableVin: true,
 				enableTireSize: false,
 				enableVehicleInputs: false,
-				enableTable: false
+				enableTable: false,
+				enableMore: false
 			});
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
 		},
@@ -347,7 +338,7 @@ sap.ui.define([
 
 		handleVINSuggest: function (oEvent) {
 			// var oSource = oEvent.getSource();
-			var sTerm = oEvent.getParameter("suggestValue");
+			sTerm = oEvent.getParameter("suggestValue");
 			_that._forhandleVINSuggesCallData(sTerm);
 			// var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
@@ -355,12 +346,81 @@ sap.ui.define([
 				aFilters.push(new Filter("VIN", sap.ui.model.FilterOperator.StartsWith, sTerm));
 			}
 			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
+			oEvent.getSource().getBinding("suggestionItems").refresh(true);
 			_that._oViewModel.setProperty("/enableSearchBtn", true);
 		},
-		_forhandleVINSuggesCallData: function (oTerm) {
+		_forhandleVINSuggesCallData: function (sTerm) {
 			//Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN('01010101010101010')
+			_that.firstload = false;
 			$.ajax({
-				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + oTerm + "')&$top=100&$skip=" +
+				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + sTerm + "')&$top=200&$skip=" +
+					count + "",
+				type: "GET",
+				dataType: "json",
+				success: function (oDataResponse) {
+					if (oDataResponse.d.results.length <= 0) {
+						_that.firstload = false;
+						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
+						_that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("NoData"));
+						_that._oViewModel.setProperty("/enableSearchBtn", false);
+					} else {
+						count = 0;
+						_that.firstload = true;
+						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
+						_that._oViewModel.setProperty("/enableSearchBtn", true);
+						console.log("_that.vindata", oDataResponse.d.results);
+						for (var n = 0; n < oDataResponse.d.results.length; n++) {
+							_that.oGlobalJSONModel.getData().vinData = oDataResponse.d.results;
+						}
+						_that.oGlobalJSONModel.updateBindings(true);
+						_that.oGlobalJSONModel.refresh(true);
+						if (_that.firstload == true) {
+							// _that._oViewModel.setProperty("/enableMore", true);
+							count = _that.oGlobalJSONModel.getData().vinData.length;
+							console.log("VIn count", count);
+							$.ajax({
+								url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + sTerm +
+									"')&$top=100&$skip=" +
+									count + "",
+								type: "GET",
+								dataType: "json",
+								success: function (oDataResponse2) {
+									console.log("Second load recurrance", oDataResponse.d.results.length);
+									if (oDataResponse.d.results.length <= 0) {
+										_that.firstload = false;
+										return;
+									} else {
+										_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
+										for (var n = 0; n < oDataResponse2.d.results.length; n++) {
+											_that.oGlobalJSONModel.getData().vinData.push(oDataResponse2.d.results[n]);
+										}
+										_that.getView().byId("searchOptionVIN").getModel("GlobalJSONModel").setSizeLimit(_that.oGlobalJSONModel.getData().vinData
+											.length);
+										_that.oGlobalJSONModel.updateBindings(true);
+										_that.oGlobalJSONModel.refresh(true);
+									}
+								},
+								error: function (oError) {
+									console.log("oError", oError);
+									// MessageBox.error(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
+								}
+							});
+						}
+					}
+				},
+				error: function (oError) {
+					_that.firstload = false;
+					console.log("oError", oError);
+					// MessageBox.error(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
+				}
+			});
+		},
+
+		loadMoreVin: function () {
+			count = _that.oGlobalJSONModel.getData().vinData.length;
+			console.log("VIn count", count);
+			$.ajax({
+				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + sTerm + "')&$top=100&$skip=" +
 					count + "",
 				type: "GET",
 				dataType: "json",
@@ -368,14 +428,22 @@ sap.ui.define([
 					if (oDataResponse.d.results.length <= 0) {
 						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
 						_that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("NoData"));
-						_that._oViewModel.setProperty("/enableSearchBtn", false);
 					} else {
-						count += 100;
 						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-						_that._oViewModel.setProperty("/enableSearchBtn", true);
 						console.log("_that.vindata", oDataResponse.d.results);
-						_that.oGlobalJSONModel.getData().vinData = oDataResponse.d.results;
-						_that.oGlobalJSONModel.updateBindings();
+						for (var n = 0; n < oDataResponse.d.results.length; n++) {
+							_that.oGlobalJSONModel.getData().vinData.push(oDataResponse.d.results[n]);
+						}
+						// _that.oGlobalJSONModel.getData().vinData = oDataResponse.d.results;
+						_that.oGlobalJSONModel.updateBindings(true);
+						_that.oGlobalJSONModel.refresh(true);
+
+						var aFilters = [];
+						if (sTerm) {
+							aFilters.push(new Filter("VIN", sap.ui.model.FilterOperator.StartsWith, sTerm));
+						}
+						_that.getView().byId("searchOptionVIN").getBinding("suggestionItems").filter(aFilters);
+						_that.getView().byId("searchOptionVIN").getBinding("suggestionItems").refresh(true);
 					}
 				},
 				error: function (oError) {

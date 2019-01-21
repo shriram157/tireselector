@@ -19,7 +19,7 @@ sap.ui.define([
 			_that.currDate = _that.oDateFormatShort.format(new Date());
 			var expiry = new Date().setDate(new Date(_that.currDate).getDate() + 15);
 			_that.expDate = _that.oDateFormatShort.format(new Date(expiry));
-			_that.phoneNumber = sap.ui.getCore().getModel("DealerModel").getData().DealerData.PhoneNumber;
+			_that.phoneNumber = sap.ushell.components.dealerPhoneNumber;
 			_that.getView().byId("DealerPhone").setValue(_that.phoneNumber);
 
 			var sLocation = window.location.host;
@@ -68,7 +68,7 @@ sap.ui.define([
 			_that.getRouter().attachRouteMatched(function (oEvent) {
 				_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 				_that.userData = sap.ui.getCore().getModel("DealerModel").getData();
-				_that.phoneNumber = _that.userData.DealerData.PhoneNumber;
+				_that.phoneNumber = sap.ushell.components.dealerPhoneNumber;
 
 				jQuery.sap.require("sap.ui.core.format.DateFormat");
 				_that.oDateFormatShort = sap.ui.core.format.DateFormat.getDateTimeInstance({

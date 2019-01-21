@@ -48,9 +48,10 @@
 							<Input id="searchOptionVIN" type="Text" visible="{MasterModel>/enableVin}" liveChange="onLiveChangeVIN" showSuggestion="true"
 								suggest="handleVINSuggest" change="onInputEntryVIN" suggestionItems="{GlobalJSONModel>/vinData}">
 								<suggestionItems>
-									<core:ListItem text="{GlobalJSONModel>VIN}"/>
+									<core:ListItem text="{GlobalJSONModel>VIN}" />
 								</suggestionItems>
 							</Input>
+							<Link text="load more VIN" press="loadMoreVin" visible="{MasterModel>/enableMore}" />
 							<Input id="searchOptionTireSize" type="Text" visible="{MasterModel>/enableTireSize}" liveChange="onLiveChangeTireSize" showSuggestion="true"
 								suggest="handleTireSizeSuggest" change="onInputEntryTireSize" suggestionItems="{FitmentDataModel>/results}">
 								<suggestionItems>

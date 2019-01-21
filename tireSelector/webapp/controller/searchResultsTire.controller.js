@@ -101,14 +101,30 @@ sap.ui.define([
 
 			_that.getView().setModel(_that._oViewModel, "FitmentPageModel");
 
-			_that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
 			_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-			// _that.dealerCode = _that.userDetails.userContext.userAttributes.DealerCode[0];
-			// _that.UserName = _that.userDetails.userContext.userInfo.logonName;
+			_that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
+
+			_that.AddressID = _that.userDetails.DealerData.AddressID;
+			_that.BusinessPartner = _that.userDetails.DealerData.BusinessPartner;
+			_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
+			var queryString1 = "(BusinessPartner='" + _that.BusinessPartner + "',AddressID='" + _that.AddressID + "')/to_PhoneNumber";
+			_that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
+				success: $.proxy(function (oDealerContactData) {
+					// if (oDealerData.results.length > 0) {
+					console.log("oDealerContactData", oDealerContactData.results);
+					sap.ushell.components.dealerPhoneNumber = oDealerContactData.results[0].PhoneNumber;
+					sap.ui.getCore().getModel("DealerModel").getData().DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
+					sap.ui.getCore().getModel("DealerModel").updateBindings(true);
+				}, _that),
+				error: function (oError) {
+					// sap.m.MessageBox.error(
+					// 	"NO Data found for BusinessPartner Phone Number"
+					// );
+				}
+			});
 
 			//uncomment below for cloud testing
 			var scopes = _that.userDetails.userContext.scopes;
-			// var scopes = _that.userData.userContext.scopes;
 			console.log("scopes", scopes);
 			var accessAll = false,
 				accesslimited = false;
@@ -130,11 +146,6 @@ sap.ui.define([
 			} else {
 				_that._oViewModel.setProperty("/enableProdMarkup", false);
 			}
-			// if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
-			// 	_that._oViewModel.setProperty("/enableProdMarkup", true);
-			// } else {
-			// 	_that._oViewModel.setProperty("/enableProdMarkup", false);
-			// }
 
 			_that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = _that.getView().byId("idTireSelectionTable");
@@ -386,6 +397,11 @@ sap.ui.define([
 											"type": "Tire Category",
 											"values": []
 										}];
+										// var a = 0,
+										// 	b = 0,
+										// 	c = 0,
+										// 	d = 0,
+										// 	e = 0;
 										for (var l = 0; l < _that.tempModel.getData().results.length; l++) {
 											_that.Filters[0].values.push({
 												"text": _that.tempModel.getData().results[l].TIRE_FITMENT
@@ -434,6 +450,24 @@ sap.ui.define([
 											_that.tempModel.updateBindings(true);
 										}
 
+										function removeDuplicates(array) {
+											var obj = {};
+											for (var i = 0, len = array.values.length; i < len; i++)
+												obj[array.values[i]['text']] = array.values[i];
+
+											array.values = new Array();
+											for (var key in obj)
+												array.values.push(obj[key]);
+											console.log("filter", array);
+											return array;
+										}
+
+										_that.Filters[0] = removeDuplicates(_that.Filters[0]);
+										_that.Filters[1] = removeDuplicates(_that.Filters[1]);
+										_that.Filters[2] = removeDuplicates(_that.Filters[2]);
+										_that.Filters[3] = removeDuplicates(_that.Filters[3]);
+										_that.Filters[4] = removeDuplicates(_that.Filters[4]);
+
 										$.each(_that.tempModel.getData().results, function (i, item) {
 											_that.FitmentToCharac.results.push({
 												"Tire Fitment": item.TIRE_FITMENT,
@@ -455,18 +489,26 @@ sap.ui.define([
 											});
 										});
 
-										_that.oTireFitmentJSONModel.setData(_that.FitmentToCharac);
-										_that.oTireFitmentJSONModel.getData().Filters = _that.Filters;
-										console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
+										// jQuery.sap.delayedCall(5000, _that, function () {
+											_that.oTireFitmentJSONModel.setData(_that.FitmentToCharac);
+											_that.oTireFitmentJSONModel.getData().Filters = [];
+											_that.oTireFitmentJSONModel.getData().Filters.push(_that.Filters[0]);
+											_that.oTireFitmentJSONModel.getData().Filters.push(_that.Filters[1]);
+											_that.oTireFitmentJSONModel.getData().Filters.push(_that.Filters[2]);
+											_that.oTireFitmentJSONModel.getData().Filters.push(_that.Filters[3]);
+											_that.oTireFitmentJSONModel.getData().Filters.push(_that.Filters[4]);
+											_that.oTireFitmentJSONModel.updateBindings(true);
+											console.log("TireFitmentJSONModel Data", _that.oTireFitmentJSONModel.getData());
 
-										_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-										sap.ushell.components.oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-										sap.ushell.components.FacetFilters.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+											_that.getView().setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+											sap.ushell.components.oTable.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+											sap.ushell.components.FacetFilters.setModel(_that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 
-										_that.oTireFitmentJSONModel.refresh(true);
-										_that.oTireFitmentJSONModel.updateBindings(true);
-										sap.ui.core.BusyIndicator.hide();
-									});
+											_that.oTireFitmentJSONModel.refresh(true);
+											_that.oTireFitmentJSONModel.updateBindings(true);
+											sap.ui.core.BusyIndicator.hide();
+										});
+									// });
 
 									if (_that.msgFlag == true) {
 										sap.m.MessageBox.error(
