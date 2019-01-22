@@ -60,7 +60,7 @@
 							</Input>
 							<ComboBox id="VehicleSearchCombo" visible="{MasterModel>/enableVehicleInputs}" selectionChange="onVehicleChange"
 								change="onComboInputChange" value="" selectedKey=""
-								items="{ path: 'GlobalJSONModel>/vehicleSeriesData', sorter: { path: 'TCISeriesDescriptionEN' } }">
+								items="{ path: 'GlobalJSONModel>/vehicleSeriesData', sorter: { path: 'ModelSeriesNo' } }">
 								<core:ListItem key="{GlobalJSONModel>ModelSeriesNo}" text="{GlobalJSONModel>ModelSeriesNo} - {GlobalJSONModel>TCISeriesDescriptionEN}"/>
 								<layoutData>
 									<l:GridData span="L2 M12 S12"/>
@@ -71,7 +71,7 @@
 						<VBox id="forVehicleSearchOnly" visible="{MasterModel>/enableVehicleInputs}">
 							<Label text="{i18n>ModelYear}" id="ModelSeriesLabel" required="true"/>
 							<ComboBox id="ModelSeriesCombo" selectionChange="onInputEntryChange" change="onComboInputChange" value="" selectedKey=""
-								items="{ path: 'GlobalJSONModel>/modelDetailsData', sorter: { path: 'Modelyear' } }">
+								items="{ path: 'GlobalJSONModel>/modelDetailsData', sorter: { path: 'Modelyear', descending: true } }">
 								<core:ListItem key="{GlobalJSONModel>Modelyear}" text="{GlobalJSONModel>Modelyear}"/>
 								<layoutData>
 									<l:GridData span="L2 M12 S12"/>

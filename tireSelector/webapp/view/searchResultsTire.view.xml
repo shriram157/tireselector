@@ -50,7 +50,7 @@
 						</items>
 					</VBox>
 					<HBox class="customStyleBox">
-						<t:Table id="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
+						<t:Table id="idTireSelectionTable" class="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
 							rows="{TireFitmentJSONModel>/results}" visibleRowCount="7">
 							<t:toolbar>
 								<Toolbar>
@@ -62,7 +62,8 @@
 								<t:Column id="ID_TireFitment" sortProperty="Tire Fitment" filterProperty="Tire Fitment">
 									<Label text="{i18n>TireFitment}"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire Fitment}" wrapping="false"/>
+										<Text text="{path:'TireFitmentJSONModel>Tire Fitment', formatter: '.colorFormatter'}" wrapping="false" id="cell_Fitment" class="displayBlock"/>
+										<!--{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}-->
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="Tire Category" filterProperty="Tire Category">

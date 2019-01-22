@@ -39,3 +39,19 @@
 .facetStyle>div:nth-child(1) { border-bottom: 1px solid;}
 .facetStyle .sapUiTableTbr { height: 2.5rem !important;}
 .facetStyle .sapUiTableTbr .sapMTB-Transparent-CTX.sapMTB { padding-left: 0 !important;}
+
+/*For Tire Select Row Colors*/
+span.displayBlock{
+	display: block !important;
+}
+.colorPerfect {
+	background-color: #82f682;
+}
+.colorAcceptable {
+	background-color: yellow;
+}
+.colorDisconitnued {
+	background-color: magenta;
+}
+
+

@@ -108,19 +108,21 @@ sap.ui.define([
 			_that.BusinessPartner = _that.userDetails.DealerData.BusinessPartner;
 			_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 			var queryString1 = "(BusinessPartner='" + _that.BusinessPartner + "',AddressID='" + _that.AddressID + "')/to_PhoneNumber";
-			_that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
-				success: $.proxy(function (oDealerContactData) {
-					// if (oDealerData.results.length > 0) {
-					console.log("oDealerContactData", oDealerContactData.results);
-					sap.ushell.components.dealerPhoneNumber = oDealerContactData.results[0].PhoneNumber;
-					sap.ui.getCore().getModel("DealerModel").getData().DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
-					sap.ui.getCore().getModel("DealerModel").updateBindings(true);
-				}, _that),
-				error: function (oError) {
-					// sap.m.MessageBox.error(
-					// 	"NO Data found for BusinessPartner Phone Number"
-					// );
-				}
+			jQuery.sap.delayedCall(2000, _that, function () {
+				_that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
+					success: $.proxy(function (oDealerContactData) {
+						// if (oDealerData.results.length > 0) {
+						console.log("oDealerContactData", oDealerContactData.results);
+						sap.ushell.components.dealerPhoneNumber = oDealerContactData.results[0].PhoneNumber;
+						sap.ui.getCore().getModel("DealerModel").getData().DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
+						sap.ui.getCore().getModel("DealerModel").updateBindings(true);
+					}, _that),
+					error: function (oError) {
+						// sap.m.MessageBox.error(
+						// 	"NO Data found for BusinessPartner Phone Number"
+						// );
+					}
+				});
 			});
 
 			//uncomment below for cloud testing
@@ -149,6 +151,7 @@ sap.ui.define([
 
 			_that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = _that.getView().byId("idTireSelectionTable");
+
 			if (oEvent.getParameter("arguments").tireData == "selectDifferentTire") {
 				_that.oTireFitmentJSONModel.refresh(true);
 				_that.oTireFitmentJSONModel.updateBindings(true);
@@ -399,9 +402,11 @@ sap.ui.define([
 													tempTireData.Live_Markup_Percentage = 0;
 												}
 												if (tempTireData.Live_Markup_Percentage != "" && tempTireData.Live_Markup_Percentage != undefined) {
-													if (Number(tempTireData.DealerNet) != 0) {
+													if (Number(tempTireData.DealerNet) != 0 && Number(tempTireData.Live_Markup_Percentage != 0)) {
 														_that.tempModel.getData().results[l].Retails = Number(tempTireData.DealerNet) + (Number(tempTireData.DealerNet) *
 															(Number(tempTireData.Live_Markup_Percentage) / 100));
+													} else {
+														_that.tempModel.getData().results[l].Retails = Number(tempTireData.MSRP);
 													}
 												} else {
 													if (Number(tempTireData.MSRP) != 0) {
@@ -530,6 +535,21 @@ sap.ui.define([
 			}
 		},
 
+		colorFormatter: function (oFitval) {
+			if (oFitval == "Perfect") {
+				// this.addStyleClass("colorPerfect");//green
+				this.getView().byId("cell_Fitment").addStyleClass("colorPerfect"); //
+			} else if (oFitval == "Acceptable") {
+				// this.addStyleClass("colorAcceptable");//yellow
+				this.getView().byId("cell_Fitment").addStyleClass("colorAcceptable"); //yellow
+			} else if (oFitval == "Disconitnued") {
+				// this.addSty/leClass("colorDisconitnued");//magenta
+				this.getView().byId("cell_Fitment").addStyleClass("colorDisconitnued"); //magenta
+
+			}
+			return oFitval;
+		},
+
 		decimalFormatter: function (oDecVal) {
 			if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
 				var returnVal = parseFloat(oDecVal).toFixed(2);
@@ -545,55 +565,57 @@ sap.ui.define([
 
 		onCheckPreview: function (oCheck) {
 			sap.ui.core.BusyIndicator.show();
-			var Model = oCheck.getSource().getParent().getParent().getModel("TireFitmentJSONModel");
-			if (Model.getData().results !== undefined) {
-				var oData = Model.getData().results;
-				var l;
-				if (oCheck.getParameters("selected").selected == true) {
-					for (l = 0; l < oData.length; l++) {
-						if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "") {
-							if (oData[l].Preview_Markup_Percentage != 0 && oData[l].Preview_Markup_Percentage != undefined) {
-								oData[l].Retails = Number(oData[l].DealerNet) + (Number(oData[l].DealerNet) * (Number(oData[l].Preview_Markup_Percentage) /
-									100));
-								oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
+			jQuery.sap.delayedCall(2000, _that, function () {
+				var Model = oCheck.getSource().getParent().getParent().getModel("TireFitmentJSONModel");
+				if (Model.getData().results !== undefined) {
+					var oData = Model.getData().results;
+					var l;
 
-								_that.oTireFitmentJSONModel.refresh(true);
-								_that.oTireFitmentJSONModel.updateBindings(true);
-								sap.ui.core.BusyIndicator.hide();
-								sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
-							} else {
-								oData[l].Retails = Number(oData[l].MSRP);
-								oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
+					if (oCheck.getParameters("selected").selected == true) {
+						for (l = 0; l < oData.length; l++) {
+							if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "") {
+								if (oData[l].Preview_Markup_Percentage != 0 && oData[l].Preview_Markup_Percentage != undefined) {
+									oData[l].Retails = Number(oData[l].DealerNet) + (Number(oData[l].DealerNet) * (Number(oData[l].Preview_Markup_Percentage) /
+										100));
+									oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
 
-								_that.oTireFitmentJSONModel.refresh(true);
-								_that.oTireFitmentJSONModel.updateBindings(true);
-								sap.ui.core.BusyIndicator.hide();
-								sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
+									_that.oTireFitmentJSONModel.refresh(true);
+									_that.oTireFitmentJSONModel.updateBindings(true);
+									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
+								} else {
+									oData[l].Retails = Number(oData[l].MSRP);
+									oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
+
+									_that.oTireFitmentJSONModel.refresh(true);
+									_that.oTireFitmentJSONModel.updateBindings(true);
+									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
+								}
 							}
 						}
-					}
-				} else {
-					for (l = 0; l < oData.length; l++) {
-						if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "") {
-							if (oData[l].Live_Markup_Percentage != 0 && oData[l].Live_Markup_Percentage != undefined) {
-								oData[l].Retails = Number(oData[l].DealerNet) + (Number(oData[l].DealerNet) * (Number(oData[l].Live_Markup_Percentage) / 100));
-								oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
-								_that.oTireFitmentJSONModel.refresh(true);
-								_that.oTireFitmentJSONModel.updateBindings(true);
-								sap.ui.core.BusyIndicator.hide();
-								sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
-							} else {
-								oData[l].Retails = Number(oData[l].MSRP);
-								oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
-								_that.oTireFitmentJSONModel.refresh(true);
-								_that.oTireFitmentJSONModel.updateBindings(true);
-								sap.ui.core.BusyIndicator.hide();
-								sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
+						sap.ui.core.BusyIndicator.hide();
+					} else {
+						for (l = 0; l < oData.length; l++) {
+							if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "") {
+								if (oData[l].Live_Markup_Percentage != 0 && oData[l].Live_Markup_Percentage != undefined) {
+									oData[l].Retails = Number(oData[l].DealerNet) + (Number(oData[l].DealerNet) * (Number(oData[l].Live_Markup_Percentage) /
+										100));
+									oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
+									_that.oTireFitmentJSONModel.refresh(true);
+									_that.oTireFitmentJSONModel.updateBindings(true);
+									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
+								} else {
+									oData[l].Retails = Number(oData[l].MSRP);
+									oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
+									_that.oTireFitmentJSONModel.refresh(true);
+									_that.oTireFitmentJSONModel.updateBindings(true);
+									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
+								}
 							}
 						}
+						sap.ui.core.BusyIndicator.hide();
 					}
 				}
-			}
+			});
 		},
 
 		/*Functions for Table Checkbox options*/
