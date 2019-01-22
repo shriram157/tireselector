@@ -564,16 +564,18 @@ sap.ui.define([
 		},
 
 		onCheckPreview: function (oCheck) {
+			_that.checked = oCheck.getSource();
+			_that.selectedCheck = oCheck.getParameters("selected").selected;
 			sap.ui.core.BusyIndicator.show();
 			jQuery.sap.delayedCall(2000, _that, function () {
-				var Model = oCheck.getSource().getParent().getParent().getModel("TireFitmentJSONModel");
+				var Model = _that.checked.getParent().getParent().getModel("TireFitmentJSONModel");
 				if (Model.getData().results !== undefined) {
 					var oData = Model.getData().results;
 					var l;
 
-					if (oCheck.getParameters("selected").selected == true) {
+					if (_that.selectedCheck == true) {
 						for (l = 0; l < oData.length; l++) {
-							if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "") {
+							if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "" && oData[l].DealerNet !=0) {
 								if (oData[l].Preview_Markup_Percentage != 0 && oData[l].Preview_Markup_Percentage != undefined) {
 									oData[l].Retails = Number(oData[l].DealerNet) + (Number(oData[l].DealerNet) * (Number(oData[l].Preview_Markup_Percentage) /
 										100));
@@ -591,11 +593,15 @@ sap.ui.define([
 									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
 								}
 							}
+							else{
+								oData[l].Retails = "";
+								oData[l].Profit = "";
+							}
 						}
 						sap.ui.core.BusyIndicator.hide();
 					} else {
 						for (l = 0; l < oData.length; l++) {
-							if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "") {
+							if (oData[l].DealerNet !== null && oData[l].DealerNet != undefined && oData[l].DealerNet !== "" && oData[l].DealerNet !=0) {
 								if (oData[l].Live_Markup_Percentage != 0 && oData[l].Live_Markup_Percentage != undefined) {
 									oData[l].Retails = Number(oData[l].DealerNet) + (Number(oData[l].DealerNet) * (Number(oData[l].Live_Markup_Percentage) /
 										100));
@@ -610,6 +616,10 @@ sap.ui.define([
 									_that.oTireFitmentJSONModel.updateBindings(true);
 									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
 								}
+							}
+							else{
+								oData[l].Retails = "";
+								oData[l].Profit = "";
 							}
 						}
 						sap.ui.core.BusyIndicator.hide();
