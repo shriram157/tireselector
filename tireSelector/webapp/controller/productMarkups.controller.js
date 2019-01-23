@@ -147,7 +147,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -166,7 +166,7 @@ sap.ui.define([
 					_that.newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					_that.newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					_that.newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					_that.newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					_that.newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					_that.newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					_that.newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					_that.newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -235,7 +235,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -254,7 +254,7 @@ sap.ui.define([
 					_that.newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					_that.newDataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					_that.newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					_that.newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					_that.newDataFromModel.Live_Last_Updated = mew Date(modelData[i].Live_Last_Updated);
 					_that.newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					_that.newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					_that.newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;

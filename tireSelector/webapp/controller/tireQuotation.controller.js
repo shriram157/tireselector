@@ -33,22 +33,10 @@ sap.ui.define([
 			}
 			// this.sPrefix = "";
 			this.nodeJsUrl = this.sPrefix + "/node";
-			if (sap.ushell.components.SearchOptionVIN != "") {
-				_that.VIN = sap.ushell.components.SearchOptionVIN.getValue();
-			}
-			if (sap.ushell.components.SearchOptionVehicle != "") {
-				_that.Vehicle = sap.ushell.components.SearchOptionVehicle.getValue();
-			}
-			if (sap.ushell.components.ModelSeriesCombo != "") {
-				_that.ModelYr = sap.ushell.components.ModelSeriesCombo.getValue();
-			}
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
 				delay: 0,
 				enableInput: false,
-				vehicleVal: _that.Vehicle,
-				modelval: _that.ModelYr,
-				vinVal: _that.VIN,
 				CurrentDate: _that.currDate,
 				expiryDate: _that.expDate,
 				PhoneNumber: _that.phoneNumber
@@ -59,9 +47,6 @@ sap.ui.define([
 				enableFTC: false,
 				enablePTC: false,
 				enableFee: false,
-				vehicleVal: _that.Vehicle,
-				modelval: _that.ModelYr,
-				vinVal: _that.VIN,
 			});
 			_that.getView().setModel(_that._oViewModelTax, "TireTaxModel");
 
@@ -82,9 +67,6 @@ sap.ui.define([
 					busy: false,
 					delay: 0,
 					enableInput: false,
-					vehicleVal: _that.Vehicle,
-					modelval: _that.ModelYr,
-					vinVal: _that.VIN,
 					enableProdMarkup: false,
 					CurrentDate: _that.currDate,
 					expiryDate: _that.expDate,
@@ -149,6 +131,9 @@ sap.ui.define([
 
 					// console.log("rowData", oEvent.getParameter("arguments").rowData);
 					_that.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
+					_that.rowData.VIN = _that.rowData.VIN;
+					_that.rowData.VModelYear = _that.rowData.VModelYear;
+					_that.rowData.VehicleSeries = _that.rowData.VehicleSeries;
 					_that.rowData.TireSize = _that.rowData.TireSize.replace("%2F", "/");
 					_that.rowData.ProvincialTax = "";
 					_that.rowData.FederalTax = "";
@@ -459,41 +444,97 @@ sap.ui.define([
 		},
 
 		SelectDifferentTire: function () {
+			if (_that.getView().byId("ID_SeriesYear") != undefined) {
+				_that.getView().byId("ID_SeriesYear").setValue("");
+			}
+			if (_that.getView().byId("ID_VINQuote") != undefined) {
+				_that.getView().byId("ID_VINQuote").setValue("");
+			}
 			if (_that.getView().byId("id_QuoteDate") != undefined) {
 				_that.getView().byId("id_QuoteDate").setValue("");
 			}
 			if (_that.getView().byId("id_AfterExpiry") != undefined) {
 				_that.getView().byId("id_AfterExpiry").setValue("");
 			}
-			_that.getView().byId("id_tireUnitPrice").setValue("");
-			_that.getView().byId("id_tireQty").setValue("");
-			_that.getView().byId("id_RHPUnitPrice").setValue("");
-			_that.getView().byId("id_RHPsQty").setValue("");
-			_that.getView().byId("id_wheelsUnitPrice").setValue("");
-			_that.getView().byId("id_wheelsQty").setValue("");
-			_that.getView().byId("id_TPMSUnitPrice").setValue("");
-			_that.getView().byId("id_TPMSQty").setValue("");
-			_that.getView().byId("id_FittingKitUnitPrice").setValue("");
-			_that.getView().byId("id_FittingKitQty").setValue("");
-
-			_that.getView().byId("wheelsText").setValue("");
-			_that.getView().byId("TireTxt1").setText("");
-			_that.getView().byId("TireTxt2").setText("");
-			_that.getView().byId("TireTxt3").setText("");
-
-			_that.getView().byId("tmpsTxt").setValue("");
-			_that.getView().byId("fittingkitTxt").setValue("");
-			_that.getView().byId("dealerTxt").setValue("");
-			_that.getView().byId("valItem1").setValue("");
-			_that.getView().byId("valItem2").setValue("");
-			_that.getView().byId("valItem3").setValue("");
-			_that.getView().byId("valItem4").setValue("");
-
-			_that.getView().byId("id_subTotal").setValue("");
-			_that.getView().byId("id_total").setValue("");
-			_that.getView().byId("id_proTaxCode").setValue("");
-			_that.getView().byId("id_fedTaxCode").setValue("");
-			_that.getView().byId("id_freeDescp").setValue("");
+			if (_that.getView().byId("id_tireUnitPrice") != undefined) {
+				_that.getView().byId("id_tireUnitPrice").setValue("");
+			}
+			if (_that.getView().byId("id_tireQty") != undefined) {
+				_that.getView().byId("id_tireQty").setValue("");
+			}
+			if (_that.getView().byId("id_RHPUnitPrice") != undefined) {
+				_that.getView().byId("id_RHPUnitPrice").setValue("");
+			}
+			if (_that.getView().byId("id_RHPsQty") != undefined) {
+				_that.getView().byId("id_RHPsQty").setValue("");
+			}
+			if (_that.getView().byId("id_wheelsUnitPrice") != undefined) {
+				_that.getView().byId("id_wheelsUnitPrice").setValue("");
+			}
+			if (_that.getView().byId("id_wheelsQty") != undefined) {
+				_that.getView().byId("id_wheelsQty").setValue("");
+			}
+			if (_that.getView().byId("id_TPMSUnitPrice") != undefined) {
+				_that.getView().byId("id_TPMSUnitPrice").setValue("");
+			}
+			if (_that.getView().byId("id_TPMSQty") != undefined) {
+				_that.getView().byId("id_TPMSQty").setValue("");
+			}
+			if (_that.getView().byId("id_FittingKitUnitPrice") != undefined) {
+				_that.getView().byId("id_FittingKitUnitPrice").setValue("");
+			}
+			if (_that.getView().byId("id_FittingKitQty") != undefined) {
+				_that.getView().byId("id_FittingKitQty").setValue("");
+			}
+			// _that.getView().byId("id_FittingKitQty").setValue("");
+			if (_that.getView().byId("wheelsText") != undefined) {
+				_that.getView().byId("wheelsText").setValue("");
+			}
+			if (_that.getView().byId("TireTxt1") != undefined) {
+				_that.getView().byId("TireTxt1").setText("");
+			}
+			if (_that.getView().byId("TireTxt2") != undefined) {
+				_that.getView().byId("TireTxt3").setText("");
+			}
+			if (_that.getView().byId("TireTxt3") != undefined) {
+				_that.getView().byId("TireTxt3").setText("");
+			}
+			if (_that.getView().byId("tmpsTxt") != undefined) {
+				_that.getView().byId("tmpsTxt").setValue("");
+			}
+			if (_that.getView().byId("fittingkitTxt") != undefined) {
+				_that.getView().byId("fittingkitTxt").setValue("");
+			}
+			if (_that.getView().byId("dealerTxt") != undefined) {
+				_that.getView().byId("dealerTxt").setValue("");
+			}
+			if (_that.getView().byId("valItem1") != undefined) {
+				_that.getView().byId("valItem1").setValue("");
+			}
+			if (_that.getView().byId("valItem2") != undefined) {
+				_that.getView().byId("valItem2").setValue("");
+			}
+			if (_that.getView().byId("valItem3") != undefined) {
+				_that.getView().byId("valItem3").setValue("");
+			}
+			if (_that.getView().byId("valItem4") != undefined) {
+				_that.getView().byId("valItem4").setValue("");
+			}
+			if (_that.getView().byId("id_subTotal") != undefined) {
+				_that.getView().byId("id_subTotal").setValue("");
+			}
+			if (_that.getView().byId("id_total") != undefined) {
+				_that.getView().byId("id_total").setValue("");
+			}
+			if (_that.getView().byId("id_proTaxCode") != undefined) {
+				_that.getView().byId("id_proTaxCode").setValue("");
+			}
+			if (_that.getView().byId("id_fedTaxCode") != undefined) {
+				_that.getView().byId("id_fedTaxCode").setValue("");
+			}
+			if (_that.getView().byId("id_freeDescp") != undefined) {
+				_that.getView().byId("id_freeDescp").setValue("");
+			}
 
 			_that.oTireQuotationModel.setData(null);
 			_that.oTireQuotationModel.updateBindings(true);

@@ -1,4 +1,4 @@
-var _that, DealerNet, MSRP, oTable, tempData;
+var _that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -108,7 +108,7 @@ sap.ui.define([
 			_that.BusinessPartner = _that.userDetails.DealerData.BusinessPartner;
 			_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 			var queryString1 = "(BusinessPartner='" + _that.BusinessPartner + "',AddressID='" + _that.AddressID + "')/to_PhoneNumber";
-			jQuery.sap.delayedCall(2000, _that, function () {
+			jQuery.sap.delayedCall(5000, _that, function () {
 				_that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
 					success: $.proxy(function (oDealerContactData) {
 						// if (oDealerData.results.length > 0) {
@@ -161,11 +161,18 @@ sap.ui.define([
 
 				var filterData;
 				if (oEvent.getParameter("arguments").modelData !== undefined) {
+					//VIN, VehicleSeries, VModelYear
 					_that.oModelData = JSON.parse(oEvent.getParameter("arguments").modelData);
+					VIN = _that.oModelData.SearchOptionVIN;
+					VModelYear = _that.oModelData.ModelSeriesCombo;
+					VehicleSeries = _that.oModelData.SearchOptionVehicle;
 					filterData = "?$filter=ZtireSize eq '" + _that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
 
 				} else if (oEvent.getParameter("arguments").tireData !== undefined) {
 					_that.oTireData = JSON.parse(oEvent.getParameters().arguments.tireData);
+					VIN = _that.oTireData.SearchOptionVIN;
+					VModelYear = _that.oTireData.ModelSeriesCombo;
+					VehicleSeries = _that.oTireData.SearchOptionVehicle;
 					filterData = "?$filter=ZtireSize eq '" + _that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
 				}
 				if (filterData !== undefined) {
@@ -594,8 +601,8 @@ sap.ui.define([
 								}
 							}
 							else{
-								oData[l].Retails = "";
-								oData[l].Profit = "";
+								oData[l].Retails = 0.00;
+								oData[l].Profit = 0.00;
 							}
 						}
 						sap.ui.core.BusyIndicator.hide();
@@ -618,8 +625,8 @@ sap.ui.define([
 								}
 							}
 							else{
-								oData[l].Retails = "";
-								oData[l].Profit = "";
+								oData[l].Retails = 0.00;
+								oData[l].Profit = 0.00;
 							}
 						}
 						sap.ui.core.BusyIndicator.hide();
@@ -716,9 +723,13 @@ sap.ui.define([
 
 		onRowPress: function (oRowEvt) {
 			// _that.oGlobalBusyDialog.destroy();
-			var oPath = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
+			var oPath ={};
+			oPath = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
 
 			oPath.TireSize = oPath.TireSize.replace("/", "%2F");
+			oPath.VIN = VIN;
+			oPath.VehicleSeries =VehicleSeries;
+			oPath.VModelYear =VModelYear;
 			_that.getRouter().navTo("tireQuotation", {
 				rowData: JSON.stringify(oPath)
 			});

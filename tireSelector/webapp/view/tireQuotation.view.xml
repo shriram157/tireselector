@@ -55,9 +55,9 @@
 								class="sapUiSmallMarginBottom"/>
 							<core:Title text=""/>
 							<Label text="{i18n>Vehicle}"/>
-							<Input type="Text" value="{TireQuoteModel>/vehicleVal} {TireQuoteModel>/modelval}"/>
+							<Input type="Text" value="{TireQuotationModel>/VehicleSeries} {TireQuotationModel>/VModelYear}" id="ID_SeriesYear"/>
 							<Label text="{i18n>VIN}"/>
-							<Input type="Text" value="{TireQuoteModel>/vinVal}"/>
+							<Input type="Text" value="{TireQuotationModel>/VIN}" id="ID_VINQuote"/>
 							<Label text="{i18n>Name}"/>
 							<Input type="Text" value=""/>
 							<Label text="{i18n>Address}"/>
