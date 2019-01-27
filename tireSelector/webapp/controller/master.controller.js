@@ -363,7 +363,7 @@ sap.ui.define([
 		},
 
 		onBeforeRendering: function () {
-			_that.getOwnerComponent().getRouter().attachRoutePatternMatched(_that._oMasterRoute, _that);
+			sap.ui.core.UIComponent.getRouterFor(_that).attachRoutePatternMatched(_that._oMasterRoute, _that);
 		},
 
 		handleVINSuggest: function (oEvent) {
@@ -793,7 +793,7 @@ sap.ui.define([
 				}
 			}
 			// oBj.oToBeRoutedTire = oToBeRoutedTire;
-			_that.getRouter().navTo("searchResultsTireNoData", {
+			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTireNoData", {
 				tireData: JSON.stringify(oBj)
 			});
 		},
@@ -894,7 +894,7 @@ sap.ui.define([
 				for (a = 0; a < modelDetailsData.length; a++) {
 					// if (TCIseries == modelDetailsData[a].TCISeries && modelyear == modelDetailsData[a].Modelyear) {
 					var Suffix = modelDetailsData[a].suffix;
-					var Modelyear = modelDetailsData[a].Modelyear;
+					var Modelyear = _that.ModelSeriesCombo.getSelectedKey(); //modelDetailsData[a].Modelyear;
 					var Model = modelDetailsData[a].Model;
 					console.log(Model + Modelyear);
 					// }	Zzmoyr eq '2018' and Model eq 'DFREVT'
@@ -944,7 +944,7 @@ sap.ui.define([
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getSource().getBindingContext(
 				"SearchResultModel").sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
-			_that.getRouter().navTo("searchResultsTire", {
+			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)
 			});
 		},
@@ -990,3 +990,37 @@ sap.ui.define([
 		}
 	});
 });
+
+/*
+var modelYearURl = _that.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS?$filter=TCISeries eq  '" + ModelSeriesNo + " '";
+			$.ajax({
+				url: modelYearURl,
+				type: "GET",
+				dataType: "json",
+				success: function (oDataResponse2) {
+					sap.ui.core.BusyIndicator.hide();
+					if (oDataResponse2.d.results.length > 0) {
+						var b = 0;
+						console.log("ZC_MODEL_DETAILS Data", oDataResponse2);
+						for (var i = 0; i < oDataResponse2.d.results.length; i++) {
+							var Modelyear = oDataResponse2.d.results[i].Modelyear;
+							for (var j = 0; j < _that.oGlobalJSONModel.getData().modelDetailsData.length; j++) {
+								if (Modelyear != _that.oGlobalJSONModel.getData().modelDetailsData[j].Modelyear) {
+									b++;
+								}
+							}
+							if (b == _that.oGlobalJSONModel.getData().modelDetailsData.length) {
+								_that.oGlobalJSONModel.getData().modelDetailsData.push({
+									"Modelyear": oDataResponse2.d.results[i].Modelyear,
+									"Model": oDataResponse2.d.results[i].Model,
+									"TCISeries": oDataResponse2.d.results[i].TCISeries,
+									"suffix": oDataResponse2.d.results[i].suffix,
+								});
+								_that.oGlobalJSONModel.updateBindings(true);
+							}
+							b = 0;
+						}
+						// _that.oGlobalJSONModel.getData().modelDetailsData = oDataResponse2.d.results;
+						_that.oGlobalJSONModel.updateBindings(true);
+
+*/

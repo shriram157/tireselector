@@ -21,6 +21,7 @@ sap.ui.define([
 			UIComponent.prototype.init.apply(this, arguments);
 
 			// enable routing
+			this.getRouter().register("router");
 			this.getRouter().initialize();
 
 			// set the device model

@@ -182,7 +182,8 @@
 				"viewPath": "tireSelector.view",
 				"controlAggregation": "pages",
 				"controlId": "idAppControl",
-				"clearControlAggregation": false
+				"clearControlAggregation": false,
+				"clearTarget": "false"
 			},
 			"routes": [
 				{
@@ -191,19 +192,14 @@
 					"target": "master"
 				},
 				{
-					"name": "searchResults",
-					"pattern": "searchResults",
-					"target": "searchResults"
-				},
-				{
 					"name": "searchResultsTire",
 					"pattern": "searchResultsTire/{modelData}",
 					"target": "searchResultsTire"
 				},
 				{
-					"name": "searchResultsTireNoData",
-					"pattern": "searchResultsTireNoData/:tireData:",
-					"target": "searchResultsTireNoData"
+					"name": "searchResultsFromQuote",
+					"pattern": "searchResultsFromQuote",
+					"target": "searchResultsFromQuote"
 				},
 				{
 					"name": "searchResultsTireNoData",
@@ -230,63 +226,27 @@
 				"master": {
 					"viewType": "XML",
 					"transition": "slide",
-					"clearControlAggregation": false,
-					"viewName": "master",
-					"routerClass": "sap.m.routing.Router",
-					"async": true,
-					"viewPath": "tireSelector.view",
-					"controlAggregation": "pages",
-					"controlId": "idAppControl"
-				},
-				"searchResults": {
-					"viewType": "XML",
-					"viewName": "searchResults",
-					"routerClass": "sap.m.routing.Router",
-					"async": true,
-					"viewPath": "tireSelector.view",
-					"controlAggregation": "pages",
-					"controlId": "idAppControl",
-					"clearControlAggregation": false
+					"viewName": "master"
 				},
 				"searchResultsTire": {
 					"viewType": "XML",
-					"viewName": "searchResultsTire",
-					"routerClass": "sap.m.routing.Router",
-					"async": true,
-					"viewPath": "tireSelector.view",
-					"controlAggregation": "pages",
-					"controlId": "idAppControl",
-					"clearControlAggregation": false
+					"viewName": "searchResultsTire"
 				},
 				"searchResultsTireNoData": {
 					"viewType": "XML",
-					"viewName": "searchResultsTire",
-					"routerClass": "sap.m.routing.Router",
-					"async": true,
-					"viewPath": "tireSelector.view",
-					"controlAggregation": "pages",
-					"controlId": "idAppControl",
-					"clearControlAggregation": false
+					"viewName": "searchResultsTire"
+				},
+				"searchResultsFromQuote": {
+					"viewType": "XML",
+					"viewName": "searchResultsTire"
 				},
 				"productMarkups": {
 					"viewType": "XML",
-					"viewName": "productMarkups",
-					"routerClass": "sap.m.routing.Router",
-					"async": true,
-					"viewPath": "tireSelector.view",
-					"controlAggregation": "pages",
-					"controlId": "idAppControl",
-					"clearControlAggregation": false
+					"viewName": "productMarkups"
 				},
 				"reportError": {
 					"viewType": "XML",
-					"viewName": "reportError",
-					"routerClass": "sap.m.routing.Router",
-					"async": true,
-					"viewPath": "tireSelector.view",
-					"controlAggregation": "pages",
-					"controlId": "idAppControl",
-					"clearControlAggregation": false
+					"viewName": "reportError"
 				},
 				"tireQuotation": {
 					"viewType": "XML",

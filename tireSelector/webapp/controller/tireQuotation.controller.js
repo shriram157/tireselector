@@ -49,221 +49,10 @@ sap.ui.define([
 				enableFee: false,
 			});
 			_that.getView().setModel(_that._oViewModelTax, "TireTaxModel");
+			// _that.getOwnerComponent().getRouter().attachRoutePatternMatched(_that._oQuoteRoute, _that);
+			sap.ui.core.UIComponent.getRouterFor(_that).attachRoutePatternMatched(_that._oQuoteRoute, _that);
 
-			_that.getRouter().attachRouteMatched(function (oEvent) {
-				_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-				_that.userData = sap.ui.getCore().getModel("DealerModel").getData();
-				_that.phoneNumber = sap.ushell.components.dealerPhoneNumber;
-
-				jQuery.sap.require("sap.ui.core.format.DateFormat");
-				_that.oDateFormatShort = sap.ui.core.format.DateFormat.getDateTimeInstance({
-					pattern: "MM-dd-YYYY"
-				});
-				_that.currDate = _that.oDateFormatShort.format(new Date());
-				var expiry = new Date().setDate(new Date(_that.currDate).getDate() + 15);
-				_that.expDate = _that.oDateFormatShort.format(new Date(expiry));
-
-				_that._oViewModel = new sap.ui.model.json.JSONModel({
-					busy: false,
-					delay: 0,
-					enableInput: false,
-					enableProdMarkup: false,
-					CurrentDate: _that.currDate,
-					expiryDate: _that.expDate,
-					PhoneNumber: _that.phoneNumber
-				});
-				_that.getView().setModel(_that._oViewModel, "TireQuoteModel");
-
-				_that.oTireQuotationModel = new JSONModel();
-				_that.oTirePriceModel = new JSONModel();
-
-				_that.oTireQuotationModel.setData(null);
-				_that.oTireQuotationModel.updateBindings(true);
-				_that.oTireQuotationModel.refresh(true);
-				_that.oTirePriceModel.setData(null);
-				_that.oTirePriceModel.updateBindings(true);
-				_that.oTirePriceModel.refresh(true);
-				_that.getView().setModel(_that.oTireQuotationModel, "TireQuotationModel");
-				_that.getView().setModel(_that.oTirePriceModel, "TirePriceModel");
-
-				//uncomment below for cloud testing
-				var scopes = _that.userData.userContext.scopes;
-				// var scopes = _that.userData.userContext.scopes;
-				console.log("scopes", scopes);
-				var accessAll = false,
-					accesslimited = false;
-
-				for (var s = 0; s < scopes.length; s++) {
-					if (scopes[s] != "openid") {
-						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-							accessAll = true;
-						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-							accesslimited = true;
-						} else {
-							accessAll = false;
-							accesslimited = false;
-						}
-					}
-				}
-				if (accessAll == true && accesslimited == true) {
-					_that._oViewModel.setProperty("/enableProdMarkup", true);
-				} else {
-					_that._oViewModel.setProperty("/enableProdMarkup", false);
-				}
-
-				_that.oGlobalBusyDialog = new sap.m.BusyDialog();
-
-				function decimalFormatter(oDecVal) {
-					if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
-						var returnVal = parseFloat(oDecVal).toFixed(2);
-						if (returnVal == 0.00) {
-							return "";
-						} else {
-							return returnVal;
-						}
-					} else {
-						return "";
-					}
-				}
-
-				if (oEvent.getParameter("arguments").rowData !== undefined) {
-					// _that.oGlobalBusyDialog.open();
-
-					// console.log("rowData", oEvent.getParameter("arguments").rowData);
-					_that.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
-					_that.rowData.VIN = _that.rowData.VIN;
-					_that.rowData.VModelYear = _that.rowData.VModelYear;
-					_that.rowData.VehicleSeries = _that.rowData.VehicleSeries;
-					_that.rowData.TireSize = _that.rowData.TireSize.replace("%2F", "/");
-					_that.rowData.ProvincialTax = "";
-					_that.rowData.FederalTax = "";
-					_that.rowData.ProvincialTaxSum = "";
-					_that.rowData.FederalTaxSum = "";
-					_that.rowData.EHFPriceSum = "";
-					_that.rowData.Total = "";
-					_that.rowData.subTotal = "";
-					_that.rowData.Retails = Number(_that.rowData.Retails);
-
-					var oMat = _that.rowData.Material;
-					var oMaterial = oMat;
-
-					_that.objPrice = {};
-					_that.objPrice.otherItemPrice1 = this.getView().byId("id_OtherItemPrice").getValue();
-					_that.objPrice.otherItemPrice2 = this.getView().byId("id_OtherItem2Price").getValue();
-					_that.objPrice.otherItemPrice3 = this.getView().byId("id_OtherItem3Price").getValue();
-					_that.objPrice.otherItemPrice4 = this.getView().byId("id_OtherItem4Price").getValue();
-					_that.objPrice.MnBPrice = this.getView().byId("id_MnBPrice").getValue();
-					_that.objPrice.TiresPrice = this.getView().byId("id_tirePrice").getValue();
-					_that.objPrice.WheelsPrice = this.getView().byId("id_wheelsPrice").getValue();
-					_that.objPrice.TPMSPrice = this.getView().byId("id_TPMSPrice").getValue();
-					_that.objPrice.FittingKitPrice = this.getView().byId("id_FittingKitPrice").getValue();
-					_that.objPrice.RHPPriceSum = this.getView().byId("id_RHPPrice").getValue();
-					// _that.objPrice.EHFPriceSum = this.getView().byId("id_freeDescp").getValue();
-
-					_that.Division = _that.userData.DealerData.Division;
-					_that.Doctype = "ZAF";
-					_that.SalesOrg = "7000";
-					_that.DistrChan = "10";
-					_that.SoldtoParty = _that.userData.DealerData.BusinessPartner;
-
-					var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
-						_that.SalesOrg + "' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty +
-						"' and Material eq '" + oMaterial + "'";
-					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
-					_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
-						success: $.proxy(function (oPriceData) {
-								console.log("oPriceData", oPriceData);
-								for (var n = 0; n < oPriceData.results.length; n++) {
-									var CndType = oPriceData.results[n].CndType;
-									if (CndType == "JRC4" || CndType == "JRC5") {
-										_that.oTireQuotationModel.getData().FederalTax = Number(oPriceData.results[n].Amount);
-									} else if (CndType == "JRC3" || CndType == "JRC2") {
-										_that.oTireQuotationModel.getData().ProvincialTax = Number(oPriceData.results[n].Amount);
-									} else if (CndType == "ZPEH" || CndType == "ZPEC") { //Freight Cost
-										_that.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
-									}
-								}
-							},
-							_that),
-						error: function (oError) {
-							console.log("Error in fetching ZC_PriceSet", oError);
-						}
-					});
-				}
-
-				jQuery.sap.delayedCall(0, _that, function () {
-					_that.oTireQuotationModel.setData(_that.rowData);
-					_that.getView().setModel(_that.oTireQuotationModel, "TireQuotationModel");
-					_that.oTireQuotationModel.updateBindings(true);
-					_that.oTireQuotationModel.refresh(true);
-					console.log("Tire Quote Data", _that.oTireQuotationModel.getData());
-					_that.oTirePriceModel.setData(_that.objPrice);
-					_that.getView().setModel(_that.oTirePriceModel, "TirePriceModel");
-					_that.oTirePriceModel.updateBindings(true);
-					_that.oTirePriceModel.refresh(true);
-
-					console.log("Tire Price Data", _that.oTirePriceModel.getData());
-					_that.oGlobalBusyDialog.close();
-				});
-
-				_that.item_01 = this.getView().byId("id_OtherItemPrice");
-				_that.item_02 = this.getView().byId("id_OtherItem2Price");
-				_that.item_03 = this.getView().byId("id_OtherItem3Price");
-				_that.item_04 = this.getView().byId("id_OtherItem4Price");
-
-				_that.tirePrice = this.getView().byId("id_tirePrice");
-				_that.wheelsPrice = this.getView().byId("id_wheelsPrice");
-				_that.TPMSPrice = this.getView().byId("id_TPMSPrice");
-				_that.FittingKitPrice = this.getView().byId("id_FittingKitPrice");
-				_that.RHPPrice = this.getView().byId("id_RHPPrice");
-				_that.MNBPrice = this.getView().byId("id_MnBPrice");
-				_that.SubTotal = this.getView().byId("id_subTotal");
-				_that.TotalAmount = this.getView().byId("id_total");
-				_that.ProTaxCode = this.getView().byId("id_proTaxCode");
-				_that.FedTaxCode = this.getView().byId("id_fedTaxCode");
-				_that.selectRHP = this.getView().byId("id_RHP");
-				_that.EnvoFee = this.getView().byId("id_freeDescp");
-
-				$.ajax({
-					dataType: "json",
-					url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
-					type: "GET",
-					success: function (oDataResponse) {
-						if (oDataResponse.d.results.length > 0) {
-							_that.matData = {
-								"results": []
-							};
-							$.each(oDataResponse.d.results, function (i, item) {
-								if (item.MATNR != "") {
-									_that.matData.results.push({
-										"MATNR": item.MATNR
-									});
-								}
-							});
-							console.log("ProductCategoryModel Data", _that.matData);
-							_that.oProductCategoryModel = new JSONModel();
-							_that.getView().setModel(_that.oProductCategoryModel, "ProductCategoryModel");
-							_that.oProductCategoryModel.setData(_that.matData);
-							_that.oProductCategoryModel.getData().results.unshift({
-								"MATNR": "No Thank You"
-							});
-							_that.oProductCategoryModel.updateBindings(true);
-							if (_that.getView().byId("id_RHP") !== undefined) {
-								_that.getView().byId("id_RHP").setSelectedKey(_that.getView().byId("id_RHP").getItems()[0].getKey());
-							}
-						} else {
-							// sap.m.MessageBox.error(
-							// 	"NO Material found for category PRODH"
-							// );
-						}
-					},
-					error: function (oError) {
-						// sap.m.MessageBox.error(
-						// 	"NO Material found for category PRODH"
-						// );
-					}
-				});
-			}, this);
+			// _that.getRouter().attachRouteMatched(function (oEvent) {
 
 			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -286,6 +75,191 @@ sap.ui.define([
 				_that.sCurrentLocale = 'EN';
 			}
 		},
+
+		_oQuoteRoute: function (oEvent) {
+			_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
+			_that.userData = sap.ui.getCore().getModel("DealerModel").getData();
+			_that.phoneNumber = sap.ushell.components.dealerPhoneNumber;
+
+			jQuery.sap.require("sap.ui.core.format.DateFormat");
+			_that.oDateFormatShort = sap.ui.core.format.DateFormat.getDateTimeInstance({
+				pattern: "MM-dd-YYYY"
+			});
+			_that.currDate = _that.oDateFormatShort.format(new Date());
+			var expiry = new Date().setDate(new Date(_that.currDate).getDate() + 15);
+			_that.expDate = _that.oDateFormatShort.format(new Date(expiry));
+
+			_that._oViewModel = new sap.ui.model.json.JSONModel({
+				busy: false,
+				delay: 0,
+				enableInput: false,
+				enableProdMarkup: false,
+				CurrentDate: _that.currDate,
+				expiryDate: _that.expDate,
+				PhoneNumber: _that.phoneNumber
+			});
+			_that.getView().setModel(_that._oViewModel, "TireQuoteModel");
+
+			//uncomment below for cloud testing
+			var scopes = _that.userData.userContext.scopes;
+			// var scopes = _that.userData.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
+
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				_that._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				_that._oViewModel.setProperty("/enableProdMarkup", false);
+			}
+
+			_that.oGlobalBusyDialog = new sap.m.BusyDialog();
+
+			function decimalFormatter(oDecVal) {
+				if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
+					var returnVal = parseFloat(oDecVal).toFixed(2);
+					if (returnVal == 0.00) {
+						return "";
+					} else {
+						return returnVal;
+					}
+				} else {
+					return "";
+				}
+			}
+
+			if (oEvent.getParameter("arguments").rowData !== undefined) {
+				_that.rowData = {};
+
+				// console.log("rowData", oEvent.getParameter("arguments").rowData);
+				_that.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
+				_that.rowData.VIN = _that.rowData.VIN;
+				_that.rowData.VModelYear = _that.rowData.VModelYear;
+				_that.rowData.VehicleSeries = _that.rowData.VehicleSeries;
+				_that.rowData.TireSize = _that.rowData.TireSize.replace("%2F", "/");
+				_that.rowData.ProvincialTax = "";
+				_that.rowData.FederalTax = "";
+				_that.rowData.ProvincialTaxSum = "";
+				_that.rowData.FederalTaxSum = "";
+				_that.rowData.EHFPriceSum = "";
+				_that.rowData.Total = "";
+				_that.rowData.subTotal = "";
+				_that.rowData.Retails = Number(_that.rowData.Retails);
+
+				var oMat = _that.rowData.Material;
+				var oMaterial = oMat;
+
+				_that.objPrice = {};
+				_that.objPrice.otherItemPrice1 = "";
+				_that.objPrice.otherItemPrice2 = "";
+				_that.objPrice.otherItemPrice3 = "";
+				_that.objPrice.otherItemPrice4 = "";
+				_that.objPrice.MnBPrice = "";
+				_that.objPrice.TiresPrice = "";
+				_that.objPrice.WheelsPrice = "";
+				_that.objPrice.TPMSPrice = "";
+				_that.objPrice.FittingKitPrice = "";
+				_that.objPrice.RHPPriceSum = "";
+
+				_that.Division = _that.userData.DealerData.Division;
+				_that.Doctype = "ZAF";
+				_that.SalesOrg = "7000";
+				_that.DistrChan = "10";
+				_that.SoldtoParty = _that.userData.DealerData.BusinessPartner;
+
+				var filterdata = "?$filter=Division eq '" + _that.Division + "' and DocType eq '" + _that.Doctype + "' and SalesOrg eq '" +
+					_that.SalesOrg + "' and DistrChan eq '" + _that.DistrChan + "' and SoldtoParty eq '" + _that.SoldtoParty +
+					"' and Material eq '" + oMaterial + "'";
+				_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
+				_that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
+					success: $.proxy(function (oPriceData) {
+							console.log("oPriceData", oPriceData);
+							for (var n = 0; n < oPriceData.results.length; n++) {
+								var CndType = oPriceData.results[n].CndType;
+								if (CndType == "JRC4" || CndType == "JRC5") {
+									_that.oTireQuotationModel.getData().FederalTax = Number(oPriceData.results[n].Amount);
+								} else if (CndType == "JRC3" || CndType == "JRC2") {
+									_that.oTireQuotationModel.getData().ProvincialTax = Number(oPriceData.results[n].Amount);
+								} else if (CndType == "ZPEH" || CndType == "ZPEC") { //Freight Cost
+									_that.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
+								}
+							}
+						},
+						_that),
+					error: function (oError) {
+						console.log("Error in fetching ZC_PriceSet", oError);
+					}
+				});
+			}
+
+			jQuery.sap.delayedCall(0, _that, function () {
+				_that.oTireQuotationModel = new JSONModel();
+				_that.oTirePriceModel = new JSONModel();
+				_that.oTireQuotationModel.setData(_that.rowData);
+				_that.getView().setModel(_that.oTireQuotationModel, "TireQuotationModel");
+				_that.oTireQuotationModel.updateBindings(true);
+				_that.oTireQuotationModel.refresh(true);
+				console.log("Tire Quote Data", _that.oTireQuotationModel.getData());
+				_that.oTirePriceModel.setData(_that.objPrice);
+				_that.getView().setModel(_that.oTirePriceModel, "TirePriceModel");
+				_that.oTirePriceModel.updateBindings(true);
+				_that.oTirePriceModel.refresh(true);
+				console.log("Tire Price Data", _that.oTirePriceModel.getData());
+				_that.oGlobalBusyDialog.close();
+			});
+
+			$.ajax({
+				dataType: "json",
+				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
+				type: "GET",
+				success: function (oDataResponse) {
+					if (oDataResponse.d.results.length > 0) {
+						_that.matData = {
+							"results": []
+						};
+						$.each(oDataResponse.d.results, function (i, item) {
+							if (item.MATNR != "") {
+								_that.matData.results.push({
+									"MATNR": item.MATNR
+								});
+							}
+						});
+						console.log("ProductCategoryModel Data", _that.matData);
+						_that.oProductCategoryModel = new JSONModel();
+						_that.getView().setModel(_that.oProductCategoryModel, "ProductCategoryModel");
+						_that.oProductCategoryModel.setData(_that.matData);
+						_that.oProductCategoryModel.getData().results.unshift({
+							"MATNR": "No Thank You"
+						});
+						_that.oProductCategoryModel.updateBindings(true);
+						if (_that.getView().byId("id_RHP") !== undefined) {
+							_that.getView().byId("id_RHP").setSelectedKey(_that.getView().byId("id_RHP").getItems()[0].getKey());
+						}
+					} else {
+						// sap.m.MessageBox.error(
+						// 	"NO Material found for category PRODH"
+						// );
+					}
+				},
+				error: function (oError) {
+					// sap.m.MessageBox.error(
+					// 	"NO Material found for category PRODH"
+					// );
+				}
+			});
+		},
 		decimalFormatter: function (oDecVal) {
 			if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
 				var returnVal = parseFloat(oDecVal).toFixed(2);
@@ -300,7 +274,7 @@ sap.ui.define([
 		},
 
 		onPressBreadCrumb: function (oEvtLink) {
-			_that.getRouter().navTo("master");
+			sap.ui.core.UIComponent.getRouterFor(_that).navTo("master");
 		},
 
 		onMatSelection: function (oChange) {
@@ -535,17 +509,17 @@ sap.ui.define([
 			if (_that.getView().byId("id_freeDescp") != undefined) {
 				_that.getView().byId("id_freeDescp").setValue("");
 			}
-
 			_that.oTireQuotationModel.setData(null);
+			_that.oTirePriceModel.setData(null);
 			_that.oTireQuotationModel.updateBindings(true);
 			_that.oTireQuotationModel.refresh(true);
-			_that.oTirePriceModel.setData(null);
 			_that.oTirePriceModel.updateBindings(true);
 			_that.oTirePriceModel.refresh(true);
+			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsFromQuote");
 
-			_that.getRouter().navTo("searchResultsTireNoData", {
-				tireData: "selectDifferentTire"
-			});
+			// _that.getRouter().navTo("searchResultsTireNoData", {
+			// 	tireData: "selectDifferentTire"
+			// });
 		},
 
 		generatePDF: function (oEvent) {
@@ -642,7 +616,7 @@ sap.ui.define([
 						data.RHPPriceSum = _that.decimalFormatter(Number(_that.oTireQuotationModel.getData().RHPPRice) * Number(_that.getView()
 							.byId("id_RHPsQty").getValue())).toString();
 					}
-					_that.oTirePrice = _that.getView().byId("id_tirePrice");
+					// _that.oTirePrice = _that.getView().byId("id_tirePrice");
 					_that.oTireUnitPrice = _that.getView().byId("id_tireUnitPrice").getValue();
 					data.TiresPrice = _that.decimalFormatter(Number(oQtyVal * _that.oTireUnitPrice));
 					if (dataRes.EHFPRice != "") {
@@ -783,13 +757,6 @@ sap.ui.define([
 			_that.oTirePriceModel.updateBindings(true);
 
 			_that.sub = Number(dataRes.subTotal);
-			// if (_that.FedTaxCode.getValue() != "") {
-			// 	_that.sub = Number(dataRes.subTotal) + (Number(dataRes.subTotal) / 100) + Number(_that.FedTaxCode.getValue());
-			// }
-			// if (_that.ProTaxCode.getValue() != "") {
-			// 	_that.sub = Number(dataRes.subTotal) + (Number(dataRes.subTotal) / 100) + Number(_that.ProTaxCode.getValue());
-			// }
-			// // _that.TotalAmount.setValue(_that.decimalFormatter(_that.sub));
 			if (dataRes.FederalTax != "") {
 				dataRes.FederalTaxSum = _that.decimalFormatter((_that.sub / 100) * Number(dataRes.FederalTax));
 				_that.sub = _that.sub + (_that.sub / 100) * Number(dataRes.FederalTax);
@@ -834,11 +801,7 @@ sap.ui.define([
 		},
 
 		onExit: function () {
-			_that.oTireQuotationModel.setData(null);
-			_that.oTireQuotationModel.updateBindings(true);
 			_that.oTireQuotationModel.refresh(true);
-			_that.oTirePriceModel.setData(null);
-			_that.oTirePriceModel.updateBindings(true);
 			_that.oTirePriceModel.refresh(true);
 			_that.destroy();
 		}
