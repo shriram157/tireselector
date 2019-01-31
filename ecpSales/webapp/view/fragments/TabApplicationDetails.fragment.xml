@@ -77,13 +77,13 @@
 						<Label text="{i18n>DealType}"/>
 						<Text text="{LocalDataModel>/PricingModelData/DEALTYPEDESC}"/>
 						<Label text="{i18n>VehiclePrice}"/>
-						<Input type="Number" id="idVPrice" value="{EcpFieldData>/ZecpVehPrice}" required="true" valueState="{LocalDataModel>/VehPriceState}"/>
+						<Input type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" value="{EcpFieldData>/ZecpVehPrice}" required="true" valueState="{LocalDataModel>/VehPriceState}"/>
 						<Label text="{i18n>AmtFinanced}"/>
-						<Input type="Number" value="{EcpFieldData>/ZecpAmtFin}"/>
+						<Input type="Number" value="{EcpFieldData>/ZecpAmtFin}" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>LienholderName}"/>
-						<Input value="{EcpFieldData>/ZecpLienholder}"/>
+						<Input value="{EcpFieldData>/ZecpLienholder}" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>LienTerms}"/>
-						<Input type="Number" value="{EcpFieldData>/ZecpLienterms}"/>
+						<Input type="Number" value="{EcpFieldData>/ZecpLienterms}" editable="{LocalDataModel>/editableField}"/>
 					</f:content>
 				</f:SimpleForm>
 			</html:div>
@@ -130,7 +130,7 @@
 						<Text text="{EcpFieldData>/ZecpPlancode}" id="idPlanCodeText"/>
 						<Label text="{i18n>PlanPurchasePrice}"/>
 						<Input type="Number" value="{EcpFieldData>/ZecpPlanpurchprice}" id="idPlanPurchase" required="true"
-							valueState="{LocalDataModel>/PlanPurchase}"/>
+							valueState="{LocalDataModel>/PlanPurchase}" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>RetailPrice}"/>
 						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_RET_PRICE}"/>
 						<Label text="{i18n>DeferredSurcharge}"/>
@@ -162,7 +162,7 @@
 						<Text
 							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 						<Label text="{i18n>Odometer}"/>
-						<Input value="{EcpFieldData>/ZecpOdometer}" id="idOdo" type="Number" required="true"/>
+						<Input value="{EcpFieldData>/ZecpOdometer}" id="idOdo" type="Number" required="true" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>RoadHazard}"/>
 						<Text text="{EcpFieldData>/ZecpRoadhazard}"/>
 						<Label text="{i18n>BenefitsFlag}"/>
@@ -188,7 +188,7 @@
 						<Label text="{i18n>IssueDealer}"/>
 						<Text text="{EcpFieldData>/ZecpDealcode}"/>
 						<Label text="{i18n>PreOwnedCert}"/>
-						<Input id="idPrOwndCert" liveChange="onChangePreownedCert" value="{path : 'EcpFieldData>/PrOwndCert', type : 'sap.ui.model.type.String', 
+						<Input id="idPrOwndCert" editable="{LocalDataModel>/editableField}" liveChange="onChangePreownedCert" value="{path : 'EcpFieldData>/PrOwndCert', type : 'sap.ui.model.type.String', 
                                   constraints : { 
                                       minLength : 2, 
                                       maxLength : 10 

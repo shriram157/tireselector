@@ -31,7 +31,7 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oGetText = oEvent.getSource().getText();
 			var oval = 404;
-			this.getDealerFn();
+			this.getDealer();
 
 			if (oGetText === oBundle.getText("NewApplication")) {
 
@@ -153,13 +153,13 @@ sap.ui.define([
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
-
+						that.getModel("LocalDataModel").setProperty("/editableField", true);
 						break;
 					case "DealerServiceUser":
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
-
+						that.getModel("LocalDataModel").setProperty("/editableField", false);
 						break;
 
 					case "TCIAdminECPDept":
@@ -167,6 +167,7 @@ sap.ui.define([
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+						that.getModel("LocalDataModel").setProperty("/editableField", false);
 
 						break;
 					case "internalTCIUser":
@@ -178,6 +179,7 @@ sap.ui.define([
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+						that.getModel("LocalDataModel").setProperty("/editableField", false);
 						break;
 					default:
 						// raise a message, because this should not be allowed. 

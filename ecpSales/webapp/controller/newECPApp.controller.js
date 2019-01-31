@@ -90,6 +90,7 @@ sap.ui.define([
 			this.oAppType = oEvent.getParameters().arguments.appType;
 			this.oOdometer = oEvent.getParameters().arguments.Odometer;
 			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
+			this.getDealer();
 			if (this.oViNum != 404 && this.oViNum != undefined) {
 				this.getView().getModel("oSetProperty").setProperty("/oPlan", this.oPlan);
 				this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.oOdometer);
