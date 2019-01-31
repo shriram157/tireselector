@@ -1,4 +1,4 @@
-var _that;
+var _localScope;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -9,140 +9,135 @@ sap.ui.define([
 
 	return BaseController.extend("tireSelector.controller.productMarkups", {
 		onInit: function () {
-			_that = this;
-			// _that.userloginCount = 1;
+			_localScope = this;
+			// _localScope.userloginCount = 1;
 
-			_that.getRouter().attachRouteMatched(function (oEvent) {
+			_localScope.getRouter().attachRouteMatched(function (oEvent) {
 
-				_that._oViewModel = new sap.ui.model.json.JSONModel({
+				_localScope._oViewModel = new sap.ui.model.json.JSONModel({
 					busy: false,
 					delay: 0,
 					enableProdMarkup: false
 				});
 
-				_that.getView().setModel(_that._oViewModel, "propertiesModel");
+				_localScope.getView().setModel(_localScope._oViewModel, "propertiesModel");
 
-				_that.oProdMarkupModel = new JSONModel();
-				sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-				_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+				_localScope.oProdMarkupModel = new JSONModel();
+				sap.ui.getCore().setModel(_localScope.oProdMarkupModel, "ProdMarkupModel");
+				_localScope.getView().setModel(_localScope.oProdMarkupModel, "ProdMarkupModel");
 
-				_that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-				_that.userData = sap.ui.getCore().getModel("DealerModel").getData();
+				_localScope.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
+				_localScope.userData = sap.ui.getCore().getModel("DealerModel").getData();
 
-				var scopes = _that.userData.userContext.scopes;
+				var scopes = _localScope.userData.userContext.scopes;
 
 				if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
-					_that._oViewModel.setProperty("/enableProdMarkup", true);
+					_localScope._oViewModel.setProperty("/enableProdMarkup", true);
 				} else {
-					_that._oViewModel.setProperty("/enableProdMarkup", false);
+					_localScope._oViewModel.setProperty("/enableProdMarkup", false);
 				}
 
 				jQuery.sap.require("sap.ui.core.format.DateFormat");
-				_that.oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
+				_localScope.oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
 					pattern: "yyyy-MM-dd'T'HH:MM:ss"
 				});
 
 				function callECCData() {
 					// "/ZC_Product_CategorySet?$filter=PRODH eq 'PARP05' and CHARAC eq 'TIRE_BRAND_NAME' and CLASS eq 'TIRE_INFORMATION' &$expand=CategToCharac&$format=json", {
-					_that.oProdMarkupModel.setData();
-					_that.oProdMarkupModel.updateBindings(true);
-					_that.oPriceServiceModel = _that.getOwnerComponent().getModel("PriceServiceModel");
-					_that.oPriceServiceModel.read("/ZC_TireBrandSet?$format=json", {
+					_localScope.oProdMarkupModel.setData();
+					_localScope.oProdMarkupModel.updateBindings(true);
+					_localScope.oPriceServiceModel = _localScope.getOwnerComponent().getModel("PriceServiceModel");
+					_localScope.oPriceServiceModel.read("/ZC_TireBrandSet?$format=json", {
 						success: $.proxy(function (data) {
-							_that.tireBrandData = {
+							_localScope.tireBrandData = {
 								"results": []
 							};
 							// var data = oECCData.results[0].CategToCharac;
 							$.each(data.results, function (i, item) {
-								_that.tireBrandData.results.push({
-									"Dealer_code": _that.userData.DealerData.DealerCode,
-									"Dealer_Brand": _that.userData.DealerData.Division,
+								_localScope.tireBrandData.results.push({
+									"Dealer_code": _localScope.userData.DealerData.DealerCode,
+									"Dealer_Brand": _localScope.userData.DealerData.Division,
 									"Manufacturer_code": item.VALUE, //TIRE_BRAND_DESCP, //length is only 10 char for  
-									"Preview_Markup_Percentage": "",
-									"Live_Markup_Percentage": "",
-									"Live_Last_Updated": _that.oDateFormat.format(new Date()),
-									"Live_Last_Updated_By": _that.userData.DealerData.DealerName,
-									"User_First_Name": _that.userData.DealerData.BusinessPartnerName,
-									"User_Last_Name": _that.userData.DealerData.BusinessPartnerName2
+									"Preview_Markup_Percentage": "0.00",
+									"Live_Markup_Percentage": "0.00",
+									"Live_Last_Updated": _localScope.oDateFormat.format(new Date()),
+									"Live_Last_Updated_By": _localScope.userData.DealerData.DealerName,
+									"User_First_Name": _localScope.userData.DealerData.BusinessPartnerName,
+									"User_Last_Name": _localScope.userData.DealerData.BusinessPartnerName2
 								});
 							});
-							_that.oProdMarkupModel.setData(_that.tireBrandData);
-							_that.oProdMarkupModel.updateBindings(true);
-							console.log("ECC Manufaturer Data", _that.oProdMarkupModel);
-						}, _that),
+							_localScope.oProdMarkupModel.setData(_localScope.tireBrandData);
+							_localScope.oProdMarkupModel.updateBindings(true);
+							console.log("ECC Manufaturer Data", _localScope.oProdMarkupModel);
+						}, _localScope),
 						error: function (oError) {
 							console.log("Error in fetching table", oError);
 						}
 					});
 				}
 
-				_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
-				_that.oXSOServiceModel.read("/DealerMarkUp", {
+				_localScope.oXSOServiceModel = _localScope.getOwnerComponent().getModel("XsodataModel");
+				_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 					success: $.proxy(function (oData) {
 						console.log("XSO data", oData);
 						if (oData.results.length == 0) {
 							callECCData();
 						} else {
-							_that.oProdMarkupModel.setData(oData);
-							_that.oProdMarkupModel.updateBindings(true);
+							_localScope.oProdMarkupModel.setData(oData);
+							_localScope.oProdMarkupModel.updateBindings(true);
 						}
-					}, _that),
+					}, _localScope),
 					error: function (oError) {
 						console.log("Error in fetching table", oError);
 					}
 				});
 
-				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties"
 				});
-				_that.getView().setModel(_that.oI18nModel, "i18n");
+				_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
 
 				if (window.location.search == "?language=fr") {
-					_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
 						bundleUrl: "i18n/i18n.properties",
 						bundleLocale: ("fr")
 					});
-					_that.getView().setModel(_that.oI18nModel, "i18n");
-					_that.sCurrentLocale = 'FR';
+					_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
+					_localScope.sCurrentLocale = 'FR';
 				} else {
-					_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
 						bundleUrl: "i18n/i18n.properties",
 						bundleLocale: ("en")
 					});
-					_that.getView().setModel(_that.oI18nModel, "i18n");
-					_that.sCurrentLocale = 'EN';
+					_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
+					_localScope.sCurrentLocale = 'EN';
 				}
 
-			}, _that);
+			}, _localScope);
 
 		},
 
 		onPressBreadCrumb: function (oEvtLink) {
-			_that.getRouter().navTo("master");
+			_localScope.getRouter().navTo("master");
 		},
 
 		updateXSALiveTable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
 			var oModel = this.getOwnerComponent().getModel("XsodataModel");
-			var oModel2 = this.getOwnerComponent().getModel("XsodataModelPost");
-
-			// var oModel = new sap.ui.model.odata.v2.ODataModel(_that.oService, true);
-			var modelData = _that.oProdMarkupModel.getData().results;
-			// var UserData = sap.ui.getCore().getModel("DealerModel").getData().attributes[0];
+			// var Model2 = this.getOwnerComponent().getModel("XsodataModelPost");
+			var modelData = _localScope.oProdMarkupModel.getData().results;
 			var postSuccessFlag = false;
 			var updateSuccessFlag = false;
 			for (var i = 0; i < modelData.length; i++) { //modelData.length
 
 				var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
 					"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
-
 				var sContextPathInfo = "/DealerMarkUp(" + sPrikamryKeyofObject + ")";
 
 				var bindingContext = oModel.getContext(sContextPathInfo);
 				var bindingContextPath = bindingContext.getPath();
 				var dataFromModel = bindingContext.getModel().getProperty(bindingContextPath);
-				//			var dataFromModel = oModel.getProperty(sContextPathInfo);
 
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
@@ -152,29 +147,31 @@ sap.ui.define([
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 					dataFromModel.IsLive = "Y";
-					//  Add all the other fields that you want to update. // TODO: 
+					
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
 						console.log("Post Response", oResponse);
 						updateSuccessFlag = true;
-						// _that.callUpdatedProdMarkupTab();
-						// Proper error handling if any thing needed. // TODO: 
 					});
 					updateSuccessFlag = true;
 				} else {
-					_that.newDataFromModel.Dealer_code = modelData[i].Dealer_code;
-					_that.newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
-					_that.newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					_that.newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					_that.newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					_that.newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
-					_that.newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
-					_that.newDataFromModel.User_First_Name = modelData[i].User_First_Name;
-					_that.newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
-					_that.newDataFromModel.IsLive = "Y";
-					oModel2.create("/DealerMarkUp", _that.newDataFromModel, function (oResponse) { //bindingContextPath
-						console.log("Post Response from ECC", oResponse);
-						postSuccessFlag = true;
-
+					var newDataFromModel = {};
+					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
+					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
+					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
+					newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
+					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
+					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
+					newDataFromModel.IsLive = "Y";
+					oModel.create("/DealerMarkUp", newDataFromModel, null, {
+						success: function (oData, oResponse) {
+							postSuccessFlag = true;
+						},
+						error: function (oError) {
+							postSuccessFlag = false;
+						}
 					});
 					postSuccessFlag = true;
 				}
@@ -185,7 +182,7 @@ sap.ui.define([
 					"Live Markup post is successful", {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
-							_that.callUpdatedProdMarkupTab();
+							_localScope.callUpdatedProdMarkupTab();
 						}
 					}
 				);
@@ -194,12 +191,12 @@ sap.ui.define([
 					"Live Markup update is successful", {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
-							_that.callUpdatedProdMarkupTab();
+							_localScope.callUpdatedProdMarkupTab();
 						}
 					}
 				);
 			}
-			_that.callUpdatedProdMarkupTab();
+			_localScope.callUpdatedProdMarkupTab();
 			// ===================================================== Update Functionality - End ===============================
 		},
 
@@ -207,30 +204,19 @@ sap.ui.define([
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
 			var oModel = this.getOwnerComponent().getModel("XsodataModel");
-			var oModel2 = this.getOwnerComponent().getModel("XsodataModelPost");
-
-			// var oModel2 = new sap.ui.model.odata.ODataModel(_that.oService, true);
-			// oModel.setUseBatch(false);
-			var modelData = _that.oProdMarkupModel.getData().results;
-			// var UserData = sap.ui.getCore().getModel("DealerModel").getData().attributes[0];
-			_that.newDataFromModel = {};
+			// var Model2 =this.getOwnerComponent().getModel("XsodataModelPost");
+			var modelData = _localScope.oProdMarkupModel.getData().results;
 
 			var postSuccessFlag = false;
 			var updateSuccessFlag = false;
 			for (var i = 0; i < modelData.length; i++) { //modelData.length
-
 				var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
 					"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
 
 				var sContextPathInfo = "/DealerMarkUp(" + sPrikamryKeyofObject + ")";
-
-				//Define group ID
-				// oModel.setDeferredGroups(["submitChangeGroup"]);		
-
 				var bindingContext = oModel.getContext(sContextPathInfo);
 				var bindingContextPath = bindingContext.getPath();
 				var dataFromModel = bindingContext.getModel().getProperty(bindingContextPath); //bindingContext.getModel().getContext(bindingContextPath); //Updated by RT 20-12-2018 //bindingContext.getModel().getProperty(bindingContextPath); 
-				//			var dataFromModel = oModel.getProperty(sContextPathInfo);
 
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
@@ -241,28 +227,35 @@ sap.ui.define([
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 					dataFromModel.IsLive = "";
 
-					//  Add all the other fields that you want to update. // TODO: 
-					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
-						console.log("updated data", oResponse);
-						updateSuccessFlag =true;
-						// Proper error handling if any thing needed. // TODO: 
+					oModel.update(bindingContextPath, dataFromModel, null, {
+						success: function (oData, oResponse) {
+							updateSuccessFlag = true;
+						},
+						error: function (oError) {
+							updateSuccessFlag = false;
+						}
 					});
 					updateSuccessFlag = true;
 				} else {
-					_that.newDataFromModel.Dealer_code = modelData[i].Dealer_code;
-					_that.newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
-					_that.newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					_that.newDataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
-					_that.newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					_that.newDataFromModel.Live_Last_Updated = mew Date(modelData[i].Live_Last_Updated);
-					_that.newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
-					_that.newDataFromModel.User_First_Name = modelData[i].User_First_Name;
-					_that.newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
-					_that.newDataFromModel.IsLive = "";
+					var newDataFromModel = {};
+					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
+					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
+					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
+					newDataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
+					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
+					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
+					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
+					newDataFromModel.IsLive = "";
 
-					oModel2.create("/DealerMarkUp", _that.newDataFromModel, function (oResponse) { //bindingContextPath
-						console.log("Post Response from ECC", oResponse);
-						postSuccessFlag = true;
+					oModel.create("/DealerMarkUp", newDataFromModel, null, {
+						success: function (oData, oResponse) {
+							postSuccessFlag = true;
+						},
+						error: function (oError) {
+							postSuccessFlag = false;
+						}
 					});
 					postSuccessFlag = true;
 				}
@@ -272,7 +265,7 @@ sap.ui.define([
 					"Preview Markup post is successful", {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
-							_that.callUpdatedProdMarkupTab();
+							_localScope.callUpdatedProdMarkupTab();
 						}
 					}
 				);
@@ -281,28 +274,28 @@ sap.ui.define([
 					"Preview Markup update is successful", {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
-							_that.callUpdatedProdMarkupTab();
+							_localScope.callUpdatedProdMarkupTab();
 						}
 					}
 				);
 			}
-			_that.callUpdatedProdMarkupTab();
+			_localScope.callUpdatedProdMarkupTab();
 			// ===================================================== Update Functionality - End ===============================
 		},
 		callUpdatedProdMarkupTab: function () {
-			_that.oXSOServiceModel = this.getOwnerComponent().getModel("XsodataModel");
-			console.log("XSO model data", _that.oXSOServiceModel);
+			_localScope.oXSOServiceModel = this.getOwnerComponent().getModel("XsodataModel");
+			console.log("XSO model data", _localScope.oXSOServiceModel);
 			var flagNoData = false;
-			_that.oXSOServiceModel.read("/DealerMarkUp", {
+			_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
 						console.log("XSO data", oData);
-						_that.oProdMarkupModel.setData(oData);
-						_that.oProdMarkupModel.updateBindings(true);
+						_localScope.oProdMarkupModel.setData(oData);
+						_localScope.oProdMarkupModel.updateBindings(true);
 					} else {
 						flagNoData = true;
 					}
-				}, _that),
+				}, _localScope),
 				error: function (oError) {
 					flagNoData = true;
 				}
@@ -317,18 +310,18 @@ sap.ui.define([
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");
-			if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("PageTitle")) {
-				_that.getRouter().navTo("master");
-			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
-				_that.getRouter().navTo("productMarkups");
-			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ReportError")) {
-				_that.getRouter().navTo("reportError");
+			if (_oSelectedScreen == _localScope.oI18nModel.getResourceBundle().getText("PageTitle")) {
+				_localScope.getRouter().navTo("master");
+			} else if (_oSelectedScreen == _localScope.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
+				_localScope.getRouter().navTo("productMarkups");
+			} else if (_oSelectedScreen == _localScope.oI18nModel.getResourceBundle().getText("ReportError")) {
+				_localScope.getRouter().navTo("reportError");
 			}
 		},
 
 		onExit: function () {
-			_that.destroy();
-			_that.oSelectJSONModel.refresh();
+			_localScope.destroy();
+			_localScope.oSelectJSONModel.refresh();
 		}
 
 	});

@@ -280,7 +280,6 @@ sap.ui.define([
 
 			// _that.oForVehicleSearchOnly.setVisible(false);
 			// _that.oGlobalJSONModel.getData().FitmentData=[];
-			_that.oGlobalJSONModel.getData().modelDetailsData = [];
 			_that.oGlobalJSONModel.getData().vehicleSeriesData = [];
 			_that.oGlobalJSONModel.getData().vinData = [];
 
@@ -502,6 +501,7 @@ sap.ui.define([
 			_that.ModelNodataFlag = false;
 			sap.ui.core.BusyIndicator.show();
 
+			_that.oGlobalJSONModel.getData().modelDetailsData = [];
 			var ModelSeriesNo = _that.SearchOptionVehicle.getSelectedKey();
 			var modelYearURl = _that.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS?$filter=TCISeries eq  '" + ModelSeriesNo + " '";
 			$.ajax({
@@ -895,8 +895,10 @@ sap.ui.define([
 					// if (TCIseries == modelDetailsData[a].TCISeries && modelyear == modelDetailsData[a].Modelyear) {
 					var Suffix = modelDetailsData[a].suffix;
 					var Modelyear = _that.ModelSeriesCombo.getSelectedKey(); //modelDetailsData[a].Modelyear;
-					var Model = modelDetailsData[a].Model;
-					console.log(Model + Modelyear);
+					if (modelDetailsData[a].Modelyear == Modelyear) {
+						var Model = modelDetailsData[a].Model;
+					}
+					console.log(Model +" "+ Modelyear);
 					// }	Zzmoyr eq '2018' and Model eq 'DFREVT'
 					serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + Modelyear + "' and Model eq '" + Model +
 						"'";

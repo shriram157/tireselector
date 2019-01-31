@@ -1,4 +1,4 @@
-var _that; 
+var _scopeLocal; 
 sap.ui.define([
 	"sap/ui/core/mvc/Controller"
 ], function (Controller) {
@@ -12,41 +12,41 @@ sap.ui.define([
 		 * @memberOf tireSelector.view.reportError
 		 */
 		onInit: function () {
-			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				bundleUrl: "i18n/_that.oI18nModelproperties"
+			_scopeLocal.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/_scopeLocal.oI18nModelproperties"
 			});
-			_that.getView().setModel(_that.oI18nModel, "i18n");
+			_scopeLocal.getView().setModel(_scopeLocal.oI18nModel, "i18n");
 
 			if (window.location.search == "?language=fr") {
-				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				_scopeLocal.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
 				});
-				_that.getView().setModel(_that.oI18nModel, "i18n");
-				_that.sCurrentLocale = 'FR';
+				_scopeLocal.getView().setModel(_scopeLocal.oI18nModel, "i18n");
+				_scopeLocal.sCurrentLocale = 'FR';
 			} else {
-				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				_scopeLocal.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
 				});
-				_that.getView().setModel(_that.oI18nModel, "i18n");
-				_that.sCurrentLocale = 'EN';
+				_scopeLocal.getView().setModel(_scopeLocal.oI18nModel, "i18n");
+				_scopeLocal.sCurrentLocale = 'EN';
 			}
 		},
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");
-			if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("PageTitle")) {
-				_that.getRouter().navTo("master");
-			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
-				_that.getRouter().navTo("productMarkups");
-			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ReportError")) {
-				_that.getRouter().navTo("reportError");
+			if (_oSelectedScreen == _scopeLocal.oI18nModel.getResourceBundle().getText("PageTitle")) {
+				_scopeLocal.getRouter().navTo("master");
+			} else if (_oSelectedScreen == _scopeLocal.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
+				_scopeLocal.getRouter().navTo("productMarkups");
+			} else if (_oSelectedScreen == _scopeLocal.oI18nModel.getResourceBundle().getText("ReportError")) {
+				_scopeLocal.getRouter().navTo("reportError");
 			}
 		},
 		NavBackToSearch: function () {
-			// _that.oSelectJSONModel.refresh();
-			_that.getRouter().navTo("master");
+			// _scopeLocal.oSelectJSONModel.refresh();
+			_scopeLocal.getRouter().navTo("master");
 		},
 
 		/**
@@ -72,7 +72,7 @@ sap.ui.define([
 		 * @memberOf tireSelector.view.reportError
 		 */
 		onExit: function () {
-			_that.destroy();
+			_scopeLocal.destroy();
 		}
 
 	});
