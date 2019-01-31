@@ -1,2 +1,4 @@
 project.json
 .che/modules
+/.mta/
+/*.mtar

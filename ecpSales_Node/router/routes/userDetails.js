@@ -118,12 +118,14 @@ module.exports = function () {
 
 		//if you see scopes view ecp application, view ecp claim, view ecp agreement, 
 		// view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
+		// or ECP ZONE USER
 		if (viewECPApplication == true && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
 			true) {
 			var userType = "TCIAdminECPDept";
-
+			if (obj_data.Zone != null) {
+				userType = "TCIZoneUser";
+			}
 			sendUserData.loggedUserType.push(userType);
-
 			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
 
 		}
@@ -132,15 +134,6 @@ module.exports = function () {
 		if (viewECPApplication == false && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
 			true) {
 			var userType = "internalTCIUser"; //
-			sendUserData.loggedUserType.push(userType);
-
-			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
-		}
-
-		//if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and  zone then this is a  ECP ZONE USER
-		if (viewECPApplication == true && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
-			true) {
-			var userType = "TCIZoneUser"; // TODO: the zone data right now not available. 
 			sendUserData.loggedUserType.push(userType);
 
 			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
