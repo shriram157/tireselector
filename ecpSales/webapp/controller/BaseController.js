@@ -25,56 +25,7 @@ sap.ui.define([
 		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
-		getDealerFn: function () {
-			var sLocation = window.location.host;
-			var sLocation_conf = sLocation.search("webide");
-			if (sLocation_conf == 0) {
-				this.sPrefix = "/ecpSales_node_secured"; //ecpSales_node_secured
-				this.attributeUrl = "/userDetails/attributesforlocaltesting";
-			} else {
-				this.sPrefix = "";
-				this.attributeUrl = "/userDetails/attributes";
-			}
-			var that = this;
-			var oDealer;
-			var myAjaxCall = $.ajax({
-				url: this.sPrefix + this.attributeUrl,
-				type: "GET",
-				dataType: "json",
-
-				success: function (oData) {
-					var BpDealer = [];
-					var userAttributes = [];
-
-					$.each(oData.attributes, function (i, item) {
-						var BpLength = item.BusinessPartner.length;
-
-						BpDealer.push({
-							"BusinessPartnerKey": item.BusinessPartnerKey,
-							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
-							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
-							"Division": item.Division,
-							"BusinessPartnerType": item.BusinessPartnerType,
-							"searchTermReceivedDealerName": item.SearchTerm2
-						});
-
-					});
-					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
-					that.getModel("LocalDataModel").setProperty("/currentIssueDealer", BpDealer[0].BusinessPartnerKey);
-					//that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-					// read the saml attachments the same way 
-
-				},
-				error: function (response) {
-					sap.ui.core.BusyIndicator.hide();
-				}
-			});
-
-			// return myAjaxCall.then(function (result) {
-			// 	console.log(result);
-			// });
-
-		},
+		
 		handleLinkPress: function (oEvent) {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -163,6 +114,151 @@ sap.ui.define([
 		 */
 		getResourceBundle: function () {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
+		},
+
+		getDealer: function () {
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+			if (sLocation_conf == 0) {
+				this.sPrefix = "/ecpSales_node_secured"; //ecpSales_node_secured
+				this.attributeUrl = "/userDetails/attributesforlocaltesting";
+			} else {
+				this.sPrefix = "";
+				this.attributeUrl = "/userDetails/attributes";
+			}
+
+			var oBusinessModel = this.getModel("ApiBusinessModel");
+			this.getView().setModel(oBusinessModel, "OBusinessModel");
+			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
+			// var oEventBus = sap.ui.getCore().getEventBus();
+			// oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
+
+			//======================================================================================================================//			
+			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
+			//======================================================================================================================//		
+			//  get the Scopes to the UI 
+			//this.sPrefix ="";
+			var that = this;
+			$.ajax({
+				url: this.sPrefix + "/userDetails/currentScopesForUser",
+				type: "GET",
+				dataType: "json",
+				success: function (oData) {
+					// var userScopes = oData;
+					// userScopes.forEach(function (data) {
+
+					var userType = oData.loggedUserType[0];
+					switch (userType) {
+					case "DealerSalesUSer":
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+
+						break;
+					case "DealerServiceUser":
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+
+						break;
+
+					case "TCIAdminECPDept":
+
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+
+						break;
+					case "internalTCIUser":
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
+						break;
+					case "TCIZoneUser":
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+						break;
+					default:
+						// raise a message, because this should not be allowed. 
+
+					}
+				}
+
+				// if (data === "ecpSales!t1188.Manage_ECP_Application") {
+				// 	that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
+				// 	that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+				// } 
+
+			});
+
+			// get the attributes and BP Details - Minakshi to confirm if BP details needed		// TODO: 
+			$.ajax({
+				url: this.sPrefix + this.attributeUrl,
+				type: "GET",
+				dataType: "json",
+
+				success: function (oData) {
+					var BpDealer = [];
+					var userAttributes = [];
+
+					$.each(oData.attributes, function (i, item) {
+						var BpLength = item.BusinessPartner.length;
+
+						BpDealer.push({
+							"BusinessPartnerKey": item.BusinessPartnerKey,
+							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
+							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
+							"Division": item.Division,
+							"BusinessPartnerType": item.BusinessPartnerType,
+							"searchTermReceivedDealerName": item.SearchTerm2
+						});
+
+					});
+					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
+					// //that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
+					// // read the saml attachments the same way 
+					// $.each(oData.samlAttributes, function (i, item) {
+					// 	if (item != "") {
+					// 		userAttributes.push({
+					// 			"UserType": item.UserType[0],
+					// 			"DealerCode": item.DealerCode[0],
+					// 			"Language": item.Language[0]
+					// 				// "Zone": item.Zone[0]   ---    Not yet available
+					// 		});
+					// 	}
+					// });
+
+					// that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");
+
+					//	that._getTheUserAttributes();
+
+				}.bind(this),
+				error: function (response) {
+					sap.ui.core.BusyIndicator.hide();
+				}
+			}).done(function (data, textStatus, jqXHR) {
+				that.getModel("LocalDataModel").setProperty("/currentIssueDealer", data.attributes[0].BusinessPartnerKey);
+				var oEcpModel = that.getOwnerComponent().getModel("EcpSalesModel");
+				var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
+				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+					pattern: "yyyy-MM-ddTHH:mm:ss"
+				});
+				var oPriorDate = oDateFormat.format(that.priordate);
+				var oCurrentDate = oDateFormat.format(that.beforedate);
+
+				oEcpModel.read("/zc_ecp_application", {
+					urlParameters: {
+						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
+							"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
+					},
+					success: function (edata) {
+						that.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
+					}
+				});
+				var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+				oRouter.attachRouteMatched(that._onObjectMatched, that);
+			});
 		},
 
 		/**

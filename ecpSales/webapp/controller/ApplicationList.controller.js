@@ -73,13 +73,13 @@ sap.ui.define([
 					case "TCIAdminECPDept":
 
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
-						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 
 						break;
 					case "internalTCIUser":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
-						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						break;
 					case "TCIZoneUser":
@@ -126,17 +126,18 @@ sap.ui.define([
 					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
 					//that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
 					// read the saml attachments the same way 
-					$.each(oData.samlAttributes, function (i, item) {
-						userAttributes.push({
-							"UserType": item.UserType[0],
-							"DealerCode": item.DealerCode[0],
-							"Language": item.Language[0]
-								// "Zone": item.Zone[0]   ---    Not yet available
-						});
+					// $.each(oData.samlAttributes, function (i, item) {
+					// 	if(item != ""){
+					// 	userAttributes.push({
+					// 		"UserType": item.UserType[0],
+					// 		"DealerCode": item.DealerCode[0],
+					// 		"Language": item.Language[0]
+					// 			// "Zone": item.Zone[0]   ---    Not yet available
+					// 	});
+					// 	}
+					// });
 
-					});
-
-					that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");
+					// that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");
 
 					//	that._getTheUserAttributes();
 
@@ -198,6 +199,7 @@ sap.ui.define([
 			//	console.log(this.selectedDealer);
 		},
 		_onObjectMatched: function (oEvent) {
+			this.getDealer();
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			var issueDealer = this.getModel("LocalDataModel").getProperty("/currentIssueDealer");
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
