@@ -886,8 +886,6 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 			}
 
-			
-
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
 				0) {
 
@@ -931,7 +929,7 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oAgr.setValueState(sap.ui.core.ValueState.Error);
 			}
-			
+
 			if (this.oSelectedAgrTypeKey == this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 				var oSaleYear = new Date(oSaleDate).getFullYear();
 				var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
@@ -1029,11 +1027,21 @@ sap.ui.define([
 			};
 		},
 		OnNextStep4: function (oEvent) {
+			var oPlanArray = ["NTC34", "NTC94", "NTC45", "NTC46", "NTC47", "NTF34", "NTF94", "NTF04", "NTF46", "NTF47", "CTC40", "CTC50"];
+			// var oSaleDate = this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate");
+			// var oSaleDateTime = new Date(oSaleDate).getTime();
+
+			// var oRegDate = new Date(this.BccAgrmntPrtDt).getTime();
+			// // 			console.log(oRegDate);
+			// this.DifferTime = (oSaleDateTime - oRegDate);
+
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", true);
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
 			}
+
+			var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
 
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
 			//	console.log(this.DifferTime);
@@ -1073,6 +1081,26 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 
+			}
+
+			for (var i = 0; i < oPlanArray.length; i++) {
+				if (oPlanArray[i] == oSelectedPlan) {
+					if (this.DifferTime < 2678400000) {
+						this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+						this.getView().byId("idNewECPMsgStrip").setType("None");
+						this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
+						oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
+						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+					} else {
+						this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+						this.getView().byId("idNewECPMsgStrip").setText("ECP Plan cannot be sold as it is exceeding 31 Days from RDR Date");
+						this.getView().byId("idNewECPMsgStrip").setType("Error");
+						oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+						this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+						
+					}
+				}
 			}
 
 		},
