@@ -241,14 +241,13 @@ sap.ui.define([
 					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
 					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					newDataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
+					newDataFromModel.Live_Markup_Percentage = 0.00;
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 					newDataFromModel.IsLive = "";
-
 					oModel.create("/DealerMarkUp", newDataFromModel, null, {
 						success: function (oData, oResponse) {
 							postSuccessFlag = true;

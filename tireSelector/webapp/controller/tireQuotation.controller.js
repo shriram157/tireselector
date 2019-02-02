@@ -730,19 +730,19 @@ sap.ui.define([
 			var dataRes = _this.oTireQuotationModel.getData();
 
 			if (oNewValue.getSource().getId().split("_")[3] == "MnBPrice") {
-				arrPrices.MnBPrice = _this.MNBPrice.getValue();
+				arrPrices.MnBPrice = _this.getView().byId("id_MnBPrice").getValue();
 				_this.oTirePriceModel.updateBindings(true);
 			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItemPrice") {
-				arrPrices.otherItemPrice1 = _this.item_01.getValue();
+				arrPrices.otherItemPrice1 = _this.getView().byId("id_OtherItemPrice").getValue();
 				_this.oTirePriceModel.updateBindings(true);
 			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItem2Price") {
-				arrPrices.otherItemPrice2 = _this.item_02.getValue();
+				arrPrices.otherItemPrice2 = _this.getView().byId("id_OtherItem2Price").getValue();
 				_this.oTirePriceModel.updateBindings(true);
 			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItem3Price") {
-				arrPrices.otherItemPrice3 = _this.item_03.getValue();
+				arrPrices.otherItemPrice3 = _this.getView().byId("id_OtherItem3Price").getValue();
 				_this.oTirePriceModel.updateBindings(true);
 			} else if (oNewValue.getSource().getId().split("_")[3] == "OtherItem4Price") {
-				arrPrices.otherItemPrice4 = _this.item_04.getValue();
+				arrPrices.otherItemPrice4 = _this.getView().byId("id_OtherItem4Price").getValue();
 				_this.oTirePriceModel.updateBindings(true);
 			}
 

@@ -503,7 +503,7 @@ sap.ui.define([
 
 			_that.oGlobalJSONModel.getData().modelDetailsData = [];
 			var ModelSeriesNo = _that.SearchOptionVehicle.getSelectedKey();
-			var modelYearURl = _that.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS?$filter=TCISeries eq  '" + ModelSeriesNo + " '";
+			var modelYearURl = _that.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_SERIES_YEARSet?$filter=Series eq '" + ModelSeriesNo + "'";
 			$.ajax({
 				url: modelYearURl,
 				type: "GET",
@@ -821,7 +821,8 @@ sap.ui.define([
 								_that.vinResultdata.results.push({
 									"modelVal": item.Model,
 									"modelYearVal": item.ZZMOYR,
-									"suffixVal": item.ZZSUFFIX
+									"suffixVal": item.ZZSUFFIX,
+									"seriesVal": item.ZZSERIES
 								});
 							});
 						} else {
@@ -843,8 +844,11 @@ sap.ui.define([
 							var modelVal = _that.vinResultdata.results[v].modelVal;
 							var modelYearVal = _that.vinResultdata.results[v].modelYearVal;
 							var suffixVal = _that.vinResultdata.results[v].suffixVal;
-							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelYearVal +
-								"' and Model eq '" + modelVal + "' and Zzsuffix eq '" + suffixVal + "'&$format=json";
+							var seriesVal  = _that.vinResultdata.results[v].seriesVal;
+							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal + "' and ModelYear eq '" +
+					modelYearVal + "'";
+							// var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelYearVal +
+							// 	"' and Model eq '" + modelVal + "' and Zzsuffix eq '" + suffixVal + "'&$format=json";
 							$.ajax({
 								dataType: "json",
 								url: serviceURL2,
@@ -854,7 +858,7 @@ sap.ui.define([
 									if (oSearchData.d.results.length > 0) {
 										$.each(oSearchData.d.results, function (i, item) {
 											_that.searchresultObj.results.push({
-												"Model": item.Model,
+												"ModelDesc_EN": item.ModelDesc_EN,
 												"Zzsuffix": item.Zzsuffix,
 												"ZtireSize": item.ZtireSize,
 												"ZrimSize": item.ZrimSize
@@ -886,43 +890,32 @@ sap.ui.define([
 				});
 			} else if (_that.ModelSeriesCombo !== "" && _that.SearchOptionVehicle !== "" && _that.ModelSeriesCombo !== undefined && _that.SearchOptionVehicle !==
 				undefined) {
-				var modelDetailsData = _that.oGlobalJSONModel.getData().modelDetailsData;
-				var a;
-				// var TCIseries = _that.SearchOptionVehicle.getSelectedKey();
-				// var modelyear = _thatModelSeriesCombo.getSelectedKey();
+				var TCIseries = _that.SearchOptionVehicle.getSelectedKey();
+				var modelyear = _that.ModelSeriesCombo.getSelectedKey();
 				var flagNODATFOUND = false;
-				for (a = 0; a < modelDetailsData.length; a++) {
-					// if (TCIseries == modelDetailsData[a].TCISeries && modelyear == modelDetailsData[a].Modelyear) {
-					var Suffix = modelDetailsData[a].suffix;
-					var Modelyear = _that.ModelSeriesCombo.getSelectedKey(); //modelDetailsData[a].Modelyear;
-					if (modelDetailsData[a].Modelyear == Modelyear) {
-						var Model = modelDetailsData[a].Model;
-					}
-					console.log(Model +" "+ Modelyear);
-					// }	Zzmoyr eq '2018' and Model eq 'DFREVT'
-					serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + Modelyear + "' and Model eq '" + Model +
-						"'";
-					//_that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelyear + "' and Model eq '" + Model +
-					//	"' and Zzsuffix eq '" + Suffix + "'&$format=json";
-					$.ajax({
-						dataType: "json",
-						url: serviceURL,
-						type: "GET",
-						success: function (oData) {
-							console.log("Search Result data", oData.d.results);
-							if (oData.d.results.length > 0) {
-								_that.SearchResultModel.setData(oData.d);
-								_that.SearchResultModel.updateBindings(true);
-								_that.SearchResultModel.refresh(true);
-							} else {
-								flagNODATFOUND = true;
-							}
-						},
-						error: function (oError) {
+				// _TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'SIE' and ModelYear eq '2018'
+
+				serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and ModelYear eq '" +
+					modelyear + "'";
+				$.ajax({
+					dataType: "json",
+					url: serviceURL,
+					type: "GET",
+					success: function (oData) {
+						console.log("Search Result data", oData.d.results);
+						if (oData.d.results.length > 0) {
+							console.log("response for Fitmentset", oData.d.results);
+							_that.SearchResultModel.setData(oData.d);
+							_that.SearchResultModel.updateBindings(true);
+							_that.SearchResultModel.refresh(true);
+						} else {
 							flagNODATFOUND = true;
 						}
-					});
-				}
+					},
+					error: function (oError) {
+						flagNODATFOUND = true;
+					}
+				});
 				if (flagNODATFOUND == true) {
 					_that._oViewModel.setProperty("/enableSearchBtn", false);
 					// sap.m.MessageBox.error(

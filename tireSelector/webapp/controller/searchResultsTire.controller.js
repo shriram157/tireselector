@@ -126,28 +126,28 @@ sap.ui.define([
 			});
 
 			//uncomment below for cloud testing
-			var scopes = that.userDetails.userContext.scopes;
-			console.log("scopes", scopes);
-			var accessAll = false,
-				accesslimited = false;
+			// var scopes = that.userDetails.userContext.scopes;
+			// console.log("scopes", scopes);
+			// var accessAll = false,
+			// 	accesslimited = false;
 
-			for (var s = 0; s < scopes.length; s++) {
-				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-						accesslimited = true;
-					} else {
-						accessAll = false;
-						accesslimited = false;
-					}
-				}
-			}
-			if (accessAll == true && accesslimited == true) {
-				that._oViewModel.setProperty("/enableProdMarkup", true);
-			} else {
-				that._oViewModel.setProperty("/enableProdMarkup", false);
-			}
+			// for (var s = 0; s < scopes.length; s++) {
+			// 	if (scopes[s] != "openid") {
+			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+			// 			accessAll = true;
+			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+			// 			accesslimited = true;
+			// 		} else {
+			// 			accessAll = false;
+			// 			accesslimited = false;
+			// 		}
+			// 	}
+			// }
+			// if (accessAll == true && accesslimited == true) {
+			// 	that._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	that._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
 
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
@@ -166,14 +166,16 @@ sap.ui.define([
 				VIN = that.oModelData.SearchOptionVIN;
 				VModelYear = that.oModelData.ModelSeriesCombo;
 				VehicleSeries = that.oModelData.SearchOptionVehicle;
-				filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
+				// filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
+				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize + "' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '"+that.userDetails.DealerData.BusinessPartner+"'&$format=json";
 
 			} else if (oEvent.getParameter("arguments").tireData !== undefined) {
 				that.oTireData = JSON.parse(oEvent.getParameters().arguments.tireData);
 				VIN = that.oTireData.SearchOptionVIN;
 				VModelYear = that.oTireData.ModelSeriesCombo;
 				VehicleSeries = that.oTireData.SearchOptionVehicle;
-				filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
+				// filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
+				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE + "' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '"+that.userDetails.DealerData.BusinessPartner+"'&$format=json";
 			}
 			if (filterData !== undefined) {
 				sap.ui.core.BusyIndicator.show();
@@ -183,7 +185,7 @@ sap.ui.define([
 
 				// that.oGlobalBusyDialog = new sap.m.BusyDialog();
 
-				that.oFitmentModel.read("/ZC_FitmentSet" + filterData, {
+				that.oFitmentModel.read("/ZC_Characteristic_InfoSet" + filterData, {
 					success: $.proxy(function (oData) {
 							that.oTireFitmentJSONModel.setData(null);
 							that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
@@ -191,8 +193,8 @@ sap.ui.define([
 							sap.ushell.components.FacetFilters.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 							that.oTireFitmentJSONModel.updateBindings(true);
 							if (oData.results.length > 0) {
-								console.log("Initial load Data", oData.results[0].FitmentToCharac);
-								that.tempModel.setData(oData.results[0].FitmentToCharac);
+								console.log("Initial load Data", oData);
+								that.tempModel.setData(oData);
 								that.tempModel.updateBindings(true);
 
 								if (that.tempModel.getData().results.length <= 0) {
@@ -277,112 +279,112 @@ sap.ui.define([
 
 									that.msgFlag = false;
 
-									function getDealerNet(oMaterial) {
-										// sap.ui.core.BusyIndicator.show();
-										that.Division = that.userDetails.DealerData.Division;
-										that.Doctype = "ZAF";
-										that.SalesOrg = "7000";
-										that.DistrChan = "10";
-										that.SoldtoParty = that.userDetails.DealerData.BusinessPartner;
-										var filterdata = "?$filter=Division eq '" + that.Division + "' and DocType eq '" + that.Doctype +
-											"' and SalesOrg eq '" + that.SalesOrg + "' and DistrChan eq '" + that.DistrChan + "' and SoldtoParty eq '" +
-											that.SoldtoParty + "' and Material eq '" + oMaterial + "'";
+									// function getDealerNet(oMaterial) {
+									// 	// sap.ui.core.BusyIndicator.show();
+									// 	that.Division = that.userDetails.DealerData.Division;
+									// 	that.Doctype = "ZAF";
+									// 	that.SalesOrg = "7000";
+									// 	that.DistrChan = "10";
+									// 	that.SoldtoParty = that.userDetails.DealerData.BusinessPartner;
+									// 	var filterdata = "?$filter=Division eq '" + that.Division + "' and DocType eq '" + that.Doctype +
+									// 		"' and SalesOrg eq '" + that.SalesOrg + "' and DistrChan eq '" + that.DistrChan + "' and SoldtoParty eq '" +
+									// 		that.SoldtoParty + "' and Material eq '" + oMaterial + "'";
 
-										tempData = [];
+									// 	tempData = [];
 
-										that.oPriceServiceModel = that.getOwnerComponent().getModel("PriceServiceModel");
+									// 	that.oPriceServiceModel = that.getOwnerComponent().getModel("PriceServiceModel");
 
-										that.promise1 = new Promise(function (resolve, reject) {
-											that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
-												success: $.proxy(function (oDataPrice) {
-													if (oDataPrice.results.length > 0) {
-														// jQuery.sap.delayedCall(4000, that, function () {
-														for (var l = 0; l < oDataPrice.results.length; l++) {
-															var CndType = oDataPrice.results[l].CndType;
-															var Amount = oDataPrice.results[l].Amount;
-															if (CndType == "ZPG4") {
-																if (Amount != "") {
-																	DealerNet = Amount;
-																}
-															}
-															if (CndType == "ZPM3") {
-																if (Amount != "") {
-																	MSRP = Amount;
-																}
-															} else if (CndType == "ZPM2") {
-																if (Amount != "") {
-																	MSRP = Amount;
-																}
-															}
-														}
-														tempData.push({
-															"DealerNet": DealerNet,
-															"MSRP": MSRP,
-															"oMat": oMaterial
-														});
-														console.log("fetched MSRp DealerNet data", tempData);
-														// });
-													} else {
-														// sap.m.MessageBox.error(
-														// 	"NO Data found for Pricing"
-														// );
-														// that.oGlobalBusyDialog.close();
-													}
-													resolve(tempData);
-												}, that),
-												error: function (oError) {
-													sap.ui.core.BusyIndicator.hide();
-													//coming multiple times, set flag and use it
-													// var err = JSON.parse(oError.response.body);
-													// sap.m.MessageBox.error(err.error.message.value);
-												}
-											});
-										});
-									}
+									// 	that.promise1 = new Promise(function (resolve, reject) {
+									// 		that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
+									// 			success: $.proxy(function (oDataPrice) {
+									// 				if (oDataPrice.results.length > 0) {
+									// 					// jQuery.sap.delayedCall(4000, that, function () {
+									// 					for (var l = 0; l < oDataPrice.results.length; l++) {
+									// 						var CndType = oDataPrice.results[l].CndType;
+									// 						var Amount = oDataPrice.results[l].Amount;
+									// 						if (CndType == "ZPG4") {
+									// 							if (Amount != "") {
+									// 								DealerNet = Amount;
+									// 							}
+									// 						}
+									// 						if (CndType == "ZPM3") {
+									// 							if (Amount != "") {
+									// 								MSRP = Amount;
+									// 							}
+									// 						} else if (CndType == "ZPM2") {
+									// 							if (Amount != "") {
+									// 								MSRP = Amount;
+									// 							}
+									// 						}
+									// 					}
+									// 					tempData.push({
+									// 						"DealerNet": DealerNet,
+									// 						"MSRP": MSRP,
+									// 						"oMat": oMaterial
+									// 					});
+									// 					console.log("fetched MSRp DealerNet data", tempData);
+									// 					// });
+									// 				} else {
+									// 					// sap.m.MessageBox.error(
+									// 					// 	"NO Data found for Pricing"
+									// 					// );
+									// 					// that.oGlobalBusyDialog.close();
+									// 				}
+									// 				resolve(tempData);
+									// 			}, that),
+									// 			error: function (oError) {
+									// 				sap.ui.core.BusyIndicator.hide();
+									// 				//coming multiple times, set flag and use it
+									// 				// var err = JSON.parse(oError.response.body);
+									// 				// sap.m.MessageBox.error(err.error.message.value);
+									// 			}
+									// 		});
+									// 	});
+									// }
 									// if (that.tempModel.getData().results != undefined) {
-									for (var n = 0; n < that.tempModel.getData().results.length; n++) {
-										var oMat = that.tempModel.getData().results[n].MATERIAL;
-										getDealerNet(oMat);
-										console.log("dealernetPrice", tempData);
-									}
+									// for (var n = 0; n < that.tempModel.getData().results.length; n++) {
+									// 	var oMat = that.tempModel.getData().results[n].MATERIAL;
+									// 	getDealerNet(oMat);
+									// 	console.log("dealernetPrice", tempData);
+									// }
 
 									// // jQuery.sap.delayedCall(0, that, function () {
 									// var promise1 = new Promise(function (resolve, reject) {
 									that.FitmentToCharac = {
 										"results": []
 									};
-									console.log("Updated Tempdata", tempData);
-									that.promise1.then(function (value) {
-										console.log("final tempmodel data", value);
-										if (that.tempModel.getData().results.length > 0) {
-											that.promise2 = new Promise(function (resolve1, reject1) {
-												for (var l = 0; l < that.tempModel.getData().results.length; l++) {
-													var checkMat = that.tempModel.getData().results[l].MATERIAL;
-													var dealerNet = that.tempModel.getData().results[l].DealerNet;
-													for (var k = 0; k < tempData.length; k++) {
-														if (tempData[k].oMat === checkMat) {
-															dealerNet = tempData[k].DealerNet;
-															MSRP = tempData[k].MSRP;
-														}
-													}
-													that.tempModel.getData().results[l].DealerNet = dealerNet;
-													that.tempModel.getData().results[l].MSRP = MSRP;
-													that.tempModel.updateBindings(true);
+									// console.log("Updated Tempdata", tempData);
+									// that.promise1.then(function (value) {
+									// 	console.log("final tempmodel data", value);
+									// 	if (that.tempModel.getData().results.length > 0) {
+									// 		that.promise2 = new Promise(function (resolve1, reject1) {
+									// 			for (var l = 0; l < that.tempModel.getData().results.length; l++) {
+									// 				var checkMat = that.tempModel.getData().results[l].MATERIAL;
+									// 				var dealerNet = that.tempModel.getData().results[l].DealerNet;
+									// 				for (var k = 0; k < tempData.length; k++) {
+									// 					if (tempData[k].oMat === checkMat) {
+									// 						dealerNet = tempData[k].DealerNet;
+									// 						MSRP = tempData[k].MSRP;
+									// 					}
+									// 				}
+									// 				that.tempModel.getData().results[l].DealerNet = dealerNet;
+									// 				that.tempModel.getData().results[l].MSRP = MSRP;
+									// 				that.tempModel.updateBindings(true);
 
-												}
-												resolve1(that.tempModel);
-											});
-											console.log("stored dealer/MSRP", that.tempModel);
-										} else {
-											sap.ui.core.BusyIndicator.hide();
-											// sap.m.MessageBox.error(
-											// 	"NO Data found for Pricing"
-											// );
-										}
-									});
+									// 			}
+									// 			// resolve1(that.tempModel);
+									// 		});
+									// 		console.log("stored dealer/MSRP", that.tempModel);
+									// 	} else {
+									// 		sap.ui.core.BusyIndicator.hide();
+									// 		// sap.m.MessageBox.error(
+									// 		// 	"NO Data found for Pricing"
+									// 		// );
+									// 	}
+									// });
 									setTimeout(function () {
-										that.promise2.then(function (value) {
-											console.log("fina tempmodel data", value);
+										// that.promise2.then(function (value) {
+											// console.log("fina tempmodel data", value);
 											that.tempStorage = that.tempModel.getData().results;
 											that.Filters = [{
 												"type": "Tire Fitment",
@@ -483,7 +485,8 @@ sap.ui.define([
 													"TireSize": item.TIRE_SIZE,
 													"Model": item.Model,
 													"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
-													"Live_Markup_Percentage": item.Live_Markup_Percentage
+													"Live_Markup_Percentage": item.Live_Markup_Percentage,
+													"MatDesc_EN":item.MatDesc_EN          
 												});
 											});
 
@@ -503,8 +506,8 @@ sap.ui.define([
 											sap.ui.core.BusyIndicator.hide();
 											that.oTireFitmentJSONModel.refresh(true);
 											that.oTireFitmentJSONModel.updateBindings(true);
-										});
-									}, 35000);
+										// });
+									}, 5000);
 									// }
 
 									if (that.msgFlag == true) {
@@ -519,7 +522,7 @@ sap.ui.define([
 									}
 
 									function decimalFormatter(oDecVal) {
-										if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
+										if (oDecVal != undefined && oDecVal !== null && oDecVal != "" && !isNaN(oDecVal)) {
 											var returnVal = parseFloat(oDecVal).toFixed(2);
 											if (returnVal == 0.00) {
 												return "";
@@ -573,7 +576,7 @@ sap.ui.define([
 		},
 
 		decimalFormatter: function (oDecVal) {
-			if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
+			if (oDecVal != undefined && oDecVal !== null && oDecVal != "" && !isNaN(oDecVal)) {
 				var returnVal = parseFloat(oDecVal).toFixed(2);
 				if (returnVal == 0.00) {
 					return "";
