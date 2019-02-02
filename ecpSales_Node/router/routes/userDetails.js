@@ -10,6 +10,20 @@ module.exports = function () {
 
 	var auth64;
 
+	var uaaService = xsenv.getServices({
+		uaa: {
+			tag: "xsuaa"
+		}
+	});
+	var uaa = uaaService.uaa;
+	if (!uaa) {
+		logger.error('uaa service not found');
+		res.status(401).json({
+			message: "uaa service not found"
+		});
+		return;
+	}
+
 	var app = express.Router();
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
@@ -40,16 +54,7 @@ module.exports = function () {
 	});
 
 	app.get("/currentScopesForUser", (req, res) => {
-
-		// 		[
-		//   "ecpSales!t1188.View_ECP_Application",
-		//   "ecpSales!t1188.Manage_ECP_Application",
-		//   "openid",
-		//   "ecpSales!t1188.View_ECP_Agreement",
-		//   "ecpSales!t1188.View_ECP_Claim",
-		//   "ecpSales!t1188.Inquiry"
-		// ]
-
+		var xsAppName = uaa.xsappname;
 		var parsedData = JSON.stringify(req.authInfo.userAttributes);
 		var obj_data = JSON.parse(parsedData);
 
@@ -76,7 +81,7 @@ module.exports = function () {
 
 		for (var i = 0; i < scopeData.length; i++) {
 
-			if (scopeData[i] == "ecpSales!t1188.Manage_ECP_Application") {
+			if (scopeData[i] == xsAppName + ".Manage_ECP_Application") {
 				var userType = "DealerSalesUSer";
 				sendUserData.loggedUserType.push(userType);
 
@@ -84,16 +89,16 @@ module.exports = function () {
 				break;
 			}
 
-			if (scopeData[i] == "ecpSales!t1188.View_ECP_Application") {
+			if (scopeData[i] == xsAppName + ".View_ECP_Application") {
 				viewECPApplication = true;
 			}
-			if (scopeData[i] == "ecpSales!t1188.View_ECP_Agreement") {
+			if (scopeData[i] == xsAppName + ".View_ECP_Agreement") {
 				viewECPAgreement = true;
 			}
-			if (scopeData[i] == "ecpSales!t1188.Inquiry") {
+			if (scopeData[i] == xsAppName + ".Inquiry") {
 				inquiry = true;
 			}
-			if (scopeData[i] == "ecpSales!t1188.View_ECP_Claim") {
+			if (scopeData[i] == xsAppName + ".View_ECP_Claim") {
 				viewEcpClaim = true;
 			}
 
