@@ -174,6 +174,7 @@ sap.ui.define([
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
+						that.getModel("LocalDataModel").setProperty("/editableField", false);
 						break;
 					case "TCIZoneUser":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
