@@ -2,7 +2,7 @@
 	controllerName="tireSelector.controller.productMarkups" xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
-			<Page showNavButton="true" class="stylePageSection customStyle">
+			<Page showNavButton="false" class="stylePageSection customStyle">
 				<customHeader>
 					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
 						<contentLeft>
@@ -19,7 +19,7 @@
 					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
 					<Link text="{i18n>ProductMarkups}" visible="{propertiesModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
 					<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
-					<Link text="<<" press="BackToHistory"/>
+					<Link text="Back" press="BackToHistory" class="clCustomFont sapUiSmallMargin"/>
 				</tnt:ToolHeader>
 				<content>
 					<l:VerticalLayout class="sapUiContentPadding" width="100%">
@@ -58,7 +58,7 @@
 								<cells>
 									<Text text="{ProdMarkupModel>Manufacturer_code}"/>
 									<!--<Text text="{ProdMarkupModel>Preview_Markup_Percentage}"/>-->
-									<Input type="Text" value="{ProdMarkupModel>Preview_Markup_Percentage}"/>
+									<Input type="Text" value="{ProdMarkupModel>Preview_Markup_Percentage}" liveChange = "updatePostdateLive" change="updatePostdate"/>
 									<Text text="{ProdMarkupModel>Live_Markup_Percentage}"/>
 									<Text text="{ProdMarkupModel>Live_Last_Updated}"/>
 									<Text text="{ProdMarkupModel>Live_Last_Updated_By}"/>

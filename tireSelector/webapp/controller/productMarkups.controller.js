@@ -5,7 +5,7 @@ sap.ui.define([
 	'sap/ui/model/resource/ResourceModel',
 	'tireSelector/controller/BaseController',
 	"sap/ui/core/routing/History"
-], function (Controller, JSONModel, ResourceModel, BaseController,History) {
+], function (Controller, JSONModel, ResourceModel, BaseController, History) {
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.productMarkups", {
@@ -121,7 +121,19 @@ sap.ui.define([
 		onPressBreadCrumb: function (oEvtLink) {
 			_localScope.getRouter().navTo("master");
 		},
-
+		
+		// updatePostdate:function(oUpdatedDate) {
+		// 	// var ModelData = _localScope.oProdMarkupModel.getData().results;
+		// 	oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated = new Date();
+		// 	_localScope.oProdMarkupModel.updateBindings(true);
+		// }, 
+		
+		updatePostdateLive:function(oUpdatedDate) {
+			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated = new Date();
+			_localScope.oProdMarkupModel.updateBindings(true);
+			_localScope.oProdMarkupModel.refresh(true);
+		}, 
+					
 		updateXSALiveTable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
@@ -131,7 +143,6 @@ sap.ui.define([
 			var postSuccessFlag = false;
 			var updateSuccessFlag = false;
 			for (var i = 0; i < modelData.length; i++) { //modelData.length
-
 				var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
 					"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
 				var sContextPathInfo = "/DealerMarkUp(" + sPrikamryKeyofObject + ")";
@@ -143,7 +154,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = new Date();
+					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -153,7 +164,7 @@ sap.ui.define([
 						console.log("Post Response", oResponse);
 						updateSuccessFlag = true;
 					});
-					updateSuccessFlag = true;
+					// updateSuccessFlag = true;
 				} else {
 					var newDataFromModel = {};
 					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
@@ -161,7 +172,7 @@ sap.ui.define([
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					newDataFromModel.Live_Last_Updated = new Date();
+					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -174,7 +185,7 @@ sap.ui.define([
 							postSuccessFlag = false;
 						}
 					});
-					postSuccessFlag = true;
+					// postSuccessFlag = true;
 				}
 			}
 
@@ -222,7 +233,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = new Date();
+					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -236,7 +247,7 @@ sap.ui.define([
 							updateSuccessFlag = false;
 						}
 					});
-					updateSuccessFlag = true;
+					// updateSuccessFlag = true;
 				} else {
 					var newDataFromModel = {};
 					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
@@ -244,7 +255,7 @@ sap.ui.define([
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					newDataFromModel.Live_Markup_Percentage = 0.00;
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					newDataFromModel.Live_Last_Updated = new Date();
+					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -257,7 +268,7 @@ sap.ui.define([
 							postSuccessFlag = false;
 						}
 					});
-					postSuccessFlag = true;
+					// postSuccessFlag = true;
 				}
 			}
 			if (postSuccessFlag == true) {
