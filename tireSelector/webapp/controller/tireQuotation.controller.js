@@ -102,7 +102,6 @@ sap.ui.define([
 
 			//uncomment below for cloud testing
 			var scopes = _this.userData.userContext.scopes;
-			// var scopes = _this.userData.userContext.scopes;
 			console.log("scopes", scopes);
 			var accessAll = false,
 				accesslimited = false;
@@ -509,6 +508,7 @@ sap.ui.define([
 			if (_this.getView().byId("id_freeDescp") != undefined) {
 				_this.getView().byId("id_freeDescp").setValue("");
 			}
+			_this.rowData = {};
 			_this.oTireQuotationModel.setData(null);
 			_this.oTirePriceModel.setData(null);
 			_this.oTireQuotationModel.updateBindings(true);

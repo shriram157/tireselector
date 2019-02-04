@@ -162,26 +162,22 @@ sap.ui.define([
 											case "01":
 												_that.DealerData.Division = "10";
 												_that.DealerData.Attribute = "01";
+												_that.DealerData.Div = "TOY";
 												break;
 											case "02":
 												_that.DealerData.Division = "20";
 												_that.DealerData.Attribute = "02";
+												_that.DealerData.Div = "LEX";
 												break;
 											case "03":
 												_that.DealerData.Division = "Dual";
 												_that.DealerData.Attribute = "03";
-												break;
-											case "04":
-												_that.DealerData.Division = "10";
-												_that.DealerData.Attribute = "04";
-												break;
-											case "05":
-												_that.DealerData.Division = "Dual";
-												_that.DealerData.Attribute = "05";
+												_that.DealerData.Div = "";
 												break;
 											default:
 												_that.DealerData.Division = "10"; //  lets put that as a toyota dealer
 												_that.DealerData.Attribute = "01";
+												_that.DealerData.Div = "TOY";
 											}
 										}
 									}, _that),
@@ -609,14 +605,20 @@ sap.ui.define([
 							"results": []
 						};
 						if (oDataResponse.d.results.length > 0) {
-							$.each(oDataResponse.d.results, function (i, item) {
-								if (item.ModelSeriesNo != "") {
-									_that.vehicleSeriesData.results.push({
-										"ModelSeriesNo": item.ModelSeriesNo,
-										"TCISeriesDescriptionEN": item.TCISeriesDescriptionEN
-									});
+							for (var d = 0; d < oDataResponse.d.results.length; d++) {
+								// _that.DealerData.Div ="TOY";
+								if (_that.DealerData.Div == oDataResponse.d.results[d].Division) {
+									//if(_that.DealerData.Attribute == "01"){ _that.DealerData.Div="TOY"} else if(_that.DealerData.Attribute == "02"){ _that.DealerData.Div="LEX"}
+									// $.each(oDataResponse.d.results, function (i, item) {
+									if (oDataResponse.d.results[d].ModelSeriesNo != "") {
+										_that.vehicleSeriesData.results.push({
+											"ModelSeriesNo": oDataResponse.d.results[d].ModelSeriesNo,
+											"TCISeriesDescriptionEN": oDataResponse.d.results[d].TCISeriesDescriptionEN
+										});
+									}
+									// });
 								}
-							});
+							}
 
 							console.log("zc_mmfields Data", _that.vehicleSeriesData);
 							_that.oGlobalJSONModel.getData().vehicleSeriesData = _that.vehicleSeriesData.results;
@@ -844,9 +846,10 @@ sap.ui.define([
 							var modelVal = _that.vinResultdata.results[v].modelVal;
 							var modelYearVal = _that.vinResultdata.results[v].modelYearVal;
 							var suffixVal = _that.vinResultdata.results[v].suffixVal;
-							var seriesVal  = _that.vinResultdata.results[v].seriesVal;
-							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal + "' and ModelYear eq '" +
-					modelYearVal + "'";
+							var seriesVal = _that.vinResultdata.results[v].seriesVal;
+							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal +
+								"' and ModelYear eq '" +
+								modelYearVal + "'";
 							// var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelYearVal +
 							// 	"' and Model eq '" + modelVal + "' and Zzsuffix eq '" + suffixVal + "'&$format=json";
 							$.ajax({
@@ -985,37 +988,3 @@ sap.ui.define([
 		}
 	});
 });
-
-/*
-var modelYearURl = _that.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/ZC_MODEL_DETAILS?$filter=TCISeries eq  '" + ModelSeriesNo + " '";
-			$.ajax({
-				url: modelYearURl,
-				type: "GET",
-				dataType: "json",
-				success: function (oDataResponse2) {
-					sap.ui.core.BusyIndicator.hide();
-					if (oDataResponse2.d.results.length > 0) {
-						var b = 0;
-						console.log("ZC_MODEL_DETAILS Data", oDataResponse2);
-						for (var i = 0; i < oDataResponse2.d.results.length; i++) {
-							var Modelyear = oDataResponse2.d.results[i].Modelyear;
-							for (var j = 0; j < _that.oGlobalJSONModel.getData().modelDetailsData.length; j++) {
-								if (Modelyear != _that.oGlobalJSONModel.getData().modelDetailsData[j].Modelyear) {
-									b++;
-								}
-							}
-							if (b == _that.oGlobalJSONModel.getData().modelDetailsData.length) {
-								_that.oGlobalJSONModel.getData().modelDetailsData.push({
-									"Modelyear": oDataResponse2.d.results[i].Modelyear,
-									"Model": oDataResponse2.d.results[i].Model,
-									"TCISeries": oDataResponse2.d.results[i].TCISeries,
-									"suffix": oDataResponse2.d.results[i].suffix,
-								});
-								_that.oGlobalJSONModel.updateBindings(true);
-							}
-							b = 0;
-						}
-						// _that.oGlobalJSONModel.getData().modelDetailsData = oDataResponse2.d.results;
-						_that.oGlobalJSONModel.updateBindings(true);
-
-*/

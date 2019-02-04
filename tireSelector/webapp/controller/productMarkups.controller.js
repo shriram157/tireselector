@@ -3,8 +3,9 @@ sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/resource/ResourceModel',
-	'tireSelector/controller/BaseController'
-], function (Controller, JSONModel, ResourceModel, BaseController) {
+	'tireSelector/controller/BaseController',
+	"sap/ui/core/routing/History"
+], function (Controller, JSONModel, ResourceModel, BaseController,History) {
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.productMarkups", {
@@ -142,7 +143,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					dataFromModel.Live_Last_Updated = new Date();
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -160,7 +161,7 @@ sap.ui.define([
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					newDataFromModel.Live_Last_Updated = new Date();
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -221,7 +222,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					dataFromModel.Live_Last_Updated = new Date();
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -243,7 +244,7 @@ sap.ui.define([
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					newDataFromModel.Live_Markup_Percentage = 0.00;
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					newDataFromModel.Live_Last_Updated = new Date();
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -315,6 +316,17 @@ sap.ui.define([
 				_localScope.getRouter().navTo("productMarkups");
 			} else if (_oSelectedScreen == _localScope.oI18nModel.getResourceBundle().getText("ReportError")) {
 				_localScope.getRouter().navTo("reportError");
+			}
+		},
+		
+		BackToHistory: function () {
+			var oHistory = History.getInstance();
+			var sPreviousHash = oHistory.getPreviousHash();
+
+			if (sPreviousHash !== undefined) {
+				window.history.go(-1);
+			} else {
+				sap.ui.core.UIComponent.getRouterFor(_localScope).navTo("master");
 			}
 		},
 
