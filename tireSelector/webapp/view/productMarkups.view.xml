@@ -56,6 +56,7 @@
 						<items>
 							<ColumnListItem vAlign="Middle">
 								<cells>
+									
 									<Text text="{ProdMarkupModel>Manufacturer_code}"/>
 									<!--<Text text="{ProdMarkupModel>Preview_Markup_Percentage}"/>-->
 									<Input value="{ProdMarkupModel>Preview_Markup_Percentage}" change = "updatePostdateLive" />
