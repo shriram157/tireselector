@@ -167,7 +167,9 @@ sap.ui.define([
 				VModelYear = that.oModelData.ModelSeriesCombo;
 				VehicleSeries = that.oModelData.SearchOptionVehicle;
 				// filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
-				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize + "' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '"+that.userDetails.DealerData.BusinessPartner+"'&$format=json";
+				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
 
 			} else if (oEvent.getParameter("arguments").tireData !== undefined) {
 				that.oTireData = JSON.parse(oEvent.getParameters().arguments.tireData);
@@ -175,7 +177,9 @@ sap.ui.define([
 				VModelYear = that.oTireData.ModelSeriesCombo;
 				VehicleSeries = that.oTireData.SearchOptionVehicle;
 				// filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
-				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE + "' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '"+that.userDetails.DealerData.BusinessPartner+"'&$format=json";
+				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
 			}
 			if (filterData !== undefined) {
 				sap.ui.core.BusyIndicator.show();
@@ -198,6 +202,7 @@ sap.ui.define([
 								that.tempModel.updateBindings(true);
 
 								if (that.tempModel.getData().results.length <= 0) {
+									sap.ui.core.BusyIndicator.hide();
 									sap.m.MessageBox.error(
 										"NO Data found, Please update search criteria", {
 											actions: [sap.m.MessageBox.Action.CLOSE],
@@ -386,133 +391,134 @@ sap.ui.define([
 									// });
 									setTimeout(function () {
 										// that.promise2.then(function (value) {
-											// console.log("fina tempmodel data", value);
-											that.tempStorage = that.tempModel.getData().results;
-											that.Filters = [{
-												"type": "Tire Fitment",
-												"values": []
-											}, {
-												"type": "Tire Brand",
-												"values": []
-											}, {
-												"type": "Tire Speed Rating",
-												"values": []
-											}, {
-												"type": "Tire MFG Part No",
-												"values": []
-											}, {
-												"type": "Tire Category",
-												"values": []
-											}];
-											for (var l = 0; l < that.tempModel.getData().results.length; l++) {
-												that.Filters[0].values.push({
-													"text": that.tempModel.getData().results[l].TIRE_FITMENT
-												});
-												that.Filters[1].values.push({
-													"text": that.tempModel.getData().results[l].TIRE_BRAND_NAME
-												});
-												that.Filters[2].values.push({
-													"text": that.tempModel.getData().results[l].TIRE_SPEED_RATING
-												});
-												that.Filters[3].values.push({
-													"text": that.tempModel.getData().results[l].TIRE_MFG_PART_NUM
-												});
-												that.Filters[4].values.push({
-													"text": that.tempModel.getData().results[l].TIRE_CATEGORY
-												});
-
-												var tempTireData = that.tempModel.getData().results[l];
-												console.log("calculating Retails", that.tempModel.getData().results[l]);
-												if (tempTireData.DealerNet !== null && tempTireData.DealerNet != undefined) {
-													if (tempTireData.Live_Markup_Percentage == undefined) {
-														tempTireData.Live_Markup_Percentage = 0;
-													}
-													if (tempTireData.Live_Markup_Percentage != "" && tempTireData.Live_Markup_Percentage != undefined) {
-														if (Number(tempTireData.DealerNet) != 0 && Number(tempTireData.Live_Markup_Percentage != 0)) {
-															that.tempModel.getData().results[l].Retails = Number(tempTireData.DealerNet) + (Number(tempTireData.DealerNet) *
-																(Number(tempTireData.Live_Markup_Percentage) / 100));
-														} else {
-															that.tempModel.getData().results[l].Retails = Number(tempTireData.MSRP);
-														}
-													} else {
-														if (Number(tempTireData.MSRP) != 0) {
-															that.tempModel.getData().results[l].Retails = Number(tempTireData.MSRP);
-														}
-													}
-													that.tempModel.getData().results[l].Profit = (Number(tempTireData.Retails)) - (Number(tempTireData.DealerNet));
-													that.tempModel.updateBindings(true);
-													console.log("Updated retails value", that.tempModel);
-												} else {
-													that.msgFlag = true;
-													that.tempModel.getData().results[l].Profit = 0;
-													that.tempModel.getData().results[l].Retails = 0;
-													that.tempModel.getData().results[l].DealerNet = 0;
-													that.tempModel.updateBindings(true);
-												}
-												that.tempModel.updateBindings(true);
-											}
-
-											function removeDuplicates(array) {
-												var obj = {};
-												for (var i = 0, len = array.values.length; i < len; i++)
-													obj[array.values[i]['text']] = array.values[i];
-
-												array.values = new Array();
-												for (var key in obj)
-													array.values.push(obj[key]);
-												console.log("filter", array);
-												return array;
-											}
-
-											that.Filters[0] = removeDuplicates(that.Filters[0]);
-											that.Filters[1] = removeDuplicates(that.Filters[1]);
-											that.Filters[2] = removeDuplicates(that.Filters[2]);
-											that.Filters[3] = removeDuplicates(that.Filters[3]);
-											that.Filters[4] = removeDuplicates(that.Filters[4]);
-
-											$.each(that.tempModel.getData().results, function (i, item) {
-												that.FitmentToCharac.results.push({
-													"Tire Fitment": item.TIRE_FITMENT,
-													"Tire Speed Rating": item.TIRE_SPEED_RATING,
-													"Tire Load Rating": item.TIRE_LOAD_RATING,
-													"Tire Brand": item.TIRE_BRAND_NAME,
-													"Tire Category": item.TIRE_CATEGORY,
-													"Tire Brand ID": item.TIRE_BRAND_ID,
-													"Material": item.MATERIAL,
-													"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
-													"MSRP": item.MSRP,
-													"DealerNet": item.DealerNet,
-													"Retails": item.Retails,
-													"Profit": item.Profit,
-													"TireSize": item.TIRE_SIZE,
-													"Model": item.Model,
-													"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
-													"Live_Markup_Percentage": item.Live_Markup_Percentage,
-													"MatDesc_EN":item.MatDesc_EN          
-												});
+										// console.log("fina tempmodel data", value);
+										that.tempStorage = that.tempModel.getData().results;
+										that.Filters = [{
+											"type": "Tire Fitment",
+											"values": []
+										}, {
+											"type": "Tire Brand",
+											"values": []
+										}, {
+											"type": "Tire Speed Rating",
+											"values": []
+										}, {
+											"type": "Tire MFG Part No",
+											"values": []
+										}, {
+											"type": "Tire Category",
+											"values": []
+										}];
+										for (var l = 0; l < that.tempModel.getData().results.length; l++) {
+											that.Filters[0].values.push({
+												"text": that.tempModel.getData().results[l].TIRE_FITMENT
+											});
+											that.Filters[1].values.push({
+												"text": that.tempModel.getData().results[l].TIRE_BRAND_NAME
+											});
+											that.Filters[2].values.push({
+												"text": that.tempModel.getData().results[l].TIRE_SPEED_RATING
+											});
+											that.Filters[3].values.push({
+												"text": that.tempModel.getData().results[l].TIRE_MFG_PART_NUM
+											});
+											that.Filters[4].values.push({
+												"text": that.tempModel.getData().results[l].TIRE_CATEGORY
 											});
 
-											that.oTireFitmentJSONModel.setData(that.FitmentToCharac);
-											that.oTireFitmentJSONModel.getData().Filters = [];
-											that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[0]);
-											that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[1]);
-											that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[2]);
-											that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[3]);
-											that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[4]);
-											that.oTireFitmentJSONModel.updateBindings(true);
-											console.log("TireFitmentJSONModel Data", that.oTireFitmentJSONModel.getData());
+											var tempTireData = that.tempModel.getData().results[l];
+											console.log("calculating Retails", that.tempModel.getData().results[l]);
+											if (tempTireData.DealerNet !== null && tempTireData.DealerNet != undefined) {
+												if (tempTireData.Live_Markup_Percentage == undefined) {
+													tempTireData.Live_Markup_Percentage = 0;
+												}
+												if (tempTireData.Live_Markup_Percentage != "" && tempTireData.Live_Markup_Percentage != undefined) {
+													if (Number(tempTireData.DealerNet) != 0 && Number(tempTireData.Live_Markup_Percentage != 0)) {
+														that.tempModel.getData().results[l].Retails = Number(tempTireData.DealerNet) + (Number(tempTireData.DealerNet) *
+															(Number(tempTireData.Live_Markup_Percentage) / 100));
+													} else {
+														that.tempModel.getData().results[l].Retails = Number(tempTireData.MSRP);
+													}
+												} else {
+													if (Number(tempTireData.MSRP) != 0) {
+														that.tempModel.getData().results[l].Retails = Number(tempTireData.MSRP);
+													}
+												}
+												that.tempModel.getData().results[l].Profit = (Number(tempTireData.Retails)) - (Number(tempTireData.DealerNet));
+												that.tempModel.updateBindings(true);
+												console.log("Updated retails value", that.tempModel);
+											} else {
+												that.msgFlag = true;
+												that.tempModel.getData().results[l].Profit = 0;
+												that.tempModel.getData().results[l].Retails = 0;
+												that.tempModel.getData().results[l].DealerNet = 0;
+												that.tempModel.updateBindings(true);
+											}
+											that.tempModel.updateBindings(true);
+										}
 
-											that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-											sap.ushell.components.oTable.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-											sap.ushell.components.FacetFilters.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
-											sap.ui.core.BusyIndicator.hide();
-											that.oTireFitmentJSONModel.refresh(true);
-											that.oTireFitmentJSONModel.updateBindings(true);
+										function removeDuplicates(array) {
+											var obj = {};
+											for (var i = 0, len = array.values.length; i < len; i++)
+												obj[array.values[i]['text']] = array.values[i];
+
+											array.values = new Array();
+											for (var key in obj)
+												array.values.push(obj[key]);
+											console.log("filter", array);
+											return array;
+										}
+
+										that.Filters[0] = removeDuplicates(that.Filters[0]);
+										that.Filters[1] = removeDuplicates(that.Filters[1]);
+										that.Filters[2] = removeDuplicates(that.Filters[2]);
+										that.Filters[3] = removeDuplicates(that.Filters[3]);
+										that.Filters[4] = removeDuplicates(that.Filters[4]);
+
+										$.each(that.tempModel.getData().results, function (i, item) {
+											that.FitmentToCharac.results.push({
+												"Tire Fitment": item.TIRE_FITMENT,
+												"Tire Speed Rating": item.TIRE_SPEED_RATING,
+												"Tire Load Rating": item.TIRE_LOAD_RATING,
+												"Tire Brand": item.TIRE_BRAND_NAME,
+												"Tire Category": item.TIRE_CATEGORY,
+												"Tire Brand ID": item.TIRE_BRAND_ID,
+												"Material": item.MATERIAL,
+												"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
+												"MSRP": item.MSRP,
+												"DealerNet": item.DealerNet,
+												"Retails": item.Retails,
+												"Profit": item.Profit,
+												"TireSize": item.TIRE_SIZE,
+												"Model": item.Model,
+												"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
+												"Live_Markup_Percentage": item.Live_Markup_Percentage,
+												"MatDesc_EN": item.MatDesc_EN
+											});
+										});
+
+										that.oTireFitmentJSONModel.setData(that.FitmentToCharac);
+										that.oTireFitmentJSONModel.getData().Filters = [];
+										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[0]);
+										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[1]);
+										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[2]);
+										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[3]);
+										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[4]);
+										that.oTireFitmentJSONModel.updateBindings(true);
+										console.log("TireFitmentJSONModel Data", that.oTireFitmentJSONModel.getData());
+
+										that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+										sap.ushell.components.oTable.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+										sap.ushell.components.FacetFilters.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
+										sap.ui.core.BusyIndicator.hide();
+										that.oTireFitmentJSONModel.refresh(true);
+										that.oTireFitmentJSONModel.updateBindings(true);
 										// });
 									}, 5000);
 									// }
 
 									if (that.msgFlag == true) {
+										sap.ui.core.BusyIndicator.hide();
 										sap.m.MessageBox.error(
 											"Missing Pricing", {
 												actions: [sap.m.MessageBox.Action.CLOSE],
@@ -538,6 +544,7 @@ sap.ui.define([
 
 								}
 							} else {
+								sap.ui.core.BusyIndicator.hide();
 								sap.m.MessageBox.error("Server Request responded with no data", {
 									actions: [sap.m.MessageBox.Action.CLOSE],
 									onClose: function (oAction) {
