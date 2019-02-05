@@ -65,6 +65,49 @@ sap.ui.define([
 
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
 
+			//userProfile
+			$.ajax({
+				url: this.sPrefix + "/userDetails/attributes",
+				type: "GET",
+				dataType: "json",
+
+				success: function (oData) {
+					var BpDealer = [];
+					var userAttributes = [];
+
+					$.each(oData.attributes, function (i, item) {
+						var BpLength = item.BusinessPartner.length;
+
+						BpDealer.push({
+							"BusinessPartnerKey": item.BusinessPartnerKey,
+							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
+							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
+							"Division": item.Division,
+							"BusinessPartnerType": item.BusinessPartnerType,
+							"searchTermReceivedDealerName": item.SearchTerm2
+						});
+
+						console.log("BpDealer");
+
+					});
+					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
+					// read the saml attachments the same way 
+					$.each(oData.samlAttributes, function (i, item) {
+						userAttributes.push({
+							"UserType": item.UserType[0],
+							"DealerCode": item.DealerCode[0],
+							"Language": item.Language[0]
+						});
+
+					});
+				},
+				error: function (oError) {
+					// sap.m.MessageBox.error(
+					// 	"NO Data found for BusinessPartner Address"
+					// );
+				}
+			});
+
 			//appdata
 			$.ajax({
 				dataType: "json",
@@ -123,7 +166,7 @@ sap.ui.define([
 								_that._oDealerModel.getData().DealerData = _that.DealerData;
 								_that._oDealerModel.updateBindings(true);
 								var queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode +
-									"' &$expand=to_Customer&$expand=to_BusinessPartnerAddress";
+									"' &$expand=to_Customer";
 								_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString, {
 									success: $.proxy(function (oDealerData) {
 										console.log("Business Partner Data", oDealerData.results);
@@ -201,7 +244,8 @@ sap.ui.define([
 
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
-			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			sap
+				.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 			console.log("XSO model data", _that.oXSOServiceModel);
 
 			_that.oXSOServiceModel.read("/DealerMarkUp", {
@@ -225,7 +269,8 @@ sap.ui.define([
 
 			_that.oGlobalJSONModel = new sap.ui.model.json.JSONModel();
 			_that.oGlobalJSONModel.setSizeLimit(5000);
-			_that.getView().setModel(_that.oGlobalJSONModel, "GlobalJSONModel");
+			_that.getView().setModel(
+				_that.oGlobalJSONModel, "GlobalJSONModel");
 			// _that.oGlobalJSONModel.setData();
 			_that.oGlobalJSONModel.updateBindings();
 
@@ -251,21 +296,27 @@ sap.ui.define([
 			}
 
 			_that.SearchOptionList = _that.getView().byId("searchOptionList");
-			_that.ForVehicleSearchOnly = _that.getView().byId("forVehicleSearchOnly");
+			_that.ForVehicleSearchOnly = _that.getView().byId(
+				"forVehicleSearchOnly");
 			_that.SearchOptionLabel = _that.getView().byId("searchOptionLabel");
-			_that.SearchOptionVIN = _that.getView().byId("searchOptionVIN");
+			_that.SearchOptionVIN = _that.getView()
+				.byId("searchOptionVIN");
 			_that.SearchOptionTireSize = _that.getView().byId("searchOptionTireSize");
-			_that.ModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
+			_that.ModelSeriesCombo =
+				_that.getView().byId("ModelSeriesCombo");
 			_that.SearchOptionVehicle = _that.getView().byId("VehicleSearchCombo");
 
 			var selectedSearchVals = {};
 			selectedSearchVals.SearchOptionVehicle = _that.getView().byId("VehicleSearchCombo");
-			selectedSearchVals.ModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
-			selectedSearchVals.SearchOptionVIN = _that.getView().byId("searchOptionVIN");
+			selectedSearchVals
+				.ModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
+			selectedSearchVals.SearchOptionVIN = _that.getView().byId(
+				"searchOptionVIN");
 			selectedSearchVals.SearchOptionTireSize = _that.getView().byId("searchOptionTireSize");
 
 			_that._oSearchCriteriaModel = new sap.ui.model.json.JSONModel(selectedSearchVals);
-			_that._oSearchCriteriaModel.updateBindings(true);
+			_that._oSearchCriteriaModel.updateBindings(
+				true);
 			sap.ui.getCore().setModel(_that._oSearchCriteriaModel, "SearchCriteriaModel");
 
 			// sap.ushell.components.SearchOption = _that.SearchOptionList;
@@ -282,7 +333,8 @@ sap.ui.define([
 			/* JSON Model for the View */
 			_that.oSelectJSONModel = new JSONModel();
 			_that.getView().setModel(_that.oSelectJSONModel, "SelectJSONModel");
-			sap.ui.getCore().setModel(_that.oSelectJSONModel, "SelectJSONModel");
+			sap.ui.getCore().setModel(
+				_that.oSelectJSONModel, "SelectJSONModel");
 			_that.oSelectJSONModel.getData().SearchOptionVal = "";
 			/* Dummy JSON data */
 			_that.objList = {
@@ -301,8 +353,10 @@ sap.ui.define([
 			// _that.nodeJsUrl = this.sPrefix + "/node";
 			_that.oSelectJSONModel.setData(_that.objList);
 			_that.oSelectJSONModel.updateBindings();
-			_that.SearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
-			_that.SearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
+			_that.SearchOptionList.setSelectedKey(
+				_that.oI18nModel.getResourceBundle().getText("VIN"));
+			_that.SearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText(
+				"VIN"));
 		},
 
 		getPhoneNumber: function (dealer, addressID) {
