@@ -514,7 +514,7 @@ sap.ui.define([
 										that.oTireFitmentJSONModel.refresh(true);
 										that.oTireFitmentJSONModel.updateBindings(true);
 										// });
-									}, 5000);
+									}, 2000);
 									// }
 
 									if (that.msgFlag == true) {

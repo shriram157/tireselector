@@ -28,7 +28,7 @@
 						</Breadcrumbs>
 					</l:content>
 				</l:VerticalLayout>
-				<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/DealerName}" design="Bold" class="styleFontSize customMargin"/>
+				<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold" class="styleFontSize customMargin"/>
 				<MessageStrip id="ID_ErrMsgStrip" text="" showIcon="true" showCloseButton="false" visible="false" type="Error" class="customMargin"/>
 				<f:SimpleForm id="ID_searchForm" class="styleSearchForm" columnsL="2" columnsM="2" editable="true" emptySpanL="0" emptySpanM="0"
 					labelSpanL="2" labelSpanM="2" layout="ResponsiveGridLayout">

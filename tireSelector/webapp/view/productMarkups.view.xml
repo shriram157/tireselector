@@ -30,7 +30,7 @@
 						</l:content>
 					</l:VerticalLayout>
 					<OverflowToolbar class="noBottomBorder">
-						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/DealerName}" design="Bold" class="styleFontSize customMargin"/>
+						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold" class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateXSATable"/>
 						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateXSALiveTable"/>
