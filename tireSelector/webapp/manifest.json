@@ -168,11 +168,9 @@
 			}
 		},
 		"resources": {
-			"css": [
-				{
-					"uri": "css/style.css"
-				}
-			]
+			"css": [{
+				"uri": "css/style.css"
+			}]
 		},
 		"routing": {
 			"config": {
@@ -185,43 +183,35 @@
 				"clearControlAggregation": false,
 				"clearTarget": "false"
 			},
-			"routes": [
-				{
-					"name": "master",
-					"pattern": "master",
-					"target": "master"
-				},
-				{
-					"name": "searchResultsTire",
-					"pattern": "searchResultsTire/{modelData}",
-					"target": "searchResultsTire"
-				},
-				{
-					"name": "searchResultsFromQuote",
-					"pattern": "searchResultsFromQuote",
-					"target": "searchResultsFromQuote"
-				},
-				{
-					"name": "searchResultsTireNoData",
-					"pattern": "searchResultsTireNoData/{tireData}",
-					"target": "searchResultsTireNoData"
-				},
-				{
-					"name": "productMarkups",
-					"pattern": "productMarkups",
-					"target": "productMarkups"
-				},
-				{
-					"name": "reportError",
-					"pattern": "reportError",
-					"target": "reportError"
-				},
-				{
-					"name": "tireQuotation",
-					"pattern": "tireQuotation/{rowData}",
-					"target": "tireQuotation"
-				}
-			],
+			"routes": [{
+				"name": "master",
+				"pattern": "master",
+				"target": "master"
+			}, {
+				"name": "searchResultsTire",
+				"pattern": "searchResultsTire/{modelData}",
+				"target": "searchResultsTire"
+			}, {
+				"name": "searchResultsFromQuote",
+				"pattern": "searchResultsFromQuote",
+				"target": "searchResultsFromQuote"
+			}, {
+				"name": "searchResultsTireNoData",
+				"pattern": "searchResultsTireNoData/{tireData}",
+				"target": "searchResultsTireNoData"
+			}, {
+				"name": "productMarkups",
+				"pattern": "productMarkups",
+				"target": "productMarkups"
+			}, {
+				"name": "reportError",
+				"pattern": "reportError",
+				"target": "reportError"
+			}, {
+				"name": "tireQuotation",
+				"pattern": "tireQuotation/{rowData}",
+				"target": "tireQuotation"
+			}],
 			"targets": {
 				"master": {
 					"viewType": "XML",

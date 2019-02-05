@@ -236,6 +236,8 @@ sap.ui.define([
 													that.tempModel.getData().results[n].TIRE_FITMENT = "OE";
 												} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
 													that.tempModel.getData().results[n].TIRE_FITMENT = "Other";
+												} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
+													that.tempModel.getData().results[n].TIRE_FITMENT = "Discontinued";
 												}
 
 												var temp = that.tempModel.getData().results[n];

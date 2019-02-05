@@ -58,7 +58,7 @@
 								<cells>
 									<Text text="{ProdMarkupModel>Manufacturer_code}"/>
 									<!--<Text text="{ProdMarkupModel>Preview_Markup_Percentage}"/>-->
-									<Input type="Text" value="{ProdMarkupModel>Preview_Markup_Percentage}" liveChange = "updatePostdateLive" change="updatePostdate"/>
+									<Input value="{ProdMarkupModel>Preview_Markup_Percentage}" change = "updatePostdateLive" />
 									<Text text="{ProdMarkupModel>Live_Markup_Percentage}"/>
 									<Text text="{ProdMarkupModel>Live_Last_Updated}"/>
 									<Text text="{ProdMarkupModel>Live_Last_Updated_By}"/>

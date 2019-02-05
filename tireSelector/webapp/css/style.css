@@ -53,5 +53,7 @@ span.displayBlock{
 .colorDisconitnued {
 	background-color: magenta;
 }
-
-
+.tableSearhResults {
+	height: 100%;
+	padding-bottom: 1.5rem;
+}

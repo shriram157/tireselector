@@ -2,7 +2,7 @@
 	xmlns:core="sap.ui.core" xmlns:tnt="sap.tnt" xmlns:f="sap.ui.layout.form" controllerName="tireSelector.controller.master"
 	displayBlock="true">
 	<App id="idAppControl">
-		<Page showNavButton="false" class="stylePageSection customStyle">
+		<Page showNavButton="false" class="stylePageSection customStyle" enableScrolling="false">
 			<customHeader>
 				<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
 					<contentLeft>
@@ -48,7 +48,7 @@
 							<Input id="searchOptionVIN" type="Text" visible="{MasterModel>/enableVin}" liveChange="onLiveChangeVIN" showSuggestion="true"
 								suggest="handleVINSuggest" change="onInputEntryVIN" suggestionItems="{GlobalJSONModel>/vinData}">
 								<suggestionItems>
-									<core:ListItem text="{GlobalJSONModel>VIN}" />
+									<core:ListItem text="{GlobalJSONModel>VIN}"/>
 								</suggestionItems>
 							</Input>
 							<!--<Link text="load more VIN" press="loadMoreVin" visible="{MasterModel>/enableMore}" />-->
@@ -58,9 +58,8 @@
 									<core:Item text="{path:'FitmentDataModel>TIRE_SIZE', formatter: '.formatTireSize'}"/>
 								</suggestionItems>
 							</Input>
-							<ComboBox id="VehicleSearchCombo" visible="{MasterModel>/enableVehicleInputs}" selectionChange="onVehicleChange"
-								change="onComboInputChange" value="" selectedKey=""
-								items="{ path: 'GlobalJSONModel>/vehicleSeriesData', sorter: { path: 'ModelSeriesNo' } }">
+							<ComboBox id="VehicleSearchCombo" visible="{MasterModel>/enableVehicleInputs}" selectionChange="onVehicleChange" change="onComboInputChange"
+								value="" selectedKey="" items="{ path: 'GlobalJSONModel>/vehicleSeriesData', sorter: { path: 'ModelSeriesNo' } }">
 								<core:ListItem key="{GlobalJSONModel>ModelSeriesNo}" text="{GlobalJSONModel>ModelSeriesNo} - {GlobalJSONModel>TCISeriesDescriptionEN}"/>
 								<layoutData>
 									<l:GridData span="L2 M12 S12"/>
@@ -96,32 +95,34 @@
 					</f:content>
 				</f:SimpleForm>
 				<HBox class="tableSearhResults" visible="{MasterModel>/enableTable}">
-					<Table id="idSearchresultsTable" inset="false" items="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }">
-						<columns>
-							<Column demandPopin="true">
-								<Text text="{i18n>Model}"/>
-							</Column>
-							<Column minScreenWidth="Tablet" demandPopin="true">
-								<Text text="{i18n>Package}"/>
-							</Column>
-							<Column minScreenWidth="Desktop" demandPopin="true">
-								<Text text="{i18n>TireSize}"/>
-							</Column>
-							<Column minScreenWidth="Desktop" demandPopin="true">
-								<Text text="{i18n>RimSize}"/>
-							</Column>
-						</columns>
-						<items>
-							<ColumnListItem type="Navigation" press="navToSelectTire">
-								<cells>
-									<Text text="{SearchResultModel>ModelDesc_EN}"/>
-									<Text text="{SearchResultModel>Zzsuffix}"/>
-									<Text text="{SearchResultModel>ZtireSize}"/>
-									<Text text="{SearchResultModel>ZrimSize}"/>
-								</cells>
-							</ColumnListItem>
-						</items>
-					</Table>
+					<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true" focusable="true">
+						<Table id="idSearchresultsTable" inset="false" items="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }">
+							<columns>
+								<Column demandPopin="true">
+									<Text text="{i18n>Model}"/>
+								</Column>
+								<Column minScreenWidth="Tablet" demandPopin="true">
+									<Text text="{i18n>Package}"/>
+								</Column>
+								<Column minScreenWidth="Desktop" demandPopin="true">
+									<Text text="{i18n>TireSize}"/>
+								</Column>
+								<Column minScreenWidth="Desktop" demandPopin="true">
+									<Text text="{i18n>RimSize}"/>
+								</Column>
+							</columns>
+							<items>
+								<ColumnListItem type="Navigation" press="navToSelectTire">
+									<cells>
+										<Text text="{SearchResultModel>ModelDesc_EN}"/>
+										<Text text="{SearchResultModel>Zzsuffix}"/>
+										<Text text="{SearchResultModel>ZtireSize}"/>
+										<Text text="{SearchResultModel>ZrimSize}"/>
+									</cells>
+								</ColumnListItem>
+							</items>
+						</Table>
+					</ScrollContainer>
 				</HBox>
 			</content>
 		</Page>

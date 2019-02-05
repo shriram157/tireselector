@@ -718,6 +718,9 @@ sap.ui.define([
 				_that.SearchOptionList.setValueState(sap.ui.core.ValueState.None);
 			}
 			_that._oViewModel.setProperty("/enableSearchBtn", false);
+			_that.SearchResultModel.setData();
+			_that.SearchResultModel.updateBindings(true);
+			_that.SearchResultModel.refresh(true);
 		},
 
 		/*Function for Routing/Navigating to search results */
@@ -872,14 +875,14 @@ sap.ui.define([
 										_that.SearchResultModel.refresh(true);
 									} else {
 										// _that._oViewModel.setProperty("/enableSearchBtn", false);
-										sap.m.MessageBox.error(
-											"NO Data found for tire size", {
-												actions: [sap.m.MessageBox.Action.CLOSE],
-												onClose: function (oAction) {
-													_that._oViewModel.setProperty("/enableSearchBtn", false);
-												}
-											}
-										);
+										// sap.m.MessageBox.error(
+										// 	"NO Data found for tire size", {
+										// 		actions: [sap.m.MessageBox.Action.CLOSE],
+										// 		onClose: function (oAction) {
+										// 			_that._oViewModel.setProperty("/enableSearchBtn", false);
+										// 		}
+										// 	}
+										// );
 									}
 								},
 								error: function (oError) {}

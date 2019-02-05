@@ -253,7 +253,7 @@ sap.ui.define([
 					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
 					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					newDataFromModel.Live_Markup_Percentage = 0.00;
+					newDataFromModel.Live_Markup_Percentage = "0.00";
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
