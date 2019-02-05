@@ -545,6 +545,8 @@ sap.ui.define([
 
 		getUnitPrice: function (oUnit) {
 			var oUnitPrice = oUnit.getParameter("newValue");
+			_this.oTireQuotationModel.getData().Retails = oUnitPrice;
+			_this.oTirePriceModel.updateBindings(true);
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
 			if (oUnit.getSource().getId().split("_")[3] == "tireUnitPrice") {
