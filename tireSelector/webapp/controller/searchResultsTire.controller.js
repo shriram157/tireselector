@@ -478,13 +478,20 @@ sap.ui.define([
 										$.each(that.tempModel.getData().results, function (i, item) {
 											that.FitmentToCharac.results.push({
 												"Tire Fitment": item.TIRE_FITMENT,
+												"TireFitment": item.TIRE_FITMENT,
 												"Tire Speed Rating": item.TIRE_SPEED_RATING,
 												"Tire Load Rating": item.TIRE_LOAD_RATING,
+												"TireSpeed": item.TIRE_SPEED_RATING,
+												"TireLoad": item.TIRE_LOAD_RATING,
 												"Tire Brand": item.TIRE_BRAND_NAME,
+												"TireBrand": item.TIRE_BRAND_NAME,
 												"Tire Category": item.TIRE_CATEGORY,
+												"TireCategory": item.TIRE_CATEGORY,
 												"Tire Brand ID": item.TIRE_BRAND_ID,
+												"TireBrandID": item.TIRE_BRAND_ID,
 												"Material": item.MATERIAL,
 												"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
+												"TireMFGPartNo": item.TIRE_MFG_PART_NUM,
 												"MSRP": item.MSRP,
 												"DealerNet": item.DealerNet,
 												"Retails": item.Retails,
@@ -748,10 +755,27 @@ sap.ui.define([
 
 		onRowPress: function (oRowEvt) {
 			// that.oGlobalBusyDialog.destroy();
+			debugger;
 			var oPath = {};
-			oPath = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
+			var Data = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
 
-			oPath.TireSize = oPath.TireSize.replace("/", "%2F");
+			oPath.TireFitment = Data.TireFitment;
+			oPath.TireSpeed = Data.TireSpeed.replace("/", "%2F");
+			oPath.TireLoad = Data.TireLoad.replace("/", "%2F");
+			oPath.TireBrand = Data.TireBrand;
+			oPath.TireCategory = Data.TireCategory;
+			oPath.TireBrandID = Data.TireBrandID;
+			oPath.Material = Data.Material;
+			oPath.TireMFGPartNo = Data.TireMFGPartNo;
+			oPath.MSRP = Data.MSRP;
+			oPath.DealerNet = Data.DealerNet;
+			oPath.Retails = Data.Retails;
+			oPath.Profit = Data.Profit;
+			oPath.TireSize = Data.TireSize.replace("/", "%2F");
+			oPath.MatDesc_EN = Data.MatDesc_EN.replace("/", "%2F");
+			oPath.Model = Data.Model;
+			oPath.Preview_Markup_Percentage = Data.Preview_Markup_Percentage;
+			oPath.Live_Markup_Percentage = Data.Live_Markup_Percentage;
 			oPath.VIN = VIN;
 			oPath.VehicleSeries = VehicleSeries;
 			oPath.VModelYear = VModelYear;

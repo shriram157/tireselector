@@ -34,7 +34,8 @@ sap.ui.define([
 					"Division": "10",
 					"SearchTerm2": "42120",
 					"CurrentDate": new Date(),
-					"AddressID": "31298"
+					"AddressID": "31298",
+					"Div":"TOY"
 				};
 				_that._oDealerModel = new sap.ui.model.json.JSONModel();
 				var dealer = _that.DealerData.BusinessPartner;
@@ -66,47 +67,47 @@ sap.ui.define([
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
 
 			//userProfile
-			$.ajax({
-				url: this.sPrefix + "/userDetails/attributes",
-				type: "GET",
-				dataType: "json",
+			// $.ajax({
+			// 	url: this.sPrefix + "/userDetails/attributes",
+			// 	type: "GET",
+			// 	dataType: "json",
 
-				success: function (oData) {
-					var BpDealer = [];
-					var userAttributes = [];
+			// 	success: function (oData) {
+			// 		var BpDealer = [];
+			// 		var userAttributes = [];
 
-					$.each(oData.attributes, function (i, item) {
-						var BpLength = item.BusinessPartner.length;
+			// 		$.each(oData.attributes, function (i, item) {
+			// 			var BpLength = item.BusinessPartner.length;
 
-						BpDealer.push({
-							"BusinessPartnerKey": item.BusinessPartnerKey,
-							"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
-							"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
-							"Division": item.Division,
-							"BusinessPartnerType": item.BusinessPartnerType,
-							"searchTermReceivedDealerName": item.SearchTerm2
-						});
+			// 			BpDealer.push({
+			// 				"BusinessPartnerKey": item.BusinessPartnerKey,
+			// 				"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
+			// 				"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
+			// 				"Division": item.Division,
+			// 				"BusinessPartnerType": item.BusinessPartnerType,
+			// 				"searchTermReceivedDealerName": item.SearchTerm2
+			// 			});
 
-						console.log("BpDealer");
+			// 			console.log("BpDealer");
 
-					});
-					that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-					// read the saml attachments the same way 
-					$.each(oData.samlAttributes, function (i, item) {
-						userAttributes.push({
-							"UserType": item.UserType[0],
-							"DealerCode": item.DealerCode[0],
-							"Language": item.Language[0]
-						});
+			// 		});
+			// 		that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
+			// 		// read the saml attachments the same way 
+			// 		$.each(oData.samlAttributes, function (i, item) {
+			// 			userAttributes.push({
+			// 				"UserType": item.UserType[0],
+			// 				"DealerCode": item.DealerCode[0],
+			// 				"Language": item.Language[0]
+			// 			});
 
-					});
-				},
-				error: function (oError) {
-					// sap.m.MessageBox.error(
-					// 	"NO Data found for BusinessPartner Address"
-					// );
-				}
-			});
+			// 		});
+			// 	},
+			// 	error: function (oError) {
+			// 		// sap.m.MessageBox.error(
+			// 		// 	"NO Data found for BusinessPartner Address"
+			// 		// );
+			// 	}
+			// });
 
 			//appdata
 			$.ajax({
@@ -497,7 +498,7 @@ sap.ui.define([
 
 		loadMoreVin: function () {
 			count = _that.oGlobalJSONModel.getData().vinData.length;
-			console.log("VIn count", count);
+			console.log("VIN count", count);
 			$.ajax({
 				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + sTerm + "')&$top=100&$skip=" +
 					count + "",
@@ -655,27 +656,43 @@ sap.ui.define([
 					type: "GET",
 					dataType: "json",
 					success: function (oDataResponse) {
-						_that.vehicleSeriesData = {
-							"results": []
-						};
 						if (oDataResponse.d.results.length > 0) {
-							for (var d = 0; d < oDataResponse.d.results.length; d++) {
-								// _that.DealerData.Div ="TOY";
-								if (_that.DealerData.Div == oDataResponse.d.results[d].Division) {
-									//if(_that.DealerData.Attribute == "01"){ _that.DealerData.Div="TOY"} else if(_that.DealerData.Attribute == "02"){ _that.DealerData.Div="LEX"}
-									// $.each(oDataResponse.d.results, function (i, item) {
-									if (oDataResponse.d.results[d].ModelSeriesNo != "") {
+							console.log("Series All",oDataResponse.d.results);
+							if (_that.DealerData.Div == "") {
+								_that.vehicleSeriesData = {
+									"results": []
+								};
+								$.each(oDataResponse.d.results, function (i, item) {
+									if (item.ModelSeriesNo != "") {
 										_that.vehicleSeriesData.results.push({
-											"ModelSeriesNo": oDataResponse.d.results[d].ModelSeriesNo,
-											"TCISeriesDescriptionEN": oDataResponse.d.results[d].TCISeriesDescriptionEN
+											"ModelSeriesNo": item.ModelSeriesNo,
+											"TCISeriesDescriptionEN": item.TCISeriesDescriptionEN
 										});
 									}
-									// });
+								});
+							} else {
+								_that.vehicleSeriesData = {
+									"results": []
+								};
+								for (var d = 0; d < oDataResponse.d.results.length; d++) {
+									// _that.DealerData.Div ="TOY";
+									if (_that.DealerData.Div == oDataResponse.d.results[d].Division) {
+										//if(_that.DealerData.Attribute == "01"){ _that.DealerData.Div="TOY"} else if(_that.DealerData.Attribute == "02"){ _that.DealerData.Div="LEX"}
+										// $.each(oDataResponse.d.results, function (i, item) {
+										if (oDataResponse.d.results[d].ModelSeriesNo != "") {
+											_that.vehicleSeriesData.results.push({
+												"ModelSeriesNo": oDataResponse.d.results[d].ModelSeriesNo,
+												"TCISeriesDescriptionEN": oDataResponse.d.results[d].TCISeriesDescriptionEN
+											});
+										}
+										//});
+									}
 								}
 							}
 
 							console.log("zc_mmfields Data", _that.vehicleSeriesData);
-							_that.oGlobalJSONModel.getData().vehicleSeriesData = _that.vehicleSeriesData.results;
+							_that.oGlobalJSONModel.getData().vehicleSeriesData = _that.vehicleSeriesData
+								.results;
 							_that.oGlobalJSONModel.updateBindings(true);
 						} else {
 							_that.ModelNodataFlag = true;

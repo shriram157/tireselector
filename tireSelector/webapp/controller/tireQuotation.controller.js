@@ -148,6 +148,9 @@ sap.ui.define([
 				_this.rowData.VModelYear = _this.rowData.VModelYear;
 				_this.rowData.VehicleSeries = _this.rowData.VehicleSeries;
 				_this.rowData.TireSize = _this.rowData.TireSize.replace("%2F", "/");
+				_this.rowData.MatDesc_EN = _this.rowData.MatDesc_EN.replace("%2F", "/");
+				_this.rowData.TireLoad = _this.rowData.TireLoad.replace("%2F", "/");
+				_this.rowData.TireSpeed = _this.rowData.TireSpeed.replace("%2F", "/");
 				_this.rowData.ProvincialTax = "";
 				_this.rowData.FederalTax = "";
 				_this.rowData.ProvincialTaxSum = "";
@@ -155,7 +158,7 @@ sap.ui.define([
 				_this.rowData.EHFPriceSum = "";
 				_this.rowData.Total = "";
 				_this.rowData.subTotal = "";
-				_this.rowData.Retails = Number(_this.rowData.Retails);
+				_this.rowData.Retails =  _this.decimalFormatter(_this.rowData.Retails);
 
 				var oMat = _this.rowData.Material;
 				var oMaterial = oMat;
@@ -545,7 +548,7 @@ sap.ui.define([
 
 		getUnitPrice: function (oUnit) {
 			var oUnitPrice = oUnit.getParameter("newValue");
-			_this.oTireQuotationModel.getData().Retails = oUnitPrice;
+			_this.oTireQuotationModel.getData().Retails =  _this.decimalFormatter(oUnitPrice);
 			_this.oTirePriceModel.updateBindings(true);
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
