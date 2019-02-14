@@ -35,7 +35,7 @@
 .styleColumns.alignRight .sapMListTblCell { text-align: right !important;}
 }
 .styleColumns .sapMLabel  {color: #FC121D; }
-.noCustomColor {color: #000 !important;}
+.noCustomColor {color: #000 !important; margin-left: 0.25rem;}
 .facetStyle>div:nth-child(1) { border-bottom: 1px solid;}
 .facetStyle .sapUiTableTbr { height: 2.5rem !important;}
 .facetStyle .sapUiTableTbr .sapMTB-Transparent-CTX.sapMTB { padding-left: 0 !important;}
@@ -53,7 +53,7 @@ span.displayBlock{
 .colorDisconitnued {
 	background-color: magenta;
 }
-.tableSearhResults {
-	height: 100%;
-	padding-bottom: 1.5rem;
+.tableScroll {
+	height: 90%;
+	padding-bottom: 2rem;
 }

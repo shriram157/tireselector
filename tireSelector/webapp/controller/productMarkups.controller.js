@@ -4,8 +4,9 @@ sap.ui.define([
 	'sap/ui/model/json/JSONModel',
 	'sap/ui/model/resource/ResourceModel',
 	'tireSelector/controller/BaseController',
-	"sap/ui/core/routing/History"
-], function (Controller, JSONModel, ResourceModel, BaseController, History) {
+	"sap/ui/core/routing/History",
+	'sap/ui/model/Filter',
+], function (Controller, JSONModel, ResourceModel, BaseController, History, Filter) {
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.productMarkups", {
@@ -121,19 +122,35 @@ sap.ui.define([
 		onPressBreadCrumb: function (oEvtLink) {
 			_localScope.getRouter().navTo("master");
 		},
-		
+
+		onBrandSearch: function (oQuery) {
+			_localScope.ProdMarkupsTable = _localScope.getView().byId("ID_ProdMarkupsTable");
+			_localScope.oBinding = _localScope.ProdMarkupsTable.getBinding("items");
+			var aFilters = [];
+			var sQuery = oQuery.getSource().getValue();
+			if (sQuery && sQuery.length > 0) {
+				aFilters = new Filter([
+					new Filter("Manufacturer_code", sap.ui.model.FilterOperator.Contains, sQuery)
+				], false);
+				_localScope.oBinding.filter(aFilters);
+			} else {
+				_localScope.oBinding.filter([]);
+			}
+		},
+
 		// updatePostdate:function(oUpdatedDate) {
 		// 	// var ModelData = _localScope.oProdMarkupModel.getData().results;
 		// 	oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated = new Date();
 		// 	_localScope.oProdMarkupModel.updateBindings(true);
 		// }, 
-		
-		updatePostdateLive:function(oUpdatedDate) {
-			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated = new Date();
+
+		updatePostdateLive: function (oUpdatedDate) {
+			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated =
+				new Date();
 			_localScope.oProdMarkupModel.updateBindings(true);
 			_localScope.oProdMarkupModel.refresh(true);
-		}, 
-					
+		},
+
 		updateXSALiveTable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
@@ -159,7 +176,7 @@ sap.ui.define([
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 					dataFromModel.IsLive = "Y";
-					
+
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
 						console.log("Post Response", oResponse);
 						updateSuccessFlag = true;
@@ -329,7 +346,7 @@ sap.ui.define([
 				_localScope.getRouter().navTo("reportError");
 			}
 		},
-		
+
 		BackToHistory: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();

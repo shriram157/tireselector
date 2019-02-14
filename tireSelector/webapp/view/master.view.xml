@@ -96,7 +96,7 @@
 				</f:SimpleForm>
 				<HBox class="tableSearhResults" visible="{MasterModel>/enableTable}">
 					<ScrollContainer height="100%" width="100%" horizontal="true" vertical="true" focusable="true">
-						<Table id="idSearchresultsTable" inset="false" items="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }">
+						<Table id="idSearchresultsTable" inset="false" items="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }" class="tableScroll">
 							<columns>
 								<Column demandPopin="true">
 									<Text text="{i18n>Model}"/>
@@ -108,7 +108,7 @@
 									<Text text="{i18n>TireSize}"/>
 								</Column>
 								<Column minScreenWidth="Desktop" demandPopin="true">
-									<Text text="{i18n>RimSize}"/>
+									<Text text="{i18n>RimType}"/>
 								</Column>
 							</columns>
 							<items>
@@ -125,6 +125,12 @@
 					</ScrollContainer>
 				</HBox>
 			</content>
+			<footer>
+					<Toolbar>
+						<!--<ToolbarSpacer/>-->
+						
+					</Toolbar>
+				</footer>
 		</Page>
 	</App>
 </mvc:View>

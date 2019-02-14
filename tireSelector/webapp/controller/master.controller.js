@@ -35,7 +35,7 @@ sap.ui.define([
 					"SearchTerm2": "42120",
 					"CurrentDate": new Date(),
 					"AddressID": "31298",
-					"Div":"TOY"
+					"Div": "TOY"
 				};
 				_that._oDealerModel = new sap.ui.model.json.JSONModel();
 				var dealer = _that.DealerData.BusinessPartner;
@@ -60,7 +60,7 @@ sap.ui.define([
 				enableTireSize: false,
 				enableVehicleInputs: false,
 				enableTable: false,
-				enableProdMarkup: false,
+				enableProdMarkup: true,
 				enableMore: false
 			});
 
@@ -297,27 +297,21 @@ sap.ui.define([
 			}
 
 			_that.SearchOptionList = _that.getView().byId("searchOptionList");
-			_that.ForVehicleSearchOnly = _that.getView().byId(
-				"forVehicleSearchOnly");
+			_that.ForVehicleSearchOnly = _that.getView().byId("forVehicleSearchOnly");
 			_that.SearchOptionLabel = _that.getView().byId("searchOptionLabel");
-			_that.SearchOptionVIN = _that.getView()
-				.byId("searchOptionVIN");
+			_that.SearchOptionVIN = _that.getView().byId("searchOptionVIN");
 			_that.SearchOptionTireSize = _that.getView().byId("searchOptionTireSize");
-			_that.ModelSeriesCombo =
-				_that.getView().byId("ModelSeriesCombo");
+			_that.ModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
 			_that.SearchOptionVehicle = _that.getView().byId("VehicleSearchCombo");
 
 			var selectedSearchVals = {};
 			selectedSearchVals.SearchOptionVehicle = _that.getView().byId("VehicleSearchCombo");
-			selectedSearchVals
-				.ModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
-			selectedSearchVals.SearchOptionVIN = _that.getView().byId(
-				"searchOptionVIN");
+			selectedSearchVals.ModelSeriesCombo = _that.getView().byId("ModelSeriesCombo");
+			selectedSearchVals.SearchOptionVIN = _that.getView().byId("searchOptionVIN");
 			selectedSearchVals.SearchOptionTireSize = _that.getView().byId("searchOptionTireSize");
 
 			_that._oSearchCriteriaModel = new sap.ui.model.json.JSONModel(selectedSearchVals);
-			_that._oSearchCriteriaModel.updateBindings(
-				true);
+			_that._oSearchCriteriaModel.updateBindings(true);
 			sap.ui.getCore().setModel(_that._oSearchCriteriaModel, "SearchCriteriaModel");
 
 			// sap.ushell.components.SearchOption = _that.SearchOptionList;
@@ -334,8 +328,7 @@ sap.ui.define([
 			/* JSON Model for the View */
 			_that.oSelectJSONModel = new JSONModel();
 			_that.getView().setModel(_that.oSelectJSONModel, "SelectJSONModel");
-			sap.ui.getCore().setModel(
-				_that.oSelectJSONModel, "SelectJSONModel");
+			sap.ui.getCore().setModel(_that.oSelectJSONModel, "SelectJSONModel");
 			_that.oSelectJSONModel.getData().SearchOptionVal = "";
 			/* Dummy JSON data */
 			_that.objList = {
@@ -354,10 +347,8 @@ sap.ui.define([
 			// _that.nodeJsUrl = this.sPrefix + "/node";
 			_that.oSelectJSONModel.setData(_that.objList);
 			_that.oSelectJSONModel.updateBindings();
-			_that.SearchOptionList.setSelectedKey(
-				_that.oI18nModel.getResourceBundle().getText("VIN"));
-			_that.SearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText(
-				"VIN"));
+			_that.SearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
+			_that.SearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
 		},
 
 		getPhoneNumber: function (dealer, addressID) {
@@ -387,9 +378,32 @@ sap.ui.define([
 				enableTireSize: false,
 				enableVehicleInputs: false,
 				enableTable: false,
+				enableProdMarkup: true,
 				enableMore: false
 			});
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
+			// var scopes = _that.userData.userContext.scopes;
+			// console.log("scopes", scopes);
+			// var accessAll = false,
+			// 	accesslimited = false;
+
+			// for (var s = 0; s < scopes.length; s++) {
+			// 	if (scopes[s] != "openid") {
+			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+			// 			accessAll = true;
+			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+			// 			accesslimited = true;
+			// 		} else {
+			// 			accessAll = false;
+			// 			accesslimited = false;
+			// 		}
+			// 	}
+			// }
+			// if (accessAll == true && accesslimited == true) {
+			// 	_that._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	_that._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
 
 			// if (_that.getView().byId("searchOptionList") != undefined) {
 			// 	_that.getView().byId("searchOptionList").setValue();
@@ -405,11 +419,11 @@ sap.ui.define([
 			// if (_that.getView().byId("searchOptionTireSize") != undefined) {
 			// 	_that.getView().byId("searchOptionTireSize").setValue();
 			// }
-			if (_that.getView().byId("searchOptionList") != undefined) {
-				_that.SearchOptionVIN.setValue();
-				_that.SearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
-				_that.SearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
-			}
+			// if (_that.getView().byId("searchOptionList") != undefined) {
+			// 	_that.SearchOptionVIN.setValue();
+			// 	_that.SearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
+			// 	_that.SearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
+			// }
 		},
 
 		onBeforeRendering: function () {
@@ -657,7 +671,7 @@ sap.ui.define([
 					dataType: "json",
 					success: function (oDataResponse) {
 						if (oDataResponse.d.results.length > 0) {
-							console.log("Series All",oDataResponse.d.results);
+							console.log("Series All", oDataResponse.d.results);
 							if (_that.DealerData.Div == "") {
 								_that.vehicleSeriesData = {
 									"results": []
@@ -785,7 +799,7 @@ sap.ui.define([
 					_that.SearchOptionTireSize.setValue();
 					_that.SearchOptionTireSize.setValueState(sap.ui.core.ValueState.None);
 				}
-				_that.SearchOptionList.setSelectedKey();
+				// _that.SearchOptionList.setSelectedKey();
 				_that.SearchOptionList.setValueState(sap.ui.core.ValueState.None);
 			}
 			_that._oViewModel.setProperty("/enableSearchBtn", false);
@@ -858,6 +872,9 @@ sap.ui.define([
 		routeToTireSelect: function (oSearchResults) {
 			var oBj = {};
 			oBj.SearchOptionVehicle = _that.SearchOptionVehicle.getSelectedKey();
+			if (_that.SearchOptionVehicle.getSelectedItem() != null) {
+				oBj.SeriesDescp = _that.SearchOptionVehicle.getSelectedItem().getText().split("-")[1];
+			}
 			oBj.ModelSeriesCombo = _that.ModelSeriesCombo.getSelectedKey();
 			oBj.SearchOptionVIN = _that.SearchOptionVIN.getValue();
 
@@ -1010,6 +1027,9 @@ sap.ui.define([
 		navToSelectTire: function (oEvtModel) {
 			var oBj = {};
 			oBj.SearchOptionVehicle = _that.SearchOptionVehicle.getSelectedKey();
+			if (_that.SearchOptionVehicle.getSelectedItem() != null) {
+				oBj.SeriesDescp = _that.SearchOptionVehicle.getSelectedItem().getText().split("-")[1];
+			}
 			oBj.ModelSeriesCombo = _that.ModelSeriesCombo.getSelectedKey();
 			oBj.SearchOptionVIN = _that.SearchOptionVIN.getValue();
 

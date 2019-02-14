@@ -42,6 +42,11 @@ sap.ui.define([
 				PhoneNumber: _this.phoneNumber
 			});
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
+			
+			_this.getView().byId("nameMandat").setRequired =false;
+			_this.getView().byId("addressMandat").setRequired =false;
+			_this.getView().byId("postalCodeMandat").setRequired =false;
+			_this.getView().byId("phoneMandat").setRequired =false;
 
 			_this._oViewModelTax = new sap.ui.model.json.JSONModel({
 				enableFTC: false,
@@ -147,6 +152,7 @@ sap.ui.define([
 				_this.rowData.VIN = _this.rowData.VIN;
 				_this.rowData.VModelYear = _this.rowData.VModelYear;
 				_this.rowData.VehicleSeries = _this.rowData.VehicleSeries;
+				_this.rowData.VehicleSeriesDescp = _this.rowData.VehicleSeriesDescp;
 				_this.rowData.TireSize = _this.rowData.TireSize.replace("%2F", "/");
 				_this.rowData.MatDesc_EN = _this.rowData.MatDesc_EN.replace("%2F", "/");
 				_this.rowData.TireLoad = _this.rowData.TireLoad.replace("%2F", "/");
@@ -158,7 +164,7 @@ sap.ui.define([
 				_this.rowData.EHFPriceSum = "";
 				_this.rowData.Total = "";
 				_this.rowData.subTotal = "";
-				_this.rowData.Retails =  _this.decimalFormatter(_this.rowData.Retails);
+				_this.rowData.Retails = _this.decimalFormatter(_this.rowData.Retails);
 
 				var oMat = _this.rowData.Material;
 				var oMaterial = oMat;
@@ -196,6 +202,7 @@ sap.ui.define([
 									_this.oTireQuotationModel.getData().ProvincialTax = Number(oPriceData.results[n].Amount);
 								} else if (CndType == "ZPEH" || CndType == "ZPEC") { //Freight Cost
 									_this.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
+									// _this.oTireQuotationModel.getData().Crcy = oPriceData.results[n].Crcy;
 								}
 							}
 						},
@@ -262,6 +269,14 @@ sap.ui.define([
 				}
 			});
 		},
+		
+		ChangeLabelMandatory: function(oChange){
+			_this.getView().byId("nameMandat").setRequired =true;
+			_this.getView().byId("addressMandat").setRequired =true;
+			_this.getView().byId("postalCodeMandat").setRequired =true;
+			_this.getView().byId("phoneMandat").setRequired =true;
+		},
+		
 		decimalFormatter: function (oDecVal) {
 			if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
 				var returnVal = parseFloat(oDecVal).toFixed(2);
@@ -546,10 +561,13 @@ sap.ui.define([
 
 		},
 
+		changeUnitPrice: function (oUnitPrice) {
+			_this.oTireQuotationModel.getData().Retails = _this.decimalFormatter(oUnitPrice);
+			_this.oTirePriceModel.updateBindings(true);
+		},
+
 		getUnitPrice: function (oUnit) {
 			var oUnitPrice = oUnit.getParameter("newValue");
-			_this.oTireQuotationModel.getData().Retails =  _this.decimalFormatter(oUnitPrice);
-			_this.oTirePriceModel.updateBindings(true);
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
 			if (oUnit.getSource().getId().split("_")[3] == "tireUnitPrice") {
@@ -616,10 +634,12 @@ sap.ui.define([
 			var oQtyVal = oQty.getParameter("newValue");
 			if (oQtyVal !== undefined || oQtyVal != null || oQtyVal != "") {
 				if (oQty.getSource().getId().split("_")[3] == "tireQty") {
-					_this.getView().byId("id_RHPsQty").setValue(oQtyVal);
-					if (_this.oTireQuotationModel.getData().RHPPRice != "") {
-						data.RHPPriceSum = _this.decimalFormatter(Number(_this.oTireQuotationModel.getData().RHPPRice) * Number(_this.getView()
-							.byId("id_RHPsQty").getValue())).toString();
+					if (_this.getView().byId("id_RHP").getSelectedKey() != "No Thank You") {
+						_this.getView().byId("id_RHPsQty").setValue(oQtyVal);
+						if (_this.oTireQuotationModel.getData().RHPPRice != "") {
+							data.RHPPriceSum = _this.decimalFormatter(Number(_this.oTireQuotationModel.getData().RHPPRice) * Number(_this.getView()
+								.byId("id_RHPsQty").getValue())).toString();
+						}
 					}
 					// _this.oTirePrice = _this.getView().byId("id_tirePrice");
 					_this.oTireUnitPrice = _this.getView().byId("id_tireUnitPrice").getValue();

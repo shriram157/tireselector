@@ -31,7 +31,8 @@
 					</l:VerticalLayout>
 					<MessageStrip id="ID_ErrMsgStrip" showIcon="true" showCloseButton="false" visible="false" type="Error" class="customMargin"/>
 					<OverflowToolbar class="noBottomBorder">
-						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold" class="styleFontSize customMargin"/>
+						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold"
+							class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>SelectDifferentTire}" type="Emphasized" press="SelectDifferentTire"/>
 					</OverflowToolbar>
@@ -46,28 +47,32 @@
 							<Label text="{i18n>DealerTel}"/>
 							<!--<Input type="Number" value="{TireQuoteModel>/PhoneNumber}"/>-->
 							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"/>
-							
 							<Label text="{i18n>QuoteDate}" required="true"/>
-							<DatePicker id="id_QuoteDate" value="{TireQuoteModel>/CurrentDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleQuoteDateChange"
-								class="sapUiSmallMarginBottom"/>
-							<Label text="{i18n>AfterExpiry}" required="true"/>
-							<DatePicker id="id_AfterExpiry" value="{TireQuoteModel>/expiryDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy" change="handleExpiryChange"
-								class="sapUiSmallMarginBottom"/>
+							<DatePicker id="id_QuoteDate" value="{TireQuoteModel>/CurrentDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy"
+								change="handleQuoteDateChange" class="sapUiSmallMarginBottom"/>
+							<Label text="{i18n>OfferExpiry}" required="true"/>
+							<DatePicker id="id_AfterExpiry" value="{TireQuoteModel>/expiryDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy"
+								change="handleExpiryChange" class="sapUiSmallMarginBottom"/>
 							<core:Title text=""/>
 							<Label text="{i18n>Vehicle}"/>
-							<Input type="Text" value="{TireQuotationModel>/VehicleSeries} {TireQuotationModel>/VModelYear}" id="ID_SeriesYear"/>
+							<Input type="Text" value="{TireQuotationModel>/VModelYear} {TireQuotationModel>/VehicleSeriesDescp}" id="ID_SeriesYear"/>
 							<Label text="{i18n>VIN}"/>
 							<Input type="Text" value="{TireQuotationModel>/VIN}" id="ID_VINQuote"/>
-							<Label text="{i18n>Name}"/>
-							<Input type="Text" value=""/>
-							<Label text="{i18n>Address}"/>
-							<Input type="Text" value=""/>
-							<Label text="{i18n>PostalCode}"/>
-							<Input type="Text" value=""/>
-							<Label text="{i18n>Phone}"/>
-							<Input type="Text" value=""/>
+							
+							<Label text="{i18n>Name}" labelFor="nameMandat"/>
+							<Input type="Text" value="" id="nameMandat" required="false"/>
+							
+							<Label text="{i18n>Address}" labelFor="addressMandat"/>
+							<Input type="Text" value="" id="addressMandat" required="false"/>
+							
+							<Label text="{i18n>PostalCode}" labelFor="postalCodeMandat"/>
+							<Input type="Text" value="" id="postalCodeMandat" required="false"/>
+							
+							<Label text="{i18n>Phone}" labelFor="phoneMandat"/>
+							<Input type="Text" value="" id="phoneMandat" required="false"/>
 							<Label text="{i18n>CreditApp}"/>
-							<Input type="Text" value=""/>
+							
+							<Input type="Text" value="" liveChange="ChangeLabelMandatory"/>
 						</f:content>
 					</f:SimpleForm>
 					<Table inset="false" id="tableQuotation">
@@ -98,7 +103,7 @@
 										<Text id="TireTxt3" text="{TireQuotationModel>/Material}"/>
 									</VBox>
 									<!--"{TirePriceModel>/TiresPrice}" -->
-									<Input value="{TireQuotationModel>/Retails}" id="id_tireUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="{TireQuotationModel>/Retails}" id="id_tireUnitPrice" liveChange="getUnitPrice" change ="changeUnitPrice"/>
 									<Input value="" id="id_tireQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/TiresPrice'}" id="id_tirePrice" editable="false"/>
 								</cells>
@@ -107,8 +112,8 @@
 								<cells>
 									<VBox>
 										<HBox>
-											<Label text="{i18n>RoadHazardProtection}"/>
-											<Label text=" ({i18n>AgreementText})" class="noCustomColor"/>
+											<Label text="{i18n>RoadHazardProtection} "/>
+											<Label text=" {i18n>AgreementText}" class="noCustomColor"/>
 										</HBox>
 										<Select id="id_RHP" forceSelection="false" selectedKey="" width="100%" items="{ProductCategoryModel>/results}" change="onMatSelection">
 											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR}"/>
@@ -228,7 +233,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{path:'TireQuotationModel>/EHFPRice'} {i18n>FeeDescription} {i18n>EHFCharges}" id="id_EHFDescp"/>
+										<Label text="{i18n>EnvoFee} (${TireQuotationModel>/EHFPRice} {i18n>FeeDescription})" id="id_EHFDescp"/>
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/EHFPriceSum'}" id="id_freeDescp" editable="false"/>
 								</cells>
@@ -283,6 +288,12 @@
 						<Button press="generatePDF" icon="sap-icon://print" data:targetId="idTireQuotation" type="Emphasized" text="{i18n>PrintQuote}"/>
 					</OverflowToolbar>
 				</content>
+				<footer>
+					<Toolbar>
+						<!--<ToolbarSpacer/>-->
+						
+					</Toolbar>
+				</footer>
 			</Page>
 		</pages>
 	</App>

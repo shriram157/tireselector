@@ -1,4 +1,4 @@
-var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear;
+var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -86,8 +86,8 @@ sap.ui.define([
 				}
 			});
 
-			sap.ushell.components.oTable.getColumns()[5].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
+			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
 
@@ -160,25 +160,29 @@ sap.ui.define([
 			that.oPriceServiceModel = that.getOwnerComponent().getModel("PriceServiceModel");
 
 			var filterData;
+			that.fromTireCenter = false;
 			if (oEvent.getParameter("arguments").modelData !== undefined) {
 				//VIN, VehicleSeries, VModelYear
 				that.oModelData = JSON.parse(oEvent.getParameter("arguments").modelData);
 				VIN = that.oModelData.SearchOptionVIN;
 				VModelYear = that.oModelData.ModelSeriesCombo;
 				VehicleSeries = that.oModelData.SearchOptionVehicle;
+				VehicleSeriesDescp = that.oModelData.SeriesDescp;
 				// filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
-					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '"+that.userDetails.DealerData.Division+"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
 					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
 
 			} else if (oEvent.getParameter("arguments").tireData !== undefined) {
+				that.fromTireCenter = true;
 				that.oTireData = JSON.parse(oEvent.getParameters().arguments.tireData);
 				VIN = that.oTireData.SearchOptionVIN;
 				VModelYear = that.oTireData.ModelSeriesCombo;
 				VehicleSeries = that.oTireData.SearchOptionVehicle;
+				VehicleSeriesDescp = that.oTireData.SeriesDescp;
 				// filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
-					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '10' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '"+that.userDetails.DealerData.Division+"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
 					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
 			}
 			if (filterData !== undefined) {
@@ -232,17 +236,35 @@ sap.ui.define([
 													that.tempModel.getData().results[n].TIRE_MFG_PART_NUM = "";
 												}
 												//TIRE_MFG_PART_NUM
+												if (that.fromTireCenter != true) {
+													if (that.tempModel.getData().results[n].TIRE_FITMENT == "PF") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "Perfect";
+														that.tempModel.getData().results[n].colorCell = "Green";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "AF") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "Acceptable";
+														that.tempModel.getData().results[n].colorCell = "Yellow";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OE") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "OE";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "Other";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "Discontinued";
+														that.tempModel.getData().results[n].colorCell = "Magenta";
+													}
+												} else {
+													if (that.tempModel.getData().results[n].TIRE_FITMENT == "PF") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "AF") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OE") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "";
+													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
+														that.tempModel.getData().results[n].TIRE_FITMENT = "Discontinued";
+														that.tempModel.getData().results[n].colorCell = "Magenta";
+													}
 
-												if (that.tempModel.getData().results[n].TIRE_FITMENT == "PF") {
-													that.tempModel.getData().results[n].TIRE_FITMENT = "Perfect";
-												} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "AF") {
-													that.tempModel.getData().results[n].TIRE_FITMENT = "Acceptable";
-												} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OE") {
-													that.tempModel.getData().results[n].TIRE_FITMENT = "OE";
-												} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
-													that.tempModel.getData().results[n].TIRE_FITMENT = "Other";
-												} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
-													that.tempModel.getData().results[n].TIRE_FITMENT = "Discontinued";
 												}
 
 												var temp = that.tempModel.getData().results[n];
@@ -397,6 +419,9 @@ sap.ui.define([
 											"type": "Tire Fitment",
 											"values": []
 										}, {
+											"type": "Tire Category",
+											"values": []
+										}, {
 											"type": "Tire Brand",
 											"values": []
 										}, {
@@ -405,25 +430,22 @@ sap.ui.define([
 										}, {
 											"type": "Tire MFG Part No",
 											"values": []
-										}, {
-											"type": "Tire Category",
-											"values": []
 										}];
 										for (var l = 0; l < that.tempModel.getData().results.length; l++) {
 											that.Filters[0].values.push({
 												"text": that.tempModel.getData().results[l].TIRE_FITMENT
 											});
 											that.Filters[1].values.push({
-												"text": that.tempModel.getData().results[l].TIRE_BRAND_NAME
+												"text": that.tempModel.getData().results[l].TIRE_CATEGORY
 											});
 											that.Filters[2].values.push({
-												"text": that.tempModel.getData().results[l].TIRE_SPEED_RATING
+												"text": that.tempModel.getData().results[l].TIRE_BRAND_NAME
 											});
 											that.Filters[3].values.push({
-												"text": that.tempModel.getData().results[l].TIRE_MFG_PART_NUM
+												"text": that.tempModel.getData().results[l].TIRE_SPEED_RATING
 											});
 											that.Filters[4].values.push({
-												"text": that.tempModel.getData().results[l].TIRE_CATEGORY
+												"text": that.tempModel.getData().results[l].TIRE_MFG_PART_NUM
 											});
 
 											var tempTireData = that.tempModel.getData().results[l];
@@ -672,12 +694,12 @@ sap.ui.define([
 			if (oCheck.getParameters("selected").selected == true) {
 				that._oViewModel.setProperty("/enableDealerNet", true);
 				that._oViewModel.setProperty("/enableProfit", true);
-				sap.ushell.components.oTable.getColumns()[5].setVisible(true);
 				sap.ushell.components.oTable.getColumns()[6].setVisible(true);
+				sap.ushell.components.oTable.getColumns()[7].setVisible(true);
 			} else {
 				oCheck.getSource().setSelected(false);
-				sap.ushell.components.oTable.getColumns()[5].setVisible(false);
 				sap.ushell.components.oTable.getColumns()[6].setVisible(false);
+				sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 				that._oViewModel.setProperty("/enableDealerNet", false);
 				that._oViewModel.setProperty("/enableProfit", false);
 			}
@@ -689,8 +711,8 @@ sap.ui.define([
 		},
 
 		NavBackToSearch: function () {
-			sap.ushell.components.oTable.getColumns()[5].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
+			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
 			if (that.oTireFitmentJSONModel != undefined) {
@@ -755,7 +777,7 @@ sap.ui.define([
 
 		onRowPress: function (oRowEvt) {
 			// that.oGlobalBusyDialog.destroy();
-			debugger;
+			// debugger;
 			var oPath = {};
 			var Data = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
 
@@ -779,6 +801,7 @@ sap.ui.define([
 			oPath.VIN = VIN;
 			oPath.VehicleSeries = VehicleSeries;
 			oPath.VModelYear = VModelYear;
+			oPath.VehicleSeriesDescp =VehicleSeriesDescp;
 			sap.ui.core.UIComponent.getRouterFor(that).navTo("tireQuotation", {
 				rowData: JSON.stringify(oPath)
 			});
@@ -796,8 +819,8 @@ sap.ui.define([
 			}
 		},
 		onExit: function () {
-			sap.ushell.components.oTable.getColumns()[5].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
+			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
 			if (that.oTireFitmentJSONModel != undefined) {

@@ -1,5 +1,6 @@
 <mvc:View xmlns:u="sap.ui.unified" xmlns:tnt="sap.tnt" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core" xmlns:t="sap.ui.table" controllerName="tireSelector.controller.searchResultsTire"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
 	xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
@@ -19,7 +20,8 @@
 				</customHeader>
 				<tnt:ToolHeader backgroundDesign="Translucent">
 					<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
-					<Link text="{i18n>ProductMarkups}" visible="{FitmentPageModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
+					<Link text="{i18n>ProductMarkups}" visible="{FitmentPageModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin"
+						press="onMenuLinkPress"/>
 					<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
 				</tnt:ToolHeader>
 				<content>
@@ -31,7 +33,8 @@
 						</l:content>
 					</l:VerticalLayout>
 					<OverflowToolbar class="noBottomBorder">
-						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold" class="styleFontSize customMargin"/>
+						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold"
+							class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
 						<Button text="{i18n>BackToSearch}" type="Emphasized" press="NavBackToSearch"/>
 					</OverflowToolbar>
@@ -40,7 +43,8 @@
 							<FacetFilter id="idFacetFilter" type="Simple" showPersonalization="true" showReset="true" reset="handleFacetFilterReset"
 								confirm="handleFacetConfirm" lists="{TireFitmentJSONModel>/Filters}">
 								<lists>
-									<FacetFilterList title="{TireFitmentJSONModel>type}" key="{TireFitmentJSONModel>text}" mode="MultiSelect" items="{path:'TireFitmentJSONModel>values', templateShareable: 'true'}">
+									<FacetFilterList title="{TireFitmentJSONModel>type}" key="{TireFitmentJSONModel>text}" mode="MultiSelect"
+										items="{path:'TireFitmentJSONModel>values', templateShareable: 'true'}">
 										<items>
 											<FacetFilterItem text="{TireFitmentJSONModel>text}" key="{TireFitmentJSONModel>text}"/>
 										</items>
@@ -62,7 +66,11 @@
 								<t:Column id="ID_TireFitment" sortProperty="Tire Fitment" filterProperty="Tire Fitment">
 									<Label text="{i18n>TireFitment}"/>
 									<t:template>
-										<Text text="{path:'TireFitmentJSONModel>Tire Fitment', formatter: '.colorFormatter'}" wrapping="false" id="cell_Fitment" class="displayBlock"/>
+										<Text text="{path:'TireFitmentJSONModel>Tire Fitment'}" app:colorClass="{TireFitmentJSONModel>colorCell}" wrapping="false" id="cell_Fitment">
+											<!--<customData>-->
+											<!--	<core:CustomData key="colorClass" value="{ path:'TireFitmentJSONModel>colorCell'}" writeToDom="true"/>-->
+											<!--</customData>-->
+										</Text>
 										<!--{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}-->
 									</t:template>
 								</t:Column>
@@ -79,9 +87,15 @@
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="Tire Speed Rating" filterProperty="Tire Speed Rating">
-									<Label text="{i18n>Ratings}"/>
+									<Label text="{i18n>Speed Ratings}"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire Speed Rating} {TireFitmentJSONModel>Tire Load Rating}" wrapping="false"/>
+										<Text text="{TireFitmentJSONModel>Tire Speed Rating}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column sortProperty="Tire Load Rating" filterProperty="Tire Load Rating">
+									<Label text="{i18n>Load Ratings}"/>
+									<t:template>
+										<Text text="{TireFitmentJSONModel>Tire Load Rating}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="Material" filterProperty="Material">
@@ -103,7 +117,7 @@
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="Retails" filterProperty="Retails">
-									<Label text="{i18n>Retails}" wrapping="false"/>
+									<Label text="{i18n>Retail}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Retails', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
@@ -113,6 +127,12 @@
 					</HBox>
 					<!--<Button text="NextPage" type="Emphasized" press="onRowPress"/>-->
 				</content>
+				<footer>
+					<Toolbar>
+						<!--<ToolbarSpacer/>-->
+						
+					</Toolbar>
+				</footer>
 			</Page>
 		</pages>
 	</App>
