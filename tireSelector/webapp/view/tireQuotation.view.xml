@@ -116,7 +116,7 @@
 											<Label text=" {i18n>AgreementText}" class="noCustomColor"/>
 										</HBox>
 										<Select id="id_RHP" forceSelection="false" selectedKey="" width="100%" items="{ProductCategoryModel>/results}" change="onMatSelection">
-											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR}"/>
+											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR_DESC}"/>
 										</Select>
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/RHPPRice'}" id="id_RHPUnitPrice" editable="false"/>

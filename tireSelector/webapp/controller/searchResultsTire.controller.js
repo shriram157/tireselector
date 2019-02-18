@@ -86,8 +86,8 @@ sap.ui.define([
 				}
 			});
 
-			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
+			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
 
@@ -694,12 +694,12 @@ sap.ui.define([
 			if (oCheck.getParameters("selected").selected == true) {
 				that._oViewModel.setProperty("/enableDealerNet", true);
 				that._oViewModel.setProperty("/enableProfit", true);
-				sap.ushell.components.oTable.getColumns()[6].setVisible(true);
 				sap.ushell.components.oTable.getColumns()[7].setVisible(true);
+				sap.ushell.components.oTable.getColumns()[8].setVisible(true);
 			} else {
 				oCheck.getSource().setSelected(false);
-				sap.ushell.components.oTable.getColumns()[6].setVisible(false);
 				sap.ushell.components.oTable.getColumns()[7].setVisible(false);
+				sap.ushell.components.oTable.getColumns()[8].setVisible(false);
 				that._oViewModel.setProperty("/enableDealerNet", false);
 				that._oViewModel.setProperty("/enableProfit", false);
 			}
@@ -711,8 +711,8 @@ sap.ui.define([
 		},
 
 		NavBackToSearch: function () {
-			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
+			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
 			if (that.oTireFitmentJSONModel != undefined) {
@@ -819,8 +819,8 @@ sap.ui.define([
 			}
 		},
 		onExit: function () {
-			sap.ushell.components.oTable.getColumns()[6].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
+			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
 			if (that.oTireFitmentJSONModel != undefined) {

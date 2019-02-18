@@ -86,37 +86,43 @@
 										<Text text="{TireFitmentJSONModel>Tire Brand}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Tire Speed Rating" filterProperty="Tire Speed Rating">
-									<Label text="{i18n>Speed Ratings}"/>
-									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire Speed Rating}" wrapping="false"/>
-									</t:template>
-								</t:Column>
 								<t:Column sortProperty="Tire Load Rating" filterProperty="Tire Load Rating">
-									<Label text="{i18n>Load Ratings}"/>
+									<Label text="{i18n>LoadRating}"/>
 									<t:template>
 										<Text text="{TireFitmentJSONModel>Tire Load Rating}" wrapping="false"/>
 									</t:template>
 								</t:Column>
+								<t:Column sortProperty="Tire Speed Rating" filterProperty="Tire Speed Rating">
+									<Label text="{i18n>SpeedRating}"/>
+									<t:template>
+										<Text text="{TireFitmentJSONModel>Tire Speed Rating}" wrapping="false"/>
+									</t:template>
+								</t:Column>
 								<t:Column sortProperty="Material" filterProperty="Material">
-									<Label text="{i18n>PartNumber}" wrapping="false"/>
+									<Label text="{i18n>TCIPartNumber}" wrapping="false"/>
 									<t:template>
 										<Text text="{TireFitmentJSONModel>Material}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_DealerNet" sortProperty="DealerNet" filterProperty="DealerNet" visible="{FitmentPageModel>/enableDealerNet}">
+								<t:Column sortProperty="Tire MFG Part No" filterProperty="Tire MFG Part No">
+									<Label text="{i18n>MfPartNumber}" wrapping="false"/>
+									<t:template>
+										<Text text="{TireFitmentJSONModel>Tire MFG Part No}" wrapping="false"/>
+									</t:template>
+								</t:Column>
+								<t:Column id="ID_DealerNet" sortProperty="DealerNet" filterProperty="DealerNet" visible="{FitmentPageModel>/enableDealerNet}" width="6rem">
 									<Label text="{i18n>DealerNet}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>DealerNet', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_Profit" sortProperty="Profit" filterProperty="Profit" visible="{FitmentPageModel>/enableProfit}">
+								<t:Column id="ID_Profit" sortProperty="Profit" filterProperty="Profit" visible="{FitmentPageModel>/enableProfit}"  width="6rem">
 									<Label text="{i18n>Profit}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Retails" filterProperty="Retails">
+								<t:Column sortProperty="Retails" filterProperty="Retails"  width="6rem">
 									<Label text="{i18n>Retail}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Retails', formatter: '.decimalFormatter'}" wrapping="false"/>

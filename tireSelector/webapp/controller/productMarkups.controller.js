@@ -15,7 +15,6 @@ sap.ui.define([
 			// _localScope.userloginCount = 1;
 
 			_localScope.getRouter().attachRouteMatched(function (oEvent) {
-
 				_localScope._oViewModel = new sap.ui.model.json.JSONModel({
 					busy: false,
 					delay: 0,
@@ -61,8 +60,9 @@ sap.ui.define([
 									"Dealer_Brand": _localScope.userData.DealerData.Division,
 									"Manufacturer_code": item.VALUE, //TIRE_BRAND_DESCP, //length is only 10 char for  
 									"Preview_Markup_Percentage": "0.00",
-									"Live_Markup_Percentage": "0.00",
+									"Live_Markup_Percentage": "MSRP",
 									"Live_Last_Updated": _localScope.oDateFormat.format(new Date()),
+									"Live_Last_Updated_update":"",
 									"Live_Last_Updated_By": _localScope.userData.DealerData.DealerName,
 									"User_First_Name": _localScope.userData.DealerData.BusinessPartnerName,
 									"User_Last_Name": _localScope.userData.DealerData.BusinessPartnerName2
@@ -123,20 +123,20 @@ sap.ui.define([
 			_localScope.getRouter().navTo("master");
 		},
 
-		onBrandSearch: function (oQuery) {
-			_localScope.ProdMarkupsTable = _localScope.getView().byId("ID_ProdMarkupsTable");
-			_localScope.oBinding = _localScope.ProdMarkupsTable.getBinding("items");
-			var aFilters = [];
-			var sQuery = oQuery.getSource().getValue();
-			if (sQuery && sQuery.length > 0) {
-				aFilters = new Filter([
-					new Filter("Manufacturer_code", sap.ui.model.FilterOperator.Contains, sQuery)
-				], false);
-				_localScope.oBinding.filter(aFilters);
-			} else {
-				_localScope.oBinding.filter([]);
-			}
-		},
+		// onBrandSearch: function (oQuery) {
+		// 	_localScope.ProdMarkupsTable = _localScope.getView().byId("ID_ProdMarkupsTable");
+		// 	_localScope.oBinding = _localScope.ProdMarkupsTable.getBinding("items");
+		// 	var aFilters = [];
+		// 	var sQuery = oQuery.getSource().getValue();
+		// 	if (sQuery && sQuery.length > 0) {
+		// 		aFilters = new Filter([
+		// 			new Filter("Manufacturer_code", sap.ui.model.FilterOperator.Contains, sQuery)
+		// 		], false);
+		// 		_localScope.oBinding.filter(aFilters);
+		// 	} else {
+		// 		_localScope.oBinding.filter([]);
+		// 	}
+		// },
 
 		// updatePostdate:function(oUpdatedDate) {
 		// 	// var ModelData = _localScope.oProdMarkupModel.getData().results;
@@ -145,8 +145,9 @@ sap.ui.define([
 		// }, 
 
 		updatePostdateLive: function (oUpdatedDate) {
-			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated =
+			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated_update =
 				new Date();
+				console.log("updated date",_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated_update);
 			_localScope.oProdMarkupModel.updateBindings(true);
 			_localScope.oProdMarkupModel.refresh(true);
 		},
@@ -171,7 +172,13 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
+						dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+					} 
+					else {
+						dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					}
+					// dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -189,7 +196,13 @@ sap.ui.define([
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					if (modelData[i].Live_Last_Updated_update !== "") {
+						newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+					} 
+					else {
+						newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					}
+					// newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -250,7 +263,7 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -270,9 +283,9 @@ sap.ui.define([
 					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
 					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					newDataFromModel.Live_Markup_Percentage = "0.00";
+					newDataFromModel.Live_Markup_Percentage = "MSRP";
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+					newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;

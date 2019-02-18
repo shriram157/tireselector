@@ -228,10 +228,19 @@ sap.ui.define([
 				console.log("Tire Price Data", _this.oTirePriceModel.getData());
 				_this.oGlobalBusyDialog.close();
 			});
-
+			
+			//_this.sCurrentLocale
+			//MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq 'E' and PRODH eq 'PARP10F22P101ECPRH'&$format=json
+			var Lang;
+			if(_this.sCurrentLocale == 'EN'){
+				Lang = "E";
+			}
+			else{
+				Lang = "F";
+			}
 			$.ajax({
 				dataType: "json",
-				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
+				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '"+Lang+"' and PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
 				type: "GET",
 				success: function (oDataResponse) {
 					if (oDataResponse.d.results.length > 0) {
@@ -241,7 +250,8 @@ sap.ui.define([
 						$.each(oDataResponse.d.results, function (i, item) {
 							if (item.MATNR != "") {
 								_this.matData.results.push({
-									"MATNR": item.MATNR
+									"MATNR": item.MATNR,
+									"MATNR_DESC":item.MATNR_DESC
 								});
 							}
 						});
@@ -250,7 +260,8 @@ sap.ui.define([
 						_this.getView().setModel(_this.oProductCategoryModel, "ProductCategoryModel");
 						_this.oProductCategoryModel.setData(_this.matData);
 						_this.oProductCategoryModel.getData().results.unshift({
-							"MATNR": "No Thank You"
+							"MATNR": "No Thank You",
+							"MATNR_DESC":""
 						});
 						_this.oProductCategoryModel.updateBindings(true);
 						if (_this.getView().byId("id_RHP") !== undefined) {

@@ -550,7 +550,7 @@ sap.ui.define([
 			var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
 			if (sTerm) {
-				aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.StartsWith, sTerm));
+				aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.Contains, sTerm));
 			}
 			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
 
@@ -955,7 +955,7 @@ sap.ui.define([
 												"ModelDesc_EN": item.ModelDesc_EN,
 												"Zzsuffix": item.Zzsuffix,
 												"ZtireSize": item.ZtireSize,
-												"ZrimSize": item.ZrimSize
+												"ZrimSize": item.ZrimType
 											});
 										});
 										_that.SearchResultModel.setData(_that.searchresultObj);
@@ -1061,10 +1061,10 @@ sap.ui.define([
 
 		/*Exit Function for refreshing/resetting view */
 		onExit: function () {
-			if (_that.getView().byId("searchOptionList") != undefined) {
-				_that.getView().byId("searchOptionList").setValue();
-				_that.getView().byId("searchOptionLabel").setText();
-			}
+			// if (_that.getView().byId("searchOptionList") != undefined) {
+			// 	_that.getView().byId("searchOptionList").setValue();
+			// 	_that.getView().byId("searchOptionLabel").setText();
+			// }
 			if (_that.getView().byId("VehicleSearchCombo") != undefined) {
 				_that.getView().byId("ModelSeriesCombo").setValue();
 				_that.getView().byId("VehicleSearchCombo").setValue();
