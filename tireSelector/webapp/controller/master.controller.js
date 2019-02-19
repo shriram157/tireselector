@@ -67,49 +67,6 @@ sap.ui.define([
 
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
 
-			//userProfile
-			// $.ajax({
-			// 	url: this.sPrefix + "/userDetails/attributes",
-			// 	type: "GET",
-			// 	dataType: "json",
-
-			// 	success: function (oData) {
-			// 		var BpDealer = [];
-			// 		var userAttributes = [];
-
-			// 		$.each(oData.attributes, function (i, item) {
-			// 			var BpLength = item.BusinessPartner.length;
-
-			// 			BpDealer.push({
-			// 				"BusinessPartnerKey": item.BusinessPartnerKey,
-			// 				"BusinessPartner": item.BusinessPartner, //.substring(5, BpLength),
-			// 				"BusinessPartnerName": item.BusinessPartnerName, //item.OrganizationBPName1 //item.BusinessPartnerFullName
-			// 				"Division": item.Division,
-			// 				"BusinessPartnerType": item.BusinessPartnerType,
-			// 				"searchTermReceivedDealerName": item.SearchTerm2
-			// 			});
-
-			// 			console.log("BpDealer");
-
-			// 		});
-			// 		that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-			// 		// read the saml attachments the same way 
-			// 		$.each(oData.samlAttributes, function (i, item) {
-			// 			userAttributes.push({
-			// 				"UserType": item.UserType[0],
-			// 				"DealerCode": item.DealerCode[0],
-			// 				"Language": item.Language[0]
-			// 			});
-
-			// 		});
-			// 	},
-			// 	error: function (oError) {
-			// 		// sap.m.MessageBox.error(
-			// 		// 	"NO Data found for BusinessPartner Address"
-			// 		// );
-			// 	}
-			// });
-
 			//appdata
 			$.ajax({
 				dataType: "json",
@@ -340,16 +297,45 @@ sap.ui.define([
 					SearchText: _that.oI18nModel.getResourceBundle().getText("TireSize")
 				}]
 			};
+			
+			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			if (isDivisionSent) {
+				_that.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 
-			var sLocation = window.location.host;
-			var sLocation_conf = sLocation.search("webide");
+				if (_that.sDivision == '10') // set the toyoto logo
+				{
+					var currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
-			// _that.nodeJsUrl = this.sPrefix + "/node";
+				} else { // set the lexus logo
+					var currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/LexusNew.png");
+				}
+			}
+
 			_that.oSelectJSONModel.setData(_that.objList);
 			_that.oSelectJSONModel.updateBindings();
 			_that.SearchOptionList.setSelectedKey(_that.oI18nModel.getResourceBundle().getText("VIN"));
 			_that.SearchOptionLabel.setText(_that.oI18nModel.getResourceBundle().getText("VIN"));
 		},
+
+		// _setTheLogo: function (oEvent) {
+		//              var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+		//              if (isDivisionSent) {
+		//                  this.sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+
+		//                  if (this.sDivision == '10') // set the toyoto logo
+		//                  {
+		//                      var currentImageSource = this.getView().byId("idLexusLogo");
+		//                      currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+
+		//                  } else { // set the lexus logo
+		//                      var currentImageSource = this.getView().byId("idLexusLogo");
+		//                      currentImageSource.setProperty("src", "images/LexusNew.png");
+		//                  }
+		//              }
+
+		//          },
 
 		getPhoneNumber: function (dealer, addressID) {
 			//A_BusinessPartnerAddress(BusinessPartner='2400042120',AddressID='31298')/to_PhoneNumber
@@ -549,7 +535,7 @@ sap.ui.define([
 		handleTireSizeSuggest: function (oEvent) {
 			var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
-			_that.byId("searchOptionTireSize").setFilterFunction(function(sTerm, oItem) {
+			_that.byId("searchOptionTireSize").setFilterFunction(function (sTerm, oItem) {
 				// A case-insensitive 'string contains' style filter
 				return oItem.getText().match(new RegExp(sTerm, "i"));
 			});

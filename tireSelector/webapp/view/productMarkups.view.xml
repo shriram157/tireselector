@@ -34,7 +34,7 @@
 						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold"
 							class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
-						<Text text="{ProdMarkupModel>tooltipText}" />
+						<Text text="({i18n>tooltip})" />
 						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateXSATable"/>
 						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateXSALiveTable"/>
 					</OverflowToolbar>

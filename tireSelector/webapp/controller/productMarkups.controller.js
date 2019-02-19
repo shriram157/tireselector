@@ -66,7 +66,7 @@ sap.ui.define([
 									"Live_Last_Updated_By": _localScope.userData.DealerData.DealerName,
 									"User_First_Name": _localScope.userData.DealerData.BusinessPartnerName,
 									"User_Last_Name": _localScope.userData.DealerData.BusinessPartnerName2,
-									"tooltipText":_localScope.oI18nModel.getResourceBundle().getText("tooltip")
+									"tooltipText": _localScope.oI18nModel.getResourceBundle().getText("tooltip")
 								});
 							});
 							_localScope.oProdMarkupModel.setData(_localScope.tireBrandData);
@@ -178,6 +178,9 @@ sap.ui.define([
 						dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
 					} else {
 						dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+						if (dataFromModel.Live_Markup_Percentage == "0.00") {
+							dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
+						}
 					}
 					// dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
@@ -199,7 +202,7 @@ sap.ui.define([
 						newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					} else {
 						newDataFromModel.Live_Markup_Percentage = "0.00";
-						newDataFromModel.tooltipText= _localScope.oI18nModel.getResourceBundle().getText("tooltip");
+						newDataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
 					}
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					if (modelData[i].Live_Last_Updated_update !== "") {
@@ -269,6 +272,9 @@ sap.ui.define([
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+					if (dataFromModel.Live_Markup_Percentage == "0.00") {
+						dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
+					}
 					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					dataFromModel.User_First_Name = modelData[i].User_First_Name;
 					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
@@ -289,6 +295,7 @@ sap.ui.define([
 					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					newDataFromModel.Live_Markup_Percentage = "0.00";
+					newDataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
