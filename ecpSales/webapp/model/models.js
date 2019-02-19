@@ -15,6 +15,11 @@ sap.ui.define([
 			var oModel = new JSONModel();
 			oModel.setDefaultBindingMode("TwoWay");
 			return oModel;
+		},
+		createPropertyData: function () {
+			var oModel = new JSONModel();
+			oModel.setDefaultBindingMode("TwoWay");
+			return oModel;
 		}
 
 	};

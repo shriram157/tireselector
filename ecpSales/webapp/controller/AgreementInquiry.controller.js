@@ -23,6 +23,7 @@ sap.ui.define([
 		},
 		_onRoutMatched: function (oEvent) {
 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
+			this.getModel("LocalDataModel").setProperty("/AgreementNum", oAgrNum);
 			var oVin = oEvent.getParameters().arguments.vin;
 			var oCustomerNumber = oEvent.getParameters().arguments.customerNumber;
 			// var Oodomtr = oEvent.getParameters().arguments.odometer;
@@ -199,9 +200,26 @@ sap.ui.define([
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 		},
 		onSearchBackList: function () {
-				this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
-				this.getModel().refresh();
+			this.getOwnerComponent().getModel("EcpSalesModel").refresh();
+			this.getModel("LocalDataModel").setProperty("/VINAGR", "");
+			this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
+			this.getModel("LocalDataModel").setProperty("/rowCount", 0);
+		},
+		onPrintPdf : function(){
+			var oAgr = this.getView().getModel("LocalDataModel").getProperty("/AgreementNum");
+
+			var isProxy = "";
+			if (window.document.domain == "localhost") {
+				isProxy = "proxy";
 			}
+			var w = window.open(isProxy +
+				"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value",
+				'_blank');
+			if (w == null) {
+				console.log("Error");
+				//MessageBox.warning(oBundle.getText("Error.PopUpBloqued"));
+			}
+		}
 			// 		onPrintPdf: function() {
 			// 			var zEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			// 			zEcpModel.read("/zc_ecp_agreement", {

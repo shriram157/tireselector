@@ -22,7 +22,7 @@
 											</buttons>
 										</RadioButtonGroup>
 										<Label text="{i18n>Agreement#}" textAlign="Begin" id="idInqLabel" textDirection="LTR"/>
-										<Input value="" id="idVal"/>
+										<Input value="{LocalDataModel>/VINAGR}" id="idVal"/>
 										<core:Title text=""/>
 										<Button text="Search" type="Emphasized" press="onSearchInquiryList"/>
 										<Button text="Reset" press="onPressResetSearch"/>
@@ -31,8 +31,8 @@
 								<VBox class="sapUiLargeMarginBottom">
 									<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single"
 										rows="{ path: '/zc_ecp_agreement', filters : [ { path : 'AgreementElectricVehicletype', operator : 'NE', value1 : 'AGEN'}]}"
-										rowSelectionChange="onNavigate" visibleRowCount="{RowCountModel>/rowCount}" selectionBehavior="Row" showNoData="true"
-										threshold="{RowCountModel>/rowCount}" enableBusyIndicator="true">
+										rowSelectionChange="onNavigate" visibleRowCount="{LocalDataModel>/rowCount}" selectionBehavior="Row" showNoData="true"
+										threshold="{LocalDataModel>/rowCount}">
 										<table:columns>
 											<table:Column  >
 												<Label text="{i18n>EcpAgreement}" textAlign="Center" width="100%"/>

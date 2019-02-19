@@ -27,6 +27,8 @@ sap.ui.define([
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
 			this.setModel(models.createLocalDataModel(), "LocalDataModel");
+			this.setModel(models.createPropertyData(), "oSetProperty");
+			
 
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");

@@ -17,6 +17,8 @@ sap.ui.define([
 
 			this.getView().setModel(new sap.ui.model.json.JSONModel(oRowCount), "RowCountModel");
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
+			this.getDealer();
+			this.getModel("LocalDataModel").setProperty("/rowCount", 0);
 		},
 		onSelectSearchBy: function (oEvent) {
 			var oSelectedIndex = oEvent.getSource().getSelectedIndex();
@@ -48,7 +50,7 @@ sap.ui.define([
 
 				oBindItems = this.oTable.getBinding("rows");
 				oBindItems.filter(andFilter);
-				this.getView().getModel("RowCountModel").setProperty("/rowCount", 10);
+				this.getView().getModel("LocalDataModel").setProperty("/rowCount", 10);
 
 			} else if (oIndex === 1) {
 				if (!$.isEmptyObject(sQuery)) {
@@ -65,7 +67,7 @@ sap.ui.define([
 
 				oBindItems = this.oTable.getBinding("rows");
 				oBindItems.filter(andFilter);
-				this.getView().getModel("RowCountModel").setProperty("/rowCount", 10);
+				this.getView().getModel("LocalDataModel").setProperty("/rowCount", 10);
 			}
 		},
 
@@ -74,7 +76,7 @@ sap.ui.define([
 			this.getView().byId("idVal").setValue("");
 			var oBindItems = this.oTable.getBinding("rows");
 			oBindItems.filter([]);
-			this.getView().getModel("RowCountModel").setProperty("/rowCount", 0);
+			this.getView().getModel("LocalDataModel").setProperty("/rowCount", 0);
 
 		},
 		onNavigate: function (oEvent) {

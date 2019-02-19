@@ -167,8 +167,8 @@
 			</l:Grid>
 		</VBox>
 		<HBox alignContent="Center" justifyContent="Center" class="sapUiSmallMarginBottom">
-			<Button text="{i18n>BacktoList}" press="onPressBackPress" type="Back" class="sapUiTinyMarginBeginEnd"/>
-			<Button text="{i18n>PrintAgreement}" press="onPrintAgreement" type="Emphasized"/>
+			<Button text="{i18n>BacktoList}" press="onPressBackPressAgr" type="Back" class="sapUiTinyMarginBeginEnd"/>
+			<Button text="{i18n>PrintAgreement}"  press="onPrintAgreement" type="Emphasized"  enabled="{LocalDataModel>/printBtnState}"/>
 		</HBox>
 		<!--<endButton>-->
 		<!--	<Button text="{i18n>PrintAgreement}" press="onPrintAgreement"/>-->

@@ -90,6 +90,9 @@
 #TreeTableBasic .sapUiTableHdrTitle {
     text-align: center!important;
 }
+#idSubmitMessg {
+	font-size:1rem;
+}
 
 html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
     outline: none!important;

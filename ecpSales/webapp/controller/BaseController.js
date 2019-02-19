@@ -25,7 +25,7 @@ sap.ui.define([
 		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
-		
+
 		handleLinkPress: function (oEvent) {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -34,22 +34,6 @@ sap.ui.define([
 			this.getDealer();
 
 			if (oGetText === oBundle.getText("NewApplication")) {
-
-				// this.EcpFieldData = new sap.ui.model.json.JSONModel({
-				// 	ZecpVin: "",
-				// 	ZecpVehPrice: "",
-				// 	ZecpAmtFin: "",
-				// 	ZecpLienholder: "",
-				// 	ZecpLienterms: "",
-				// 	ZecpSalesTin: "",
-				// 	PrOwndCert: "",
-				// 	BccAgrmntPrcAmt: "",
-				// 	ZecpOdometer: "",
-				// 	ZecpSaleDate: ""
-				// });
-				// this.EcpFieldData.setDefaultBindingMode("TwoWay");
-
-				// this.getView().setModel(this.EcpFieldData, "EcpFieldData");
 				this.getOwnerComponent().getRouter().navTo("newECPApp", {
 					vin: oval,
 					plan: oval,
@@ -71,9 +55,8 @@ sap.ui.define([
 
 		},
 
-		_resetView: function () {
-			var oSetProperty = new sap.ui.model.json.JSONModel();
-			oSetProperty.setData({
+		_getPropetyData: function () {
+			this.getModel("oSetProperty").setData({
 				oPrimeryState: true,
 				oSecondaryState: true,
 				oPrimeryState01: false,
@@ -84,9 +67,40 @@ sap.ui.define([
 				oTab3visble: false,
 				oTab4visble: false,
 				oTab5visble: false,
-				oTab6visble: false
+				oTab6visble: false,
+				backToList: true,
+				backPrimery: true,
+				backSecondary: false,
+				AgreementTable: true,
+				saleDat01Visible: true,
+				saleDat02Visible: false,
+				oFlag: false,
+				oAgreementTable: false,
+				ostep3: true,
+				oAgrTopDetails: false,
+				oAgrOwner: false,
+				oAgrOwnerDMS: false,
+				backBtnP: true
 			});
-			this.getView().setModel(oSetProperty, "oSetProperty");
+		},
+
+		_resetView: function () {
+			// var oSetProperty = new sap.ui.model.json.JSONModel();
+			// oSetProperty.setData({
+			// 	oPrimeryState: true,
+			// 	oSecondaryState: true,
+			// 	oPrimeryState01: false,
+			// 	oSecondaryState01: false,
+			// 	oSurcharge: false,
+			// 	oTab1visible: true,
+			// 	oTab2visible: false,
+			// 	oTab3visble: false,
+			// 	oTab4visble: false,
+			// 	oTab5visble: false,
+			// 	oTab6visble: false
+			// });
+			this._getPropetyData();
+			//this.getView().setModel(oSetProperty, "oSetProperty");
 			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
@@ -117,6 +131,7 @@ sap.ui.define([
 		},
 
 		getDealer: function () {
+			this._getPropetyData();
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
@@ -150,37 +165,43 @@ sap.ui.define([
 					var userType = oData.loggedUserType[0];
 					switch (userType) {
 					case "DealerSalesUSer":
-						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
+
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 						that.getModel("LocalDataModel").setProperty("/editableField", true);
 						break;
 					case "DealerServiceUser":
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
-						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
+						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
+						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
 
 					case "TCIAdminECPDept":
 
-						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
-
+						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
+						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
 					case "internalTCIUser":
-						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
+						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
+						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
 					case "TCIZoneUser":
-						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
+
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
+						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
+						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
 					default:
 						// raise a message, because this should not be allowed. 
@@ -242,25 +263,25 @@ sap.ui.define([
 				}
 			}).done(function (data, textStatus, jqXHR) {
 				that.getModel("LocalDataModel").setProperty("/currentIssueDealer", data.attributes[0].BusinessPartnerKey);
-				var oEcpModel = that.getOwnerComponent().getModel("EcpSalesModel");
-				var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
-				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-					pattern: "yyyy-MM-ddTHH:mm:ss"
-				});
-				var oPriorDate = oDateFormat.format(that.priordate);
-				var oCurrentDate = oDateFormat.format(that.beforedate);
+				// var oEcpModel = that.getOwnerComponent().getModel("EcpSalesModel");
+				// var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
+				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
+				// });
+				// var oPriorDate = oDateFormat.format(that.priordate);
+				// var oCurrentDate = oDateFormat.format(that.beforedate);
 
-				oEcpModel.read("/zc_ecp_application", {
-					urlParameters: {
-						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-							"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
-					},
-					success: function (edata) {
-						that.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
-					}
-				});
-				var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-				oRouter.attachRouteMatched(that._onObjectMatched, that);
+				// oEcpModel.read("/zc_ecp_application", {
+				// 	urlParameters: {
+				// 		"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
+				// 			"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
+				// 	},
+				// 	success: function (edata) {
+				// 		that.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
+				// 	}
+				// });
+				// var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
+				// oRouter.attachRouteMatched(that._onObjectMatched, that);
 			});
 		},
 
