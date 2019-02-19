@@ -34,6 +34,7 @@
 						<Label text="{DealerModel>/DealerData/DealerCode} - {DealerModel>/DealerData/BusinessPartnerName}" design="Bold"
 							class="styleFontSize customMargin"/>
 						<ToolbarSpacer/>
+						<Text text="{ProdMarkupModel>tooltipText}" />
 						<Button text="{i18n>SavePreview}" type="Emphasized" press="updateXSATable"/>
 						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateXSALiveTable"/>
 					</OverflowToolbar>
@@ -55,7 +56,7 @@
 								<t:Column width="15rem">
 									<Label text="{i18n>Live}"/>
 									<t:template>
-										<Text text="{ProdMarkupModel>Live_Markup_Percentage}"/>
+										<Text text="{ProdMarkupModel>Live_Markup_Percentage}" tooltip="{ProdMarkupModel>tooltipText}" />
 									</t:template>
 								</t:Column>
 								<t:Column width="20rem">

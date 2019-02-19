@@ -55,7 +55,7 @@
 					</VBox>
 					<HBox class="customStyleBox">
 						<t:Table id="idTireSelectionTable" class="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
-							rows="{TireFitmentJSONModel>/results}" visibleRowCount="7">
+							rows="{TireFitmentJSONModel>/results}" visibleRowCount="8">
 							<t:toolbar>
 								<Toolbar>
 									<CheckBox text="Show Dealer Net" select="onCheckPress" id="checkDealerNet"/>
@@ -63,7 +63,7 @@
 								</Toolbar>
 							</t:toolbar>
 							<t:columns>
-								<t:Column id="ID_TireFitment" sortProperty="Tire Fitment" filterProperty="Tire Fitment">
+								<t:Column id="ID_TireFitment" sortProperty="Tire Fitment" filterProperty="Tire Fitment" width="7rem">
 									<Label text="{i18n>TireFitment}"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Tire Fitment'}" app:colorClass="{TireFitmentJSONModel>colorCell}" wrapping="false" id="cell_Fitment">
@@ -74,25 +74,25 @@
 										<!--{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}-->
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Tire Category" filterProperty="Tire Category">
+								<t:Column sortProperty="Tire Category" filterProperty="Tire Category" width="7rem">
 									<Label text="{i18n>TireCategory}"/>
 									<t:template>
 										<Text text="{TireFitmentJSONModel>Tire Category}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Tire Brand" filterProperty="Tire Brand">
+								<t:Column sortProperty="Tire Brand" filterProperty="Tire Brand" width="20rem">
 									<Label text="{i18n>TireBrandDesc}"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire Brand}" wrapping="false"/>
+										<Text text="{TireFitmentJSONModel>Tire Brand}-{TireFitmentJSONModel>MatDesc_EN}-{TireFitmentJSONModel>TireSize}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Tire Load Rating" filterProperty="Tire Load Rating">
+								<t:Column sortProperty="Tire Load Rating" filterProperty="Tire Load Rating" width="7rem">
 									<Label text="{i18n>LoadRating}"/>
 									<t:template>
 										<Text text="{TireFitmentJSONModel>Tire Load Rating}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Tire Speed Rating" filterProperty="Tire Speed Rating">
+								<t:Column sortProperty="Tire Speed Rating" filterProperty="Tire Speed Rating" width="7rem">
 									<Label text="{i18n>SpeedRating}"/>
 									<t:template>
 										<Text text="{TireFitmentJSONModel>Tire Speed Rating}" wrapping="false"/>

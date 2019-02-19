@@ -60,12 +60,13 @@ sap.ui.define([
 									"Dealer_Brand": _localScope.userData.DealerData.Division,
 									"Manufacturer_code": item.VALUE, //TIRE_BRAND_DESCP, //length is only 10 char for  
 									"Preview_Markup_Percentage": "0.00",
-									"Live_Markup_Percentage": "MSRP",
+									"Live_Markup_Percentage": "0.00",
 									"Live_Last_Updated": _localScope.oDateFormat.format(new Date()),
-									"Live_Last_Updated_update":"",
+									"Live_Last_Updated_update": "",
 									"Live_Last_Updated_By": _localScope.userData.DealerData.DealerName,
 									"User_First_Name": _localScope.userData.DealerData.BusinessPartnerName,
-									"User_Last_Name": _localScope.userData.DealerData.BusinessPartnerName2
+									"User_Last_Name": _localScope.userData.DealerData.BusinessPartnerName2,
+									"tooltipText":_localScope.oI18nModel.getResourceBundle().getText("tooltip")
 								});
 							});
 							_localScope.oProdMarkupModel.setData(_localScope.tireBrandData);
@@ -147,7 +148,8 @@ sap.ui.define([
 		updatePostdateLive: function (oUpdatedDate) {
 			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated_update =
 				new Date();
-				console.log("updated date",_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated_update);
+			console.log("updated date", _localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath())
+				.Live_Last_Updated_update);
 			_localScope.oProdMarkupModel.updateBindings(true);
 			_localScope.oProdMarkupModel.refresh(true);
 		},
@@ -174,8 +176,7 @@ sap.ui.define([
 					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
 						dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
-					} 
-					else {
+					} else {
 						dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					}
 					// dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
@@ -188,18 +189,22 @@ sap.ui.define([
 						console.log("Post Response", oResponse);
 						updateSuccessFlag = true;
 					});
-					// updateSuccessFlag = true;
+					updateSuccessFlag = true;
 				} else {
 					var newDataFromModel = {};
 					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
 					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					if (modelData[i].Preview_Markup_Percentage != "0.00") {
+						newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					} else {
+						newDataFromModel.Live_Markup_Percentage = "0.00";
+						newDataFromModel.tooltipText= _localScope.oI18nModel.getResourceBundle().getText("tooltip");
+					}
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					if (modelData[i].Live_Last_Updated_update !== "") {
 						newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
-					} 
-					else {
+					} else {
 						newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					}
 					// newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
@@ -215,7 +220,7 @@ sap.ui.define([
 							postSuccessFlag = false;
 						}
 					});
-					// postSuccessFlag = true;
+					postSuccessFlag = true;
 				}
 			}
 
@@ -277,13 +282,13 @@ sap.ui.define([
 							updateSuccessFlag = false;
 						}
 					});
-					// updateSuccessFlag = true;
+					updateSuccessFlag = true;
 				} else {
 					var newDataFromModel = {};
 					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
 					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					newDataFromModel.Live_Markup_Percentage = "MSRP";
+					newDataFromModel.Live_Markup_Percentage = "0.00";
 					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
@@ -298,7 +303,7 @@ sap.ui.define([
 							postSuccessFlag = false;
 						}
 					});
-					// postSuccessFlag = true;
+					postSuccessFlag = true;
 				}
 			}
 			if (postSuccessFlag == true) {

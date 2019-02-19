@@ -7,8 +7,9 @@ sap.ui.define([
 	'tireSelector/controller/BaseController',
 	'sap/m/MessageToast',
 	'sap/ui/model/Filter',
+	'sap/ui/core/Fragment',
 	"sap/m/MessageBox"
-], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, MessageBox) {
+], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
 
 	return BaseController.extend("tireSelector.controller.master", {
@@ -214,7 +215,7 @@ sap.ui.define([
 												_that.DealerData.Div = "LEX";
 												break;
 											case "03":
-												_that.DealerData.Division = "Dual";
+												_that.DealerData.Division = "";
 												_that.DealerData.Attribute = "03";
 												_that.DealerData.Div = "";
 												break;
@@ -245,8 +246,7 @@ sap.ui.define([
 
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
-			sap
-				.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 			console.log("XSO model data", _that.oXSOServiceModel);
 
 			_that.oXSOServiceModel.read("/DealerMarkUp", {
@@ -370,18 +370,18 @@ sap.ui.define([
 		},
 
 		_oMasterRoute: function (oRoute) {
-			_that._oViewModel = new sap.ui.model.json.JSONModel({
-				busy: false,
-				delay: 0,
-				enableSearchBtn: false,
-				enableVin: true,
-				enableTireSize: false,
-				enableVehicleInputs: false,
-				enableTable: false,
-				enableProdMarkup: true,
-				enableMore: false
-			});
-			_that.getView().setModel(_that._oViewModel, "MasterModel");
+			// _that._oViewModel = new sap.ui.model.json.JSONModel({
+			// 	busy: false,
+			// 	delay: 0,
+			// 	enableSearchBtn: false,
+			// 	enableVin: true,
+			// 	enableTireSize: false,
+			// 	enableVehicleInputs: false,
+			// 	enableTable: false,
+			// 	enableProdMarkup: true,
+			// 	enableMore: false
+			// });
+			// _that.getView().setModel(_that._oViewModel, "MasterModel");
 			// var scopes = _that.userData.userContext.scopes;
 			// console.log("scopes", scopes);
 			// var accessAll = false,
@@ -549,12 +549,53 @@ sap.ui.define([
 		handleTireSizeSuggest: function (oEvent) {
 			var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
+			_that.byId("searchOptionTireSize").setFilterFunction(function(sTerm, oItem) {
+				// A case-insensitive 'string contains' style filter
+				return oItem.getText().match(new RegExp(sTerm, "i"));
+			});
 			if (sTerm) {
 				aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.Contains, sTerm));
 			}
 			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
-
+			oEvent.getSource().getBinding("suggestionItems").refresh(true);
 		},
+
+		// handleTireSizeValueHelp: function (oEvent) {
+		// 	var sInputValue = oEvent.getSource().getValue();
+		// 	this.inputId = oEvent.getSource().getId();
+		// 	// create value help dialog
+		// 	if (!this._valueHelpDialog) {
+		// 		this._valueHelpDialog = sap.ui.xmlfragment(
+		// 			"tireSelector.view.Fragment.tiresizeDialog", this
+		// 		);
+		// 		this.getView().addDependent(this._valueHelpDialog);
+		// 	}
+		// 	// create a filter for the binding
+		// 	this._valueHelpDialog.getBinding("items").filter([new Filter(
+		// 		"TIRE_SIZE",
+		// 		sap.ui.model.FilterOperator.Contains, sInputValue
+		// 	)]);
+
+		// 	// open value help dialog filtered by the input value
+		// 	this._valueHelpDialog.open(sInputValue);
+		// },
+		// _handleValueHelpSearch: function (evt) {
+		// 	var sValue = evt.getParameter("value");
+		// 	var oFilter = new Filter(
+		// 		"TIRE_SIZE",
+		// 		sap.ui.model.FilterOperator.Contains, sValue
+		// 	);
+		// 	evt.getSource().getBinding("items").filter([oFilter]);
+		// },
+
+		// _handleValueHelpClose: function (evt) {
+		// 	var oSelectedItem = evt.getParameter("selectedItem");
+		// 	if (oSelectedItem) {
+		// 		var Input = this.byId(this.inputId);
+		// 		Input.setValue(oSelectedItem.getTitle());
+		// 	}
+		// 	evt.getSource().getBinding("items").filter([]);
+		// },
 		/*Functions for searchOption value change*/
 		onVehicleChange: function () {
 			// _that.oGlobalBusyDialog = new sap.m.BusyDialog();
@@ -644,26 +685,40 @@ sap.ui.define([
 			if (!_that.SearchOptionTireSize.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
+				var sTerm = oEntry.getParameter("newValue");
+				var aFilters = [];
+				if (sTerm) {
+					aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.Contains, sTerm));
+				}
+				oEntry.getSource().getBinding("suggestionItems").filter(aFilters);
+				oEntry.getSource().getBinding("suggestionItems").refresh(true);
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
 
 		/*Function for Change options on Search By Dropdownlist */
 		changeOptionPress: function (oChangeOption) {
-			// _that.oGlobalBusyDialog = new sap.m.BusyDialog();
 			_that = this;
-
+			if (_that.SearchOptionVehicle) {
+				_that.SearchOptionVehicle.setValue();
+				_that.ModelSeriesCombo.setValue();
+			}
+			if (_that.SearchOptionVIN) {
+				_that.SearchOptionVIN.setValue();
+			}
+			if (_that.SearchOptionTireSize) {
+				_that.SearchOptionTireSize.setValue();
+			}
 			_that._oSearchCriteriaModel.setData();
 			_that._oSearchCriteriaModel.updateBindings(true);
 
 			var selectedOption = _that.SearchOptionList.getSelectedKey();
 			_that._oViewModel.setProperty("/enableTable", false);
+
 			_that.SearchOptionList.setValueState(sap.ui.core.ValueState.None);
 			if (selectedOption == "Vehicle Series") {
 				_that.SearchOptionVehicle.setValueState(sap.ui.core.ValueState.None);
 				_that.ModelSeriesCombo.setValueState(sap.ui.core.ValueState.None);
-				// _that.oGlobalBusyDialog.open();
-
 				_that.ModelNodataFlag = false;
 				$.ajax({
 					url: _that.nodeJsUrl + "/Z_VEHICLE_CATALOGUE_SRV/zc_mmfields",
@@ -734,6 +789,9 @@ sap.ui.define([
 					success: function (oDataResponse) {
 						if (oDataResponse.d.results.length > 0) {
 							console.log("Tire Size Data", oDataResponse.d.results);
+							for (var n = 0; n < oDataResponse.d.results.length; n++) {
+								oDataResponse.d.results[n].__metadata = "";
+							}
 							_that.oFitmentDataModel = new JSONModel();
 							_that.getView().setModel(_that.oFitmentDataModel, "FitmentDataModel");
 							_that.oFitmentDataModel.setData(oDataResponse.d);
@@ -826,6 +884,7 @@ sap.ui.define([
 					// _that.oSelectJSONModel.getData().SearchOptionVal = " > [" + _that.SearchOptionVehicle.getSelectedKey() + "] [" +_that.ModelSeriesCombo.getSelectedKey() + "]";
 					// _that.oSelectJSONModel.updateBindings();
 					_that.SearchOptionVehicle.setValueState(sap.ui.core.ValueState.Success);
+					_that.ModelSeriesCombo.setValueState(sap.ui.core.ValueState.Success);
 					_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
 					// _that.getRouter().navTo("searchResults");
 					_that.showResultsData();
@@ -955,7 +1014,7 @@ sap.ui.define([
 												"ModelDesc_EN": item.ModelDesc_EN,
 												"Zzsuffix": item.Zzsuffix,
 												"ZtireSize": item.ZtireSize,
-												"ZrimSize": item.ZrimType
+												"ZrimType": item.ZrimType
 											});
 										});
 										_that.SearchResultModel.setData(_that.searchresultObj);
@@ -1025,6 +1084,7 @@ sap.ui.define([
 		},
 
 		navToSelectTire: function (oEvtModel) {
+			debugger;
 			var oBj = {};
 			oBj.SearchOptionVehicle = _that.SearchOptionVehicle.getSelectedKey();
 			if (_that.SearchOptionVehicle.getSelectedItem() != null) {
@@ -1033,8 +1093,9 @@ sap.ui.define([
 			oBj.ModelSeriesCombo = _that.ModelSeriesCombo.getSelectedKey();
 			oBj.SearchOptionVIN = _that.SearchOptionVIN.getValue();
 
-			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getSource().getBindingContext(
-				"SearchResultModel").sPath);
+			// var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getSource().getBindingContext(
+			// 	"SearchResultModel").sPath);
+			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)

@@ -243,7 +243,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>FederalTax} ({path:'TireQuotationModel>/FederalTax'})" id="id_fedTaxCodeDesc"/>
+										<Label text="{i18n>FederalTax} ({path:'TireQuotationModel>/FederalTax'}%)" id="id_fedTaxCodeDesc"/>
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/FederalTaxSum'}" id="id_fedTaxCode" editable="false"/>
 								</cells>
@@ -272,7 +272,8 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>DealerMessage}"/>
-										<TextArea id="dealerTxt" placeholder="Enter Text" growing="true" growingMaxLines="3" maxLength="1000" showExceededText="true" width="100%"/>
+										<TextArea id="dealerTxt" placeholder="Enter Text" maxLength="350" showExceededText="false" width="100%" liveChange="textCount"/>
+										<Text id="textCount" text="" class="sapUiTinyMarginTop"/>
 									</VBox>
 									<Input value="" visible="{TireQuoteModel>/enableInput}"/>
 									<Input value="" visible="{TireQuoteModel>/enableInput}"/>

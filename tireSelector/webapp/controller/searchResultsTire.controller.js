@@ -779,7 +779,7 @@ sap.ui.define([
 			// that.oGlobalBusyDialog.destroy();
 			// debugger;
 			var oPath = {};
-			var Data = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.mParameters.rowBindingContext.sPath);
+			var Data = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.getParameters().rowBindingContext.sPath);
 
 			oPath.TireFitment = Data.TireFitment;
 			oPath.TireSpeed = Data.TireSpeed.replace("/", "%2F");

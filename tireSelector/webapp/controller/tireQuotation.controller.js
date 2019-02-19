@@ -17,7 +17,7 @@ sap.ui.define([
 				pattern: "MM-dd-YYYY"
 			});
 			_this.currDate = _this.oDateFormatShort.format(new Date());
-			var expiry = new Date().setDate(new Date(_this.currDate).getDate() + 15);
+			var expiry = new Date().setDate(new Date(_this.currDate).getDate() + 14);
 			_this.expDate = _this.oDateFormatShort.format(new Date(expiry));
 			_this.phoneNumber = sap.ushell.components.dealerPhoneNumber;
 			_this.getView().byId("DealerPhone").setValue(_this.phoneNumber);
@@ -42,11 +42,11 @@ sap.ui.define([
 				PhoneNumber: _this.phoneNumber
 			});
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
-			
-			_this.getView().byId("nameMandat").setRequired =false;
-			_this.getView().byId("addressMandat").setRequired =false;
-			_this.getView().byId("postalCodeMandat").setRequired =false;
-			_this.getView().byId("phoneMandat").setRequired =false;
+
+			_this.getView().byId("nameMandat").setRequired = false;
+			_this.getView().byId("addressMandat").setRequired = false;
+			_this.getView().byId("postalCodeMandat").setRequired = false;
+			_this.getView().byId("phoneMandat").setRequired = false;
 
 			_this._oViewModelTax = new sap.ui.model.json.JSONModel({
 				enableFTC: false,
@@ -80,7 +80,17 @@ sap.ui.define([
 				_this.sCurrentLocale = 'EN';
 			}
 		},
-
+		textCount: function (count) {
+			debugger;
+			var oTextArea = count.getSource();
+			var iValueLength = oTextArea.getValue().length +" "+ _this.oI18nModel.getResourceBundle().getText("characters");
+			_this.getView().byId("textCount").setText(iValueLength);
+		},
+		handleQuoteDateChange: function (expChange) {
+			var expiry = new Date().setDate(new Date(expChange.getParameter("newValue")).getDate() + 14);
+			_this.expDate = _this.oDateFormatShort.format(new Date(expiry));
+			_this._oViewModel.getData().expiryDate = _this.oDateFormatShort.format(new Date(expiry));
+		},
 		_oQuoteRoute: function (oEvent) {
 			_this.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			_this.userData = sap.ui.getCore().getModel("DealerModel").getData();
@@ -228,19 +238,19 @@ sap.ui.define([
 				console.log("Tire Price Data", _this.oTirePriceModel.getData());
 				_this.oGlobalBusyDialog.close();
 			});
-			
+
 			//_this.sCurrentLocale
 			//MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq 'E' and PRODH eq 'PARP10F22P101ECPRH'&$format=json
 			var Lang;
-			if(_this.sCurrentLocale == 'EN'){
+			if (_this.sCurrentLocale == 'EN') {
 				Lang = "E";
-			}
-			else{
+			} else {
 				Lang = "F";
 			}
 			$.ajax({
 				dataType: "json",
-				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '"+Lang+"' and PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
+				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '" + Lang +
+					"' and PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
 				type: "GET",
 				success: function (oDataResponse) {
 					if (oDataResponse.d.results.length > 0) {
@@ -251,7 +261,7 @@ sap.ui.define([
 							if (item.MATNR != "") {
 								_this.matData.results.push({
 									"MATNR": item.MATNR,
-									"MATNR_DESC":item.MATNR_DESC
+									"MATNR_DESC": item.MATNR_DESC
 								});
 							}
 						});
@@ -261,7 +271,7 @@ sap.ui.define([
 						_this.oProductCategoryModel.setData(_this.matData);
 						_this.oProductCategoryModel.getData().results.unshift({
 							"MATNR": "No Thank You",
-							"MATNR_DESC":""
+							"MATNR_DESC": ""
 						});
 						_this.oProductCategoryModel.updateBindings(true);
 						if (_this.getView().byId("id_RHP") !== undefined) {
@@ -280,14 +290,14 @@ sap.ui.define([
 				}
 			});
 		},
-		
-		ChangeLabelMandatory: function(oChange){
-			_this.getView().byId("nameMandat").setRequired =true;
-			_this.getView().byId("addressMandat").setRequired =true;
-			_this.getView().byId("postalCodeMandat").setRequired =true;
-			_this.getView().byId("phoneMandat").setRequired =true;
+
+		ChangeLabelMandatory: function (oChange) {
+			_this.getView().byId("nameMandat").setRequired = true;
+			_this.getView().byId("addressMandat").setRequired = true;
+			_this.getView().byId("postalCodeMandat").setRequired = true;
+			_this.getView().byId("phoneMandat").setRequired = true;
 		},
-		
+
 		decimalFormatter: function (oDecVal) {
 			if (oDecVal != undefined && oDecVal != null && !isNaN(oDecVal)) {
 				var returnVal = parseFloat(oDecVal).toFixed(2);
