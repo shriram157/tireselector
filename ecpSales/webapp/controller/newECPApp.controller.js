@@ -979,7 +979,7 @@ sap.ui.define([
 		},
 		OnNextStep4: function (oEvent) {
 			var oPlanArray = ["NTC34", "NTC94", "NTC45", "NTC46", "NTC47", "NTF34", "NTF94", "NTF45", "NTF46", "NTF47", "CTC40", "CTC50"];
-		
+
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", true);
 			} else {
@@ -992,7 +992,7 @@ sap.ui.define([
 			//	console.log(this.DifferTime);
 			var oidPlanCode = oidPlanCodeId.getSelectedItem();
 
-			if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal & this.DifferTime <= this.PlanTime) {
+			if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal && this.DifferTime <= this.PlanTime) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1053,6 +1053,40 @@ sap.ui.define([
 		},
 		onChangeAmt: function (oEvent) {
 
+		},
+		onChangeOdometer: function (oEvent) {
+			var oOdometer = this.getView().byId("idOdo");
+			//var oOdoVal = oOdometer.getValue();
+			console.log(oEvent);
+			var oOdoVal = oEvent.getSource().getValue();
+			if ($.isEmptyObject(oOdoVal)) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterOdometer"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				oOdometer.setValueState(sap.ui.core.ValueState.Error);
+			} else if (oOdoVal <= 0) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				oOdometer.setValueState(sap.ui.core.ValueState.Error);
+			}
+			if (oOdoVal <= 50000) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+			} else if (oOdoVal > 50000) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
+			}
+
+			if (this.oECPData.ZecpOdometer <= this.oAdditionalVal) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStrip").setType("None");
+			} else if (this.oECPData.ZecpOdometer > this.oAdditionalVal) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
+					(this.oECPData.ZecpOdometer - this.oAdditionalVal) + this.oBundle
+					.getText("KMagainstplanmilagevalue"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+
+			}
 		},
 		onDelete: function () {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -1435,7 +1469,7 @@ sap.ui.define([
 			// 	this.getView().byId("idNewECPMsgStrip").setType("Error");
 			// 	this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
 			// }
-			else {
+			else if(this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);

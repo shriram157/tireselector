@@ -1,5 +1,5 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns="sap.m"
-	xmlns:table="sap.ui.table">
+	xmlns:table="sap.ui.table" xmlns:custom="zecp.controls">
 	<f:SimpleForm id="spAgreementForm" class="sapUiSmallMarginBottom" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="2"
 		labelSpanL="2" labelSpanM="2" labelSpanS="2" adjustLabelSpan="false" emptySpanXL="3" emptySpanL="3" emptySpanM="3" emptySpanS="2"
 		columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
@@ -9,7 +9,7 @@
 				value="{path : 'EcpFieldData>/ZecpSaleDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"
 				required="true"/>
 			<Label text="{i18n>Odometer}"/>
-			<Input id="idOdoVal" value="{EcpFieldData>/ZecpOdometer}" type="Number" required="true"/>
+			<custom:CustomInput id="idOdoVal" value="{EcpFieldData>/ZecpOdometer}"  required="true"/>
 			<Label text="{i18n>AgreementType}"/>
 			<ComboBox id="idAgrType" selectionChange="onSelectAgrType" required="true" selectedKey="{EcpFieldData>/ZecpAgrType}"
 				value="{EcpFieldData>/ZecpAgrType}">
@@ -27,7 +27,7 @@
 			rowSelectionChange="onSelectAgrRow" visibleRowCount="{RowCountModel>/rowCount}" selectionBehavior="Row" showNoData="true"
 			threshold="{RowCountModel>/rowCount}" enableBusyIndicator="true">
 			<table:columns>
-				<table:Column >
+				<table:Column>
 					<Label text="{i18n>EcpAgreement}" textAlign="Center" width="100%"/>
 					<table:template>
 						<Text text="{path:'LocalDataModel>AgreementNumber'}" textAlign="Center" width="100%"/>

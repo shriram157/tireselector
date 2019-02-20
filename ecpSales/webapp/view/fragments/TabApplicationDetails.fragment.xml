@@ -216,7 +216,7 @@
 						<Text
 							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 						<Label text="{i18n>Odometer}"/>
-						<Input value="{EcpFieldData>/ZecpOdometer}" id="idOdo" type="Number" required="true" editable="{LocalDataModel>/editableField}"/>
+						<custom:CustomInput value="{EcpFieldData>/ZecpOdometer}" liveChange="onChangeOdometer" id="idOdo"  required="true" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>RoadHazard}"/>
 						<Text text="{EcpFieldData>/ZecpRoadhazard}"/>
 						<Label text="{i18n>BenefitsFlag}"/>
