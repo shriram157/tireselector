@@ -1223,11 +1223,6 @@ sap.ui.define([
 			dialog.open();
 		},
 
-		// 		_Step04MandatoryFn: function (that) {
-		// 			debugger;
-
-		// 		},
-
 		_fnObject: function (elm, stat) {
 			var currentDate = new Date();
 
