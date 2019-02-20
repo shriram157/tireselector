@@ -16,7 +16,6 @@ sap.ui.define([
 			var oModelDate = new JSONModel();
 			this.beforedate = new Date();
 			
-			console.log("Testing Commit and Deplyment");
 
 			this.priordate = new Date(new Date().setDate(this.beforedate.getDate() - 30));
 			oModelDate.setData({
