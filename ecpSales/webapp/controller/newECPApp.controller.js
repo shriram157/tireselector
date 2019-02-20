@@ -43,7 +43,7 @@ sap.ui.define([
 			this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
 			this.getModel("LocalDataModel").setProperty("/printBtnState", true);
-
+			this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 		},
 
 		_fnDateFormat02: function (elm) {
@@ -1055,20 +1055,26 @@ sap.ui.define([
 
 		},
 		onChangeOdometer: function (oEvent) {
-			var oOdometer = this.getView().byId("idOdo");
+			//var oOdometer = this.getView().byId("idOdo");
 			//var oOdoVal = oOdometer.getValue();
-			console.log(oEvent);
+		
 			var oOdoVal = oEvent.getSource().getValue();
 			if ($.isEmptyObject(oOdoVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterOdometer"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
-				oOdometer.setValueState(sap.ui.core.ValueState.Error);
+				// LocalDataModel>/odometerState
+				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
+				
 			} else if (oOdoVal <= 0) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
-				oOdometer.setValueState(sap.ui.core.ValueState.Error);
+				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
+			} else {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStrip").setType("None");
+				this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 			}
 			if (oOdoVal <= 50000) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
@@ -1086,6 +1092,9 @@ sap.ui.define([
 					.getText("KMagainstplanmilagevalue"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 
+			}else {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStrip").setType("None");
 			}
 		},
 		onDelete: function () {
@@ -1467,10 +1476,9 @@ sap.ui.define([
 			else if(this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
+				this.getView().byId("idNewECPMsgStrip").setText("");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
-				this.getView().byId("idNewECPMsgStrip").setText("");
-
 				this.getModel("LocalDataModel").setProperty("/AmtFinReq", false);
 				this.getModel("LocalDataModel").setProperty("/AmtFinState", "None");
 				this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", false);
