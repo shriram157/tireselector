@@ -43,7 +43,7 @@ module.exports = function () {
 	};
 
 	app.use(function (req, res, next) {
-		res.header("Access-Control-Allow-Origin", "*");
+	//	res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
@@ -83,11 +83,16 @@ module.exports = function () {
 		//  if the method = post you need a csrf token.   
 
 		if (method == 'POST' || method == 'DELETE' || method == 'PUT' || method == 'HEAD') {
+		
+		
+				var csrfTokenHeaderValue = req.get("X-Csrf-Token");
+	        //	reqHeader["X-Csrf-Token"] = csrfTokenHeaderValue;
+		
 			reqHeader = {
 				"Authorization": auth64,
 				"Content-Type": "application/json",
 				"APIKey": APIKey,
-				"x-csrf-token": csrfToken
+				"x-csrf-token": csrfTokenHeaderValue
 			};
 			console.log('csrfToken for POST', csrfToken);
 			console.log('headerData', reqHeader);
