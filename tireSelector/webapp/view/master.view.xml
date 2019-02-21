@@ -47,7 +47,7 @@
 						<VBox>
 							<Label id="searchOptionLabel" required="true"/>
 							<Input id="searchOptionVIN" type="Text" visible="{MasterModel>/enableVin}" liveChange="onLiveChangeVIN" showSuggestion="true"
-								suggest="handleVINSuggest" change="onInputEntryVIN" suggestionItems="{GlobalJSONModel>/vinData}">
+								suggest="handleVINSuggest" change="onInputEntryVIN" suggestionItems="{GlobalJSONModel>/vinData}" maxLength="17">
 								<suggestionItems>
 									<core:ListItem text="{GlobalJSONModel>VIN}"/>
 								</suggestionItems>
