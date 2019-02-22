@@ -831,13 +831,13 @@ sap.ui.define([
 
 			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
-
-			if (this.DifferTime < oDayMili) {
-				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "Yes");
-			} else if (this.DifferTime > oDayMili) {
-				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
+			if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
+				if (this.DifferTime < oDayMili) {
+					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "Yes");
+				} else if (this.DifferTime > oDayMili) {
+					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
+				}
 			}
-
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
 				0) {
 
@@ -1057,7 +1057,7 @@ sap.ui.define([
 		onChangeOdometer: function (oEvent) {
 			//var oOdometer = this.getView().byId("idOdo");
 			//var oOdoVal = oOdometer.getValue();
-		
+
 			var oOdoVal = oEvent.getSource().getValue();
 			if ($.isEmptyObject(oOdoVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1065,7 +1065,7 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				// LocalDataModel>/odometerState
 				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
-				
+
 			} else if (oOdoVal <= 0) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
@@ -1092,7 +1092,7 @@ sap.ui.define([
 					.getText("KMagainstplanmilagevalue"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 
-			}else {
+			} else {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
 			}
@@ -1473,7 +1473,7 @@ sap.ui.define([
 			// 	this.getView().byId("idNewECPMsgStrip").setType("Error");
 			// 	this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
 			// }
-			else if(this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false) {
+			else if (this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 				this.getView().byId("idNewECPMsgStrip").setText("");
