@@ -1,7 +1,7 @@
 ID: tireSelector
 _schema-version: '2.1'
 description: MTA Project For Tire Selector
-version: 0.1.15
+version: 1.1.10
 modules:
  - name: tireSelector_Node
    type: nodejs

@@ -1,4 +1,3 @@
-var _this;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -6,7 +5,7 @@ sap.ui.define([
 	'tireSelector/controller/BaseController'
 ], function (Controller, JSONModel, History, BaseController) {
 	"use strict";
-
+	var _this,sSelectedLocale;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -57,28 +56,48 @@ sap.ui.define([
 			// _this.getOwnerComponent().getRouter().attachRoutePatternMatched(_this._oQuoteRoute, _this);
 			sap.ui.core.UIComponent.getRouterFor(_this).attachRoutePatternMatched(_this._oQuoteRoute, _this);
 
-			// _this.getRouter().attachRouteMatched(function (oEvent) {
-
 			_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
 			_this.getView().setModel(_this.oI18nModel, "i18n");
 
-			if (window.location.search == "?language=fr") {
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "EN"; // default is english 
+			}
+			if (sSelectedLocale == "fr") {
 				_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
 				});
-				_this.getView().setModel(_this.oI18nModel, "i18n");
-				_this.sCurrentLocale = 'FR';
+				this.getView().setModel(_this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
 			} else {
 				_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
 				});
-				_this.getView().setModel(_this.oI18nModel, "i18n");
-				_this.sCurrentLocale = 'EN';
+				this.getView().setModel(_this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
 			}
+
+			// if (window.location.search == "?language=fr") {
+			// 	_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+			// 		bundleUrl: "i18n/i18n.properties",
+			// 		bundleLocale: ("fr")
+			// 	});
+			// 	_this.getView().setModel(_this.oI18nModel, "i18n");
+			// 	_this.sCurrentLocale = 'FR';
+			// } else {
+			// 	_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+			// 		bundleUrl: "i18n/i18n.properties",
+			// 		bundleLocale: ("en")
+			// 	});
+			// 	_this.getView().setModel(_this.oI18nModel, "i18n");
+			// 	_this.sCurrentLocale = 'EN';
+			// }
 		},
 		textCount: function (count) {
 			debugger;

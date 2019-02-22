@@ -1,4 +1,3 @@
-var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -10,7 +9,7 @@ sap.ui.define([
 	"sap/m/MessageBox"
 ], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox) {
 	"use strict";
-
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp,sSelectedLocale;
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
 			that = this;
@@ -34,20 +33,26 @@ sap.ui.define([
 			});
 			that.getView().setModel(that.oI18nModel, "i18n");
 
-			if (window.location.search == "?language=fr") {
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "EN"; // default is english 
+			}
+			if (sSelectedLocale == "fr") {
 				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
 				});
-				that.getView().setModel(that.oI18nModel, "i18n");
-				that.sCurrentLocale = 'FR';
+				this.getView().setModel(that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
 			} else {
 				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
 				});
-				that.getView().setModel(that.oI18nModel, "i18n");
-				that.sCurrentLocale = 'EN';
+				this.getView().setModel(that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
 			}
 
 			sap.ui.core.UIComponent.getRouterFor(that).attachRoutePatternMatched(that._oSelectTireRoute, that);
@@ -60,6 +65,7 @@ sap.ui.define([
 		},
 
 		_oSelectTireRoute: function (oEvent) {
+			//fetching data from HDB for porduct markup 
 			that.oXSOServiceModel = that.getOwnerComponent().getModel("XsodataModel");
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 			that.getView().setModel(that.oProdMarkupModel, "ProdMarkupModel");

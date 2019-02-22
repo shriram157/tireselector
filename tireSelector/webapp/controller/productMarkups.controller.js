@@ -173,7 +173,7 @@ sap.ui.define([
 
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					dataFromModel.Preview_Markup_Percentage = "0.00";
 					if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
 						dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
 					} else {
@@ -200,11 +200,13 @@ sap.ui.define([
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					if (modelData[i].Preview_Markup_Percentage != "0.00") {
 						newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+						newDataFromModel.Preview_Markup_Percentage = "0.00";
 					} else {
 						newDataFromModel.Live_Markup_Percentage = "0.00";
 						newDataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
+						newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					}
-					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					
 					if (modelData[i].Live_Last_Updated_update !== "") {
 						newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
 					} else {

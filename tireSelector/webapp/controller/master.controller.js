@@ -1,5 +1,3 @@
-var _that, count = 0,
-	sTerm;
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -11,7 +9,7 @@ sap.ui.define([
 	"sap/m/MessageBox"
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
-	var sDivision, DivUser;
+	var sDivision, DivUser, _that, count = 0,sTerm;
 	return BaseController.extend("tireSelector.controller.master", {
 		/* Function for Initialization of model and variables for view */
 
@@ -99,6 +97,7 @@ sap.ui.define([
 						_that.dealerCode = "";
 					}
 					_that.dealerName = _that.userData.userContext.userInfo.logonName;
+					//comment for local testing
 					var scopes = _that.userData.userContext.scopes;
 					console.log("scopes", scopes);
 					var accessAll = false,
@@ -332,7 +331,9 @@ sap.ui.define([
 			});
 		},
 
-		_oMasterRoute: function (oRoute) {},
+		_oMasterRoute: function (oRoute) {
+			
+		},
 
 		onBeforeRendering: function () {
 			sap.ui.core.UIComponent.getRouterFor(_that).attachRoutePatternMatched(_that._oMasterRoute, _that);
