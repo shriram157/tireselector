@@ -271,7 +271,7 @@ sap.ui.define([
 						_this.oProductCategoryModel.setData(_this.matData);
 						_this.oProductCategoryModel.getData().results.unshift({
 							"MATNR": "No Thank You",
-							"MATNR_DESC": ""
+							"MATNR_DESC": "No Thank You"
 						});
 						_this.oProductCategoryModel.updateBindings(true);
 						if (_this.getView().byId("id_RHP") !== undefined) {
