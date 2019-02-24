@@ -8,7 +8,7 @@ modules:
     type: nodejs
     path: ecpSales_Node
     parameters:
-      host: ecpSales_Node
+      host: tci-dev-ecpsales-node
       register-service-url: true
       service-name: ecpSales_Node
       service-url: '${default-url}'
@@ -28,7 +28,7 @@ modules:
     type: html5
     path: ecpSales
     parameters:
-      host: ecpSales
+      host: tci-dev-ecpsales
       register-service-url: true
       service-name: ecpSales
       service-url: '${default-url}'

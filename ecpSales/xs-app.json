@@ -1,11 +1,11 @@
 {
-	"welcomeFile": "/ecpSales/index.html",
+	"welcomeFile": "/ecpsales/index.html",
 	"authenticationMethod": "route",
 	"logout": {
 		"logoutEndpoint": "/do/logout"
 	},
 	"routes": [{
-			"source": "^/ecpSales/(.*)$",
+			"source": "^/ecpsales/(.*)$",
 			"target": "$1",
 			"localDir": "webapp",
 			"authenticationType": "xsuaa",
