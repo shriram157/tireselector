@@ -7,7 +7,7 @@ modules:
    type: nodejs
    path: tireSelector_Node
    parameters:
-      host: tireSelector_Node
+      host: tci-dev-tirecentre-node
       register-service-url: true
       service-name: tireSelector_Node
       service-url: '${default-url}'
@@ -24,7 +24,7 @@ modules:
    type: nodejs
    path: tireSelector_XSJS
    parameters:
-      host: tireSelector_XSJS
+      host: tci-dev-tirecentre-xsjs
       register-service-url: true
       service-name: tireSelector_XSJS
       service-url: '${default-url}'
@@ -47,7 +47,7 @@ modules:
    type: html5
    path: tireSelector
    parameters:
-      host: tireSelector
+      host: tci-dev-tirecentre
       register-service-url: true
       service-name: tireSelector
       service-url: '${default-url}'
