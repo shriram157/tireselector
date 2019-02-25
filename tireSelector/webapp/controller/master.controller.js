@@ -898,9 +898,9 @@ sap.ui.define([
 						for (v = 0; v < _that.vinResultdata.results.length; v++) {
 							var modelYearVal = _that.vinResultdata.results[v].modelYearVal;
 							var seriesVal = _that.vinResultdata.results[v].seriesVal;
-							//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'LS' and *Zdivision eq 'LEX'* and ModelYear eq '2018'
+							//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'LS' and Zdivision eq 'LEX' and ModelYear eq '2018'
 							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal +
-								"' *Zdivision eq '"+DivUser+"'* and and ModelYear eq '" + modelYearVal + "'";
+								"' and Zdivision eq '"+ DivUser +"' and ModelYear eq '" + modelYearVal + "'";
 							// var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelYearVal +
 							// 	"' and Model eq '" + modelVal + "' and Zzsuffix eq '" + suffixVal + "'&$format=json";
 							$.ajax({
