@@ -9,7 +9,8 @@ sap.ui.define([
 	"sap/m/MessageBox"
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
-	var sDivision, DivUser, _that, count = 0,sTerm;
+	var sDivision, DivUser, _that, count = 0,
+		sTerm;
 	return BaseController.extend("tireSelector.controller.master", {
 		/* Function for Initialization of model and variables for view */
 
@@ -70,8 +71,8 @@ sap.ui.define([
 				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
 				var currentImageSource;
 				if (sDivision == '10') // set the toyoto logo
-				{	
-					DivUser= "TOY";
+				{
+					DivUser = "TOY";
 					currentImageSource = this.getView().byId("idLexusLogo");
 					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
@@ -332,7 +333,7 @@ sap.ui.define([
 		},
 
 		_oMasterRoute: function (oRoute) {
-			
+
 		},
 
 		onBeforeRendering: function () {
@@ -632,17 +633,17 @@ sap.ui.define([
 						if (oDataResponse.d.results.length > 0) {
 							console.log("Series All", oDataResponse.d.results);
 							// if (_that.DealerData.Div == "") {
-								_that.vehicleSeriesData = {
-									"results": []
-								};
-								$.each(oDataResponse.d.results, function (i, item) {
-									if (item.ModelSeriesNo != "") {
-										_that.vehicleSeriesData.results.push({
-											"ModelSeriesNo": item.ModelSeriesNo,
-											"TCISeriesDescriptionEN": item.TCISeriesDescriptionEN
-										});
-									}
-								});
+							_that.vehicleSeriesData = {
+								"results": []
+							};
+							$.each(oDataResponse.d.results, function (i, item) {
+								if (item.ModelSeriesNo != "") {
+									_that.vehicleSeriesData.results.push({
+										"ModelSeriesNo": item.ModelSeriesNo,
+										"TCISeriesDescriptionEN": item.TCISeriesDescriptionEN
+									});
+								}
+							});
 							// } else {
 							// 	_that.vehicleSeriesData = {
 							// 		"results": []
@@ -900,7 +901,7 @@ sap.ui.define([
 							var seriesVal = _that.vinResultdata.results[v].seriesVal;
 							//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'LS' and Zdivision eq 'LEX' and ModelYear eq '2018'
 							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal +
-								"' and Zdivision eq '"+ DivUser +"' and ModelYear eq '" + modelYearVal + "'";
+								"' and Zdivision eq '" + DivUser + "' and ModelYear eq '" + modelYearVal + "'";
 							// var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelYearVal +
 							// 	"' and Model eq '" + modelVal + "' and Zzsuffix eq '" + suffixVal + "'&$format=json";
 							$.ajax({
@@ -948,9 +949,9 @@ sap.ui.define([
 				var modelyear = _that.ModelSeriesCombo.getSelectedKey();
 				var flagNODATFOUND = false;
 				// _TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'SIE' and ModelYear eq '2018'
-
-				serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and ModelYear eq '" +
-					modelyear + "'";
+				//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and Zdivision eq '"+ DivUser +"' and ModelYear eq '" +	modelyear + "'";
+				serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and Zdivision eq '" +
+					DivUser + "' and ModelYear eq '" + modelyear + "'";
 				$.ajax({
 					dataType: "json",
 					url: serviceURL,
