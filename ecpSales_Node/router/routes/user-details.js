@@ -1,11 +1,11 @@
-/*eslint no-console: 0, no-unused-vars: 0, no-shadow: 0, quotes: 0, no-use-before-define: 0, new-cap:0 */
+/*eslint new-cap: 0, no-console: 0, no-shadow: 0, no-unused-vars: 0*/
+/*eslint-env es6, node*/
+
 "use strict";
 
-module.exports = function () {
-
-	var async = require('async');
-	var express = require('express');
-	var request = require('request');
+module.exports = function (appContext) {
+	var express = require("express");
+	var request = require("request");
 	var xsenv = require("@sap/xsenv");
 
 	var auth64;
@@ -16,13 +16,6 @@ module.exports = function () {
 		}
 	});
 	var uaa = uaaService.uaa;
-	if (!uaa) {
-		logger.error('uaa service not found');
-		res.status(401).json({
-			message: "uaa service not found"
-		});
-		return;
-	}
 
 	var app = express.Router();
 	var options = {};
