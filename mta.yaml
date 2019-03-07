@@ -15,9 +15,13 @@ modules:
    path: tireSelector_Node
    parameters:
       host: tci-dev-tireselector-node
-      disk-quota: 256MB
+      disk-quota: 256M
       memory: 256M
    properties:
+      XS_APP_LOG_LEVEL: debug
+      XS_LOG_USER: true
+      XS_LOG_REFERER: true
+      XS_LOG_CONNECTION_DATA: true
       NODE_TLS_REJECT_UNAUTHORIZED: 0
    provides:
     - name: tireSelector_Node_api
@@ -40,9 +44,9 @@ modules:
       properties:
          url: ${default-url}
    requires:
-     - name: tireSelector_hdb
-     - name: hdi_tireSelector_hdb
-     - name: uaa_tireSelector
+    - name: tireSelector_hdb
+    - name: hdi_tireSelector_hdb
+    - name: uaa_tireSelector
 
  - name: tireSelector
    type: html5
@@ -51,6 +55,8 @@ modules:
       host: tci-dev-tireselector
       disk-quota: 512M
       memory: 512M
+   properties:
+      XS_APP_LOG_LEVEL: info
    build-parameters:
       builder: grunt
    requires:
@@ -88,8 +94,8 @@ resources:
  - name: uaa_tireSelector
    parameters:
       path: ./xs-security.json
-      service-plan: application
       service: xsuaa
+      service-plan: application
    type: org.cloudfoundry.managed-service
 
  - name: TIRE_SELECTOR_APIM_CUPS

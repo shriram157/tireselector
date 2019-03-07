@@ -1,31 +1,27 @@
 {
-	"engines": {
-		"node": "6.x"
-	},
 	"dependencies": {
-		"@sap/xsenv": "1.2.9",
-		"@sap/xssec": "2.1.10",
-		"@sap/hdbext": "4.3.4",
-		"@sap/textbundle": "2.1.0",
-		"@sap/logging": "^3.3.1",
-		"@sap/jobs-client": "1.1.1",
-		"passport": "0.3.2",
-		"express": "4.12.3",
-		"request": "",
-		"async": "2.5.0",
-		"ws": "1.1.4"
-
+		"@sap/logging": "^4.1.0",
+		"@sap/xsenv": "^1.3.0",
+		"@sap/xssec": "^2.1.16",
+		"cors": "^2.8.5",
+		"express": "^4.16.4",
+		"passport": "^0.4.0"
 	},
+	"description": "Node.js module for tire selector consolidated app",
 	"devDependencies": {
-		"@sap/xsjs-test": "2.0.9"
+		"jest": "^24.1.0",
+		"jest-junit": "^6.3.0"
 	},
 	"files": [],
 	"main": "server.js",
 	"name": "node_tireselector",
 	"scripts": {
-		"start": "node server.js",
-		"test": "node testrun.js"
+		"test": "node node_modules/jest/bin/jest --config jest.json",
+		"test-coverage": "node node_modules/jest/bin/jest --coverage --config jest.json",
+		"start": "node server.js"
 	},
-
+	"engines": {
+		"node": "8.x"
+	},
 	"version": "1.0.0"
 }
