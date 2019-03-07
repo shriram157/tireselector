@@ -35,13 +35,8 @@ sap.ui.define([
 
 			if (oGetText === oBundle.getText("NewApplication")) {
 				this.getOwnerComponent().getRouter().navTo("newECPApp", {
-					vin: oval,
-					plan: oval,
 					appId: oval,
-					appType: oval,
-					Odometer: oval,
 					ODealer: this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
-
 				});
 			} else if (oGetText === oBundle.getText("ViewUpdateApp")) {
 				this._resetView();

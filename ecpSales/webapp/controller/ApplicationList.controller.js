@@ -364,11 +364,7 @@ sap.ui.define([
 				var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
 
 				this.getOwnerComponent().getRouter().navTo("newECPApp", {
-					vin: obj.VIN,
-					plan: obj.ECPPlanCode,
 					appId: obj.InternalApplicationID,
-					appType: obj.AgreementType,
-					Odometer: obj.Odometer,
 					ODealer : this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
 				});
 				this.getView().byId("idApplicationTable").removeSelections("true");

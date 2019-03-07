@@ -83,10 +83,7 @@ sap.ui.define([
 			var obj = oEvent.getSource().getModel().getProperty(oEvent.getParameters().rowContext.sPath);
 			console.log(obj);
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiry", {
-				AgrNum: obj.AgreementNumber,
-				vin: obj.VIN,
-				customerNumber: obj.CustomerNumber
-					// odometer: obj.ODMTR
+				AgrNum: obj.AgreementNumber
 			});
 
 			//this.getView().byId("idAgreementTable").removeSelections("true");

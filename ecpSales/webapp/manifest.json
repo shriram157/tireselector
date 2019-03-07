@@ -170,7 +170,7 @@
 				},
 				{
 					"name": "newECPApp",
-					"pattern": "newECPApplication/{vin}/{plan}/{appId}/{appType}/{Odometer}/{ODealer}",
+					"pattern": "newECPApplication/{appId}/{ODealer}",
 					"target": [
 						"newECPApp"
 					]
@@ -184,7 +184,7 @@
 				},
 				{
 					"name": "AgreementInquiry",
-					"pattern": "AgreementInquiry/{AgrNum}/{vin}/{customerNumber}",
+					"pattern": "AgreementInquiry/{AgrNum}",
 					"target": [
 						"AgreementInquiry"
 					]
