@@ -105,6 +105,91 @@ sap.ui.define([
 
 				var oBusinessModel = this.getModel("ApiBusinessModel");
 
+<<<<<<< HEAD
+=======
+				oVehicleMaster.read("/zc_c_vehicle", {
+
+					urlParameters: {
+						"$filter": "VehicleIdentificationNumber eq '" + this.oViNum + "' "
+					},
+					success: $.proxy(function (vData) {
+						this.getModel("LocalDataModel").setProperty("/VehicleDetails", vData.results[0]);
+						oBusinessModel.read("/A_BusinessPartnerAddress", {
+							urlParameters: {
+								"$filter": "BusinessPartner eq '" + this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer") +
+									"' ",
+								"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
+
+							},
+							success: $.proxy(function (businessA) {
+
+								this.getModel("LocalDataModel").setProperty("/OwnerData", businessA.results[0]);
+								if (businessA.results != "") {
+									this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", businessA.results[0].to_EmailAddress.results[
+										0].EmailAddress);
+									this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", businessA.results[0].to_PhoneNumber.results[
+											0]
+										.PhoneNumber);
+									this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", businessA.results[0].to_FaxNumber.results[
+										0].FaxNumber);
+								}
+							}, this),
+							error: function () {
+								console.log("Error");
+							}
+						});
+
+						oBusinessModel.read("/A_BusinessPartner", {
+							urlParameters: {
+								"$filter": "BusinessPartner eq '" + this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer") +
+									"' "
+							},
+							success: $.proxy(function (businessB) {
+
+								this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", businessB.results[0]);
+
+							}, this),
+							error: function () {
+								console.log("Error");
+							}
+						});
+					}, this)
+				});
+
+				oZECPModel.read("/zc_ecp_crud_operationsSet", {
+					urlParameters: {
+						"$filter": "ZecpVin eq '" + this.oViNum + "'and ZecpIntApp eq '" + this.oAppId + "'"
+					},
+					success: $.proxy(function (data) {
+
+						var EcpFieldData = new sap.ui.model.json.JSONModel(data.results[0]);
+						EcpFieldData.setDefaultBindingMode("TwoWay");
+						this.getView().setModel(EcpFieldData, "EcpFieldData");
+						//this.getModel("LocalDataModel").setProperty("/ApplicationDetailsModel", data);
+						//Fix for Defect ID 8348
+						this.getValidPlanSet(EcpFieldData);
+					}, this),
+					error: function (err) {
+						console.log(err);
+					}
+				});
+
+				oZECPModel.read("/zc_ecp_planpricing_dataSet", {
+					urlParameters: {
+						"$filter": "MGANR eq '" + this.oPlan + "'and ODMTR eq'" + this.oOdometer + "'and VIN eq '" + this.oViNum +
+							"'and ZECPAGRTYPE eq'" + this.oAppType + "'"
+					},
+					success: $.proxy(function (data) {
+
+						this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
+
+					}, this),
+					error: function (err) {
+						console.log(err);
+					}
+				});
+
+>>>>>>> refs/heads/master
 				oZECPModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "InternalApplicationID eq '" + this.oAppId + "' "
@@ -627,7 +712,7 @@ sap.ui.define([
 				oVin.setValueState(sap.ui.core.ValueState.Error);
 			}
 		},
-
+		
 		onSelectAgrType: function (oEvent) {
 			this.oSelectedAgrTypeKey = oEvent.getSource().getSelectedKey();
 			var oSelectedText = this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION");
@@ -1064,7 +1149,7 @@ sap.ui.define([
 		onChangeOdometer: function (oEvent) {
 			//var oOdometer = this.getView().byId("idOdo");
 			//var oOdoVal = oOdometer.getValue();
-
+			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oOdoVal = oEvent.getSource().getValue();
 			if ($.isEmptyObject(oOdoVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1089,20 +1174,57 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 			}
 
-			if (this.oECPData.ZecpOdometer <= this.oAdditionalVal) {
+		// var  validPlanDataSetKm;
+			if(!this.oAdditionalVal){
+				this.oAdditionalVal = this.planKmval(this.getView().getModel("EcpFieldData").getData().ZecpPlancode);
+			}
+		var oECPData = this.getView().getModel("EcpFieldData").getData();
+		oECPData.ZecpOdometer= oOdoVal;
+	
+		
+			if (parseInt(oOdoVal) <= parseInt(this.oAdditionalVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
-			} else if (this.oECPData.ZecpOdometer > this.oAdditionalVal) {
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
+			} else if (parseInt(oOdoVal) > parseInt(this.oAdditionalVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
-					(this.oECPData.ZecpOdometer - this.oAdditionalVal) + this.oBundle
-					.getText("KMagainstplanmilagevalue"));
+					(parseInt(oOdoVal) - parseInt(this.oAdditionalVal)) + this.oBundle.getText("KMagainstplanmilagevalue"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
 
 			} else {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
 			}
+		},
+		planKmval:function(planId){
+			var planArry = this.getModel("LocalDataModel").getProperty("/ValidPlanSetData");
+			// debugger;
+			var kmStr;
+			if(planArry.length>0){
+				var planLen = planArry.length
+					for(var i=0;i<planLen;i++){
+						if(planArry[i].MGANR = planId){
+							 kmStr = planArry[i].KMS;
+							 break;
+						}
+					}
+			}
+			if(kmStr.length>0){
+				var kmSplitArr=kmStr.split(',');
+				if(kmSplitArr.length>0){
+					var kmSplitArrLen = kmSplitArr.length;
+					var numKm= kmSplitArr[0];
+					for(var i=1;i<kmSplitArrLen;i++){
+						numKm = numKm+""+kmSplitArr[i];
+					}
+					console.log(numKm);
+					return numKm;
+				}
+			}
+		
 		},
 		onDelete: function () {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -1577,9 +1699,87 @@ sap.ui.define([
 					}
 				});
 		},
-
+		//Auth: Vinay
+		//Check and Validate DMS data with Vechical owner to Verify Address Defect_ID: 9618
+		//Comparing  Name City Provinecn, Address and Postal code
+		validateAgrmtOwnrNVechOwnr:function(){
+			
+			var currSettings = this.getView().getModel("oSetProperty").getData();
+			if(currSettings.oAgrOwnerDMS){
+				var localDataModel = this.getView().getModel("LocalDataModel").getData();
+				var aggreDmsData = localDataModel.ApplicationOwnerData;
+				var vechicalAgreementOwnerDetail = localDataModel.AgreementOwnerName;
+				var vechicalOwnerDetail = localDataModel.OwnerData;
+		
+			// ApplicationOwnerData/CustomerName	
+				//checking First Name
+				if(aggreDmsData.CustomerName.toUpperCase() !== vechicalAgreementOwnerDetail.FirstName.toUpperCase()){
+					return false;
+				}
+					//checking Last Name
+				if(aggreDmsData.CustomerLastName.toUpperCase() !== vechicalAgreementOwnerDetail.LastName.toUpperCase()){
+					return false;
+				}
+				//checking City
+				if(aggreDmsData.City.toUpperCase() !== vechicalOwnerDetail.CityName.toUpperCase()){
+					return false;
+				}
+				//checking Province
+				if(aggreDmsData.Province.toUpperCase() !== vechicalOwnerDetail.Region.toUpperCase()){
+					return false;
+				}
+				//checking Address
+				if(aggreDmsData.Address.toUpperCase() !== vechicalOwnerDetail.StreetName.toUpperCase()){
+					return false;
+				}
+				//checking Postal Code
+				if(aggreDmsData.PostalCode.toUpperCase() !== vechicalOwnerDetail.PostalCode.toUpperCase()){
+					return false;
+				}
+				
+				
+				return true;
+				
+				
+				
+			}else{
+				return true;
+			}
+			
+		},
+		//Verify Address Defect_ID: 9618
+		showSubmitValidationError:function(){
+			
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			
+			var dialog = new Dialog({
+				title: 'Error',
+				type: 'Message',
+				state: 'Error',
+				content: new Text({
+					text: oBundle.getText("AgreementOwner_And_VechicalOwner_Address_Data_MisMatch")
+				}),
+				beginButton: new Button({
+					text: 'OK',
+					press: function () {
+						dialog.close();
+					}
+				}),
+				afterClose: function() {
+					dialog.destroy();
+				}
+			});
+ 			dialog.open();
+		},
 		onSubmitApp: function () {
 			//this._Step04MandatoryFn();
+			
+			//Verify Address Defect_ID: 9618
+			if(!this.validateAgrmtOwnrNVechOwnr()){
+				this.showSubmitValidationError();
+				return;
+			}
+		
 			var that = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var dialog = new Dialog({
@@ -1779,6 +1979,49 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 			this.getView().byId("idNewECPMsgStrip").setType("None");
 			this.getView().byId("idNewECPMsgStrip").destroy();
+		},
+		getValidPlanSet:function(oECPDataObj){
+			
+			var oECPData= oECPDataObj.getData()
+			var zEcpModel = this.getModel("EcpSalesModel");
+			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
+			
+			var oCustomerNum;
+			if (oECPData.ZecpCustNum) {
+				oCustomerNum = oECPData.ZecpCustNum.substr(5);
+			}
+
+			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				pattern: "yyyy-MM-ddTHH:mm:ss"
+			});
+			var oFormatedSaleDate = oDateFormat.format(new Date(oECPData.ZecpSaleDate));
+			
+			
+			
+			
+			zEcpModel.read("/zc_ecp_valid_plansSet", {
+				urlParameters: {
+				"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + oECPData.ZecpAgrType +
+					"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
+					"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
+				},
+				success: $.proxy(function (data) {
+	
+					this.getModel("LocalDataModel").setProperty("/ValidPlanSetData", data.results[0].ZC_ECP_PLANSSET.results);
+						
+				
+				}, this),
+				error: function () {
+					console.log("Error");
+				}
+			});
+	
+			
 		}
 
 	});

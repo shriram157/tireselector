@@ -360,6 +360,10 @@ sap.ui.define([
 
 		onSelectionChange: function (oEvent) {
 			var oProp = this.getModel("LocalDataModel").getProperty("/newAppLink");
+			
+			//remove before delpoyment
+				// oProp = true;
+			//end removal of code
 			if (oProp == true) {
 				var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
 
