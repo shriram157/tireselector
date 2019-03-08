@@ -106,6 +106,7 @@ sap.ui.define([
 
 				var oBusinessModel = this.getModel("ApiBusinessModel");
 
+
 				oZECPModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "InternalApplicationID eq '" + this.oAppId + "' "
