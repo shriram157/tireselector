@@ -235,11 +235,7 @@ sap.ui.define([
 		OnCreateApp: function (oEvent) {
 			var oval = 404;
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
-				vin: oval,
-				plan: oval,
 				appId: oval,
-				appType: oval,
-				Odometer: oval,
 				ODealer : this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
 			});
 		},
@@ -364,7 +360,7 @@ sap.ui.define([
 			//remove before delpoyment
 				// oProp = true;
 			//end removal of code
-			if (oProp == true) {
+			// if (oProp == true) {
 				var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
 
 				this.getOwnerComponent().getRouter().navTo("newECPApp", {
@@ -373,7 +369,7 @@ sap.ui.define([
 				});
 				this.getView().byId("idApplicationTable").removeSelections("true");
 				this.getModel("EcpSalesModel").refresh();
-			}
+			//}
 		},
 
 		onExit: function () {

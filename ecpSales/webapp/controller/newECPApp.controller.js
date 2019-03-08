@@ -66,6 +66,7 @@ sap.ui.define([
 
 		_oRouteNewECP: function (oEvent) {
 			// 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
+		// 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
 			// this.oViNum = oEvent.getParameters().arguments.vin;
 			// this.oPlan = oEvent.getParameters().arguments.plan;
 			this.oAppId = oEvent.getParameters().arguments.appId;
@@ -73,7 +74,7 @@ sap.ui.define([
 			// this.oOdometer = oEvent.getParameters().arguments.Odometer;
 			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
 			this.getDealer();
-			if (this.oAppId != 404 && this.oAppId != undefined) {
+				if (this.oAppId != 404 && this.oAppId != undefined) {
 				// this.getView().getModel("oSetProperty").setProperty("/oPlan", this.oPlan);
 				// this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.oOdometer);
 				// this.getView().getModel("oSetProperty").setProperty("/oAppType", this.oAppType);
@@ -105,91 +106,6 @@ sap.ui.define([
 
 				var oBusinessModel = this.getModel("ApiBusinessModel");
 
-<<<<<<< HEAD
-=======
-				oVehicleMaster.read("/zc_c_vehicle", {
-
-					urlParameters: {
-						"$filter": "VehicleIdentificationNumber eq '" + this.oViNum + "' "
-					},
-					success: $.proxy(function (vData) {
-						this.getModel("LocalDataModel").setProperty("/VehicleDetails", vData.results[0]);
-						oBusinessModel.read("/A_BusinessPartnerAddress", {
-							urlParameters: {
-								"$filter": "BusinessPartner eq '" + this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer") +
-									"' ",
-								"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
-
-							},
-							success: $.proxy(function (businessA) {
-
-								this.getModel("LocalDataModel").setProperty("/OwnerData", businessA.results[0]);
-								if (businessA.results != "") {
-									this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", businessA.results[0].to_EmailAddress.results[
-										0].EmailAddress);
-									this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", businessA.results[0].to_PhoneNumber.results[
-											0]
-										.PhoneNumber);
-									this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", businessA.results[0].to_FaxNumber.results[
-										0].FaxNumber);
-								}
-							}, this),
-							error: function () {
-								console.log("Error");
-							}
-						});
-
-						oBusinessModel.read("/A_BusinessPartner", {
-							urlParameters: {
-								"$filter": "BusinessPartner eq '" + this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer") +
-									"' "
-							},
-							success: $.proxy(function (businessB) {
-
-								this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", businessB.results[0]);
-
-							}, this),
-							error: function () {
-								console.log("Error");
-							}
-						});
-					}, this)
-				});
-
-				oZECPModel.read("/zc_ecp_crud_operationsSet", {
-					urlParameters: {
-						"$filter": "ZecpVin eq '" + this.oViNum + "'and ZecpIntApp eq '" + this.oAppId + "'"
-					},
-					success: $.proxy(function (data) {
-
-						var EcpFieldData = new sap.ui.model.json.JSONModel(data.results[0]);
-						EcpFieldData.setDefaultBindingMode("TwoWay");
-						this.getView().setModel(EcpFieldData, "EcpFieldData");
-						//this.getModel("LocalDataModel").setProperty("/ApplicationDetailsModel", data);
-						//Fix for Defect ID 8348
-						this.getValidPlanSet(EcpFieldData);
-					}, this),
-					error: function (err) {
-						console.log(err);
-					}
-				});
-
-				oZECPModel.read("/zc_ecp_planpricing_dataSet", {
-					urlParameters: {
-						"$filter": "MGANR eq '" + this.oPlan + "'and ODMTR eq'" + this.oOdometer + "'and VIN eq '" + this.oViNum +
-							"'and ZECPAGRTYPE eq'" + this.oAppType + "'"
-					},
-					success: $.proxy(function (data) {
-
-						this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
-
-					}, this),
-					error: function (err) {
-						console.log(err);
-					}
-				});
-
->>>>>>> refs/heads/master
 				oZECPModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "InternalApplicationID eq '" + this.oAppId + "' "
@@ -1685,8 +1601,7 @@ sap.ui.define([
 				"ZecpLienterms": oECPData.ZecpLienterms
 			};
 
-			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
-					"/ApplicationOwnerData/VIN") +
+			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/VIN") +
 				"')", obj, {
 					method: "PUT",
 					success: $.proxy(function (response) {
