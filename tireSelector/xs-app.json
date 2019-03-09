@@ -1,12 +1,12 @@
 {
-  "welcomeFile": "/tirecentre/index.html",
+  "welcomeFile": "/tireselector/index.html",
   "authenticationMethod": "route",
   "logout": {
     "logoutEndpoint": "/do/logout"
   },
   "routes": [
     {
-      "source": "^/tirecentre/(.*)$",
+      "source": "^/tireselector/(.*)$",
       "target": "$1",
       "localDir": "webapp",
       "authenticationType": "xsuaa"      
