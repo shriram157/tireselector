@@ -1060,7 +1060,7 @@ sap.ui.define([
 
 			// var DifferRegMonth = this._fnDayHrSecond(this.DifferTime);
 			var oMonthDef = this.DifferTime;
-			var MaxDays = parseInt(this.mxMonth) * 31 * 1000 * 60 * 60 * 24;
+			var MaxDays = parseInt(this.mxMonth) * 30 * 1000 * 60 * 60 * 24;
 
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", true);
@@ -1074,7 +1074,7 @@ sap.ui.define([
 					var TotaldayMonDif = this._fnDayHrSecond(oMonthDef - MaxDays);
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + ((parseInt(this.oECPData.ZecpOdometer) - parseInt(
-					this.mxMillage)))+ " KM and" + " Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + TotaldayMonDif.day + " Days : " + TotaldayMonDif.hour + " Hours");
+					this.mxMillage)))+ " KM and" + " Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + TotaldayMonDif.day + " Days ");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
@@ -1095,7 +1095,7 @@ sap.ui.define([
 						
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Month Exceeds by " +
-					TotaldayMonDif.month + " Months : " + TotaldayMonDif.day + " Days : " + TotaldayMonDif.hour + " Hours");
+					TotaldayMonDif.month + " Months : " + TotaldayMonDif.day + " Days");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
