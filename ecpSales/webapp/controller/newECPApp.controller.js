@@ -105,7 +105,7 @@ sap.ui.define([
 				var oVehicleMaster = this.getView().getModel("VinModel");
 
 				var oBusinessModel = this.getModel("ApiBusinessModel");
-
+				
 				oZECPModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "InternalApplicationID eq '" + this.oAppId + "' "
@@ -180,6 +180,14 @@ sap.ui.define([
 								EcpFieldData.setDefaultBindingMode("TwoWay");
 								this.getView().setModel(EcpFieldData, "EcpFieldData");
 								//this.getModel("LocalDataModel").setProperty("/ApplicationDetailsModel", data);
+								
+								//Fix for Defect ID 8348
+								this.getValidPlanSet(EcpFieldData);
+					
+								
+								//Check and Update Tire Hazard and Benifit Falg for DMS App: Defet ID = 9616
+								this.updateTHazBenFlag();
+								
 							}, this),
 							error: function (err) {
 								console.log(err);
@@ -196,7 +204,7 @@ sap.ui.define([
 							success: $.proxy(function (pdata) {
 
 								this.getModel("LocalDataModel").setProperty("/oPlanPricingData", pdata.results[0]);
-
+								
 							}, this),
 							error: function (err) {
 								console.log(err);
@@ -208,8 +216,9 @@ sap.ui.define([
 								"$filter": "VIN eq '" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/VIN") + "'"
 							},
 							success: $.proxy(function (vedata) {
-
 								this.getModel("LocalDataModel").setProperty("/PricingModelData", vedata.results[0]);
+								//Check and Update Tire Hazard and Benifit Falg for DMS App: Defet ID = 9616
+								this.updateTHazBenFlag();
 
 							}, this),
 							error: function () {
@@ -389,6 +398,43 @@ sap.ui.define([
 			this.getView().setModel(this.EcpFieldData, "EcpFieldData");
 
 		},
+		updateTHazBenFlag:function(){
+			var sourceType = this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData").Source;
+			if(sourceType !== "DMS"){
+				return;
+			}
+			
+			var pricingModelData = this.getModel("LocalDataModel").getProperty("/PricingModelData");
+			var oECPData = this.getView().getModel("EcpFieldData").getData();
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			if(pricingModelData && oECPData){
+				
+				var oSDateTime = new Date(oECPData.ZecpSaleDate).getTime();
+				var oRegDate = new Date(pricingModelData.REG_DATE ).getTime();
+				var DifferTime = (oSDateTime - oRegDate);
+				var oOdoVal=oECPData.ZecpOdometer;
+				
+				
+				if (DifferTime <= 94670778000 && oOdoVal <= 50000) {
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+				} else if (DifferTime > 94670778000 || oOdoVal > 50000) {
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
+				}
+
+				var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
+				var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
+				if (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT")) {
+					if (DifferTime < oDayMili) {
+						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "Yes");
+					} else if (DifferTime > oDayMili) {
+						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
+					}
+				}
+				
+				
+			}
+		},
+		
 
 		handleValueHelp: function (oController) {
 
