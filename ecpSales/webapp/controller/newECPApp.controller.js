@@ -1064,7 +1064,7 @@ sap.ui.define([
 
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", true);
-				if (parseInt(this.oECPData.ZecpOdometer) < parseInt(this.mxMillage) && oMonthDef < MaxDays) {
+				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.mxMillage) && oMonthDef <= MaxDays) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
