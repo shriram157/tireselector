@@ -400,9 +400,9 @@ sap.ui.define([
 		},
 		updateTHazBenFlag:function(){
 			var sourceType = this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData").Source;
-			if(sourceType !== "DMS"){
-				return;
-			}
+			// if(sourceType !== "DMS"){
+			// 	return;
+			// }
 			
 			var pricingModelData = this.getModel("LocalDataModel").getProperty("/PricingModelData");
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -429,6 +429,8 @@ sap.ui.define([
 					} else if (DifferTime > oDayMili) {
 						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 					}
+				}else{
+					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 				}
 				
 				
@@ -893,6 +895,8 @@ sap.ui.define([
 				} else if (this.DifferTime > oDayMili) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 				}
+			}else{
+				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 			}
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
 				0) {
