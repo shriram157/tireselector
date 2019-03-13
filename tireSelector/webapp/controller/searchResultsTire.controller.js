@@ -6,10 +6,11 @@ sap.ui.define([
 	'sap/m/ObjectIdentifier',
 	'tireSelector/controller/BaseController',
 	"sap/ui/core/routing/History",
-	"sap/m/MessageBox"
-], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox) {
+	"sap/m/MessageBox",
+	'sap/m/MessageToast'
+], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox,MessageToast) {
 	"use strict";
-	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp,sSelectedLocale;
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale;
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
 			that = this;
@@ -64,7 +65,7 @@ sap.ui.define([
 			sap.ushell.components.FacetFilters = that.byId("idVBox");
 		},
 
-		_oSelectTireRoute: function (oEvent) {
+			_oSelectTireRoute: function (oEvent) {
 			//fetching data from HDB for porduct markup 
 			that.oXSOServiceModel = that.getOwnerComponent().getModel("XsodataModel");
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
@@ -131,30 +132,30 @@ sap.ui.define([
 				});
 			});
 
-			//uncomment below for cloud testing
-			var scopes = that.userDetails.userContext.scopes;
-			console.log("scopes", scopes);
-			var accessAll = false,
-				accesslimited = false;
+			//START: uncomment below for cloud testing
+			/*			var scopes = that.userDetails.userContext.scopes;
+						console.log("scopes", scopes);
+						var accessAll = false,
+							accesslimited = false;
 
-			for (var s = 0; s < scopes.length; s++) {
-				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-						accesslimited = true;
-					} else {
-						accessAll = false;
-						accesslimited = false;
-					}
-				}
-			}
-			if (accessAll == true && accesslimited == true) {
-				that._oViewModel.setProperty("/enableProdMarkup", true);
-			} else {
-				that._oViewModel.setProperty("/enableProdMarkup", false);
-			}
-
+						for (var s = 0; s < scopes.length; s++) {
+							if (scopes[s] != "openid") {
+								if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+									accessAll = true;
+								} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+									accesslimited = true;
+								} else {
+									accessAll = false;
+									accesslimited = false;
+								}
+							}
+						}
+						if (accessAll == true && accesslimited == true) {
+							that._oViewModel.setProperty("/enableProdMarkup", true);
+						} else {
+							that._oViewModel.setProperty("/enableProdMarkup", false);
+						}*/
+			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
 
@@ -176,7 +177,8 @@ sap.ui.define([
 				VehicleSeriesDescp = that.oModelData.SeriesDescp;
 				// filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
-					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '"+that.userDetails.DealerData.Division+"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
+					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
 					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
 
 			} else if (oEvent.getParameter("arguments").tireData !== undefined) {
@@ -188,7 +190,8 @@ sap.ui.define([
 				VehicleSeriesDescp = that.oTireData.SeriesDescp;
 				// filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
-					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '"+that.userDetails.DealerData.Division+"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
+					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
 					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
 			}
 			if (filterData !== undefined) {
@@ -496,11 +499,36 @@ sap.ui.define([
 											console.log("filter", array);
 											return array;
 										}
-
+										// Sort Filter 
 										that.Filters[0] = removeDuplicates(that.Filters[0]);
+
 										that.Filters[1] = removeDuplicates(that.Filters[1]);
+
 										that.Filters[2] = removeDuplicates(that.Filters[2]);
+										var tierBrandFilterValues = that.Filters[2].values;
+										/* Defect ID: 9146
+										 *  Description :  Tire Brand filter sort order should be alphabatically with All at the top
+										 *   Date: 11/03/2019
+										 *   Developer : Abhijeet Parihar
+										 *	START
+										 */
+										tierBrandFilterValues.sort(function (a, b) {
+											var nameA = a.text,
+												nameB = b.text;
+											if (nameA < nameB) //sort string ascending
+												return -1;
+											if (nameA > nameB)
+												return 1;
+											return 0; //default return value (no sorting)
+										});
+										/* Defect ID: 9146
+										 *  Description :  Tire Brand filter sort order should be alphabatically with All at the top
+										 *   Date: 11/03/2019
+										 *   Developer : Abhijeet Parihar
+										 *	END
+										 */
 										that.Filters[3] = removeDuplicates(that.Filters[3]);
+
 										that.Filters[4] = removeDuplicates(that.Filters[4]);
 
 										$.each(that.tempModel.getData().results, function (i, item) {
@@ -758,6 +786,19 @@ sap.ui.define([
 			// Get the Facet Filter lists and construct a (nested) filter for the binding
 			var oFacetFilter = oEvent.getSource();
 			this._filterModel(oFacetFilter);
+			/* DEFECT ID : 10207
+			*
+			*
+			* START */
+			
+			oEvent.bCancelBubble = true;
+			oEvent.preventDefault();
+			oEvent.bPreventDefault = true;
+			
+			 /*DEFECT ID : 10207
+			 END
+			 */
+			
 			// MessageToast.show("confirm event fired");
 		},
 
@@ -807,7 +848,7 @@ sap.ui.define([
 			oPath.VIN = VIN;
 			oPath.VehicleSeries = VehicleSeries;
 			oPath.VModelYear = VModelYear;
-			oPath.VehicleSeriesDescp =VehicleSeriesDescp;
+			oPath.VehicleSeriesDescp = VehicleSeriesDescp;
 			sap.ui.core.UIComponent.getRouterFor(that).navTo("tireQuotation", {
 				rowData: JSON.stringify(oPath)
 			});

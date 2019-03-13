@@ -34,7 +34,7 @@ sap.ui.define([
 				console.log("scopes", scopes);
 				// var accessAll = false,
 				// 	accesslimited = false;
-
+				
 				// for (var s = 0; s < scopes.length; s++) {
 				// 	if (scopes[s] != "openid") {
 				// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
@@ -84,7 +84,7 @@ sap.ui.define([
 									"Live_Markup_Percentage": "0.00",
 									"Live_Last_Updated": _localScope.oDateFormat.format(new Date()),
 									"Live_Last_Updated_update": "",
-									"Live_Last_Updated_By": _localScope.userData.DealerData.DealerName,
+									"Live_Last_Updated_By":_localScope.userData.DealerData.BusinessPartnerName, // DEFECT ID: 9157 Point 4
 									"User_First_Name": _localScope.userData.DealerData.BusinessPartnerName,
 									"User_Last_Name": _localScope.userData.DealerData.BusinessPartnerName2,
 									"tooltipText": _localScope.oI18nModel.getResourceBundle().getText("tooltip")
@@ -196,9 +196,11 @@ sap.ui.define([
 					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = "0.00";
 					if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
-						dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+						//dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+						dataFromModel.IsLive = "Y";
 					} else {
-						dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+						//dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+						dataFromModel.IsLive = "";
 						if (dataFromModel.Live_Markup_Percentage == "0.00") {
 							dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
 						}
@@ -229,9 +231,11 @@ sap.ui.define([
 					}
 
 					if (modelData[i].Live_Last_Updated_update !== "") {
-						newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+						//newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+						newDataFromModel.IsLive = "Y";
 					} else {
-						newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+						//newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+						newDataFromModel.IsLive = "";
 					}
 					// newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;

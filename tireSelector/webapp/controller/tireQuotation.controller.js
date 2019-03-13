@@ -5,7 +5,7 @@ sap.ui.define([
 	'tireSelector/controller/BaseController'
 ], function (Controller, JSONModel, History, BaseController) {
 	"use strict";
-	var _this,sSelectedLocale;
+	var _this, sSelectedLocale;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -102,7 +102,7 @@ sap.ui.define([
 		textCount: function (count) {
 			debugger;
 			var oTextArea = count.getSource();
-			var iValueLength = oTextArea.getValue().length +" "+ _this.oI18nModel.getResourceBundle().getText("characters");
+			var iValueLength = oTextArea.getValue().length + " " + _this.oI18nModel.getResourceBundle().getText("characters");
 			_this.getView().byId("textCount").setText(iValueLength);
 		},
 		handleQuoteDateChange: function (expChange) {
@@ -134,30 +134,30 @@ sap.ui.define([
 			});
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
-			//uncomment below for cloud testing
-			var scopes = _this.userData.userContext.scopes;
-			console.log("scopes", scopes);
-			var accessAll = false,
-				accesslimited = false;
+			//START: uncomment below for cloud testing
+			/*			var scopes = _this.userData.userContext.scopes;
+						console.log("scopes", scopes);
+						var accessAll = false,
+							accesslimited = false;
 
-			for (var s = 0; s < scopes.length; s++) {
-				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-						accesslimited = true;
-					} else {
-						accessAll = false;
-						accesslimited = false;
-					}
-				}
-			}
-			if (accessAll == true && accesslimited == true) {
-				_this._oViewModel.setProperty("/enableProdMarkup", true);
-			} else {
-				_this._oViewModel.setProperty("/enableProdMarkup", false);
-			}
-
+						for (var s = 0; s < scopes.length; s++) {
+							if (scopes[s] != "openid") {
+								if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+									accessAll = true;
+								} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+									accesslimited = true;
+								} else {
+									accessAll = false;
+									accesslimited = false;
+								}
+							}
+						}
+						if (accessAll == true && accesslimited == true) {
+							_this._oViewModel.setProperty("/enableProdMarkup", true);
+						} else {
+							_this._oViewModel.setProperty("/enableProdMarkup", false);
+						}*/
+			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
 			function decimalFormatter(oDecVal) {
@@ -607,7 +607,7 @@ sap.ui.define([
 		},
 
 		getUnitPrice: function (oUnit) {
-			var oUnitPrice = oUnit.getParameter("newValue");
+			var oUnitPrice = parseInt(oUnit.getSource().getValue());
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
 			if (oUnit.getSource().getId().split("_")[3] == "tireUnitPrice") {
@@ -633,6 +633,7 @@ sap.ui.define([
 				summed += Number(arrPrices[key]);
 			}
 			dataRes.subTotal = _this.decimalFormatter(summed);
+			_this.oTireQuotationModel.getData().Retails = oUnitPrice;
 			_this.oTireQuotationModel.updateBindings(true);
 			_this.sub = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 
@@ -864,7 +865,9 @@ sap.ui.define([
 				_this.getRouter().navTo("reportError");
 			}
 		},
-
+		onAfterRendering: function (){
+			
+		},
 		onExit: function () {
 			_this.oTireQuotationModel.refresh(true);
 			_this.oTirePriceModel.refresh(true);

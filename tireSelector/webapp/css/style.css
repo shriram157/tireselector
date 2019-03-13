@@ -41,6 +41,43 @@
 .facetStyle .sapUiTableTbr .sapMTB-Transparent-CTX.sapMTB { padding-left: 0 !important;}
 
 /*For Tire Select Row Colors*/
+.idTireSelectionTable .sapUiTableCell{
+	padding:0px !important;
+}
+span[data-colorClass="Acceptable"] {
+    background-color: yellow !important;
+    width: 100%;
+    height: 100%;
+    padding: 12% 0% 6% 6%;
+}
+
+span[data-colorClass="OE"] {
+    background-color: green !important;
+    width: 100%;
+    height: 100%;
+    padding: 12% 0% 6% 6%;
+}
+
+span[data-colorClass="Other"] {
+    width: 100%;
+    height: 100%;
+    padding: 12% 0% 6% 6%;
+}
+
+span[data-colorClass="Discontinued"] {
+    background-color: red !important;
+    width: 100%;
+    height: 100%;
+    padding: 12% 0% 6% 6%;
+}
+span[data-colorClass="Perfect"] {
+    background-color: green !important;
+    width: 100%;
+    height: 100%;
+    padding: 12% 0% 6% 6%;
+}
+
+
 span.displayBlock{
 	display: block !important;
 }

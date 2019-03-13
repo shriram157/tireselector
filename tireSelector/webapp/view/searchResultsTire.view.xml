@@ -1,7 +1,6 @@
 <mvc:View xmlns:u="sap.ui.unified" xmlns:tnt="sap.tnt" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:l="sap.ui.layout"
 	xmlns:core="sap.ui.core" xmlns:t="sap.ui.table" controllerName="tireSelector.controller.searchResultsTire"
-	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-	xmlns:html="http://www.w3.org/1999/xhtml">
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:html="http://www.w3.org/1999/xhtml">
 	<App>
 		<pages>
 			<Page showNavButton="false" class="stylePageSection customStyle">
@@ -40,7 +39,7 @@
 					</OverflowToolbar>
 					<VBox id="idVBox" class="facetStyle">
 						<items>
-							<FacetFilter id="idFacetFilter" type="Simple" showPersonalization="true" showReset="true" reset="handleFacetFilterReset"
+							<FacetFilter id="idFacetFilter" type="Simple" showPopoverOKButton="true" showPersonalization="true" showReset="true" reset="handleFacetFilterReset"
 								confirm="handleFacetConfirm" lists="{TireFitmentJSONModel>/Filters}">
 								<lists>
 									<FacetFilterList title="{TireFitmentJSONModel>type}" key="{TireFitmentJSONModel>text}" mode="MultiSelect"
@@ -60,6 +59,7 @@
 								<Toolbar>
 									<CheckBox text="Show Dealer Net" select="onCheckPress" id="checkDealerNet"/>
 									<CheckBox text="Use Preview Markup" select="onCheckPreview" id="checkPreview"/>
+									<Button text="Open View Settings Dialog in Filter view" press="handleOpenDialogFilter"/>
 								</Toolbar>
 							</t:toolbar>
 							<t:columns>
@@ -67,9 +67,9 @@
 									<Label text="{i18n>TireFitment}"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Tire Fitment'}" app:colorClass="{TireFitmentJSONModel>colorCell}" wrapping="false" id="cell_Fitment">
-											<!--<customData>-->
-											<!--	<core:CustomData key="colorClass" value="{ path:'TireFitmentJSONModel>colorCell'}" writeToDom="true"/>-->
-											<!--</customData>-->
+											<customData>
+										<core:CustomData key="colorClass" value="{ path:'TireFitmentJSONModel>Tire Fitment'}" writeToDom="true"/>
+											</customData>
 										</Text>
 										<!--{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}-->
 									</t:template>
@@ -116,13 +116,13 @@
 										<Text text="{path:'TireFitmentJSONModel>DealerNet', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_Profit" sortProperty="Profit" filterProperty="Profit" visible="{FitmentPageModel>/enableProfit}"  width="6rem">
+								<t:Column id="ID_Profit" sortProperty="Profit" filterProperty="Profit" visible="{FitmentPageModel>/enableProfit}" width="6rem">
 									<Label text="{i18n>Profit}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Retails" filterProperty="Retails"  width="6rem">
+								<t:Column sortProperty="Retails" filterProperty="Retails" width="6rem">
 									<Label text="{i18n>Retail}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Retails', formatter: '.decimalFormatter'}" wrapping="false"/>
@@ -136,7 +136,6 @@
 				<footer>
 					<Toolbar>
 						<!--<ToolbarSpacer/>-->
-						
 					</Toolbar>
 				</footer>
 			</Page>
