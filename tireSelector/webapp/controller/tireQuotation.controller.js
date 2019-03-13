@@ -135,7 +135,7 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			/*			var scopes = _this.userData.userContext.scopes;
+					var scopes = _this.userData.userContext.scopes;
 						console.log("scopes", scopes);
 						var accessAll = false,
 							accesslimited = false;
@@ -156,7 +156,7 @@ sap.ui.define([
 							_this._oViewModel.setProperty("/enableProdMarkup", true);
 						} else {
 							_this._oViewModel.setProperty("/enableProdMarkup", false);
-						}*/
+						}
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -229,10 +229,15 @@ sap.ui.define([
 									_this.oTireQuotationModel.getData().FederalTax = Number(oPriceData.results[n].Amount);
 								} else if (CndType == "JRC3" || CndType == "JRC2") {
 									_this.oTireQuotationModel.getData().ProvincialTax = Number(oPriceData.results[n].Amount);
-								} else if (CndType == "ZPEH" || CndType == "ZPEC") { //Freight Cost
+								}else if (CndType == "ZPOF") { //Freight Cost
 									_this.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
 									// _this.oTireQuotationModel.getData().Crcy = oPriceData.results[n].Crcy;
 								}
+								/* changes done for defect number:
+								else if (CndType == "ZPEH" || CndType == "ZPEC") { //Freight Cost
+									_this.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
+									// _this.oTireQuotationModel.getData().Crcy = oPriceData.results[n].Crcy;
+								}*/
 							}
 						},
 						_this),
@@ -277,7 +282,8 @@ sap.ui.define([
 							"results": []
 						};
 						$.each(oDataResponse.d.results, function (i, item) {
-							if (item.MATNR != "") {
+							if (item.MATNR != "" && (item.MATNR == "C0WGITRHP3" || item.MATNR == "C0WGITRHP4")) {
+								//item.PRODH == "C0WGITRHP3" || item.PRODH == "C0WGITRHP4" these two conditions are added
 								_this.matData.results.push({
 									"MATNR": item.MATNR,
 									"MATNR_DESC": item.MATNR_DESC

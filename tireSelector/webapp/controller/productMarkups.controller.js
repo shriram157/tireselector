@@ -32,32 +32,32 @@ sap.ui.define([
 
 				var scopes = _localScope.userData.userContext.scopes;
 				console.log("scopes", scopes);
-				// var accessAll = false,
-				// 	accesslimited = false;
+				var accessAll = false,
+					accesslimited = false;
 				
-				// for (var s = 0; s < scopes.length; s++) {
-				// 	if (scopes[s] != "openid") {
-				// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-				// 			accessAll = true;
-				// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-				// 			accesslimited = true;
-				// 		} else {
-				// 			accessAll = false;
-				// 			accesslimited = false;
-				// 		}
-				// 	}
-				// }
-				// if (accessAll == true && accesslimited == true) {
-				// 	_localScope._oViewModel.setProperty("/enableProdMarkup", true);
-				// } else {
-				// 	_localScope._oViewModel.setProperty("/enableProdMarkup", false);
-				// }
+				for (var s = 0; s < scopes.length; s++) {
+					if (scopes[s] != "openid") {
+						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+							accessAll = true;
+						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+							accesslimited = true;
+						} else {
+							accessAll = false;
+							accesslimited = false;
+						}
+					}
+				}
+				if (accessAll == true && accesslimited == true) {
+					_localScope._oViewModel.setProperty("/enableProdMarkup", true);
+				} else {
+					_localScope._oViewModel.setProperty("/enableProdMarkup", false);
+				}
 
-				// if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
-				// 	_localScope._oViewModel.setProperty("/enableProdMarkup", true);
-				// } else {
-				// 	_localScope._oViewModel.setProperty("/enableProdMarkup", false);
-				// }
+				if (scopes[1] == "tireSelectorS!t1188.ViewTireQuotes" && scopes[2] == "tireSelectorS!t1188.ManagerProductMarkups") {
+					_localScope._oViewModel.setProperty("/enableProdMarkup", true);
+				} else {
+					_localScope._oViewModel.setProperty("/enableProdMarkup", false);
+				}
 
 				jQuery.sap.require("sap.ui.core.format.DateFormat");
 				_localScope.oDateFormat = sap.ui.core.format.DateFormat.getDateTimeInstance({
