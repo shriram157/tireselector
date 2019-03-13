@@ -13,6 +13,7 @@ sap.ui.define([
 		onInit: function () {
 			_localScope = this;
 			// _localScope.userloginCount = 1;
+			
 
 			_localScope.getRouter().attachRouteMatched(function (oEvent) {
 				_localScope._oViewModel = new sap.ui.model.json.JSONModel({
