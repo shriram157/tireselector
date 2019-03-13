@@ -1151,12 +1151,29 @@ sap.ui.define([
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
 				} 
+				
+				//In Case of used vechical benefit flag will always No
+				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
 			}
 
 		},
 		onChangeAmt: function (oEvent) {
+			var  val = oEvent.getParameter('value');
+			var parsedVal = parseFloat(val);
+			if(parsedVal<0 ){
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+				oEvent.getSource().setValueStateText("Must be non-negative value");
+				oEvent.getSource().setShowValueStateMessage(true);
+			}else{
+				//Handling -0 case
+				if(parseFloat(val) === 0){
+					 oEvent.getSource().setValue(0);
+				}
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);	
+				oEvent.getSource().setShowValueStateMessage(false);
+			}
 
 		},
 		onChangeOdometer: function (oEvent) {
@@ -1727,7 +1744,8 @@ sap.ui.define([
 				"ZretailPrice": oECPData.ZretailPrice,
 				"ZamtFincd": oECPData.ZamtFincd,
 				"BccPlnLienHldr": oECPData.BccPlnLienHldr,
-				"ZecpLienterms": oECPData.ZecpLienterms
+				"ZecpLienterms": oECPData.ZecpLienterms,
+				"ZbenefitFlag": oECPData.ZbenefitFlag
 			};
 
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
