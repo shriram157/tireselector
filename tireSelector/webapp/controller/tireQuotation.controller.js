@@ -608,7 +608,7 @@ sap.ui.define([
 		},
 
 		changeUnitPrice: function (oUnitPrice) {
-			_this.oTireQuotationModel.getData().Retails = _this.decimalFormatter(oUnitPrice);
+			//_this.oTireQuotationModel.getData().Retails = _this.decimalFormatter(oUnitPrice);
 			_this.oTirePriceModel.updateBindings(true);
 		},
 
@@ -639,7 +639,7 @@ sap.ui.define([
 				summed += Number(arrPrices[key]);
 			}
 			dataRes.subTotal = _this.decimalFormatter(summed);
-			_this.oTireQuotationModel.getData().Retails = oUnitPrice;
+			//_this.oTireQuotationModel.getData().Retails = oUnitPrice;
 			_this.oTireQuotationModel.updateBindings(true);
 			_this.sub = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 
