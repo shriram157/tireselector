@@ -1,20 +1,18 @@
-/*eslint no-console: 0, no-unused-vars: 0, no-shadow: 0, new-cap: 0*/
-/*eslint-env node, es6 */
-'use strict';
-var express = require('express');
-var request = require('request');
-var xsenv = require("@sap/xsenv");
-var passport = require('passport');
-var JWTStrategy = require('@sap/xssec').JWTStrategy;
+/*eslint new-cap: 0, no-console: 0, no-shadow: 0, no-unused-vars: 0*/
+/*eslint-env es6, node*/
 
-var async = require('async');
+"use strict";
+
+var express = require("express");
+var request = require("request");
+var xsenv = require("@sap/xsenv");
 
 var app = express();
 
 // Use the session middleware
 
 // vehicle Locator Node Module. 
-module.exports = function () {
+module.exports = function (appContext) {
 	var app = express.Router();
 
 	// SAP Calls Start from here
@@ -43,7 +41,7 @@ module.exports = function () {
 	};
 
 	app.use(function (req, res, next) {
-	//	res.header("Access-Control-Allow-Origin", "*");
+		//	res.header("Access-Control-Allow-Origin", "*");
 		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 		res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS, HEAD");
 
@@ -69,7 +67,6 @@ module.exports = function () {
 		//   console.log(req.headers.cookie);
 
 		if (method == 'GET') {
-		
 
 			var reqHeader = {
 				"Authorization": auth64,
@@ -83,11 +80,10 @@ module.exports = function () {
 		//  if the method = post you need a csrf token.   
 
 		if (method == 'POST' || method == 'DELETE' || method == 'PUT' || method == 'HEAD') {
-		
-		
-				var csrfTokenHeaderValue = req.get("X-Csrf-Token");
-	        //	reqHeader["X-Csrf-Token"] = csrfTokenHeaderValue;
-		
+
+			var csrfTokenHeaderValue = req.get("X-Csrf-Token");
+			//	reqHeader["X-Csrf-Token"] = csrfTokenHeaderValue;
+
 			reqHeader = {
 				"Authorization": auth64,
 				"Content-Type": "application/json",
@@ -121,10 +117,10 @@ module.exports = function () {
 
 			}
 			console.log("csrfToken NOT received for", method);
-			
-			if (method == 'GET' && !(response.headers['x-csrf-token']) ) {
-				csrfToken = csrfToken;  //self assign this to retain the value. 
-				console.log ("The earlier call returned blank CSRF and so we are reusing this one", csrfToken);
+
+			if (method == 'GET' && !(response.headers['x-csrf-token'])) {
+				csrfToken = csrfToken; //self assign this to retain the value. 
+				console.log("The earlier call returned blank CSRF and so we are reusing this one", csrfToken);
 			}
 
 			console.log('Response from sap Received Success and if csrf available it will be here & Csrf Token', method, csrfToken);
@@ -133,7 +129,7 @@ module.exports = function () {
 
 		}).on('error', (error) => {
 			next(error);
-			
+
 			console.log("This is inside error");
 		});
 
