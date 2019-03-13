@@ -15,10 +15,10 @@ modules:
    path: tireSelector_Node
    parameters:
       host: tci-dev-tireselector-node
-      disk-quota: 256M
+      disk-quota: 512M
       memory: 256M
    properties:
-      XS_APP_LOG_LEVEL: debug
+      XS_APP_LOG_LEVEL: info
       XS_LOG_USER: true
       XS_LOG_REFERER: true
       XS_LOG_CONNECTION_DATA: true
@@ -66,39 +66,39 @@ modules:
       group: destinations
       properties:
          name: tireSelector-node-backend
-         url: '~{url}'
-         timeout: 60000
+         url: ~{url}
          forwardAuthToken: true
+         timeout: 60000
     - name: tireSelector_XSJS_api
       group: destinations
       properties:
          name: tireSelector-xsjs-backend
-         url: '~{url}'
+         url: ~{url}
          forwardAuthToken: true
 
 resources:
  - name: application-logs_tireSelector
+   type: org.cloudfoundry.managed-service
    parameters:
       service: application-logs
       service-plan: lite
-   type: org.cloudfoundry.managed-service
 
  - name: hdi_tireSelector_hdb
+   type: com.sap.xs.hdi-container
    parameters:
       config:
          schema: tireSelector
    properties:
       hdi-container-name: ${service-name}
-   type: com.sap.xs.hdi-container
 
  - name: uaa_tireSelector
+   type: org.cloudfoundry.managed-service
    parameters:
-      path: ./xs-security.json
       service: xsuaa
       service-plan: application
-   type: org.cloudfoundry.managed-service
+      path: ./xs-security.json
 
  - name: TIRE_SELECTOR_APIM_CUPS
+   type: org.cloudfoundry.existing-service
    parameters:
      service-name: TIRE_SELECTOR_APIM_CUPS
-   type: org.cloudfoundry.existing-service
