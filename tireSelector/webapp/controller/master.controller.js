@@ -673,7 +673,14 @@ sap.ui.define([
 					},
 					error: function (oError) {
 						_that.ModelNodataFlag = true;
+					},
+					complete:function(){
+						_that.SearchOptionVehicle.setValue();
+						_that.ModelSeriesCombo.setValue();
+						_that.SearchOptionVehicle.setSelectedKey(null);
+						_that.ModelSeriesCombo.setSelectedKey(null);
 					}
+					
 				});
 
 				if (_that.ModelNodataFlag == true) {
