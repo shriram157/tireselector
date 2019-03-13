@@ -14,7 +14,7 @@ modules:
    type: nodejs
    path: tireSelector_Node
    parameters:
-      host: tci-dev-tirecentre-node
+      host: tci-dev-tireselector-node
       disk-quota: 256MB
       memory: 256M
    properties:
@@ -32,7 +32,7 @@ modules:
    type: nodejs
    path: tireSelector_XSJS
    parameters:
-      host: tci-dev-tirecentre-xsjs
+      host: tci-dev-tireselector-xsjs
       disk-quota: 512M
       memory: 256M
    provides:
@@ -48,7 +48,7 @@ modules:
    type: html5
    path: tireSelector
    parameters:
-      host: tci-dev-tirecentre
+      host: tci-dev-tireselector
       disk-quota: 512M
       memory: 512M
    build-parameters:
