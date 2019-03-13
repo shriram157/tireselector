@@ -828,7 +828,7 @@ sap.ui.define([
 			_this.oTireQuotationModel.updateBindings(true);
 			_this.oTirePriceModel.updateBindings(true);
 
-			_this.sub = Number(dataRes.subTotal);
+			_this.sub = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 			if (dataRes.FederalTax != "") {
 				dataRes.FederalTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.FederalTax));
 				_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.FederalTax);
