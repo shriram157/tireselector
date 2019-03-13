@@ -8,13 +8,19 @@ modules:
    type: nodejs
    path: ecpSales_Node
    parameters:
-     host: tci-dev-ecpsales-node
-     disk-quota: 512MB
-     memory: 256MB
+      host: tci-dev-ecpsales-node
+      disk-quota: 512M
+      memory: 256M
+   properties:
+      XS_APP_LOG_LEVEL: info
+      XS_LOG_USER: true
+      XS_LOG_REFERER: true
+      XS_LOG_CONNECTION_DATA: true
+      NODE_TLS_REJECT_UNAUTHORIZED: 0
    provides:
     - name: ecpSales_Node_api
       properties:
-         url: '${default-url}'
+         url: ${default-url}
    requires:
     - name: application-logs_ecpSales
     - name: uaa_ecpSales
@@ -25,8 +31,10 @@ modules:
    path: ecpSales
    parameters:
       host: tci-dev-ecpsales
-      disk-quota: 512MB
-      memory: 256MB
+      disk-quota: 512M
+      memory: 256M
+   properties:
+      XS_APP_LOG_LEVEL: info
    build-parameters:
       builder: grunt
    requires:
@@ -36,23 +44,23 @@ modules:
       group: destinations
       properties:
          name: ecpsales-node-backend
+         url: ~{url}
          forwardAuthToken: true
          timeout: 60000
-         url: '~{url}'
 
 resources:
  - name: application-logs_ecpSales
+   type: org.cloudfoundry.managed-service
    parameters:
       service: application-logs
       service-plan: lite
-   type: org.cloudfoundry.managed-service
 
  - name: uaa_ecpSales
+   type: org.cloudfoundry.managed-service
    parameters:
-      path: ./xs-security.json
       service: xsuaa
       service-plan: application
-   type: org.cloudfoundry.managed-service
+      path: ./xs-security.json
 
  - name: ECP_SALES_APIM_CUPS
    type: org.cloudfoundry.existing-service

@@ -881,11 +881,11 @@ sap.ui.define([
 			// 			console.log(oRegDate);
 			this.DifferTime = (oSaleDateTime - oRegDate);
 
-			if (this.DifferTime <= 94670778000 && oOdoVal <= 50000) {
-				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
-			} else if (this.DifferTime > 94670778000 || oOdoVal > 50000) {
-				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
-			}
+			// if (this.DifferTime <= 94670778000 && oOdoVal <= 50000) {
+			// 	this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+			// } else if (this.DifferTime > 94670778000 || oOdoVal > 50000) {
+			// 	this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
+			// }
 
 			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
@@ -1048,6 +1048,11 @@ sap.ui.define([
 			//	console.log(this.DifferTime);
 			var oidPlanCode = oidPlanCodeId.getSelectedItem();
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+				if(oSelectedPlan == "CTC40" || oSelectedPlan == "CTC46"){
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
+				}
+				
 				if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal && this.DifferTime <= this.PlanTime) {
 
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
@@ -1113,6 +1118,7 @@ sap.ui.define([
 			var MaxDays = parseInt(this.mxMonth) * 30 * 1000 * 60 * 60 * 24;
 
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", true);
 				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.mxMillage) && oMonthDef <= MaxDays) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
