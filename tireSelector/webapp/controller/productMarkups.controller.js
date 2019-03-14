@@ -13,7 +13,6 @@ sap.ui.define([
 		onInit: function () {
 			_localScope = this;
 			// _localScope.userloginCount = 1;
-			
 
 			_localScope.getRouter().attachRouteMatched(function (oEvent) {
 				_localScope._oViewModel = new sap.ui.model.json.JSONModel({
@@ -36,7 +35,7 @@ sap.ui.define([
 				// console.log("scopes", scopes);
 				// var accessAll = false,
 				// 	accesslimited = false;
-				
+
 				// for (var s = 0; s < scopes.length; s++) {
 				// 	if (scopes[s] != "openid") {
 				// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
@@ -86,7 +85,7 @@ sap.ui.define([
 									"Live_Markup_Percentage": "0.00",
 									"Live_Last_Updated": _localScope.oDateFormat.format(new Date()),
 									"Live_Last_Updated_update": "",
-									"Live_Last_Updated_By":_localScope.userData.DealerData.BusinessPartnerName, // DEFECT ID: 9157 Point 4
+									"Live_Last_Updated_By": _localScope.userData.DealerData.BusinessPartnerName, // DEFECT ID: 9157 Point 4
 									"User_First_Name": _localScope.userData.DealerData.BusinessPartnerName,
 									"User_Last_Name": _localScope.userData.DealerData.BusinessPartnerName2,
 									"tooltipText": _localScope.oI18nModel.getResourceBundle().getText("tooltip")
