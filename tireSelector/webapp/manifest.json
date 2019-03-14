@@ -15,7 +15,7 @@
 		},
 		"dataSources": {
 			"tireSelector_SRV.xsodata": {
-				"uri": "/tireSelector-dest/xsodata/tireSelector_SRV.xsodata/",
+				"uri": "/xsodata/tireSelector_SRV.xsodata/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
