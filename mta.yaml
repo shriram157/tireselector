@@ -44,25 +44,25 @@ modules:
       group: destinations
       properties:
          name: ecpsales-node-backend
+         url: ~{url}
          forwardAuthToken: true
          timeout: 60000
-         url: '~{url}'
 
 resources:
  - name: application-logs_ecpSales
+   type: org.cloudfoundry.managed-service
    parameters:
       service: application-logs
       service-plan: lite
-   type: org.cloudfoundry.managed-service
 
  - name: uaa_ecpSales
+   type: org.cloudfoundry.managed-service
    parameters:
-      path: ./xs-security.json
       service: xsuaa
       service-plan: application
-   type: org.cloudfoundry.managed-service
+      path: ./xs-security.json
 
  - name: ECP_SALES_APIM_CUPS
+   type: org.cloudfoundry.existing-service
    parameters:
       service-name: ECP_SALES_APIM_CUPS
-   type: org.cloudfoundry.existing-service

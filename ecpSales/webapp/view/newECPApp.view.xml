@@ -4,12 +4,12 @@
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
 	<uxap:ObjectPageLayout id="ObjectPageLayout" class="ClNewECP" enableLazyLoading="true">
 		<uxap:sections>
-			<uxap:ObjectPageSection title="New ECP Application">
+			<uxap:ObjectPageSection id="testSection" title="New ECP Application">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title=" ">
 						<uxap:blocks>
 							<MessageStrip id="idNewECPMsgStrip" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
-							<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding sapUiLargeMarginBottom">
+							<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding sapUiLargeMarginBottom" select = "onAppTabChange">
 								<items>
 									<IconTabFilter icon="sap-icon://car-rental" enabled="{oSetProperty>/oTab1visible}" text="{i18n>SpecifyVehicle}" key="Tab1" id="idFilter01">
 										<core:Fragment fragmentName="zecp.view.fragments.TabSpecifyVehicleForm" type="XML"/>

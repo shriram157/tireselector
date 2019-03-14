@@ -157,13 +157,13 @@
 						<Label text="{i18n>DealType}"/>
 						<Text text="{LocalDataModel>/PricingModelData/DEALTYPEDESC}"/>
 						<Label text="{i18n>VehiclePrice}"/>
-						<Input type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" value="{EcpFieldData>/ZecpVehPrice}" required="true"
+						<Input liveChange="onChangeAmt" type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" value="{EcpFieldData>/ZecpVehPrice}" required="true"
 							valueState="{LocalDataModel>/VehPriceState}"/>
 						<Label text="{i18n>AmtFinanced}"/>
 						<Input liveChange="onChangeAmt" required="{LocalDataModel>/AmtFinReq}" valueState="{LocalDataModel>/AmtFinState}" type="Number"
 							value="{EcpFieldData>/ZecpAmtFin}" editable="{LocalDataModel>/editableField}" />
 						<Label text="{i18n>LienholderName}"/>
-						<Input liveChange="onChangeAmt" required="{LocalDataModel>/ZecpLienHolderReq}" valueState="{LocalDataModel>/ZecpLienHolderState}"
+						<Input  required="{LocalDataModel>/ZecpLienHolderReq}" valueState="{LocalDataModel>/ZecpLienHolderState}"
 							value="{EcpFieldData>/ZecpLienholder}" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>LienTerms}"/>
 						<custom:CustomInput liveChange="onChangeAmt" required="{LocalDataModel>/ZecpTermsReq}" valueState="{LocalDataModel>/ZecpTermsState}"

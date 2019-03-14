@@ -63,7 +63,14 @@ sap.ui.define([
 			//var oTotalTime = saleTime.replace(/\s+/g, '');
 			return saleTime;
 		},
-
+		onAppTabChange:function(oEvent){
+			if(oEvent.oCustomEvtObj){
+				var selectedKeyTab = Event.key;
+			}
+			// var oSelectedTab = oEvent.getSource().getParameters("item");
+			// var selectedKeyTab = oEvent.getSource().getParameters("selectedKey");
+	
+		},
 		_oRouteNewECP: function (oEvent) {
 			// 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
 			// 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
@@ -74,6 +81,7 @@ sap.ui.define([
 			// this.oOdometer = oEvent.getParameters().arguments.Odometer;
 			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
 			this.getDealer();
+		
 			if (this.oAppId != 404 && this.oAppId != undefined) {
 				// this.getView().getModel("oSetProperty").setProperty("/oPlan", this.oPlan);
 				// this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.oOdometer);
@@ -478,8 +486,46 @@ sap.ui.define([
 			}
 			evt.getSource().getBinding("items").filter([]);
 		},
+		verifyVinDealer:function(vinID){
+				var oZECPModel = this.getModel("EcpSalesModel");
+			
+				oZECPModel.read("/zc_ecp_vehicle_detailSet", {
+							urlParameters: {
+								"$filter": "VIN eq '" + vinID + "'"
+							},
+							success: $.proxy(function (vedata) {
+								if((window.location.href.search("Division=10") > 0)){
+									if(vedata.results[0].MAKE.toUpperCase()==="TOYOTA"){
+										//	valid toyota dealer and VIN
+										// this.isValidVINDealer =  true;
+										this._deferVINDealer.resolve();
+									}else{
+										this._deferVINDealer.reject();
+									//	return false;
+										//not valid VIN for TOYATA dealer
+									}
+								}
+								if((window.location.href.search("Division=20") > 0)){
+									if(vedata.results[0].MAKE.toUpperCase()==="LEXUS"){
+										//	valid LEXUS dealer and VIN
+										this._deferVINDealer.resolve();;
+									}else{
+										this._deferVINDealer.reject();
+										//not valid VIN for LEXUS dealer
+									}
+								}
+							this._deferVINDealer.resolve();
 
+							}, this),
+							error: function () {
+								console.log("Error");
+							}
+						});
+			
+			
+		},
 		OnNextStep2: function () {
+			
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -487,6 +533,9 @@ sap.ui.define([
 			var oVal = oVin.getValue();
 
 			if (!($.isEmptyObject(oVal)) && oVal.length === 17) {
+				
+				
+				
 				var obj = {
 					VHVIN: oVal,
 					VGUID: "",
@@ -654,11 +703,24 @@ sap.ui.define([
 									this.oCustomer = data.results[0].EndCustomer;
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 
-									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
-									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-									//this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-									this.getView().byId("idNewECPMsgStrip").setType("None");
-									oVin.setValueState(sap.ui.core.ValueState.None);
+									this._deferVINDealer = jQuery.Deferred();
+									this.verifyVinDealer(oVal);
+									this._deferVINDealer.done($.proxy(function(oData) {
+										this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
+										this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+										//this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+										this.getView().byId("idNewECPMsgStrip").setType("None");
+										oVin.setValueState(sap.ui.core.ValueState.None);
+									}, this)).fail($.proxy(function(oData) {
+										this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+										this.getView().byId("idNewECPMsgStrip").setText("Mismatch between Dealer type and Vehical Make");
+										this.getView().byId("idNewECPMsgStrip").setType("Error");
+									}, this));
+									// this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
+									// this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+									// //this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+									// this.getView().byId("idNewECPMsgStrip").setType("None");
+									// oVin.setValueState(sap.ui.core.ValueState.None);
 								}
 							}, this)
 
@@ -1040,6 +1102,8 @@ sap.ui.define([
 			};
 		},
 		OnNextStep4: function (oEvent) {
+			
+			
 			var oPlanArray = ["NTC34", "NTC94", "NTC45", "NTC46", "NTC47", "NTF34", "NTF94", "NTF45", "NTF46", "NTF47", "CTC40", "CTC50"];
 
 			var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
@@ -1157,12 +1221,29 @@ sap.ui.define([
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
 				} 
+				
+				//In Case of used vechical benefit flag will always No
+				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag", "No");
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
 			}
 
 		},
 		onChangeAmt: function (oEvent) {
+			var  val = oEvent.getParameter('value');
+			var parsedVal = parseFloat(val);
+			if(parsedVal<0 ){
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
+				oEvent.getSource().setValueStateText("Must be non-negative value");
+				oEvent.getSource().setShowValueStateMessage(true);
+			}else{
+				//Handling -0 case
+				if(parseFloat(val) === 0){
+					 oEvent.getSource().setValue(0);
+				}
+				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);	
+				oEvent.getSource().setShowValueStateMessage(false);
+			}
 
 		},
 		onChangeOdometer: function (oEvent) {
@@ -1335,6 +1416,7 @@ sap.ui.define([
 				var oSelectedNum = ogetKey - 1;
 				this.getView().getModel("oSetProperty").setProperty("/oTab" + oSelectedNum + "visible", true);
 				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab" + oSelectedNum + "");
+				// this.getView().byId("idIconTabBarNoIcons").fireSelect({"key":"Tab" + oSelectedNum + "","oCustomEvtObj":"true"});
 
 			} else {
 				this.getModel("EcpSalesModel").refresh();
@@ -1342,6 +1424,9 @@ sap.ui.define([
 				this.getRouter().navTo("ApplicationList");
 
 			}
+			var oCurrSect = this.getView().getContent()[1];
+			var objPgSection = this.getView().byId("testSection");
+			oCurrSect.scrollToSection(objPgSection.getId());
 		},
 
 		OnBackSecondary: function () {
@@ -1733,7 +1818,8 @@ sap.ui.define([
 				"ZretailPrice": oECPData.ZretailPrice,
 				"ZamtFincd": oECPData.ZamtFincd,
 				"BccPlnLienHldr": oECPData.BccPlnLienHldr,
-				"ZecpLienterms": oECPData.ZecpLienterms
+				"ZecpLienterms": oECPData.ZecpLienterms,
+				"ZbenefitFlag": oECPData.ZbenefitFlag
 			};
 
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
