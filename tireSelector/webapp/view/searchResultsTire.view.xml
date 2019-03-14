@@ -59,7 +59,7 @@
 								<Toolbar>
 									<CheckBox text="Show Dealer Net" select="onCheckPress" id="checkDealerNet"/>
 									<CheckBox text="Use Preview Markup" select="onCheckPreview" id="checkPreview"/>
-									<Button text="Open View Settings Dialog in Filter view" press="handleOpenDialogFilter"/>
+									<!--<Button text="Open View Settings Dialog in Filter view" press="handleOpenDialogFilter"/>-->
 								</Toolbar>
 							</t:toolbar>
 							<t:columns>
