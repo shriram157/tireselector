@@ -245,6 +245,7 @@ sap.ui.define([
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 					newDataFromModel.IsLive = "Y";
+					oModel.refreshSecurityToken();
 					oModel.create("/DealerMarkUp", newDataFromModel, null, {
 						success: function (oData, oResponse) {
 							postSuccessFlag = true;
@@ -332,6 +333,7 @@ sap.ui.define([
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 					newDataFromModel.IsLive = "";
+					oModel.refreshSecurityToken();
 					oModel.create("/DealerMarkUp", newDataFromModel, null, {
 						success: function (oData, oResponse) {
 							postSuccessFlag = true;
