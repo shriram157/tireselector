@@ -8,6 +8,8 @@ sap.ui.define([
 	'sap/ui/model/Filter'
 ], function (Controller, JSONModel, ResourceModel, BaseController, History, Filter) {
 	"use strict";
+	
+	//https://tci-dev-tireselector.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata/$metadata?sap-language=EN
 
 	return BaseController.extend("tireSelector.controller.productMarkups", {
 		onInit: function () {
