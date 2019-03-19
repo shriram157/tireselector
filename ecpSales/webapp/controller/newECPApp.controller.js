@@ -1913,6 +1913,27 @@ sap.ui.define([
 				this.showSubmitValidationError();
 				return;
 			}
+			var oEcpFieldM = that.getView().getModel("EcpFieldData").getData();
+			// Fixing defect #8516
+			var oZECPModel = this.getModel("EcpSalesModel");
+				oZECPModel.read("/zc_ecp_vehicle_detailSet", {
+					urlParameters: {
+						"$filter": "VIN eq '" + oEcpFieldM.ZecpVin + "'"
+					},
+					success: $.proxy(function (vedata) {
+						if(vedata.results[0].MAKE.toUpperCase()==="LEXUS"){
+							this.getModel("LocalDataModel").setProperty("/printBtnState", false);
+							}else{
+								this.getModel("LocalDataModel").setProperty("/printBtnState", true);
+							}
+					}, this),
+					error: function () {
+						console.log("Error");
+					}
+				});
+			
+			
+			
 
 			var that = this;
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
