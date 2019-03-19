@@ -713,7 +713,7 @@ sap.ui.define([
 										oVin.setValueState(sap.ui.core.ValueState.None);
 									}, this)).fail($.proxy(function(oData) {
 										this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-										this.getView().byId("idNewECPMsgStrip").setText("Mismatch between Dealer type and Vehical Make");
+										this.getView().byId("idNewECPMsgStrip").setText("Mismatch between Dealer type and Vehicle Make");
 										this.getView().byId("idNewECPMsgStrip").setType("Error");
 									}, this));
 									// this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
