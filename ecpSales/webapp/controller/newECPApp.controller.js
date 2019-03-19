@@ -1998,6 +1998,7 @@ sap.ui.define([
 				this.showSubmitValidationError();
 				return;
 			}
+			// Fixing defect #8693
 			if(!this.validateLineFields()){
 				return;
 			}
