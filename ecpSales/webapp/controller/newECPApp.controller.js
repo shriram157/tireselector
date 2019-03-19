@@ -1537,7 +1537,7 @@ sap.ui.define([
 				ZecpListpurprice: this.oECPData.ZecpListpurprice,
 				ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt,
 				ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
-				ZecpBenefitsFlg: this.getView().getModel("EcpFieldData").getProperty("/ZbenefitFlag"),
+				ZecpBenefitsFlg: this.oECPData.ZecpBenefitsFlg,
 				BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
 				ZecpSource: "ECP",
 				ZecpDatecreated: this._fnDateFormat02(currentDate),
@@ -1627,7 +1627,7 @@ sap.ui.define([
 				BccLstUpdTmstmp: "",
 				ZamtFincd: "0.00",
 				ZretailPrice: "0.00",
-				ZbenefitFlag: "",
+				ZbenefitFlag: this.oECPData.ZecpBenefitsFlg,
 				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice
 			};
 
@@ -1819,7 +1819,7 @@ sap.ui.define([
 				"ZamtFincd": oECPData.ZamtFincd,
 				"BccPlnLienHldr": oECPData.BccPlnLienHldr,
 				"ZecpLienterms": oECPData.ZecpLienterms,
-				"ZbenefitFlag": this.getView().getModel("EcpFieldData").getProperty("/ZbenefitFlag")
+				"ZbenefitFlag": oECPData.ZbenefitFlag
 			};
 
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
@@ -1905,6 +1905,91 @@ sap.ui.define([
 			});
 			dialog.open();
 		},
+		validateLineFields:function(){
+			var oEcpFieldM = this.getView().getModel("EcpFieldData").getData();
+			var localModel = this.getView().getModel("LocalDataModel");
+			var finAmt =oEcpFieldM.ZecpAmtFin; 
+			// EcpFieldData>/ZecpAmtFin,
+			// LocalDataModel>/AmtFinState,LocalDataModel>/AmtFinReq;
+			var lienholderName=oEcpFieldM.ZecpLienholder;
+			// LocalDataModel>/ZecpLienHolderState,
+			// LocalDataModel>/ZecpLienHolderReq
+			var lienTerms = oEcpFieldM.ZecpLienterms;
+			// LocalDataModel>/ZecpTermsReq,
+			// LocalDataModel>/ZecpTermsState
+			if(!($.isEmptyObject(finAmt)) || !($.isEmptyObject(lienholderName)) || !($.isEmptyObject(lienTerms))){
+				if($.isEmptyObject(finAmt)|| $.isEmptyObject(lienholderName) || $.isEmptyObject(lienTerms)){
+					if($.isEmptyObject(finAmt)){
+						//	setError State
+						// localModel.AmtFinState ="Error";
+						// localModel.AmtFinReq =true;
+						this.getModel("LocalDataModel").setProperty("/AmtFinReq", true);
+						this.getModel("LocalDataModel").setProperty("/AmtFinState", "Error");
+						
+					}else{
+						// localModel.AmtFinState ="None"      ;
+						// localModel.AmtFinReq =true;
+						this.getModel("LocalDataModel").setProperty("/AmtFinReq", true);
+						this.getModel("LocalDataModel").setProperty("/AmtFinState", "None");
+					}
+					
+					if($.isEmptyObject(lienholderName)){
+						//	setError State
+						// localModel.ZecpLienHolderState ="Error";
+						// localModel.ZecpLienHolderReq =true;
+						this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", true);
+						this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "Error");
+					}else{
+						// localModel.ZecpLienHolderState ="None"      ;
+						// localModel.ZecpLienHolderReq =true;
+						this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", true);
+						this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
+					}
+					if($.isEmptyObject(lienTerms)){
+						//	setError State
+						// localModel.ZecpTermsState ="Error";
+						// localModel.ZecpTermsReq =true;
+						this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", true);
+						this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "Error");
+					}else{
+						// localModel.ZecpTermsState ="None"      ;
+						// localModel.ZecpTermsReq =true;
+						this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", true);
+						this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+					}
+				}else{
+					// localModel.ZecpTermsState ="None"      ;
+					// localModel.ZecpTermsReq =true;
+					// localModel.ZecpLienHolderState ="None"      ;
+					// localModel.ZecpLienHolderReq =true;
+					// localModel.ZecpTermsState ="None"      ;
+					// localModel.ZecpTermsReq =true;
+					
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", true);
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+					this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", true);
+					this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", true);
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+					return true;
+				}
+				return false;
+			}else{
+					// localModel.ZecpTermsState ="None"      ;
+					// localModel.ZecpTermsReq =false;
+					// localModel.ZecpLienHolderState ="None"      ;
+					// localModel.ZecpLienHolderReq =false;
+					// localModel.ZecpLienHolderState ="None"      ;
+					// localModel.ZecpLienHolderReq =false;
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+					this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", false);
+					this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
+					this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+					return true;
+			}
+		},
 		onSubmitApp: function () {
 			//this._Step04MandatoryFn();
 
@@ -1913,8 +1998,11 @@ sap.ui.define([
 				this.showSubmitValidationError();
 				return;
 			}
-			var oEcpFieldM = that.getView().getModel("EcpFieldData").getData();
+			if(!this.validateLineFields()){
+				return;
+			}
 			// Fixing defect #8516
+			var oEcpFieldM = this.getView().getModel("EcpFieldData").getData();
 			var oZECPModel = this.getModel("EcpSalesModel");
 				oZECPModel.read("/zc_ecp_vehicle_detailSet", {
 					urlParameters: {
