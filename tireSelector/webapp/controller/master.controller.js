@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
 	var sDivision, DivUser, _that, count = 0,
-		sTerm;
+		sTerm, sSelectedLocale;
 	return BaseController.extend("tireSelector.controller.master", {
 		/* Function for Initialization of model and variables for view */
 
@@ -66,6 +66,33 @@ sap.ui.define([
 
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
 
+			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			_that.getView().setModel(_that.oI18nModel, "i18n");
+			
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "EN"; // default is english 
+			}
+			if (sSelectedLocale == "fr") {
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(_that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(_that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
+			
 			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 			if (isDivisionSent) {
 				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
@@ -251,26 +278,21 @@ sap.ui.define([
 			// _that.oGlobalJSONModel.setData();
 			_that.oGlobalJSONModel.updateBindings();
 
-			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				bundleUrl: "i18n/i18n.properties"
-			});
-			_that.getView().setModel(_that.oI18nModel, "i18n");
-
-			if (window.location.search == "?language=fr") {
-				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("fr")
-				});
-				_that.getView().setModel(_that.oI18nModel, "i18n");
-				_that.sCurrentLocale = 'FR';
-			} else {
-				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("en")
-				});
-				_that.getView().setModel(_that.oI18nModel, "i18n");
-				_that.sCurrentLocale = 'EN';
-			}
+			// if (window.location.search == "?language=fr") {
+			// 	_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+			// 		bundleUrl: "i18n/i18n.properties",
+			// 		bundleLocale: ("fr")
+			// 	});
+			// 	_that.getView().setModel(_that.oI18nModel, "i18n");
+			// 	_that.sCurrentLocale = 'FR';
+			// } else {
+			// 	_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+			// 		bundleUrl: "i18n/i18n.properties",
+			// 		bundleLocale: ("en")
+			// 	});
+			// 	_that.getView().setModel(_that.oI18nModel, "i18n");
+			// 	_that.sCurrentLocale = 'EN';
+			// }
 
 			_that.SearchOptionList = _that.getView().byId("searchOptionList");
 			_that.ForVehicleSearchOnly = _that.getView().byId("forVehicleSearchOnly");

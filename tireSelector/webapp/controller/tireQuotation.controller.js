@@ -2,10 +2,11 @@ sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
 	"sap/ui/core/routing/History",
-	'tireSelector/controller/BaseController'
-], function (Controller, JSONModel, History, BaseController) {
+	'tireSelector/controller/BaseController',
+	'sap/m/MessageToast',
+], function (Controller, JSONModel, History, BaseController, MessageToast) {
 	"use strict";
-	var _this, sSelectedLocale;
+	var _this, sSelectedLocale, sDivision;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -55,6 +56,23 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
 			// _this.getOwnerComponent().getRouter().attachRoutePatternMatched(_this._oQuoteRoute, _this);
 			sap.ui.core.UIComponent.getRouterFor(_this).attachRoutePatternMatched(_this._oQuoteRoute, _this);
+
+			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			if (isDivisionSent) {
+				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+				var currentImageSource;
+				if (sDivision == '10') // set the toyoto logo
+				{
+					// DivUser = "TOY";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+
+				} else { // set the lexus logo
+					// DivUser = "LEX";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/LexusNew.png");
+				}
+			}
 
 			_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -135,28 +153,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-					var scopes = _this.userData.userContext.scopes;
-						console.log("scopes", scopes);
-						var accessAll = false,
-							accesslimited = false;
+			// var scopes = _this.userData.userContext.scopes;
+			// 	console.log("scopes", scopes);
+			// 	var accessAll = false,
+			// 		accesslimited = false;
 
-						for (var s = 0; s < scopes.length; s++) {
-							if (scopes[s] != "openid") {
-								if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-									accessAll = true;
-								} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-									accesslimited = true;
-								} else {
-									accessAll = false;
-									accesslimited = false;
-								}
-							}
-						}
-						if (accessAll == true && accesslimited == true) {
-							_this._oViewModel.setProperty("/enableProdMarkup", true);
-						} else {
-							_this._oViewModel.setProperty("/enableProdMarkup", false);
-						}
+			// 	for (var s = 0; s < scopes.length; s++) {
+			// 		if (scopes[s] != "openid") {
+			// 			if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+			// 				accessAll = true;
+			// 			} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+			// 				accesslimited = true;
+			// 			} else {
+			// 				accessAll = false;
+			// 				accesslimited = false;
+			// 			}
+			// 		}
+			// 	}
+			// 	if (accessAll == true && accesslimited == true) {
+			// 		_this._oViewModel.setProperty("/enableProdMarkup", true);
+			// 	} else {
+			// 		_this._oViewModel.setProperty("/enableProdMarkup", false);
+			// 	}
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -194,6 +212,10 @@ sap.ui.define([
 				_this.rowData.Total = "";
 				_this.rowData.subTotal = "";
 				_this.rowData.Retails = _this.decimalFormatter(_this.rowData.Retails);
+				_this.rowData.CustName = "";
+				_this.rowData.CustAddress = "";
+				_this.rowData.CustPostalCode = "";
+				_this.rowData.CustPhone = "";
 
 				var oMat = _this.rowData.Material;
 				var oMaterial = oMat;
@@ -229,7 +251,7 @@ sap.ui.define([
 									_this.oTireQuotationModel.getData().FederalTax = Number(oPriceData.results[n].Amount);
 								} else if (CndType == "JRC3" || CndType == "JRC2") {
 									_this.oTireQuotationModel.getData().ProvincialTax = Number(oPriceData.results[n].Amount);
-								}else if (CndType == "ZPOF") { //Freight Cost
+								} else if (CndType == "ZPOF") { //Freight Cost
 									_this.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
 									// _this.oTireQuotationModel.getData().Crcy = oPriceData.results[n].Crcy;
 								}
@@ -587,23 +609,75 @@ sap.ui.define([
 		},
 
 		generatePDF: function (oEvent) {
-			var oTarget = this.getView(oEvent),
-				sTargetId = oEvent.getSource().data("targetId");
-			if (sTargetId) {
-				oTarget = oTarget.byId(sTargetId);
+			var ModelData = oEvent.getSource().getParent().getParent().getModel("TireQuotationModel").getData();
+			var ModelData2 = oEvent.getSource().getParent().getParent().getModel("TirePriceModel").getData();
+			var ModelData3 = oEvent.getSource().getParent().getParent().getModel("TireQuoteModel").getData();
+			if(this.userData.DealerData.Region !=undefined){
+				var Region = this.userData.DealerData.Region;
 			}
-
-			if (oTarget) {
-				var $domTarget = oTarget.$()[0],
-					sTargetContent = $domTarget.innerHTML,
-					sOriginalContent = document.body.innerHTML;
-
-				document.body.innerHTML = sTargetContent;
-				window.print();
-				document.body.innerHTML = sOriginalContent;
-			} else {
-				jQuery.sap.log.error("onPrint needs a valid target container [view|data:targetId=\"SID\"]");
+			else{
+				Region ="";
 			}
+			//,	DLR_ADD_L3 = '',
+
+			var Value = "zc_tirequoteSet(RHP_PLN_DESC ='" + this.getView().byId("id_RHP").getSelectedKey() + "', RHP_UNIT='" + this.getView().byId(
+					"id_RHPUnitPrice").getValue() +
+				"',	RHP_QTY='" + this.getView().byId("id_RHPsQty").getValue() + "',	RHP_PRICE='" + ModelData2.RHPPriceSum +
+				"',WAERS='CAD',	MTBL_PRICE='" + ModelData2.MnBPrice + "',WHEELS_DESC='" + this.getView().byId("wheelsText").getValue() +
+				"',WHEELS_UNIT='" + this.getView().byId("id_wheelsUnitPrice").getValue() + "',WHEELS_QTY='" + this.getView().byId("id_wheelsQty").getValue() +
+				"',WHEELS_PRICE='" + ModelData2.WheelsPrice + "',TPMS_DESC='" + this.getView().byId("tmpsTxt").getValue() + "',TPMS_UNIT='" + this
+				.getView().byId("id_TPMSUnitPrice").getValue() + "',TPMS_QTY='" + this.getView().byId("id_TPMSQty").getValue() +
+				"', TPMS_PRICE = '" + ModelData2.TPMSPrice + "',FIT_DESC = '" + this.getView().byId("fittingkitTxt").getValue() + "',FIT_UNIT = '" +
+				this.getView().byId("id_FittingKitUnitPrice").getValue() + "',	FIT_QTY = '" + this.getView().byId("id_FittingKitQty").getValue() +
+				"',	FIT_PRICE = '" + ModelData2.FittingKitPrice + "',OTH_ITMS_1 = '" + this.getView().byId("valItem1").getValue() +
+				"',	OTH_ITMS_1_PR = '" + ModelData2.otherItemPrice1 + "',OTH_ITMS_2 = '" + this.getView().byId("valItem2").getValue() +
+				"',	OTH_ITMS_2_PR = '" + ModelData2.otherItemPrice2 + "', OTH_ITMS_3 = '" + this.getView().byId("valItem3").getValue() +
+				"', OTH_ITMS_3_PR = '" + ModelData2.otherItemPrice3 + "', OTH_ITMS_4 = '" + this.getView().byId("valItem4").getValue() +
+				"', OTH_ITMS_4_PR = '" + ModelData2.otherItemPrice4 + "', SUB_TOTAL = '" + ModelData.subTotal + "', ENV_FEE_COST = '" + ModelData.EHFPRice +
+				"',	ENV_FEE = '" + ModelData.EHFPriceSum + "', GST = '" + ModelData.FederalTaxSum + "', PST = '" + ModelData.ProvincialTaxSum +
+				"', TOTAL = '" + ModelData.Total + "', TIRE_DESC = '" + ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory +
+				"',TIRE_SIZE_INFO = '" + ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed + "', UNIT = '" + ModelData.Retails +
+				"',	QUANTITY = '" + this.getView().byId("id_tireQty").getValue() + "', PRICE = '" + ModelData2.TiresPrice + "',	DLR_NAME = '" +
+				this.userData.DealerData.BusinessPartnerName + "',	DLR_ADD_L1 = '" + this.userData.DealerData.BusinessPartnerAddress +
+				"',DLR_ADD_L2 = '" + Region + "',DLR_TEL = '" + ModelData3.PhoneNumber +
+				"',VEHICLE_DES = '" + ModelData.VehicleSeriesDescp + "',VIN_NUM = '" + ModelData.VIN + "',QUOTE_DATE = '" + ModelData3.CurrentDate +
+				"',OFFER_EXP_DT = '" + ModelData3.expiryDate + "',CUST_NAME = '" + ModelData.CustName + "',CUST_ADD_L1 = '" + ModelData.CustAddress +
+				"',CUST_ADD_L2 = '', CUST_ADD_L3 = '" + ModelData.CustPostalCode + "', CUST_TEL = '" + ModelData.CustPhone + "',logo_info = '" +
+				sDivision + "')/$value";
+
+			console.log("Value", Value);
+
+			// var Value = "zc_tirequoteSet(DlrName='124',DlrAddL1='235',DlrAddL2='2345')/$value";
+			var url = this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/" + Value;
+			// url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '" + Lang +
+			// 			"' and PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
+
+			$.ajax({
+				dataType: "json",
+				url: url,
+				type: "GET",
+				success: function (pdfData) {
+					MessageToast.show("PDF has been generated successfully");
+				},
+				error: function (oError) {}
+			});
+			// var oTarget = this.getView(oEvent),
+			// 	sTargetId = oEvent.getSource().data("targetId");
+			// if (sTargetId) {
+			// 	oTarget = oTarget.byId(sTargetId);
+			// }
+
+			// if (oTarget) {
+			// 	var $domTarget = oTarget.$()[0],
+			// 		sTargetContent = $domTarget.innerHTML,
+			// 		sOriginalContent = document.body.innerHTML;
+
+			// 	document.body.innerHTML = sTargetContent;
+			// 	window.print();
+			// 	document.body.innerHTML = sOriginalContent;
+			// } else {
+			// 	jQuery.sap.log.error("onPrint needs a valid target container [view|data:targetId=\"SID\"]");
+			// }
 		},
 
 		changeUnitPrice: function (oUnitPrice) {
@@ -870,8 +944,8 @@ sap.ui.define([
 				_this.getRouter().navTo("reportError");
 			}
 		},
-		onAfterRendering: function (){
-			
+		onAfterRendering: function () {
+
 		},
 		onExit: function () {
 			_this.oTireQuotationModel.refresh(true);

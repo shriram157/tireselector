@@ -10,7 +10,7 @@ sap.ui.define([
 	'sap/m/MessageToast'
 ], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox,MessageToast) {
 	"use strict";
-	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale;
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision;
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
 			that = this;
@@ -54,6 +54,23 @@ sap.ui.define([
 				});
 				this.getView().setModel(that.oI18nModel, "i18n");
 				this.sCurrentLocale = 'EN';
+			}
+			
+			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			if (isDivisionSent) {
+				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+				var currentImageSource;
+				if (sDivision == '10') // set the toyoto logo
+				{
+					// DivUser = "TOY";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+
+				} else { // set the lexus logo
+					// DivUser = "LEX";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/LexusNew.png");
+				}
 			}
 
 			sap.ui.core.UIComponent.getRouterFor(that).attachRoutePatternMatched(that._oSelectTireRoute, that);
@@ -133,28 +150,28 @@ sap.ui.define([
 			});
 
 			//START: uncomment below for cloud testing
-						var scopes = that.userDetails.userContext.scopes;
-						console.log("scopes", scopes);
-						var accessAll = false,
-							accesslimited = false;
+						// var scopes = that.userDetails.userContext.scopes;
+						// console.log("scopes", scopes);
+						// var accessAll = false,
+						// 	accesslimited = false;
 
-						for (var s = 0; s < scopes.length; s++) {
-							if (scopes[s] != "openid") {
-								if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-									accessAll = true;
-								} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-									accesslimited = true;
-								} else {
-									accessAll = false;
-									accesslimited = false;
-								}
-							}
-						}
-						if (accessAll == true && accesslimited == true) {
-							that._oViewModel.setProperty("/enableProdMarkup", true);
-						} else {
-							that._oViewModel.setProperty("/enableProdMarkup", false);
-						}
+						// for (var s = 0; s < scopes.length; s++) {
+						// 	if (scopes[s] != "openid") {
+						// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						// 			accessAll = true;
+						// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						// 			accesslimited = true;
+						// 		} else {
+						// 			accessAll = false;
+						// 			accesslimited = false;
+						// 		}
+						// 	}
+						// }
+						// if (accessAll == true && accesslimited == true) {
+						// 	that._oViewModel.setProperty("/enableProdMarkup", true);
+						// } else {
+						// 	that._oViewModel.setProperty("/enableProdMarkup", false);
+						// }
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");

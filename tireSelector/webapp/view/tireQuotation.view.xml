@@ -60,16 +60,16 @@
 							<Input type="Text" value="{TireQuotationModel>/VIN}" id="ID_VINQuote"/>
 							
 							<Label text="{i18n>Name}" labelFor="nameMandat"/>
-							<Input type="Text" value="" id="nameMandat" required="false"/>
+							<Input type="Text" value="{TireQuotationModel>/CustName}" id="nameMandat" required="false"/>
 							
 							<Label text="{i18n>Address}" labelFor="addressMandat"/>
-							<Input type="Text" value="" id="addressMandat" required="false"/>
+							<Input type="Text" value="{TireQuotationModel>/CustAddress}" id="addressMandat" required="false"/>
 							
 							<Label text="{i18n>PostalCode}" labelFor="postalCodeMandat"/>
-							<Input type="Text" value="" id="postalCodeMandat" required="false"/>
+							<Input type="Text" value="{TireQuotationModel>/CustPostalCode}" id="postalCodeMandat" required="false"/>
 							
 							<Label text="{i18n>Phone}" labelFor="phoneMandat"/>
-							<Input type="Text" value="" id="phoneMandat" required="false"/>
+							<Input type="Text" value="{TireQuotationModel>/CustPhone}" id="phoneMandat" required="false"/>
 							<Label text="{i18n>CreditApp}"/>
 							
 							<Input type="Text" value="" liveChange="ChangeLabelMandatory"/>
