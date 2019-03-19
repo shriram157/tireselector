@@ -1537,7 +1537,7 @@ sap.ui.define([
 				ZecpListpurprice: this.oECPData.ZecpListpurprice,
 				ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt,
 				ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
-				ZecpBenefitsFlg: this.oECPData.ZecpBenefitsFlg,
+				ZecpBenefitsFlg: this.getView().getModel("EcpFieldData").getProperty("/ZbenefitFlag"),
 				BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
 				ZecpSource: "ECP",
 				ZecpDatecreated: this._fnDateFormat02(currentDate),
@@ -1627,7 +1627,7 @@ sap.ui.define([
 				BccLstUpdTmstmp: "",
 				ZamtFincd: "0.00",
 				ZretailPrice: "0.00",
-				ZbenefitFlag: this.oECPData.ZecpBenefitsFlg,
+				ZbenefitFlag: "",
 				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice
 			};
 
@@ -1819,7 +1819,7 @@ sap.ui.define([
 				"ZamtFincd": oECPData.ZamtFincd,
 				"BccPlnLienHldr": oECPData.BccPlnLienHldr,
 				"ZecpLienterms": oECPData.ZecpLienterms,
-				"ZbenefitFlag": oECPData.ZbenefitFlag
+				"ZbenefitFlag": this.getView().getModel("EcpFieldData").getProperty("/ZbenefitFlag")
 			};
 
 			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
