@@ -153,28 +153,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			// var scopes = _this.userData.userContext.scopes;
-			// 	console.log("scopes", scopes);
-			// 	var accessAll = false,
-			// 		accesslimited = false;
+			var scopes = _this.userData.userContext.scopes;
+				console.log("scopes", scopes);
+				var accessAll = false,
+					accesslimited = false;
 
-			// 	for (var s = 0; s < scopes.length; s++) {
-			// 		if (scopes[s] != "openid") {
-			// 			if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-			// 				accessAll = true;
-			// 			} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-			// 				accesslimited = true;
-			// 			} else {
-			// 				accessAll = false;
-			// 				accesslimited = false;
-			// 			}
-			// 		}
-			// 	}
-			// 	if (accessAll == true && accesslimited == true) {
-			// 		_this._oViewModel.setProperty("/enableProdMarkup", true);
-			// 	} else {
-			// 		_this._oViewModel.setProperty("/enableProdMarkup", false);
-			// 	}
+				for (var s = 0; s < scopes.length; s++) {
+					if (scopes[s] != "openid") {
+						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+							accessAll = true;
+						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+							accesslimited = true;
+						} else {
+							accessAll = false;
+							accesslimited = false;
+						}
+					}
+				}
+				if (accessAll == true && accesslimited == true) {
+					_this._oViewModel.setProperty("/enableProdMarkup", true);
+				} else {
+					_this._oViewModel.setProperty("/enableProdMarkup", false);
+				}
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -612,55 +612,143 @@ sap.ui.define([
 			var ModelData = oEvent.getSource().getParent().getParent().getModel("TireQuotationModel").getData();
 			var ModelData2 = oEvent.getSource().getParent().getParent().getModel("TirePriceModel").getData();
 			var ModelData3 = oEvent.getSource().getParent().getParent().getModel("TireQuoteModel").getData();
-			if(this.userData.DealerData.Region !=undefined){
+			if (this.userData.DealerData.Region != undefined) {
 				var Region = this.userData.DealerData.Region;
+			} else {
+				Region = "";
 			}
-			else{
-				Region ="";
-			}
-			//,	DLR_ADD_L3 = '',
 
-			var Value = "zc_tirequoteSet(RHP_PLN_DESC ='" + this.getView().byId("id_RHP").getSelectedKey() + "', RHP_UNIT='" + this.getView().byId(
-					"id_RHPUnitPrice").getValue() +
-				"',	RHP_QTY='" + this.getView().byId("id_RHPsQty").getValue() + "',	RHP_PRICE='" + ModelData2.RHPPriceSum +
-				"',WAERS='CAD',	MTBL_PRICE='" + ModelData2.MnBPrice + "',WHEELS_DESC='" + this.getView().byId("wheelsText").getValue() +
-				"',WHEELS_UNIT='" + this.getView().byId("id_wheelsUnitPrice").getValue() + "',WHEELS_QTY='" + this.getView().byId("id_wheelsQty").getValue() +
-				"',WHEELS_PRICE='" + ModelData2.WheelsPrice + "',TPMS_DESC='" + this.getView().byId("tmpsTxt").getValue() + "',TPMS_UNIT='" + this
-				.getView().byId("id_TPMSUnitPrice").getValue() + "',TPMS_QTY='" + this.getView().byId("id_TPMSQty").getValue() +
-				"', TPMS_PRICE = '" + ModelData2.TPMSPrice + "',FIT_DESC = '" + this.getView().byId("fittingkitTxt").getValue() + "',FIT_UNIT = '" +
-				this.getView().byId("id_FittingKitUnitPrice").getValue() + "',	FIT_QTY = '" + this.getView().byId("id_FittingKitQty").getValue() +
-				"',	FIT_PRICE = '" + ModelData2.FittingKitPrice + "',OTH_ITMS_1 = '" + this.getView().byId("valItem1").getValue() +
-				"',	OTH_ITMS_1_PR = '" + ModelData2.otherItemPrice1 + "',OTH_ITMS_2 = '" + this.getView().byId("valItem2").getValue() +
-				"',	OTH_ITMS_2_PR = '" + ModelData2.otherItemPrice2 + "', OTH_ITMS_3 = '" + this.getView().byId("valItem3").getValue() +
-				"', OTH_ITMS_3_PR = '" + ModelData2.otherItemPrice3 + "', OTH_ITMS_4 = '" + this.getView().byId("valItem4").getValue() +
-				"', OTH_ITMS_4_PR = '" + ModelData2.otherItemPrice4 + "', SUB_TOTAL = '" + ModelData.subTotal + "', ENV_FEE_COST = '" + ModelData.EHFPRice +
-				"',	ENV_FEE = '" + ModelData.EHFPriceSum + "', GST = '" + ModelData.FederalTaxSum + "', PST = '" + ModelData.ProvincialTaxSum +
-				"', TOTAL = '" + ModelData.Total + "', TIRE_DESC = '" + ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory +
-				"',TIRE_SIZE_INFO = '" + ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed + "', UNIT = '" + ModelData.Retails +
-				"',	QUANTITY = '" + this.getView().byId("id_tireQty").getValue() + "', PRICE = '" + ModelData2.TiresPrice + "',	DLR_NAME = '" +
-				this.userData.DealerData.BusinessPartnerName + "',	DLR_ADD_L1 = '" + this.userData.DealerData.BusinessPartnerAddress +
-				"',DLR_ADD_L2 = '" + Region + "',DLR_TEL = '" + ModelData3.PhoneNumber +
-				"',VEHICLE_DES = '" + ModelData.VehicleSeriesDescp + "',VIN_NUM = '" + ModelData.VIN + "',QUOTE_DATE = '" + ModelData3.CurrentDate +
-				"',OFFER_EXP_DT = '" + ModelData3.expiryDate + "',CUST_NAME = '" + ModelData.CustName + "',CUST_ADD_L1 = '" + ModelData.CustAddress +
-				"',CUST_ADD_L2 = '', CUST_ADD_L3 = '" + ModelData.CustPostalCode + "', CUST_TEL = '" + ModelData.CustPhone + "',logo_info = '" +
-				sDivision + "')/$value";
-
+			var Value = "zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
+				"',DlrAddL2='" + Region + "')/$value";
 			console.log("Value", Value);
-
-			// var Value = "zc_tirequoteSet(DlrName='124',DlrAddL1='235',DlrAddL2='2345')/$value";
 			var url = this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/" + Value;
 			// url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '" + Lang +
 			// 			"' and PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
 
-			$.ajax({
-				dataType: "json",
-				url: url,
-				type: "GET",
-				success: function (pdfData) {
-					MessageToast.show("PDF has been generated successfully");
-				},
-				error: function (oError) {}
-			});
+			var headers = {
+				'RhpPlnDesc': this.getView().byId("id_RHP").getSelectedKey(),
+				'RhpUnit': this.getView().byId("id_RHPUnitPrice").getValue(),
+				'RhpQty': this.getView().byId("id_RHPsQty").getValue(),
+				'RhpPrice': ModelData2.RHPPriceSum,
+				'Waers': 'CAD',
+				'MtblPrice': ModelData2.MnBPrice,
+				'WheelsDesc': this.getView().byId("wheelsText").getValue(),
+				'WheelsUnit': this.getView().byId("id_wheelsUnitPrice").getValue(),
+				'WheelsQty': this.getView().byId("id_wheelsQty").getValue(),
+				'WheelsPrice': ModelData2.WheelsPrice,
+				'TpmsDesc': this.getView().byId("tmpsTxt").getValue(),
+				'TpmsUnit': this.getView().byId("id_TPMSUnitPrice").getValue(),
+				'TpmsQty': this.getView().byId("id_TPMSQty").getValue(),
+				'TpmsPrice': ModelData2.TPMSPrice,
+				'FitDesc': this.getView().byId("fittingkitTxt").getValue(),
+				'FitUnit': this.getView().byId("id_FittingKitUnitPrice").getValue(),
+				'FitQty': this.getView().byId("id_FittingKitQty").getValue(),
+				'FitPrice': ModelData2.FittingKitPrice,
+				'OthItms1': this.getView().byId("valItem1").getValue(),
+				'OthItms1Pr': ModelData2.otherItemPrice1,
+				'OthItms2': this.getView().byId("valItem2").getValue(),
+				'OthItms2Pr': ModelData2.otherItemPrice2,
+				'OthItms3': this.getView().byId("valItem3").getValue(),
+				'OthItms3Pr': ModelData2.otherItemPrice3,
+				'OthItms4': this.getView().byId("valItem4").getValue(),
+				'OthItms4Pr': ModelData2.otherItemPrice4,
+				'SubTotal': ModelData.subTotal,
+				'EnvFeeCost': ModelData.EHFPRice,
+				'EnvFee': ModelData.EHFPriceSum,
+				'Gst': ModelData.FederalTaxSum,
+				'Pst': ModelData.ProvincialTaxSum,
+				'Total': ModelData.Total,
+				'TireDesc': ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
+				'TireSizeInfo': ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
+				'Unit': ModelData.Retails,
+				'Quantity': this.getView().byId("id_tireQty").getValue(),
+				'Price': ModelData2.TiresPrice,
+				// 'DlrName' : '" +this.userData.DealerData.BusinessPartnerName ,	
+				// 'DlrAddL1' : this.userData.DealerData.BusinessPartnerAddress ,
+				// 'DlrAddL2' : Region ,
+				'DlrTel': ModelData3.PhoneNumber,
+				'VehicleDes': ModelData.VehicleSeriesDescp,
+				'VinNum': ModelData.VIN,
+				'QuoteDate': ModelData3.CurrentDate,
+				'OfferExpDt': ModelData3.expiryDate,
+				'CustNameH': ModelData.CustName,
+				'CustAddL1H': ModelData.CustAddress,
+				// 'CustAddL2H ': '',
+				CustAddL3H: ModelData.CustPostalCode,
+				'CustTelH': ModelData.CustPhone,
+				'logo_info': sDivision,
+				'Accept': "application/atom+xml;charset=UTF-8",
+				'Content-Type': "application/atom+xml",
+				'X-Requested-With': "XMLHttpRequest"
+			};
+
+			// this.oPDFModel = _this.getOwnerComponent().getModel("PriceServiceModel");
+
+			this.oPDFModel = new sap.ui.model.odata.v2.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
+			this.oPDFModel.setUseBatch(false);
+			this.oPDFModel.setHeaders(headers);
+			// var w = this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData
+			// 	.DealerData.BusinessPartnerAddress +
+			// 	"',DlrAddL2='" + Region + "')/$value"
+			// );
+			// this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
+			// 	.BusinessPartnerAddress +
+			// 	"',DlrAddL2='" + Region + "')/$value", null, {
+			// 		success: $.proxy(function (oData, oResponse) {
+			// 			// console.log(oResponse.requestUri);
+			// 			MessageToast.show("PDF has been generated successfully");
+			// 		}, this),
+			// 		error: function (oError) {}
+			// 	});
+
+			var w = window.open(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName +
+				"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
+				"',DlrAddL2='" + Region + "')/$value", '_blank');
+			if (w === null) {
+				MessageToast.show("PDF Error");
+			} else {
+				MessageToast.show("PDF has been generated successfully");
+			}
+
+			// console.log(w);
+			//  this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
+			// 	"',DlrAddL2='" + Region + "')/$value", null, {
+			// 	success: $.proxy(function (oData, oResponse) {
+			// 		// console.log(oResponse.requestUri);
+			// 		MessageToast.show("PDF has been generated successfully");
+			// 	}, this),
+			// 	error: function (oError) {
+			// 	}
+			// });
+			// var xhr = new XMLHttpRequest();
+			// xhr.open('GET', "/node/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName +
+			// 	"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
+			// 	"',DlrAddL2='" + Region + "')/$value", true);
+			// xhr.setRequestHeader = headers;
+			// xhr.responseType = 'blob';
+			// xhr.onload = function (e) {
+			// 	var oPdf_Blob = xhr.response; //That can be saved to db
+			// 	window.open(oPdf_Blob);
+			// };
+
+			// if (w === null) {
+			//             // console.log("Error");
+			//             MessageToast.show("PDF Error");
+			//         }
+			//         else{
+			//         	MessageToast.show("PDF has been generated successfully");
+			//         }
+
+			// $.ajax({
+			// 	dataType: "json",
+			// 	url: url,
+			// 	type: "GET",
+			// 	headers: headers,
+			// 	success: function (pdfData) {
+			// 		MessageToast.show("PDF has been generated successfully");
+			// 	},
+			// 	error: function (oError) {}
+			// });
 			// var oTarget = this.getView(oEvent),
 			// 	sTargetId = oEvent.getSource().data("targetId");
 			// if (sTargetId) {
