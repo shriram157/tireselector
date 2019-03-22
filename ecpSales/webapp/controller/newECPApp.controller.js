@@ -1029,7 +1029,7 @@ sap.ui.define([
 		},
 		onSelectPlanCode: function (oEvent) {
 
-			this.oPlanCode = oEvent.getSource().getValue();
+			this.oPlanCode = oEvent.getParameters().selectedItem.getText();
 			var oPlanKey = oEvent.getSource().getSelectedKey();
 			var km = oPlanKey.split("/")[0];
 			var mnth = oPlanKey.split("/")[1];
