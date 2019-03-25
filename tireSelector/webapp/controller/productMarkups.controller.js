@@ -200,9 +200,11 @@ sap.ui.define([
 					dataFromModel.Preview_Markup_Percentage = "0.00";
 					if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
 						//dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+						dataFromModel.Live_Last_Updated = new Date();
 						dataFromModel.IsLive = "Y";
 					} else {
 						//dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+						dataFromModel.Live_Last_Updated = new Date();
 						dataFromModel.IsLive = "";
 						if (dataFromModel.Live_Markup_Percentage == "0.00") {
 							dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
