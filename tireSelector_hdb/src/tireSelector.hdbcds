@@ -18,16 +18,16 @@ context tireSelector {
             Live_Markup_Percentage        : Decimal(4, 2);
 
             @Comment : 'This is the date the product markup was set to "Live"'
-            Live_Last_Updated    : LocalDate;
+            Live_Last_Updated    : UTCTimestamp;
 
             @Comment : 'This is the LDAP User ID of the person that set the product markup was set to "Live" (not displayed on the UI)'
-            Live_Last_Updated_By : String(10);
+            Live_Last_Updated_By : String(100);
 
             @Comment : 'This is the First Name of the person that set the product markup was set to "Live"'
-            User_First_Name      : String(40);
+            User_First_Name      : String(100);
 
             @Comment : 'This is the Last Name of the person that set the product markup was set to "Live"'
-            User_Last_Name       : String(40);
+            User_Last_Name       : String(100);
 
             @Comment : 'IS Live'
             IsLive               : String(1);            
