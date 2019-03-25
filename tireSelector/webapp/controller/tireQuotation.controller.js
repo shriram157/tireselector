@@ -153,28 +153,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			var scopes = _this.userData.userContext.scopes;
-				console.log("scopes", scopes);
-				var accessAll = false,
-					accesslimited = false;
+			// var scopes = _this.userData.userContext.scopes;
+			// console.log("scopes", scopes);
+			// var accessAll = false,
+			// 	accesslimited = false;
 
-				for (var s = 0; s < scopes.length; s++) {
-					if (scopes[s] != "openid") {
-						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-							accessAll = true;
-						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-							accesslimited = true;
-						} else {
-							accessAll = false;
-							accesslimited = false;
-						}
-					}
-				}
-				if (accessAll == true && accesslimited == true) {
-					_this._oViewModel.setProperty("/enableProdMarkup", true);
-				} else {
-					_this._oViewModel.setProperty("/enableProdMarkup", false);
-				}
+			// for (var s = 0; s < scopes.length; s++) {
+			// 	if (scopes[s] != "openid") {
+			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+			// 			accessAll = true;
+			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+			// 			accesslimited = true;
+			// 		} else {
+			// 			accessAll = false;
+			// 			accesslimited = false;
+			// 		}
+			// 	}
+			// }
+			// if (accessAll == true && accesslimited == true) {
+			// 	_this._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	_this._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -618,11 +618,11 @@ sap.ui.define([
 				Region = "";
 			}
 
-			var Value = "zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
-				"',DlrAddL2='" + Region + "')/$value";
-			console.log("Value", Value);
-			var url = this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/" + Value;
-			
+			// var Value = "zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
+			// 	"',DlrAddL2='" + this.userData.DealerData.Region + "')/$value";
+			// console.log("Value", Value);
+			// var url = this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/" + Value;
+
 			var headers = {
 				'RhpPlnDesc': this.getView().byId("id_RHP").getSelectedKey(),
 				'RhpUnit': this.getView().byId("id_RHPUnitPrice").getValue(),
@@ -672,7 +672,7 @@ sap.ui.define([
 				'CustNameH': ModelData.CustName,
 				'CustAddL1H': ModelData.CustAddress,
 				// 'CustAddL2H ': '',
-				CustAddL3H: ModelData.CustPostalCode,
+				"CustAddL3H": ModelData.CustPostalCode,
 				'CustTelH': ModelData.CustPhone,
 				'logo_info': sDivision,
 				'Accept': "application/atom+xml;charset=UTF-8",
@@ -689,24 +689,77 @@ sap.ui.define([
 			// 	.DealerData.BusinessPartnerAddress +
 			// 	"',DlrAddL2='" + Region + "')/$value"
 			// );
-			// this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
-			// 	.BusinessPartnerAddress +
-			// 	"',DlrAddL2='" + Region + "')/$value", null, {
-			// 		success: $.proxy(function (oData, oResponse) {
-			// 			// console.log(oResponse.requestUri);
-			// 			MessageToast.show("PDF has been generated successfully");
-			// 		}, this),
-			// 		error: function (oError) {}
-			// 	});
 
-			var w = window.open(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName +
-				"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
-				"',DlrAddL2='" + Region + "')/$value", '_blank');
-			if (w === null) {
-				MessageToast.show("PDF Error");
-			} else {
-				MessageToast.show("PDF has been generated successfully");
-			}
+			// html.setContent("<iframe src=" + 
+			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
+				.BusinessPartnerAddress +
+				"',DlrAddL2='" + Region + "')/$value", {
+					success: function (oData, oResponse) {
+						MessageToast.show("First Call success");
+					},
+					error: function (oError) {
+						var filename = "";
+						MessageToast.show("First Call error");
+						// var html = new sap.ui.core.HTML();
+						// html.setContent("<iframe src=" + oError.responseText + " width='700' height='700'></iframe>");
+						// window.open(oError.responseText);
+						var type = oError.headers["Content-Type"];
+						var blob = new Blob([oError.responseText], {
+							type: type
+						});
+						blob = new Blob([oError.responseText], {
+							type: type
+						});
+
+						if (typeof window.navigator.msSaveBlob !== "undefined") {
+							// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed.
+							window.navigator.msSaveBlob(blob, filename);
+						} else {
+							var URL = window.URL || window.webkitURL;
+							var downloadUrl = URL.createObjectURL(blob);
+							window.open(downloadUrl);
+
+							// if (filename) {
+							// 	// Use HTML5 a[download] attribute to specify filename.
+							// 	var a = document.createElement("a");
+							// 	// Safari doesn"t support this yet.
+							// 	if (typeof a.download === "undefined") {
+							// 		window.open(downloadUrl);
+							// 	} else {
+							// 		a.href = downloadUrl;
+							// 		a.download = filename;
+							// 		document.body.appendChild(a);
+							// 		a.click();
+							// 	}
+							// } else {
+							// 	window.open(downloadUrl);
+							// }
+						}
+					}
+				});
+			// + " width='700' height='700'></iframe>";);
+			// window.open(w, '_blank');
+			// var that = this;
+			// this.oPDFModel.attachRequestCompleted(function () {
+			// 	console.log("Completed");
+			// 	var w = window.open(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" + that.userData.DealerData.BusinessPartnerName +
+			// 		"',DlrAddL1='" + that.userData.DealerData.BusinessPartnerAddress +
+			// 		"',DlrAddL2='" + that.userData.DealerData.Region + "')/$value");
+			// 	if (w === null) {
+			// 		MessageToast.show("PDF Error");
+			// 	} else {
+			// 		MessageToast.show("PDF has been generated successfully");
+			// 	}
+			// });
+
+			// var w = window.open(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName +
+			// 	"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
+			// 	"',DlrAddL2='" + Region + "')/$value", '_blank');
+			// if (w === null) {
+			// 	MessageToast.show("PDF Error");
+			// } else {
+			// 	MessageToast.show("PDF has been generated successfully");
+			// }
 
 			// console.log(w);
 			//  this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
