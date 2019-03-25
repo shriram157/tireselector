@@ -1242,7 +1242,6 @@ sap.ui.define([
 					 oEvent.getSource().setValue(0);
 				}
 				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);	
-				oEvent.getSource().setShowValueStateMessage(false);
 			}
 
 		},
