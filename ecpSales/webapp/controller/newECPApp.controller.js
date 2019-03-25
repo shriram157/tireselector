@@ -1227,6 +1227,24 @@ sap.ui.define([
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
 			}
+			
+			//defect id 10908
+			if (this.oECPData.ZecpAgrType === this.oBundle.getText("EXTENSIONVEHICLEAGREEMENT")){
+				if (!($.isEmptyObject(oidPlanCode))){
+					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+					this.getView().byId("idNewECPMsgStrip").setType("None");
+					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
+					oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
+					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+					
+				}else if($.isEmptyObject(oidPlanCode)) {
+					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
+					this.getView().byId("idNewECPMsgStrip").setType("Error");
+					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+				}
+				
+			}
 
 		},
 		onChangeAmt: function (oEvent) {
