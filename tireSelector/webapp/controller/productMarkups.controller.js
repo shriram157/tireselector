@@ -211,9 +211,14 @@ sap.ui.define([
 						}
 					}
 					// dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
-					dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
-					dataFromModel.User_First_Name = modelData[i].User_First_Name;
-					dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
+					//dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
+					//dataFromModel.User_First_Name = modelData[i].User_First_Name;
+					//dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
+					
+					dataFromModel.Live_Last_Updated_By = _localScope.userData.DealerData.BusinessPartnerName;
+					dataFromModel.User_First_Name = _localScope.userData.DealerData.BusinessPartnerName;
+					dataFromModel.User_Last_Name = _localScope.userData.DealerData.BusinessPartnerName2;
+					
 					dataFromModel.IsLive = "Y";
 
 					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {

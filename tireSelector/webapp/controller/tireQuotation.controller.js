@@ -612,11 +612,11 @@ sap.ui.define([
 		},
 
 		getUnitPrice: function (oUnit) {
-			var oUnitPrice = parseInt(oUnit.getSource().getValue());
+			var oUnitPrice = oUnit.getSource().getValue();
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
 			if (oUnit.getSource().getId().split("_")[3] == "tireUnitPrice") {
-				_this.oTireQuotationModel.getData().Retails = _this.decimalFormatter(oUnitPrice);
+				_this.oTireQuotationModel.getData().Retails = parseFloat(oUnitPrice).toFixed(2);
 				if (_this.getView().byId("id_tireQty").getValue() != "") {
 					data.TiresPrice = _this.decimalFormatter(Number(oUnitPrice) * Number(_this.getView().byId("id_tireQty").getValue()));
 				}
