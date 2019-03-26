@@ -93,9 +93,6 @@
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
-					"serviceUrlParams": {
-            			"sap-client": "200"
-        			},
 					"json": true,
 					"useBatch": false
 				},	
@@ -110,9 +107,6 @@
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
-					"serviceUrlParams": {
-            			"sap-client": "200"
-        			},
 					"json": true,
 					"useBatch": false
 				},
@@ -127,9 +121,6 @@
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
-					"serviceUrlParams": {
-            			"sap-client": "200"
-        			},
 					"json": true,
 					"useBatch": false
 				},
