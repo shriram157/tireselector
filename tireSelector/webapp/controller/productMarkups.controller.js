@@ -1,4 +1,5 @@
 var _localScope;
+var ChngedMarkupValsArr = []; // array to maintain index for changed markup values in the table
 sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
@@ -8,9 +9,9 @@ sap.ui.define([
 	'sap/ui/model/Filter'
 ], function (Controller, JSONModel, ResourceModel, BaseController, History, Filter) {
 	"use strict";
-	
-	//https://tci-dev-tireselector.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata/$metadata?sap-language=EN
 
+	//https://tci-dev-tireselector.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata/$metadata?sap-language=EN
+	var sDivision, DivUser;
 	return BaseController.extend("tireSelector.controller.productMarkups", {
 		onInit: function () {
 			_localScope = this;
@@ -31,7 +32,22 @@ sap.ui.define([
 
 				_localScope.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 				_localScope.userData = sap.ui.getCore().getModel("DealerModel").getData();
+				var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+				if (isDivisionSent) {
+					sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+					var currentImageSource;
+					if (sDivision == '10') // set the toyoto logo
+					{
+						DivUser = "TOY";
+						currentImageSource = this.getView().byId("idLexusLogo");
+						currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
+					} else { // set the lexus logo
+						DivUser = "LEX";
+						currentImageSource = this.getView().byId("idLexusLogo");
+						currentImageSource.setProperty("src", "images/LexusNew.png");
+					}
+				}
 				/* Do not uncomment.*/
 				// var scopes = _localScope.userData.userContext.scopes;
 				// console.log("scopes", scopes);
@@ -174,6 +190,7 @@ sap.ui.define([
 				new Date();
 			console.log("updated date", _localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath())
 				.Live_Last_Updated_update);
+			ChngedMarkupValsArr[parseInt(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath().split('/')[2])] = true;
 			_localScope.oProdMarkupModel.updateBindings(true);
 			_localScope.oProdMarkupModel.refresh(true);
 		},
@@ -187,80 +204,82 @@ sap.ui.define([
 			var postSuccessFlag = false;
 			var updateSuccessFlag = false;
 			for (var i = 0; i < modelData.length; i++) { //modelData.length
-				var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
-					"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
-				var sContextPathInfo = "/DealerMarkUp(" + sPrikamryKeyofObject + ")";
+				if (ChngedMarkupValsArr[i]) {
+					var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
+						"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
+					var sContextPathInfo = "/DealerMarkUp(" + sPrikamryKeyofObject + ")";
 
-				var bindingContext = oModel.getContext(sContextPathInfo);
-				var bindingContextPath = bindingContext.getPath();
-				var dataFromModel = bindingContext.getModel().getProperty(bindingContextPath);
+					var bindingContext = oModel.getContext(sContextPathInfo);
+					var bindingContextPath = bindingContext.getPath();
+					var dataFromModel = bindingContext.getModel().getProperty(bindingContextPath);
 
-				if (dataFromModel) {
-					dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					dataFromModel.Preview_Markup_Percentage = "0.00";
-					if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
-						//dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
-						dataFromModel.Live_Last_Updated = new Date();
+					if (dataFromModel) {
+						dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+						dataFromModel.Preview_Markup_Percentage = "0.00";
+						if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
+							//dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+							dataFromModel.Live_Last_Updated = new Date();
+							dataFromModel.IsLive = "Y";
+						} else {
+							//dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+							dataFromModel.Live_Last_Updated = new Date();
+							dataFromModel.IsLive = "";
+							if (dataFromModel.Live_Markup_Percentage == "0.00") {
+								dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
+							}
+						}
+						// dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+						//dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
+						//dataFromModel.User_First_Name = modelData[i].User_First_Name;
+						//dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
+
+						dataFromModel.Live_Last_Updated_By = _localScope.userData.DealerData.BusinessPartnerName;
+						dataFromModel.User_First_Name = _localScope.userData.DealerData.BusinessPartnerName;
+						dataFromModel.User_Last_Name = _localScope.userData.DealerData.BusinessPartnerName2;
+
 						dataFromModel.IsLive = "Y";
-					} else {
-						//dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
-						dataFromModel.Live_Last_Updated = new Date();
-						dataFromModel.IsLive = "";
-						if (dataFromModel.Live_Markup_Percentage == "0.00") {
-							dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
-						}
-					}
-					// dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
-					//dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
-					//dataFromModel.User_First_Name = modelData[i].User_First_Name;
-					//dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
-					
-					dataFromModel.Live_Last_Updated_By = _localScope.userData.DealerData.BusinessPartnerName;
-					dataFromModel.User_First_Name = _localScope.userData.DealerData.BusinessPartnerName;
-					dataFromModel.User_Last_Name = _localScope.userData.DealerData.BusinessPartnerName2;
-					
-					dataFromModel.IsLive = "Y";
 
-					oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
-						console.log("Post Response", oResponse);
+						oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
+							console.log("Post Response", oResponse);
+							updateSuccessFlag = true;
+						});
 						updateSuccessFlag = true;
-					});
-					updateSuccessFlag = true;
-				} else {
-					var newDataFromModel = {};
-					newDataFromModel.Dealer_code = modelData[i].Dealer_code;
-					newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
-					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
-					if (modelData[i].Preview_Markup_Percentage != "0.00") {
-						newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-						newDataFromModel.Preview_Markup_Percentage = "0.00";
 					} else {
-						newDataFromModel.Live_Markup_Percentage = "0.00";
-						newDataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
-						newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
-					}
-
-					if (modelData[i].Live_Last_Updated_update !== "") {
-						//newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
-						newDataFromModel.IsLive = "Y";
-					} else {
-						//newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
-						newDataFromModel.IsLive = "";
-					}
-					// newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
-					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
-					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
-					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
-					newDataFromModel.IsLive = "Y";
-					oModel.create("/DealerMarkUp", newDataFromModel, null, {
-						success: function (oData, oResponse) {
-							postSuccessFlag = true;
-						},
-						error: function (oError) {
-							postSuccessFlag = false;
+						var newDataFromModel = {};
+						newDataFromModel.Dealer_code = modelData[i].Dealer_code;
+						newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
+						newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
+						if (modelData[i].Preview_Markup_Percentage != "0.00") {
+							newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+							newDataFromModel.Preview_Markup_Percentage = "0.00";
+						} else {
+							newDataFromModel.Live_Markup_Percentage = "0.00";
+							newDataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
+							newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 						}
-					});
-					postSuccessFlag = true;
+
+						if (modelData[i].Live_Last_Updated_update !== "") {
+							//newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
+							newDataFromModel.IsLive = "Y";
+						} else {
+							//newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
+							newDataFromModel.IsLive = "";
+						}
+						// newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
+						newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
+						newDataFromModel.User_First_Name = modelData[i].User_First_Name;
+						newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
+						newDataFromModel.IsLive = "Y";
+						oModel.create("/DealerMarkUp", newDataFromModel, null, {
+							success: function (oData, oResponse) {
+								postSuccessFlag = true;
+							},
+							error: function (oError) {
+								postSuccessFlag = false;
+							}
+						});
+						postSuccessFlag = true;
+					}
 				}
 			}
 
