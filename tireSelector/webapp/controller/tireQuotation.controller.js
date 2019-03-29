@@ -674,7 +674,7 @@ sap.ui.define([
 				'CustNameH': ModelData.CustName,
 				'CustAddL1H': ModelData.CustAddress,
 				// 'CustAddL2H ': '',
-				'CustAddL3H': ModelData.CustPostalCode,
+				'CustAddL3H00': ModelData.CustPostalCode,
 				'CustTelH': ModelData.CustPhone,
 				'logo_info': sDivision,
 				'Accept': "application/atom+xml;charset=UTF-8",
@@ -721,36 +721,63 @@ sap.ui.define([
 
 			// // this.oPDFModel = _this.getOwnerComponent().getModel("PriceServiceModel");
 			// var that = this;
-			this.oPDFModel = new sap.ui.model.odata.v2.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", {
-				headers: _headers
-			});
+			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			this.oPDFModel.setHeaders(_headers);
-			this.oPDFModel.mCustomHeaders= _headers;
-			this.oPDFModel.oHeaders =_headers ;
+			// this.oPDFModel.mCustomHeaders = _headers;
+			// this.oPDFModel.oHeaders = _headers;
 			this.oPDFModel.setUseBatch(false);
 			debugger;
 			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
 				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
 						console.log("oData", oData);
+						window.open(oResponse.requestUri);
+						// var view = btoa(unescape(encodeURIComponent(oResponse.body)));
+						// // var blob = new Blob([view]);
+						// // create the blob object with content-type "application/pdf"               
+						// var blob = new Blob([view], {
+						// 	type: "application/pdf"
+						// });
+						// var a = window.document.createElement("a");
+						// a.href = window.URL.createObjectURL(blob);
+						// a.download = "TireQuotation.pdf";
+						// document.body.appendChild(a);
+						// a.click();
+						// document.body.removeChild(a);
 					},
 					error: function (oError) {
 						var errResponse = oError.responseText;
-						console.log(errResponse.length);
+						console.log(errResponse);
+						// var view = btoa(unescape(encodeURIComponent(errResponse)));
+						// var blob = new Blob([view]);
+						// // create the blob object with content-type "application/pdf"               
+						// // var blob = new Blob([view], {
+						// // 	type: "application/pdf"
+						// // });
+						// var a = window.document.createElement("a");
+						// a.href = window.URL.createObjectURL(blob, {
+						// 	type: "application/pdf"
+						// });
+						// a.download = "TireQuotation.pdf";
+						// document.body.appendChild(a);
+						// a.click();
+						// document.body.removeChild(a);
+						// var errResponse = oError.responseText;
+						// console.log(errResponse.length);
 
-						var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(
-								errResponse) +
-							'"></embed>';
-						var view = btoa(unescape(encodeURIComponent(errResponse)));
-						var blob = new Blob([htmlText]);
-						var a = window.document.createElement("a");
-						a.href = window.URL.createObjectURL(blob, {
-							type: "application/pdf"
-						});
-						a.download = "TireQuotation.pdf";
-						document.body.appendChild(a);
-						a.click();
-						document.body.removeChild(a);
+						// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(
+						// 		errResponse) +
+						// 	'"></embed>';
+						// var view = btoa(unescape(encodeURIComponent(errResponse)));
+						// var blob = new Blob([htmlText]);
+						// var a = window.document.createElement("a");
+						// a.href = window.URL.createObjectURL(blob, {
+						// 	type: "application/pdf"
+						// });
+						// a.download = "TireQuotation.pdf";
+						// document.body.appendChild(a);
+						// a.click();
+						// document.body.removeChild(a);
 
 						// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(
 						// 	errResponse) + '"></embed>';
