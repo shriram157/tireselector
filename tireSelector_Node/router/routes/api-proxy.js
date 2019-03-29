@@ -38,8 +38,7 @@ module.exports = function (appContext) {
 		var tracer = req.loggingContext.getTracer(__filename);
 		var proxiedMethod = req.method;
 		var proxiedReqHeaders = {
-			"APIKey": APIKey,
-			"Content-Type": req.get("Content-Type")
+			"APIKey": APIKey
 		};
 		var proxiedUrl = apimUrl + req.url;
 
@@ -51,12 +50,24 @@ module.exports = function (appContext) {
 
 		proxiedReqHeaders.Authorization = "Basic " + new Buffer(s4User + ":" + s4Password).toString("base64");
 
+
 		// Pass through x-csrf-token from request to proxied request to S4/HANA
 		// This requires manual handling of CSRF tokens from the front-end
 		// Note: req.get() will get header in a case-insensitive manner 
 		var csrfTokenHeaderValue = req.get("X-Csrf-Token");
 		proxiedReqHeaders["X-Csrf-Token"] = csrfTokenHeaderValue;
 
+		// Add custom OData headers from original request
+		Object.keys(req.headers).forEach(key => {
+			if (key.startsWith("x-odata-custom-")) {
+				var actualKey = key.replace("x-odata-custom-", "");
+				if (!proxiedReqHeaders[actualKey]) {
+					proxiedReqHeaders[actualKey] = req.headers[key];
+				}
+			}
+		});
+
+		tracer.debug("Original request headers: %s", JSON.stringify(req.headers));
 		tracer.debug("Proxied Method: %s", proxiedMethod);
 		tracer.debug("Proxied request headers: %s", JSON.stringify(proxiedReqHeaders));
 		tracer.debug("Proxied URL: %s", proxiedUrl);
