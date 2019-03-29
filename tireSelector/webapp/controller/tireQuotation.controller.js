@@ -297,7 +297,7 @@ sap.ui.define([
 			$.ajax({
 				dataType: "json",
 				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '" + Lang +
-					"' and PRODH eq 'PARP10F22P101ECPRH'&?sap-client=200",
+					"' and PRODH eq 'PARP10F22P101ECPRH'",
 				type: "GET",
 				success: function (oDataResponse) {
 					if (oDataResponse.d.results.length > 0) {
