@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
 	var sDivision, DivUser, _that, count = 0,
-		sTerm, sSelectedLocale;
+		sTerm, sSelectedLocale,NationalUser;
 	return BaseController.extend("tireSelector.controller.master", {
 		/* Function for Initialization of model and variables for view */
 
@@ -70,7 +70,7 @@ sap.ui.define([
 				bundleUrl: "i18n/i18n.properties"
 			});
 			_that.getView().setModel(_that.oI18nModel, "i18n");
-			
+
 			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
 			if (isLocaleSent) {
 				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
@@ -92,7 +92,7 @@ sap.ui.define([
 				this.getView().setModel(_that.oI18nModel, "i18n");
 				this.sCurrentLocale = 'EN';
 			}
-			
+
 			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 			if (isDivisionSent) {
 				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
@@ -122,10 +122,10 @@ sap.ui.define([
 					//2400599999
 					if (_that.userData.userContext.userAttributes.DealerCode !== undefined) {
 						_that.dealerCode = _that.userData.userContext.userAttributes.DealerCode[0];
-					} else if(_that.userData.userContext.userAttributes.UserType[0] == "National"){
+					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+						NationalUser = "National";
 						_that.dealerCode = "2400599999";
-					}
-					else {
+					} else {
 						_that.dealerCode = "";
 					}
 					_that.dealerName = _that.userData.userContext.userInfo.logonName;
@@ -155,7 +155,13 @@ sap.ui.define([
 					// Stop: comment for local testing
 					_that.DealerData = {};
 					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
-					var queryString1 = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
+					var queryString1;
+					if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+						queryString1 = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
+					} else {
+						queryString1 = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
+					}
+
 					_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString1, {
 						success: $.proxy(function (oDealerData) {
 							// if (oDealerData.results.length > 0) {
@@ -172,8 +178,12 @@ sap.ui.define([
 								_that.DealerData.Region = address.Region;
 								_that._oDealerModel.getData().DealerData = _that.DealerData;
 								_that._oDealerModel.updateBindings(true);
-								var queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode +
-									"' &$expand=to_Customer";
+								var queryString;
+								if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+									queryString = "?$filter=BusinessPartner eq'" + _that.dealerCode +"' &$expand=to_Customer";
+								} else {
+									queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode +"' &$expand=to_Customer";
+								}
 								_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString, {
 									success: $.proxy(function (oDealerData) {
 										console.log("Business Partner Data", oDealerData.results);
@@ -700,13 +710,13 @@ sap.ui.define([
 					error: function (oError) {
 						_that.ModelNodataFlag = true;
 					},
-					complete:function(){
+					complete: function () {
 						_that.SearchOptionVehicle.setValue();
 						_that.ModelSeriesCombo.setValue();
 						_that.SearchOptionVehicle.setSelectedKey(null);
 						_that.ModelSeriesCombo.setSelectedKey(null);
 					}
-					
+
 				});
 
 				if (_that.ModelNodataFlag == true) {
