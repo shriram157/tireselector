@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
 	var sDivision, DivUser, _that, count = 0,
-		sTerm, sSelectedLocale,NationalUser;
+		sTerm, sSelectedLocale;
 	return BaseController.extend("tireSelector.controller.master", {
 		/* Function for Initialization of model and variables for view */
 
@@ -123,7 +123,7 @@ sap.ui.define([
 					if (_that.userData.userContext.userAttributes.DealerCode !== undefined) {
 						_that.dealerCode = _that.userData.userContext.userAttributes.DealerCode[0];
 					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
-						NationalUser = "National";
+						// NationalUser = "National";
 						_that.dealerCode = "2400599999";
 					} else {
 						_that.dealerCode = "";
