@@ -610,7 +610,7 @@ sap.ui.define([
 		},
 
 		generatePDF: function (oEvent) {
-			
+
 			var ModelData = oEvent.getSource().getParent().getParent().getModel("TireQuotationModel").getData();
 			var ModelData2 = oEvent.getSource().getParent().getParent().getModel("TirePriceModel").getData();
 			var ModelData3 = oEvent.getSource().getParent().getParent().getModel("TireQuoteModel").getData();
@@ -619,11 +619,6 @@ sap.ui.define([
 			} else {
 				Region = "";
 			}
-
-			// var Value = "zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +
-			// 	"',DlrAddL2='" + this.userData.DealerData.Region + "')/$value";
-			// console.log("Value", Value);
-			// var url = this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/" + Value;
 
 			var headers = {
 				'x-odata-custom-RhpPlnDesc': this.getView().byId("id_RHP").getSelectedKey(),
@@ -663,9 +658,6 @@ sap.ui.define([
 				'x-odata-custom-Unit': ModelData.Retails,
 				'x-odata-custom-Quantity': this.getView().byId("id_tireQty").getValue(),
 				'x-odata-custom-Price': ModelData2.TiresPrice,
-				// 'x-odata-custom-DlrName' : '" +this.userData.DealerData.BusinessPartnerName ,	
-				// 'x-odata-custom-DlrAddL1' : this.userData.DealerData.BusinessPartnerAddress ,
-				// 'x-odata-custom-DlrAddL2' : Region ,
 				'x-odata-custom-DlrTel': ModelData3.PhoneNumber,
 				'x-odata-custom-VehicleDes': ModelData.VehicleSeriesDescp,
 				'x-odata-custom-VinNum': ModelData.VIN,
@@ -673,7 +665,7 @@ sap.ui.define([
 				'x-odata-custom-OfferExpDt': ModelData3.expiryDate,
 				'x-odata-custom-CustNameH': ModelData.CustName,
 				'x-odata-custom-CustAddL1H': ModelData.CustAddress,
-				// 'x-odata-custom-CustAddL2H ': '',
+				'x-odata-custom-CustAddL2H ': '',
 				"x-odata-custom-CustAddL3H": ModelData.CustPostalCode,
 				'x-odata-custom-CustTelH': ModelData.CustPhone,
 				'x-odata-custom-logo_info': sDivision,
@@ -681,93 +673,52 @@ sap.ui.define([
 				'Content-Type': "application/atom+xml",
 				'X-Requested-With': "XMLHttpRequest"
 			};
-
-			// $.ajaxSetup({
-			// 	headers: {
-			// 		"CustomHeader": headers
-			// 	}
-			// });
-
-			// $.ajax({
-			// 	url: this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" +
-			// 		this.userData.DealerData.BusinessPartnerName +
-			// 		"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value",
-			// 	success: function (data, response) {
-			// 		var winlogicalname = "detailPDF";
-			// 		var winparams = 'dependent=yes,locationbar=no,scrollbars=yes,menubar=yes,' +
-			// 			'resizable,screenX=50,screenY=50,width=850,height=1050';
-
-			// 		var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(data) +
-			// 			'"></embed>';
-
-					// Open PDF in new browser window
-					// var detailWindow = window.open("", winlogicalname, winparams);
-					// detailWindow.document.write(htmlText);
-					// detailWindow.document.close();
-					// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf;base64,' + escape(
-					// 	data) + '"></embed>';
-					// // var view = btoa(unescape(encodeURIComponent(data)));
-					// // var blob = new Blob([view], {
-					// // 	type: "application/pdf"
-					// // });
-
-					// // var file = window.URL.createObjectURL(blob);
-
-					// that._pdfViewer = new PDFViewer();
-					// that.getView().addDependent(this._pdfViewer);
-					// that._pdfViewer.setSource(htmlText);
-					// that._pdfViewer.setTitle("Tire Quotation");
-					// that._pdfViewer.open();
-					// // var len = data.length;
-					// // var buffer = new ArrayBuffer(len);
-					// // var view = new Uint8Array(buffer);
-					// // for (var i = 0; i < len; i++) {
-					// // 	view[i] = data.charCodeAt(i);
-					// // }
-
-					// var view = btoa(unescape(encodeURIComponent(data)));
-					// var blob = new Blob([view]);
-					// // create the blob object with content-type "application/pdf"               
-					// // var blob = new Blob([view], {
-					// // 	type: "application/pdf"
-					// // });
-					// var a = window.document.createElement("a");
-					// a.href = window.URL.createObjectURL(blob, {
-					// 	type: "application/pdf"
-					// });
-					// a.download = "TireQuotation.pdf";
-					// document.body.appendChild(a);
-					// a.click();
-					// document.body.removeChild(a);
-			// 	}
-			// });
-
-			// // this.oPDFModel = _this.getOwnerComponent().getModel("PriceServiceModel");
+			$.each(headers, function (key, value) {
+				if (value === "" || value === null || value === undefined) {
+					delete headers[key];
+				}
+			});
+			
+			console.log("Headers", headers);
+			
 			var that = this;
-			this.oPDFModel = new sap.ui.model.odata.v2.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
-			this.oPDFModel.setUseBatch(false);
+			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			this.oPDFModel.setHeaders(headers);
-			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +"',DlrAddL2='" + Region + "')/$value", {
+			this.oPDFModel.setUseBatch(false);
+			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
+				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
-						MessageToast.show("First Call success");
-						var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oData) +
-							'"></embed>';
-						that._pdfViewer = new PDFViewer();
-						that.getView().addDependent(that._pdfViewer);
-						that._pdfViewer.setSource(htmlText);
-						that._pdfViewer.setTitle("Tire Quotation");
-						that._pdfViewer.open();
+						console.log("oData", oResponse);
+						window.open(oResponse.requestUri);
 					},
 					error: function (oError) {
-						var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oError.responseText) +
-							'"></embed>';
-						that._pdfViewer = new PDFViewer();
-						that.getView().addDependent(that._pdfViewer);
-						that._pdfViewer.setSource(htmlText);
-						that._pdfViewer.setTitle("Tire Quotation");
-						that._pdfViewer.open();
+						console.log("oError", oError);
 					}
 				});
+			// this.oPDFModel = new sap.ui.model.odata.v2.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
+			// this.oPDFModel.setUseBatch(false);
+			// this.oPDFModel.setHeaders(headers);
+			// this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +"',DlrAddL2='" + Region + "')/$value", {
+			// 		success: function (oData, oResponse) {
+			// 			MessageToast.show("First Call success");
+			// 			var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oData) +
+			// 				'"></embed>';
+			// 			that._pdfViewer = new PDFViewer();
+			// 			that.getView().addDependent(that._pdfViewer);
+			// 			that._pdfViewer.setSource(htmlText);
+			// 			that._pdfViewer.setTitle("Tire Quotation");
+			// 			that._pdfViewer.open();
+			// 		},
+			// 		error: function (oError) {
+			// 			var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oError.responseText) +
+			// 				'"></embed>';
+			// 			that._pdfViewer = new PDFViewer();
+			// 			that.getView().addDependent(that._pdfViewer);
+			// 			that._pdfViewer.setSource(htmlText);
+			// 			that._pdfViewer.setTitle("Tire Quotation");
+			// 			that._pdfViewer.open();
+			// 		}
+			// 	});
 		},
 
 		changeUnitPrice: function (oUnitPrice) {
