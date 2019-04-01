@@ -7,7 +7,7 @@ sap.ui.define([
 	"sap/m/PDFViewer",
 ], function (Controller, JSONModel, History, BaseController, MessageToast, PDFViewer) {
 	"use strict";
-	var _this, sSelectedLocale, sDivision;
+	var _this, sSelectedLocale,sDivision, DivUser;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -58,23 +58,6 @@ sap.ui.define([
 			// _this.getOwnerComponent().getRouter().attachRoutePatternMatched(_this._oQuoteRoute, _this);
 			sap.ui.core.UIComponent.getRouterFor(_this).attachRoutePatternMatched(_this._oQuoteRoute, _this);
 
-			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
-			if (isDivisionSent) {
-				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
-				var currentImageSource;
-				if (sDivision == '10') // set the toyoto logo
-				{
-					// DivUser = "TOY";
-					currentImageSource = this.getView().byId("idLexusLogo");
-					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
-
-				} else { // set the lexus logo
-					// DivUser = "LEX";
-					currentImageSource = this.getView().byId("idLexusLogo");
-					currentImageSource.setProperty("src", "images/LexusNew.png");
-				}
-			}
-
 			_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
@@ -101,7 +84,22 @@ sap.ui.define([
 				this.getView().setModel(_this.oI18nModel, "i18n");
 				this.sCurrentLocale = 'EN';
 			}
+			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			if (isDivisionSent) {
+				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+				var currentImageSource;
+				if (sDivision == '10') // set the toyoto logo
+				{
+					DivUser = "TOY";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
+				} else { // set the lexus logo
+					DivUser = "LEX";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/LexusNew.png");
+				}
+			}
 			// if (window.location.search == "?language=fr") {
 			// 	_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 			// 		bundleUrl: "i18n/i18n.properties",
