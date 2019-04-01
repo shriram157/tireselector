@@ -154,28 +154,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			// var scopes = _this.userData.userContext.scopes;
-			// console.log("scopes", scopes);
-			// var accessAll = false,
-			// 	accesslimited = false;
+			var scopes = _this.userData.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
 
-			// for (var s = 0; s < scopes.length; s++) {
-			// 	if (scopes[s] != "openid") {
-			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-			// 			accessAll = true;
-			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-			// 			accesslimited = true;
-			// 		} else {
-			// 			accessAll = false;
-			// 			accesslimited = false;
-			// 		}
-			// 	}
-			// }
-			// if (accessAll == true && accesslimited == true) {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", true);
-			// } else {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", false);
-			// }
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				_this._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				_this._oViewModel.setProperty("/enableProdMarkup", false);
+			}
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -610,7 +610,7 @@ sap.ui.define([
 		},
 
 		generatePDF: function (oEvent) {
-
+			
 			var ModelData = oEvent.getSource().getParent().getParent().getModel("TireQuotationModel").getData();
 			var ModelData2 = oEvent.getSource().getParent().getParent().getModel("TirePriceModel").getData();
 			var ModelData3 = oEvent.getSource().getParent().getParent().getModel("TireQuoteModel").getData();
@@ -625,66 +625,61 @@ sap.ui.define([
 			// console.log("Value", Value);
 			// var url = this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/" + Value;
 
-			var _headers = {
-				'RhpPlnDesc': this.getView().byId("id_RHP").getSelectedKey(),
-				'RhpUnit': this.getView().byId("id_RHPUnitPrice").getValue(),
-				'RhpQty': this.getView().byId("id_RHPsQty").getValue(),
-				'RhpPrice': ModelData2.RHPPriceSum,
-				'Waers': 'CAD',
-				'MtblPrice': ModelData2.MnBPrice,
-				'WheelsDesc': this.getView().byId("wheelsText").getValue(),
-				'WheelsUnit': this.getView().byId("id_wheelsUnitPrice").getValue(),
-				'WheelsQty': this.getView().byId("id_wheelsQty").getValue(),
-				'WheelsPrice': ModelData2.WheelsPrice,
-				'TpmsDesc': this.getView().byId("tmpsTxt").getValue(),
-				'TpmsUnit': this.getView().byId("id_TPMSUnitPrice").getValue(),
-				'TpmsQty': this.getView().byId("id_TPMSQty").getValue(),
-				'TpmsPrice': ModelData2.TPMSPrice,
-				'FitDesc': this.getView().byId("fittingkitTxt").getValue(),
-				'FitUnit': this.getView().byId("id_FittingKitUnitPrice").getValue(),
-				'FitQty': this.getView().byId("id_FittingKitQty").getValue(),
-				'FitPrice': ModelData2.FittingKitPrice,
-				'OthItms1': this.getView().byId("valItem1").getValue(),
-				'OthItms1Pr': ModelData2.otherItemPrice1,
-				'OthItms2': this.getView().byId("valItem2").getValue(),
-				'OthItms2Pr': ModelData2.otherItemPrice2,
-				'OthItms3': this.getView().byId("valItem3").getValue(),
-				'OthItms3Pr': ModelData2.otherItemPrice3,
-				'OthItms4': this.getView().byId("valItem4").getValue(),
-				'OthItms4Pr': ModelData2.otherItemPrice4,
-				'SubTotal': ModelData.subTotal,
-				'EnvFeeCost': ModelData.EHFPRice,
-				'EnvFee': ModelData.EHFPriceSum,
-				'Gst': ModelData.FederalTaxSum,
-				'Pst': ModelData.ProvincialTaxSum,
-				'Total': ModelData.Total,
-				'TireDesc': ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
-				'TireSizeInfo': ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
-				'Unit': ModelData.Retails,
-				'Quantity': this.getView().byId("id_tireQty").getValue(),
-				'Price': ModelData2.TiresPrice,
-				// 'DlrName' : '" +this.userData.DealerData.BusinessPartnerName ,	
-				// 'DlrAddL1' : this.userData.DealerData.BusinessPartnerAddress ,
-				// 'DlrAddL2' : Region ,
-				'DlrTel': ModelData3.PhoneNumber,
-				'VehicleDes': ModelData.VehicleSeriesDescp,
-				'VinNum': ModelData.VIN,
-				'QuoteDate': ModelData3.CurrentDate,
-				'OfferExpDt': ModelData3.expiryDate,
-				'CustNameH': ModelData.CustName,
-				'CustAddL1H': ModelData.CustAddress,
-				// 'CustAddL2H ': '',
-				'CustAddL3H00': ModelData.CustPostalCode,
-				'CustTelH': ModelData.CustPhone,
-				'logo_info': sDivision,
+			var headers = {
+				'x-odata-custom-RhpPlnDesc': this.getView().byId("id_RHP").getSelectedKey(),
+				'x-odata-custom-RhpUnit': this.getView().byId("id_RHPUnitPrice").getValue(),
+				'x-odata-custom-RhpQty': this.getView().byId("id_RHPsQty").getValue(),
+				'x-odata-custom-RhpPrice': ModelData2.RHPPriceSum,
+				'x-odata-custom-Waers': 'CAD',
+				'x-odata-custom-MtblPrice': ModelData2.MnBPrice,
+				'x-odata-custom-WheelsDesc': this.getView().byId("wheelsText").getValue(),
+				'x-odata-custom-WheelsUnit': this.getView().byId("id_wheelsUnitPrice").getValue(),
+				'x-odata-custom-WheelsQty': this.getView().byId("id_wheelsQty").getValue(),
+				'x-odata-custom-WheelsPrice': ModelData2.WheelsPrice,
+				'x-odata-custom-TpmsDesc': this.getView().byId("tmpsTxt").getValue(),
+				'x-odata-custom-TpmsUnit': this.getView().byId("id_TPMSUnitPrice").getValue(),
+				'x-odata-custom-TpmsQty': this.getView().byId("id_TPMSQty").getValue(),
+				'x-odata-custom-TpmsPrice': ModelData2.TPMSPrice,
+				'x-odata-custom-FitDesc': this.getView().byId("fittingkitTxt").getValue(),
+				'x-odata-custom-FitUnit': this.getView().byId("id_FittingKitUnitPrice").getValue(),
+				'x-odata-custom-FitQty': this.getView().byId("id_FittingKitQty").getValue(),
+				'x-odata-custom-FitPrice': ModelData2.FittingKitPrice,
+				'x-odata-custom-OthItms1': this.getView().byId("valItem1").getValue(),
+				'x-odata-custom-OthItms1Pr': ModelData2.otherItemPrice1,
+				'x-odata-custom-OthItms2': this.getView().byId("valItem2").getValue(),
+				'x-odata-custom-OthItms2Pr': ModelData2.otherItemPrice2,
+				'x-odata-custom-OthItms3': this.getView().byId("valItem3").getValue(),
+				'x-odata-custom-OthItms3Pr': ModelData2.otherItemPrice3,
+				'x-odata-custom-OthItms4': this.getView().byId("valItem4").getValue(),
+				'x-odata-custom-OthItms4Pr': ModelData2.otherItemPrice4,
+				'x-odata-custom-SubTotal': ModelData.subTotal,
+				'x-odata-custom-EnvFeeCost': ModelData.EHFPRice,
+				'x-odata-custom-EnvFee': ModelData.EHFPriceSum,
+				'x-odata-custom-Gst': ModelData.FederalTaxSum,
+				'x-odata-custom-Pst': ModelData.ProvincialTaxSum,
+				'x-odata-custom-Total': ModelData.Total,
+				'x-odata-custom-TireDesc': ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
+				'x-odata-custom-TireSizeInfo': ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
+				'x-odata-custom-Unit': ModelData.Retails,
+				'x-odata-custom-Quantity': this.getView().byId("id_tireQty").getValue(),
+				'x-odata-custom-Price': ModelData2.TiresPrice,
+				// 'x-odata-custom-DlrName' : '" +this.userData.DealerData.BusinessPartnerName ,	
+				// 'x-odata-custom-DlrAddL1' : this.userData.DealerData.BusinessPartnerAddress ,
+				// 'x-odata-custom-DlrAddL2' : Region ,
+				'x-odata-custom-DlrTel': ModelData3.PhoneNumber,
+				'x-odata-custom-VehicleDes': ModelData.VehicleSeriesDescp,
+				'x-odata-custom-VinNum': ModelData.VIN,
+				'x-odata-custom-QuoteDate': ModelData3.CurrentDate,
+				'x-odata-custom-OfferExpDt': ModelData3.expiryDate,
+				'x-odata-custom-CustNameH': ModelData.CustName,
+				'x-odata-custom-CustAddL1H': ModelData.CustAddress,
+				// 'x-odata-custom-CustAddL2H ': '',
+				"x-odata-custom-CustAddL3H": ModelData.CustPostalCode,
+				'x-odata-custom-CustTelH': ModelData.CustPhone,
+				'x-odata-custom-logo_info': sDivision,
 				'Accept': "application/atom+xml;charset=UTF-8",
 				'Content-Type': "application/atom+xml",
-				'X-Requested-With': "XMLHttpRequest",
-				'Accept': "application/json",
-				// 'Accept - Language': "en-US",
-				'DataServiceVersion': "2.0",
-				'MaxDataServiceVersion': "2.0",
-				// 'sap - contextid - accept': "header"
+				'X-Requested-With': "XMLHttpRequest"
 			};
 
 			// $.ajaxSetup({
@@ -692,101 +687,85 @@ sap.ui.define([
 			// 		"CustomHeader": headers
 			// 	}
 			// });
-			// var that = this;
 
 			// $.ajax({
 			// 	url: this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" +
 			// 		this.userData.DealerData.BusinessPartnerName +
 			// 		"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value",
 			// 	success: function (data, response) {
+			// 		var winlogicalname = "detailPDF";
+			// 		var winparams = 'dependent=yes,locationbar=no,scrollbars=yes,menubar=yes,' +
+			// 			'resizable,screenX=50,screenY=50,width=850,height=1050';
 
-			// 		var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf;base64,' + escape(
-			// 			data) + '"></embed>';
+			// 		var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(data) +
+			// 			'"></embed>';
 
-			// 		var view = btoa(unescape(encodeURIComponent(data)));
-			// 		var blob = new Blob([view]);
-			// 		var a = window.document.createElement("a");
-			// 		a.href = window.URL.createObjectURL(blob, {
-			// 			type: "application/pdf"
-			// 		});
-			// 		a.download = "TireQuotation.pdf";
-			// 		document.body.appendChild(a);
-			// 		a.click();
-			// 		document.body.removeChild(a);
-			// 	},
-			// 	error: function (err) {
-			// 		console.log("err", err);
+					// Open PDF in new browser window
+					// var detailWindow = window.open("", winlogicalname, winparams);
+					// detailWindow.document.write(htmlText);
+					// detailWindow.document.close();
+					// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf;base64,' + escape(
+					// 	data) + '"></embed>';
+					// // var view = btoa(unescape(encodeURIComponent(data)));
+					// // var blob = new Blob([view], {
+					// // 	type: "application/pdf"
+					// // });
+
+					// // var file = window.URL.createObjectURL(blob);
+
+					// that._pdfViewer = new PDFViewer();
+					// that.getView().addDependent(this._pdfViewer);
+					// that._pdfViewer.setSource(htmlText);
+					// that._pdfViewer.setTitle("Tire Quotation");
+					// that._pdfViewer.open();
+					// // var len = data.length;
+					// // var buffer = new ArrayBuffer(len);
+					// // var view = new Uint8Array(buffer);
+					// // for (var i = 0; i < len; i++) {
+					// // 	view[i] = data.charCodeAt(i);
+					// // }
+
+					// var view = btoa(unescape(encodeURIComponent(data)));
+					// var blob = new Blob([view]);
+					// // create the blob object with content-type "application/pdf"               
+					// // var blob = new Blob([view], {
+					// // 	type: "application/pdf"
+					// // });
+					// var a = window.document.createElement("a");
+					// a.href = window.URL.createObjectURL(blob, {
+					// 	type: "application/pdf"
+					// });
+					// a.download = "TireQuotation.pdf";
+					// document.body.appendChild(a);
+					// a.click();
+					// document.body.removeChild(a);
 			// 	}
 			// });
 
 			// // this.oPDFModel = _this.getOwnerComponent().getModel("PriceServiceModel");
-			// var that = this;
-			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
-			this.oPDFModel.setHeaders(_headers);
-			// this.oPDFModel.mCustomHeaders = _headers;
-			// this.oPDFModel.oHeaders = _headers;
+			var that = this;
+			this.oPDFModel = new sap.ui.model.odata.v2.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			this.oPDFModel.setUseBatch(false);
-			debugger;
-			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
-				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
+			this.oPDFModel.setHeaders(headers);
+			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress +"',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
-						console.log("oData", oData);
-						window.open(oResponse.requestUri);
-						// var view = btoa(unescape(encodeURIComponent(oResponse.body)));
-						// // var blob = new Blob([view]);
-						// // create the blob object with content-type "application/pdf"               
-						// var blob = new Blob([view], {
-						// 	type: "application/pdf"
-						// });
-						// var a = window.document.createElement("a");
-						// a.href = window.URL.createObjectURL(blob);
-						// a.download = "TireQuotation.pdf";
-						// document.body.appendChild(a);
-						// a.click();
-						// document.body.removeChild(a);
+						MessageToast.show("First Call success");
+						var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oData) +
+							'"></embed>';
+						that._pdfViewer = new PDFViewer();
+						that.getView().addDependent(that._pdfViewer);
+						that._pdfViewer.setSource(htmlText);
+						that._pdfViewer.setTitle("Tire Quotation");
+						that._pdfViewer.open();
 					},
 					error: function (oError) {
-						var errResponse = oError.responseText;
-						console.log(errResponse);
-						window.open(oError.request.requestUri);
-						// var view = btoa(unescape(encodeURIComponent(errResponse)));
-						// var blob = new Blob([view]);
-						// // create the blob object with content-type "application/pdf"               
-						// // var blob = new Blob([view], {
-						// // 	type: "application/pdf"
-						// // });
-						// var a = window.document.createElement("a");
-						// a.href = window.URL.createObjectURL(blob, {
-						// 	type: "application/pdf"
-						// });
-						// a.download = "TireQuotation.pdf";
-						// document.body.appendChild(a);
-						// a.click();
-						// document.body.removeChild(a);
-						// var errResponse = oError.responseText;
-						// console.log(errResponse.length);
-
-						// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(
-						// 		errResponse) +
-						// 	'"></embed>';
-						// var view = btoa(unescape(encodeURIComponent(errResponse)));
-						// var blob = new Blob([htmlText]);
-						// var a = window.document.createElement("a");
-						// a.href = window.URL.createObjectURL(blob, {
-						// 	type: "application/pdf"
-						// });
-						// a.download = "TireQuotation.pdf";
-						// document.body.appendChild(a);
-						// a.click();
-						// document.body.removeChild(a);
-
-						// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(
-						// 	errResponse) + '"></embed>';
-						// that._pdfViewer = new PDFViewer();
-						// that.getView().addDependent(that._pdfViewer);
-						// that._pdfViewer.setSource(htmlText);
-						// that._pdfViewer.setTitle("Tire Quotation");
-						// that._pdfViewer.open();
+						var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oError.responseText) +
+							'"></embed>';
+						that._pdfViewer = new PDFViewer();
+						that.getView().addDependent(that._pdfViewer);
+						that._pdfViewer.setSource(htmlText);
+						that._pdfViewer.setTitle("Tire Quotation");
+						that._pdfViewer.open();
 					}
 				});
 		},
