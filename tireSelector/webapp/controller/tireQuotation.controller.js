@@ -748,6 +748,7 @@ sap.ui.define([
 					error: function (oError) {
 						var errResponse = oError.responseText;
 						console.log(errResponse);
+						window.open(oError.request.requestUri);
 						// var view = btoa(unescape(encodeURIComponent(errResponse)));
 						// var blob = new Blob([view]);
 						// // create the blob object with content-type "application/pdf"               
