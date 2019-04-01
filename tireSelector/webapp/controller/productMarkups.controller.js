@@ -297,6 +297,7 @@ sap.ui.define([
 					"Live Markup update is successful", {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
+							ChngedMarkupValsArr = [];
 							_localScope.callUpdatedProdMarkupTab();
 						}
 					}
