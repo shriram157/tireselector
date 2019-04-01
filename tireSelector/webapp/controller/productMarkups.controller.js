@@ -237,7 +237,7 @@ sap.ui.define([
 						dataFromModel.User_First_Name = _localScope.userData.DealerData.BusinessPartnerName;
 						dataFromModel.User_Last_Name = _localScope.userData.DealerData.BusinessPartnerName2;
 
-						dataFromModel.IsLive = "Y";
+						//dataFromModel.IsLive = "Y";
 
 						oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
 							console.log("Post Response", oResponse);
@@ -269,7 +269,7 @@ sap.ui.define([
 						newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 						newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 						newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
-						newDataFromModel.IsLive = "Y";
+						//newDataFromModel.IsLive = "Y";
 						oModel.create("/DealerMarkUp", newDataFromModel, null, {
 							success: function (oData, oResponse) {
 								postSuccessFlag = true;
