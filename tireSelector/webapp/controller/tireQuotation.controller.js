@@ -666,10 +666,7 @@ sap.ui.define([
 				'x-odata-custom-CustAddL2H ': '',
 				"x-odata-custom-CustAddL3H": ModelData.CustPostalCode,
 				'x-odata-custom-CustTelH': ModelData.CustPhone,
-				'x-odata-custom-logo_info': sDivision,
-				'Accept': "application/atom+xml;charset=UTF-8",
-				'Content-Type': "application/atom+xml",
-				'X-Requested-With': "XMLHttpRequest"
+				'x-odata-custom-logo_info': sDivision
 			};
 			$.each(headers, function (key, value) {
 				if (value === "" || value === null || value === undefined) {
