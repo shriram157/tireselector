@@ -18,10 +18,13 @@ module.exports = function (appContext) {
 
 	// TODO Remove this API if it is not used
 	router.get("/configuration", (req, res) => {
+		// Get UPS name from env var UPS_NAME
+		var apimServiceName = process.env.UPS_NAME;
+
 		let options = {};
 		options = Object.assign(options, xsenv.getServices({
 			api: {
-				name: "TIRE_SELECTOR_APIM_CUPS"
+				name: apimServiceName
 			}
 		}));
 		res.json(options);
