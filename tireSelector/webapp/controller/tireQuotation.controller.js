@@ -680,6 +680,7 @@ sap.ui.define([
 			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			this.oPDFModel.setHeaders(headers);
 			this.oPDFModel.setUseBatch(false);
+			
 			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
 				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
