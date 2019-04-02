@@ -18,10 +18,13 @@ module.exports = function (appContext) {
 	var uaa = uaaService.uaa;
 
 	var app = express.Router();
+
+	// Get UPS name from env var UPS_NAME
+	var apimServiceName = process.env.UPS_NAME;
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
 		api: {
-			name: "ECP_SALES_APIM_CUPS"
+			name: apimServiceName
 		}
 	}));
 
