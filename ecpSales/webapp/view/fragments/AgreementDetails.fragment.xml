@@ -3,7 +3,7 @@
 	<Dialog class="sapUiSizeCompact" title=" {i18n>ECPAgreementDetails} - {LocalDataModel>/responseData/ZecpAgrNum}" stretch="true">
 		<VBox width="100%" class="gridWrapper">
 			<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
-				<html:div class="exampleDiv">
+					<html:div class="exampleDiv">
 					<f:SimpleForm id="sAgreementEnq" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
 						labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
 						columnsM="1" singleContainerFullSize="false">

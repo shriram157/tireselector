@@ -90,28 +90,6 @@
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
 					columnsM="1" singleContainerFullSize="false">
 					<f:content>
-						<!--<Label text="{i18n>Customer}" textAlign="Begin"/>-->
-						<!--<Text id="idVehCustomer" text="{path:'EcpFieldData>/ZecpCustNum'}"/>-->
-						<!--<Label text="{i18n>Type}"/>-->
-						<!--<Text  text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>-->
-						<!--<Label text="{i18n>Language}" textAlign="Begin"/>-->
-						<!--<Text text="{LocalDataModel>/BusinessPartnerData/Language}"/>-->
-						<!--<Label text="{i18n>Name}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpCustName} {EcpFieldData>/ZecpLastName}"/>-->
-						<!--<Label text="{i18n>Address}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpAddress}"/>-->
-						<!--<Label text="{i18n>City}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpCity}"/>-->
-						<!--<Label text="{i18n>Province}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpProvince}"/>-->
-						<!--<Label text="{i18n>PostalCode}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpPostalcode}"/>-->
-						<!--<Label text="{i18n>Email}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpEmail}"/>-->
-						<!--<Label text="{i18n>Home}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpHomePhone}"/>-->
-						<!--<Label text="{i18n>Business}"/>-->
-						<!--<Text text="{EcpFieldData>/ZecpBusPhone}" id="idFaxNum"/>-->
 						<Label text="{i18n>Customer}"/>
 						<Text text="{LocalDataModel>/OwnerData/BusinessPartner}"/>
 						<Label text="{i18n>Type}"/>

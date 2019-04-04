@@ -2107,6 +2107,30 @@ return Controller.extend("zecp.controller.newECPApp", {
 			return true;
 		}
 	},
+	/*
+		Defect:9937
+		Auth Vinay Chandra
+	*/
+	setDataValueOnEcpData:function(objSub){
+		var oOwnerData = 	this.getModel("LocalDataModel").getProperty("/OwnerData");
+		var oPricingModelData = this.getModel("LocalDataModel").getProperty("/PricingModelData");
+		var oAgreementOwnerName=	this.getModel("LocalDataModel").getProperty("/AgreementOwnerName");
+		objSub.ZecpCustNum= oOwnerData.BusinessPartner;
+		objSub.BPTYPE=oPricingModelData.BPTYPE;
+		// objSub.Language=oOwnerData.Language;
+		objSub.ZecpLastName=oAgreementOwnerName.LastName;
+		objSub.ZecpCustName=oAgreementOwnerName.FirstName;
+		objSub.ZecpAddress=oOwnerData.StreetName;
+		objSub.ZecpCity=oOwnerData.CityName ;              	
+		objSub.ZecpProvince=oOwnerData.Region ;              
+		objSub.ZecpPostalcode=oOwnerData.PostalCode;               
+		objSub.ZecpEmail=oOwnerData.EmailAddress;	
+		objSub.ZecpBusPhone=oOwnerData.ZecpBusPhone;	
+		objSub.ZecpHomePhone = 	oOwnerData.FaxNumber;	
+	
+		
+	},
+	/* end of Defect 9937 Auth Vinay Chandra*/
 	onSubmitApp: function () {
 		//this._Step04MandatoryFn();
 
@@ -2156,6 +2180,13 @@ return Controller.extend("zecp.controller.newECPApp", {
 					that.oECPData = that.getView().getModel("EcpFieldData").getData();
 					var objSub = that._fnObject("SUB", "DELETED");
 					var oEcpModel = that.getModel("EcpSalesModel");
+					/*
+					Defect:9937
+					Auth Vinay Chandra
+					*/
+					that.setDataValueOnEcpData(objSub);
+					
+					/* End Of Defect 9937 */
 					this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 					$.ajaxSetup({
 						headers: {
