@@ -14,8 +14,8 @@ module.exports = function (appContext) {
 	var router = express.Router();
 	var routerTracer = appContext.createLogContext().getTracer(__filename);
 
-	// TODO: provide service name via environment variable instead
-	var apimServiceName = "TIRE_SELECTOR_APIM_CUPS";
+	// Get UPS name from env var UPS_NAME
+	var apimServiceName = process.env.UPS_NAME;
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
 		apim: {
@@ -49,7 +49,6 @@ module.exports = function (appContext) {
 		proxiedUrl = proxiedUrlObj.href;
 
 		proxiedReqHeaders.Authorization = "Basic " + new Buffer(s4User + ":" + s4Password).toString("base64");
-
 
 		// Pass through x-csrf-token from request to proxied request to S4/HANA
 		// This requires manual handling of CSRF tokens from the front-end
