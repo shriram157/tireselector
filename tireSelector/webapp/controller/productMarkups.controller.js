@@ -121,7 +121,7 @@ sap.ui.define([
 
 				_localScope.oXSOServiceModel = _localScope.getOwnerComponent().getModel("XsodataModel");
 				// var filter= "?$filter=Dealer_code eq '"+ _localScope.userData.DealerData.DealerCode +"' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'";
-				_localScope.oXSOServiceModel.read("/DealerMarkUp?$filter=Dealer_code eq '"+ _localScope.userData.DealerData.DealerCode +"' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'", {
+				_localScope.oXSOServiceModel.read("/DealerMarkUp?$filter=Dealer_code eq '"+ _localScope.userData.DealerData.DealerCode +"'", {
 					success: $.proxy(function (oData) {
 						console.log("XSO data", oData);
 						if (oData.results.length == 0) {
