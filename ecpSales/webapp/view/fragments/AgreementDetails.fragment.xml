@@ -154,7 +154,7 @@
 							<Label text="{i18n>IssueDealer}"/>
 							<Text text="{LocalDataModel>/AgreementData/DealershipNumber}"/>
 							<Label text="{i18n>Dealership}"/>
-							<Text text="{LocalDataModel>/DealerData/BusinessPartnerName}"/>
+							<Text text="{LocalDataModel>/DealerData/OrganizationBPName1}"/>
 							<Label text="{i18n>PreOwnedCert}"/>
 							<Text text="{LocalDataModel>/AgreementData/PROWNDCERT}"/>
 							<Label text="{i18n>TransferDate}"/>
