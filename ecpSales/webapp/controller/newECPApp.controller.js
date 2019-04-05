@@ -2133,6 +2133,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 	/* end of Defect 9937 Auth Vinay Chandra*/
 	onSubmitApp: function () {
 		//this._Step04MandatoryFn();
+		this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
 
 		//Verify Address Defect_ID: 9618
 		if (!this.validateAgrmtOwnrNVechOwnr()) {
@@ -2159,6 +2160,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			}, this),
 			error: function () {
 				console.log("Error");
+				
 			}
 		});
 
@@ -2262,9 +2264,11 @@ return Controller.extend("zecp.controller.newECPApp", {
 							var oDialogBox = sap.ui.xmlfragment("zecp.view.fragments.AgreementDetails", that);
 							that.getView().addDependent(oDialogBox);
 							oDialogBox.open();
+							that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 						},
 						error: function () {
 							MessageToast.show(oBundle.getText("ApplicationIsnotSubmitted"));
+							that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 						}
 					});
 
@@ -2276,6 +2280,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 				text: oBundle.getText("Cancel"),
 				press: function () {
 					dialog.close();
+					that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				}
 			}),
 			afterClose: function () {

@@ -241,7 +241,7 @@
 				press="onUpdateSavedApp"/>
 			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>PerformCIC}"/>
 			<Button class="sapUiTinyMarginBeginEnd" press="onSubmitApp" visible="{oSetProperty>/oSecondaryState}" text="{i18n>Submit}" id="idSubmitBtn"
-				type="Emphasized"/>
+				type="Emphasized" enabled="{oSetProperty>/submitBtn}"/>
 			<!--<Button class="sapUiTinyMarginBeginEnd" visible="{oSetProperty>/oSecondaryState01}" text="{i18n>Submit}" id="idUpdateSubmitBtn"-->
 			<!--	press="onSubmitApp"/>-->
 		</HBox>
