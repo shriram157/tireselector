@@ -1,39 +1,33 @@
 {
-  "welcomeFile": "/tireselector/index.html",
-  "authenticationMethod": "route",
-  "logout": {
-    "logoutEndpoint": "/do/logout"
-  },
-  "routes": [
-    {
-      "source": "^/tireselector/(.*)$",
-      "target": "$1",
-      "localDir": "webapp",
-      "authenticationType": "xsuaa"      
-    },
-    {
-      "source": "/node(.*)",
-      "destination": "tireSelector-node-backend",
-      "csrfProtection": false,
-      "authenticationType": "xsuaa"
-    },
-    {
-      "source": "/appdata(.*)",
-      "destination": "tireSelector-node-backend",
-      "csrfProtection": false,
-      "authenticationType": "xsuaa"
-    },    
-    {
-      "source": "/xsodata(.*)",
-      "destination": "tireSelector-xsjs-backend",
-      "csrfProtection": false,
-      "authenticationType": "xsuaa"
-    },
-    {
-      "source": "(.*)(.xsodata)",
-      "destination": "tireSelector-xsjs-backend",
-      "csrfProtection": false,
-      "authenticationType": "xsuaa"
-    }
-  ]
+	"welcomeFile": "/tireselector/index.html",
+	"authenticationMethod": "route",
+	"logout": {
+		"logoutEndpoint": "/do/logout"
+	},
+	"routes": [{
+		"source": "^/tireselector/index.html$",
+		"target": "index.html",
+		"localDir": "webapp",
+		"cacheControl": "no-cache, no-store, must-revalidate"
+	}, {
+		"source": "^/tireselector/(.*)$",
+		"target": "$1",
+		"localDir": "webapp"
+	}, {
+		"source": "/node(.*)",
+		"destination": "tireSelector-node-backend",
+		"csrfProtection": false
+	}, {
+		"source": "/appdata(.*)",
+		"destination": "tireSelector-node-backend",
+		"csrfProtection": false
+	}, {
+		"source": "/xsodata(.*)",
+		"destination": "tireSelector-xsjs-backend",
+		"csrfProtection": false
+	}, {
+		"source": "(.*)(.xsodata)",
+		"destination": "tireSelector-xsjs-backend",
+		"csrfProtection": false
+	}]
 }
