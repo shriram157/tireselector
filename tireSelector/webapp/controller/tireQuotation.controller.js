@@ -7,7 +7,7 @@ sap.ui.define([
 	"sap/m/PDFViewer",
 ], function (Controller, JSONModel, History, BaseController, MessageToast, PDFViewer) {
 	"use strict";
-	var _this, sSelectedLocale,sDivision, DivUser;
+	var _this, sSelectedLocale, sDivision, DivUser;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -663,7 +663,7 @@ sap.ui.define([
 				'x-odata-custom-OfferExpDt': ModelData3.expiryDate,
 				'x-odata-custom-CustNameH': ModelData.CustName,
 				'x-odata-custom-CustAddL1H': ModelData.CustAddress,
-				'x-odata-custom-CustAddL2H ': '',
+				// 'x-odata-custom-CustAddL2H ': '',
 				"x-odata-custom-CustAddL3H": ModelData.CustPostalCode,
 				'x-odata-custom-CustTelH': ModelData.CustPhone,
 				'x-odata-custom-logo_info': sDivision
@@ -673,19 +673,23 @@ sap.ui.define([
 					delete headers[key];
 				}
 			});
-			
+
 			console.log("Headers", headers);
-			
+
 			var that = this;
 			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			this.oPDFModel.setHeaders(headers);
 			this.oPDFModel.setUseBatch(false);
-			
+
 			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
 				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
 						console.log("oData", oResponse);
-						window.open(oResponse.requestUri);
+						// window.open(oResponse.requestUri);
+						var oHTML = new sap.ui.core.HTML({});
+						oHTML.setContent("<iframe src=" + oResponse.requestUri + " width='700' height='700'></iframe>");
+						// that.addContent(oHTML);
+						sap.m.URLHelper.redirect( oResponse.requestUri, true );
 					},
 					error: function (oError) {
 						console.log("oError", oError);
