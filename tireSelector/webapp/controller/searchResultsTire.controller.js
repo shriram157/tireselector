@@ -8,10 +8,10 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/m/MessageBox",
 	'sap/m/MessageToast'
-], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox,MessageToast) {
+], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox, MessageToast) {
 	"use strict";
-	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale,sDivision, DivUser;
-	 
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser;
+
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
 			that = this;
@@ -105,9 +105,16 @@ sap.ui.define([
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 			that.getView().setModel(that.oProdMarkupModel, "ProdMarkupModel");
 			sap.ui.getCore().setModel(that.oProdMarkupModel, "ProdMarkupModel");
+
+			that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
+			that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
+			
 			console.log("XSO model data", that.oXSOServiceModel);
 
 			that.oXSOServiceModel.read("/DealerMarkUp", {
+				urlParameters: {
+					"$filter": "Dealer_code eq" + "'" + (that.userDetails.DealerData.DealerCode) + "'"
+				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
 						console.log("XSO data", oData);
@@ -127,6 +134,26 @@ sap.ui.define([
 				}
 			});
 
+			// that.oXSOServiceModel.read("/DealerMarkUp", {
+			// 	success: $.proxy(function (oData) {
+			// 		if (oData.results.length > 0) {
+			// 			console.log("XSO data", oData);
+			// 			that.oProdMarkupModel.setData(oData);
+			// 			that.oProdMarkupModel.updateBindings(true);
+			// 			that.getView().setModel(that.oProdMarkupModel, "ProdMarkupModel");
+			// 		} else {
+			// 			// sap.m.MessageBox.error(
+			// 			// 	"NO Data found for Product Markup"
+			// 			// );
+			// 		}
+			// 	}, that),
+			// 	error: function (oError) {
+			// 		// sap.m.MessageBox.error(
+			// 		// 	"NO Data found for Product Markup"
+			// 		// );
+			// 	}
+			// });
+
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
@@ -141,9 +168,6 @@ sap.ui.define([
 			});
 
 			that.getView().setModel(that._oViewModel, "FitmentPageModel");
-
-			that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-			that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
 
 			that.AddressID = that.userDetails.DealerData.AddressID;
 			that.BusinessPartner = that.userDetails.DealerData.BusinessPartner;

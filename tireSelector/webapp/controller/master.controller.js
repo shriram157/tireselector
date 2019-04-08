@@ -180,9 +180,9 @@ sap.ui.define([
 								_that._oDealerModel.updateBindings(true);
 								var queryString;
 								if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
-									queryString = "?$filter=BusinessPartner eq'" + _that.dealerCode +"' &$expand=to_Customer";
+									queryString = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_Customer";
 								} else {
-									queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode +"' &$expand=to_Customer";
+									queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_Customer";
 								}
 								_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString, {
 									success: $.proxy(function (oDealerData) {
@@ -261,17 +261,23 @@ sap.ui.define([
 				error: function (oError) {}
 			});
 
+			_that.userDetails = _that.getView().getModel("DealerModel").getData();
+
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 			console.log("XSO model data", _that.oXSOServiceModel);
 
 			_that.oXSOServiceModel.read("/DealerMarkUp", {
+				urlParameters: {
+					"$filter": "Dealer_code eq" + "'" + (_that.userDetails.DealerData.DealerCode) + "'"
+				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
 						console.log("XSO data", oData);
 						_that.oProdMarkupModel.setData(oData);
 						_that.oProdMarkupModel.updateBindings(true);
+						_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 					} else {
 						// sap.m.MessageBox.error(
 						// 	"NO Data found for Product Markup"
@@ -284,6 +290,30 @@ sap.ui.define([
 					// );
 				}
 			});
+
+			// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+			// _that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
+			// sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			// console.log("XSO model data", _that.oXSOServiceModel);
+
+			// _that.oXSOServiceModel.read("/DealerMarkUp", {
+			// 	success: $.proxy(function (oData) {
+			// 		if (oData.results.length > 0) {
+			// 			console.log("XSO data", oData);
+			// 			_that.oProdMarkupModel.setData(oData);
+			// 			_that.oProdMarkupModel.updateBindings(true);
+			// 		} else {
+			// 			// sap.m.MessageBox.error(
+			// 			// 	"NO Data found for Product Markup"
+			// 			// );
+			// 		}
+			// 	}, _that),
+			// 	error: function (oError) {
+			// 		// sap.m.MessageBox.error(
+			// 		// 	"NO Data found for Product Markup"
+			// 		// );
+			// 	}
+			// });
 
 			_that.oGlobalJSONModel = new sap.ui.model.json.JSONModel();
 			_that.oGlobalJSONModel.setSizeLimit(5000);

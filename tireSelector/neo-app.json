@@ -83,7 +83,7 @@
 		},
 		"description": "tireSelector-dest"
 	}, {
-		"path": "(.*)(.xsodata)",
+		"path": "/TireSelector_Xsodata",
 		"target": {
 			"type": "destination",
 			"name": "TireSelector_Xsodata"
