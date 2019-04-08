@@ -1346,6 +1346,15 @@ return Controller.extend("zecp.controller.newECPApp", {
 
 		}
 
+
+		//resetting the LienFields Validation
+		
+			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
+			this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+			this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", false);
+			this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
+			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
+			this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
 	},
 	onChangeAmt: function (oEvent) {
 		var val = oEvent.getParameter('value');
@@ -2138,10 +2147,12 @@ return Controller.extend("zecp.controller.newECPApp", {
 		//Verify Address Defect_ID: 9618
 		if (!this.validateAgrmtOwnrNVechOwnr()) {
 			this.showSubmitValidationError();
+			this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 			return;
 		}
 		// Fixing defect #8693
 		if (!this.validateLineFields()) {
+			this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 			return;
 		}
 		// Fixing defect #8516
