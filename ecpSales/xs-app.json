@@ -5,98 +5,49 @@
 		"logoutEndpoint": "/do/logout"
 	},
 	"routes": [{
-			"source": "^/ecpsales/(.*)$",
-			"target": "$1",
-			"localDir": "webapp",
-			"authenticationType": "xsuaa",
-			"scope": {
-				"GET": [
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				],
-				"POST": [
-					"$XSAPPNAME.Manage_ECP_Application",
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				],
-				"PUT": [
-					"$XSAPPNAME.Manage_ECP_Application",
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				],
-				"DELETE": [
-					"$XSAPPNAME.Manage_ECP_Application",
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				],
-				"HEAD": [
-					"$XSAPPNAME.Manage_ECP_Application",
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				]
-
-			}
-
-		}, {
-			"source": "/node(.*)",
-			"destination": "ecpsales-node-backend",
-			"csrfProtection": false,
-			"authenticationType": "xsuaa",
-			"scope": {
-				"GET": [
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				],
-				"POST": [
-					"$XSAPPNAME.Manage_ECP_Application",
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				],
-				"PUT": [
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry",
-					"$XSAPPNAME.Manage_ECP_Application"
-				],
-				"DELETE": [
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry",
-					"$XSAPPNAME.Manage_ECP_Application"
-				],
-				"HEAD": [
-					"$XSAPPNAME.Manage_ECP_Application",
-					"$XSAPPNAME.View_ECP_Application",
-					"$XSAPPNAME.View_ECP_Claim",
-					"$XSAPPNAME.View_ECP_Agreement",
-					"$XSAPPNAME.Inquiry"
-				]
-
-			}
-		}, {
-			"source": "/userDetails(.*)",
-			"destination": "ecpsales-node-backend",
-			"csrfProtection": false,
-			"authenticationType": "xsuaa"
-
-			}
-		
-
-	]
+		"source": "^/ecpsales/index.html$",
+		"target": "index.html",
+		"localDir": "webapp",
+		"cacheControl": "no-cache, no-store, must-revalidate",
+		"scope": [
+			"$XSAPPNAME.Inquiry",
+			"$XSAPPNAME.Manage_ECP_Application",
+			"$XSAPPNAME.View_ECP_Agreement",
+			"$XSAPPNAME.View_ECP_Application",
+			"$XSAPPNAME.View_ECP_Claim"
+		]
+	}, {
+		"source": "^/ecpsales/(.*)$",
+		"target": "$1",
+		"localDir": "webapp",
+		"scope": [
+			"$XSAPPNAME.Inquiry",
+			"$XSAPPNAME.Manage_ECP_Application",
+			"$XSAPPNAME.View_ECP_Agreement",
+			"$XSAPPNAME.View_ECP_Application",
+			"$XSAPPNAME.View_ECP_Claim"
+		]
+	}, {
+		"source": "/node(.*)",
+		"destination": "ecpsales-node-backend",
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.Inquiry",
+			"$XSAPPNAME.Manage_ECP_Application",
+			"$XSAPPNAME.View_ECP_Agreement",
+			"$XSAPPNAME.View_ECP_Application",
+			"$XSAPPNAME.View_ECP_Claim"
+		]
+	}, {
+		"source": "/userDetails(.*)",
+		"destination": "ecpsales-node-backend",
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.Inquiry",
+			"$XSAPPNAME.Manage_ECP_Application",
+			"$XSAPPNAME.View_ECP_Agreement",
+			"$XSAPPNAME.View_ECP_Application",
+			"$XSAPPNAME.View_ECP_Claim"
+		]
+	}]
 }
