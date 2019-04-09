@@ -686,11 +686,11 @@ sap.ui.define([
 				.BusinessPartnerAddress + "',DLR_ADD_L2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
 						console.log("oData", oResponse);
-						// window.open(oResponse.requestUri);
-						var oHTML = new sap.ui.core.HTML({});
-						oHTML.setContent("<iframe src=" + oResponse.requestUri + " width='700' height='700'></iframe>");
-						// that.addContent(oHTML);
-						sap.m.URLHelper.redirect( oResponse.requestUri, true );
+						window.open(oResponse.requestUri);
+						// var oHTML = new sap.ui.core.HTML({});
+						// oHTML.setContent("<iframe src=" + oResponse.requestUri + " width='700' height='700'></iframe>");
+						// // that.addContent(oHTML);
+						// sap.m.URLHelper.redirect( oResponse.requestUri, true );
 					},
 					error: function (oError) {
 						console.log("oError", oError);
