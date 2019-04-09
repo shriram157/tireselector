@@ -218,51 +218,7 @@ sap.ui.define([
 											_that._oDealerModel.updateBindings(true);
 											_that._oDealerModel.refresh(true);
 
-											// var attributeFromSAP;
-											// attributeFromSAP = oDealerData.results[i].to_Customer.Attribute1;
-
-											// switch (attributeFromSAP) {
-											// case "01":
-											// 	_that.DealerData.Division = "10";
-											// 	_that.DealerData.Attribute = "01";
-											// 	_that.DealerData.Div = "TOY";
-											// 	break;
-											// case "02":
-											// 	_that.DealerData.Division = "20";
-											// 	_that.DealerData.Attribute = "02";
-											// 	_that.DealerData.Div = "LEX";
-											// 	break;
-											// case "03":
-											// 	_that.DealerData.Division = "";
-											// 	_that.DealerData.Attribute = "03";
-											// 	_that.DealerData.Div = "";
-											// 	break;
-											// default:
-											// 	_that.DealerData.Division = "10"; //  lets put that as a toyota dealer
-											// 	_that.DealerData.Attribute = "01";
-											// 	_that.DealerData.Div = "TOY";
-											// }
-										}
-									}, _that),
-									error: function (oError) {
-										// sap.m.MessageBox.error(
-										// 	"NO Data found for BusinessPartner"
-										// );
-									}
-								});
-							}
-						}, _that),
-						error: function (oError) {
-							// sap.m.MessageBox.error(
-							// 	"NO Data found for BusinessPartner Address"
-							// );
-						}
-					});
-				},
-				error: function (oError) {}
-			});
-
-			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+											_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 			console.log("XSO model data", _that.oXSOServiceModel);
@@ -289,6 +245,27 @@ sap.ui.define([
 					// );
 				}
 			});
+										}
+									}, _that),
+									error: function (oError) {
+										// sap.m.MessageBox.error(
+										// 	"NO Data found for BusinessPartner"
+										// );
+									}
+								});
+							}
+						}, _that),
+						error: function (oError) {
+							// sap.m.MessageBox.error(
+							// 	"NO Data found for BusinessPartner Address"
+							// );
+						}
+					});
+				},
+				error: function (oError) {}
+			});
+
+			
 
 			// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			// _that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
