@@ -617,6 +617,12 @@ sap.ui.define([
 			} else {
 				Region = "";
 			}
+			
+			jQuery.sap.require("sap.ui.core.format.DateFormat");
+			this.oDateFormatShort = sap.ui.core.format.DateFormat.getDateTimeInstance({
+				pattern: "YYYYMMdd"
+			});
+			this.CurrentDate = this.oDateFormatShort.format(new Date( ModelData3.CurrentDate));
 
     
 			var headers = {
@@ -630,7 +636,7 @@ sap.ui.define([
 				'x-odata-custom-WHEELS_UNIT': this.getView().byId("id_wheelsUnitPrice").getValue(),
 				'x-odata-custom-WHEELS_QTY': this.getView().byId("id_wheelsQty").getValue(),
 				'x-odata-custom-WHEELS_PRICE': ModelData2.WheelsPrice,
-				'x-odata-custom-TPMS_DESC: this.getView().byId("tmpsTxt").getValue(),
+				'x-odata-custom-TPMS_DESC': this.getView().byId("tmpsTxt").getValue(),
 				'x-odata-custom-TPMS_UNIT': this.getView().byId("id_TPMSUnitPrice").getValue(),
 				'x-odata-custom-TPMS_QTY': this.getView().byId("id_TPMSQty").getValue(),
 				'x-odata-custom-TPMS_PRICE': ModelData2.TPMSPrice,
@@ -660,11 +666,11 @@ sap.ui.define([
 				'x-odata-custom-DLR_TEL': ModelData3.PhoneNumber,
 				'x-odata-custom-VEHICLE_DES': ModelData.VehicleSeriesDescp,
 				'x-odata-custom-VIN_NUM ': ModelData.VIN,
-				'x-odata-custom-QUOTE_DATE ': ModelData3.CurrentDate,
-				'x-odata-custom-OFFER_EXP_DT': ModelData3.expiryDate,
+				// 'x-odata-custom-QUOTE_DATE ': this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
+				'x-odata-custom-OFFER_EXP_DT': this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
 				'x-odata-custom-CUST_NAME': ModelData.CustName,
 				'x-odata-custom-CUST_ADD_L1': ModelData.CustAddress,
-				'x-odata-custom-CUST_ADD_L2  ': '',
+				'x-odata-custom-CUST_ADD_L2': "",
 				"x-odata-custom-CUST_ADD_L3": ModelData.CustPostalCode,
 				'x-odata-custom-CUST_TEL': ModelData.CustPhone,
 				'x-odata-custom-logo_info': sDivision
@@ -681,9 +687,9 @@ sap.ui.define([
 			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			this.oPDFModel.setHeaders(headers);
 			this.oPDFModel.setUseBatch(false);
-
-			this.oPDFModel.read("/zc_tirequoteSet(DLR_NAME='" + this.userData.DealerData.BusinessPartnerName + "',DLR_ADD_L1='" + this.userData.DealerData
-				.BusinessPartnerAddress + "',DLR_ADD_L2='" + Region + "')/$value", {
+				//DlrName, DlrAddL1, DlrAddL2
+			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
+				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
 						console.log("oData", oResponse);
 						window.open(oResponse.requestUri);
