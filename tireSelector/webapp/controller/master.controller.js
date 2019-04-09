@@ -214,6 +214,7 @@ sap.ui.define([
 
 											_that.getView().setModel(_that._oDealerModel, "DealerModel");
 											sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
+											_that.userDetails = _that.getView().getModel("DealerModel").getData();
 											_that._oDealerModel.updateBindings(true);
 											_that._oDealerModel.refresh(true);
 
@@ -260,8 +261,6 @@ sap.ui.define([
 				},
 				error: function (oError) {}
 			});
-
-			_that.userDetails = _that.getView().getModel("DealerModel").getData();
 
 			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
