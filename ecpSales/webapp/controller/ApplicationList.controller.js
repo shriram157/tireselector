@@ -57,6 +57,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
+					debugger;
 					switch (userType) {
 					case "DealerSalesUSer":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
@@ -68,6 +69,8 @@ sap.ui.define([
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that._resetView();
+						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 
 						break;
 
@@ -80,8 +83,10 @@ sap.ui.define([
 						break;
 					case "internalTCIUser":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
-						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
+						that._resetView();
+						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 					case "TCIZoneUser":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);

@@ -1165,10 +1165,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 						}
 						if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
 							this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
-							if (oSelectedPlan == "CTC40" || oSelectedPlan == "CTC46") {
-								this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
-							}
-
+						
 							if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal && this.DifferTime <= this.PlanTime) {
 
 								this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
