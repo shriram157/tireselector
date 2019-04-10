@@ -142,9 +142,9 @@ sap.ui.define([
 				var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
 				var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
 				if (match) {
-					return match[1] + '-' + match[2] + '-' + match[3]
+					return match[1] + '-' + match[2] + '-' + match[3];
 				}
-				return null
+				return null;
 			}
 			_this.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			_this.userData = sap.ui.getCore().getModel("DealerModel").getData();
@@ -710,7 +710,7 @@ sap.ui.define([
 				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {
 						console.log("oData", oResponse);
-						window.open(oResponse.requestUri);
+						// window.open(oResponse.requestUri);
 						// var oHTML = new sap.ui.core.HTML({});
 						// oHTML.setContent("<iframe src=" + oResponse.requestUri + " width='700' height='700'></iframe>");
 						// // that.addContent(oHTML);
