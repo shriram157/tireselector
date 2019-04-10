@@ -127,10 +127,28 @@ sap.ui.define([
 			_this.expDate = _this.oDateFormatShort.format(new Date(expiry));
 			_this._oViewModel.getData().expiryDate = _this.oDateFormatShort.format(new Date(expiry));
 		},
+
+		formatPhoneNumber: function (phoneNumberString) {
+			var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+			var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+			if (match) {
+				return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+			}
+			return null
+		},
 		_oQuoteRoute: function (oEvent) {
+
+			function formatPhoneNumber(phoneNumberString) {
+				var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+				var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+				if (match) {
+					return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+				}
+				return null
+			}
 			_this.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			_this.userData = sap.ui.getCore().getModel("DealerModel").getData();
-			_this.phoneNumber = sap.ushell.components.dealerPhoneNumber;
+			_this.phoneNumber = this.formatPhoneNumber(sap.ushell.components.dealerPhoneNumber);
 
 			jQuery.sap.require("sap.ui.core.format.DateFormat");
 			_this.oDateFormatShort = sap.ui.core.format.DateFormat.getDateTimeInstance({
@@ -617,14 +635,13 @@ sap.ui.define([
 			} else {
 				Region = "";
 			}
-			
+
 			jQuery.sap.require("sap.ui.core.format.DateFormat");
 			this.oDateFormatShort = sap.ui.core.format.DateFormat.getDateTimeInstance({
 				pattern: "YYYYMMdd"
 			});
-			this.CurrentDate = this.oDateFormatShort.format(new Date( ModelData3.CurrentDate));
+			this.CurrentDate = this.oDateFormatShort.format(new Date(ModelData3.CurrentDate));
 
-    
 			var headers = {
 				"x-odata-custom-rhp_pln_desc": this.getView().byId("id_RHP").getSelectedKey(),
 				"x-odata-custom-rhp_unit": this.getView().byId("id_RHPUnitPrice").getValue(),
@@ -687,8 +704,8 @@ sap.ui.define([
 			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			this.oPDFModel.setHeaders(headers);
 			this.oPDFModel.setUseBatch(false);
-				//DlrName, DlrAddL1, DlrAddL2
-				
+			//DlrName, DlrAddL1, DlrAddL2
+
 			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
 				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
 					success: function (oData, oResponse) {

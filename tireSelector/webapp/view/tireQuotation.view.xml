@@ -69,7 +69,8 @@
 							<Input type="Text" value="{TireQuotationModel>/CustPostalCode}" id="postalCodeMandat" required="false"/>
 							
 							<Label text="{i18n>Phone}" labelFor="phoneMandat"/>
-							<Input type="Text" value="{TireQuotationModel>/CustPhone}" id="phoneMandat" required="false"/>
+							<Input type="Text" value="{path:'TireQuotationModel>/CustPhone', formatter: '.formatPhoneNumber'}" id="phoneMandat" required="false"/>
+							
 							<Label text="{i18n>CreditApp}"/>
 							
 							<Input type="Text" value="" liveChange="ChangeLabelMandatory"/>
