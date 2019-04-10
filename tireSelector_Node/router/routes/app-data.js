@@ -9,25 +9,14 @@ module.exports = function (appContext) {
 	var router = express.Router();
 
 	router.get("/whoAmI", (req, res) => {
-		var userContext = req.authInfo;
-		var result = JSON.stringify({
+		var userContext = {
+			scopes: JSON.parse(JSON.stringify(req.authInfo.scopes)),
+			userAttributes: JSON.parse(JSON.stringify(req.authInfo.userAttributes)),
+			userInfo: JSON.parse(JSON.stringify(req.authInfo.userInfo))
+		};
+		res.type('application/json').status(200).send(JSON.stringify({
 			userContext: userContext
-		});
-		res.type('application/json').status(200).send(result);
-	});
-
-	// TODO Remove this API if it is not used
-	router.get("/configuration", (req, res) => {
-		// Get UPS name from env var UPS_NAME
-		var apimServiceName = process.env.UPS_NAME;
-
-		let options = {};
-		options = Object.assign(options, xsenv.getServices({
-			api: {
-				name: apimServiceName
-			}
 		}));
-		res.json(options);
 	});
 
 	return router;
