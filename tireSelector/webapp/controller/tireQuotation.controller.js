@@ -697,18 +697,120 @@ sap.ui.define([
 					delete headers[key];
 				}
 			});
-			
+
 			$.ajaxSetup({
 				headers: {
 					"CustomHeader": headers
 				}
 			});
-
 			$.ajax({
+				cache: false,
+				type: 'GET',
 				url: this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" +
 					this.userData.DealerData.BusinessPartnerName +
 					"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value",
-				success: function (data, response) {
+				// contentType: false,
+				// processData: false,
+				//xhrFields is what did the trick to read the blob to pdf
+				xhrFields: {
+					responseType: 'arraybuffer'
+				},
+				success: function (response, status, xhr) {
+					// check for a filename
+					var filename = "";
+					var disposition = xhr.getResponseHeader('Content-Disposition');
+					if (disposition && disposition.indexOf('attachment') !== -1) {
+						var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+						var matches = filenameRegex.exec(disposition);
+						if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+					}
+
+					var type = xhr.getResponseHeader('Content-Type');
+					var blob = new Blob([response], {
+						type: type
+					});
+
+					if (typeof window.navigator.msSaveBlob !== 'undefined') {
+						// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+						window.navigator.msSaveBlob(blob, filename);
+					} else {
+						var URL = window.URL || window.webkitURL;
+						var downloadUrl = URL.createObjectURL(blob);
+
+						if (filename) {
+							// use HTML5 a[download] attribute to specify filename
+							var a = document.createElement("a");
+							// safari doesn't support this yet
+							if (typeof a.download === 'undefined') {
+								window.location = downloadUrl;
+							} else {
+								a.href = downloadUrl;
+								a.download = filename;
+								document.body.appendChild(a);
+								a.click();
+							}
+						} else {
+							window.location = downloadUrl;
+						}
+
+						// var filename = "";                   
+						// var disposition = xhr.getResponseHeader('Content-Disposition');
+
+						//  if (disposition) {
+						//     var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+						//     var matches = filenameRegex.exec(disposition);
+						//     if (matches !== null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+						// } 
+						// var linkelem = document.createElement('a');
+						// try {
+						//                           var blob = new Blob([response], { type: 'application/pdf' });                        
+
+						//     if (typeof window.navigator.msSaveBlob !== 'undefined') {
+						//         //   IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
+						//         window.navigator.msSaveBlob(blob, filename);
+						//     } else {
+						//         var URL = window.URL || window.webkitURL;
+						//         var downloadUrl = URL.createObjectURL(blob);
+
+						//         if (filename) { 
+						//             // use HTML5 a[download] attribute to specify filename
+						//             var a = document.createElement("a");
+
+						//             // safari doesn't support this yet
+						//             if (typeof a.download === 'undefined') {
+						//                 window.location = downloadUrl;
+						//             } else {
+						//                 a.href = downloadUrl;
+						//                 a.download = filename;
+						//                 document.body.appendChild(a);
+						//                 a.target = "_blank";
+						//                 a.click();
+						//             }
+						//         } else {
+						//             window.location = downloadUrl;
+						//         }
+						//     }   
+
+						// } catch (ex) {
+						//     console.log(ex);
+					}
+				}
+			});
+
+			// $.ajax({
+			// 	dataType: 'native',
+			// 	xhrFields: {
+			// 		responseType: 'blob'
+			// 	},
+			// 	url: this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" +
+			// 		this.userData.DealerData.BusinessPartnerName +
+			// 		"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value",
+			// 	success: function (blob) {
+			// 		console.log(blob.size);
+			// 		var link = document.createElement('a');
+			// 		link.href = window.URL.createObjectURL(blob);
+			// 		link.download = "Dossier_" + new Date() + ".pdf";
+			// 		link.click();
 			// 		var winlogicalname = "detailPDF";
 			// 		var winparams = 'dependent=yes,locationbar=no,scrollbars=yes,menubar=yes,' +
 			// 			'resizable,screenX=50,screenY=50,width=850,height=1050';
@@ -716,49 +818,49 @@ sap.ui.define([
 			// 		var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(data) +
 			// 			'"></embed>';
 
-					// Open PDF in new browser window
-					// var detailWindow = window.open("", winlogicalname, winparams);
-					// detailWindow.document.write(htmlText);
-					// detailWindow.document.close();
-					// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf;base64,' + escape(
-					// 	data) + '"></embed>';
-					// // var view = btoa(unescape(encodeURIComponent(data)));
-					// // var blob = new Blob([view], {
-					// // 	type: "application/pdf"
-					// // });
+			// Open PDF in new browser window
+			// var detailWindow = window.open("", winlogicalname, winparams);
+			// detailWindow.document.write(htmlText);
+			// detailWindow.document.close();
+			// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf;base64,' + escape(
+			// 	data) + '"></embed>';
+			// // var view = btoa(unescape(encodeURIComponent(data)));
+			// // var blob = new Blob([view], {
+			// // 	type: "application/pdf"
+			// // });
 
-					// // var file = window.URL.createObjectURL(blob);
+			// // var file = window.URL.createObjectURL(blob);
 
-					// that._pdfViewer = new PDFViewer();
-					// that.getView().addDependent(this._pdfViewer);
-					// that._pdfViewer.setSource(htmlText);
-					// that._pdfViewer.setTitle("Tire Quotation");
-					// that._pdfViewer.open();
-					// // var len = data.length;
-					// // var buffer = new ArrayBuffer(len);
-					// // var view = new Uint8Array(buffer);
-					// // for (var i = 0; i < len; i++) {
-					// // 	view[i] = data.charCodeAt(i);
-					// // }
-					debugger;
-					var view = btoa(unescape(encodeURIComponent(data)));
-					var blob = new Blob([view]);
-					// create the blob object with content-type "application/pdf"               
-					// var blob = new Blob([view], {
-					// 	type: "application/pdf"
-					// });
-					var a = window.document.createElement("a");
-					a.href = window.URL.createObjectURL(blob, {
-						type: "application/pdf"
-					});
-					a.download = "TireQuotation.pdf";
-					document.body.appendChild(a);
-					a.click();
-					document.body.removeChild(a);
-				}
-			});
+			// that._pdfViewer = new PDFViewer();
+			// that.getView().addDependent(this._pdfViewer);
+			// that._pdfViewer.setSource(htmlText);
+			// that._pdfViewer.setTitle("Tire Quotation");
+			// that._pdfViewer.open();
+			// // var len = data.length;
+			// // var buffer = new ArrayBuffer(len);
+			// // var view = new Uint8Array(buffer);
+			// // for (var i = 0; i < len; i++) {
+			// // 	view[i] = data.charCodeAt(i);
+			// // }
+			// 		debugger;
+			// 		var view = btoa(unescape(encodeURIComponent(data)));
+			// 		var blob = new Blob([view]);
+			// 		// create the blob object with content-type "application/pdf"               
+			// 		// var blob = new Blob([view], {
+			// 		// 	type: "application/pdf"
+			// 		// });
+			// 		var a = window.document.createElement("a");
+			// 		a.href = window.URL.createObjectURL(blob, {
+			// 			type: "application/pdf"
+			// 		});
+			// 		a.download = "TireQuotation.pdf";
+			// 		document.body.appendChild(a);
+			// 		a.click();
+			// 		document.body.removeChild(a);
+			// 	}
+			// });
 
-			console.log("Headers", headers);
+			// console.log("Headers", headers);
 
 			// var that = this;
 			// this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
