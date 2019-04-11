@@ -697,29 +697,175 @@ sap.ui.define([
 					delete headers[key];
 				}
 			});
+			
+			$.ajaxSetup({
+				headers: {
+					"CustomHeader": headers
+				}
+			});
+
+			$.ajax({
+				url: this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" +
+					this.userData.DealerData.BusinessPartnerName +
+					"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value",
+				success: function (data, response) {
+			// 		var winlogicalname = "detailPDF";
+			// 		var winparams = 'dependent=yes,locationbar=no,scrollbars=yes,menubar=yes,' +
+			// 			'resizable,screenX=50,screenY=50,width=850,height=1050';
+
+			// 		var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(data) +
+			// 			'"></embed>';
+
+					// Open PDF in new browser window
+					// var detailWindow = window.open("", winlogicalname, winparams);
+					// detailWindow.document.write(htmlText);
+					// detailWindow.document.close();
+					// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf;base64,' + escape(
+					// 	data) + '"></embed>';
+					// // var view = btoa(unescape(encodeURIComponent(data)));
+					// // var blob = new Blob([view], {
+					// // 	type: "application/pdf"
+					// // });
+
+					// // var file = window.URL.createObjectURL(blob);
+
+					// that._pdfViewer = new PDFViewer();
+					// that.getView().addDependent(this._pdfViewer);
+					// that._pdfViewer.setSource(htmlText);
+					// that._pdfViewer.setTitle("Tire Quotation");
+					// that._pdfViewer.open();
+					// // var len = data.length;
+					// // var buffer = new ArrayBuffer(len);
+					// // var view = new Uint8Array(buffer);
+					// // for (var i = 0; i < len; i++) {
+					// // 	view[i] = data.charCodeAt(i);
+					// // }
+					debugger;
+					var view = btoa(unescape(encodeURIComponent(data)));
+					var blob = new Blob([view]);
+					// create the blob object with content-type "application/pdf"               
+					// var blob = new Blob([view], {
+					// 	type: "application/pdf"
+					// });
+					var a = window.document.createElement("a");
+					a.href = window.URL.createObjectURL(blob, {
+						type: "application/pdf"
+					});
+					a.download = "TireQuotation.pdf";
+					document.body.appendChild(a);
+					a.click();
+					document.body.removeChild(a);
+				}
+			});
 
 			console.log("Headers", headers);
 
-			var that = this;
-			this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
-			this.oPDFModel.setHeaders(headers);
-			this.oPDFModel.setUseBatch(false);
-			//DlrName, DlrAddL1, DlrAddL2
+			// var that = this;
+			// this.oPDFModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
+			// this.oPDFModel.setHeaders(headers);
+			// this.oPDFModel.setUseBatch(false);
 
-			this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
-				.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
-					success: function (oData, oResponse) {
-						console.log("oData", oResponse);
-						// window.open(oResponse.requestUri);
-						// var oHTML = new sap.ui.core.HTML({});
-						// oHTML.setContent("<iframe src=" + oResponse.requestUri + " width='700' height='700'></iframe>");
-						// // that.addContent(oHTML);
-						// sap.m.URLHelper.redirect( oResponse.requestUri, true );
-					},
-					error: function (oError) {
-						console.log("oError", oError);
-					}
-				});
+			// this.oPDFModel.read("/zc_tirequoteSet(DlrName='" + this.userData.DealerData.BusinessPartnerName + "',DlrAddL1='" + this.userData.DealerData
+			// 	.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value", {
+			// 		success: function (oData, oResponse) {
+			// 			console.log("oData", oResponse);
+			// 			var res = btoa(escape(oResponse.body));
+			// 			// window.open("data:application/pdf;base64," + btoa(escape(oResponse.body));
+			// 			var blob = converBase64toBlob(res, 'application/pdf');
+			// 			var blobURL = URL.createObjectURL(blob);
+			// 			window.open(blobURL);
+
+			// 			function converBase64toBlob(content, contentType) {
+			// 				contentType = contentType || '';
+			// 				var sliceSize = 512;
+			// 				var byteCharacters = window.atob(content); //method which converts base64 to binary
+			// 				var byteArrays = [];
+			// 				for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+			// 					var slice = byteCharacters.slice(offset, offset + sliceSize);
+			// 					var byteNumbers = new Array(slice.length);
+			// 					for (var i = 0; i < slice.length; i++) {
+			// 						byteNumbers[i] = slice.charCodeAt(i);
+			// 					}
+			// 					var byteArray = new Uint8Array(byteNumbers);
+			// 					byteArrays.push(byteArray);
+			// 				}
+			// 				var blob = new Blob(byteArrays, {
+			// 					type: contentType
+			// 				}); //statement which creates the blob
+			// 				return blob;
+			// 			}
+
+			// 			/*
+			// 			var blob = new Blob([this.response], {type: 'image/pdf'});
+			// 	        //Create a link element, hide it, direct 
+			// 	        //it towards the blob, and then 'click' it programatically
+			// 	        let a = document.createElement("a");
+			// 	        a.style = "display: none";
+			// 	        document.body.appendChild(a);
+			// 	        //Create a DOMString representing the blob 
+			// 	        //and point the link element towards it
+			// 	        let url = window.URL.createObjectURL(blob);
+			// 	        a.href = url;
+			// 	        a.download = 'myFile.pdf';
+			// 	        //programatically click the link to trigger the download
+			// 	        a.click();
+			// 	        //release the reference to the file by revoking the Object URL
+			// 	        window.URL.revokeObjectURL(url);*/
+
+			// 			// var winlogicalname = "TireQuote";
+			// 			// var winparams = 'dependent=yes,locationbar=no,scrollbars=yes,menubar=yes,' +
+			// 			// 	'resizable,screenX=50,screenY=50,width=850,height=1050';
+
+			// 			// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oResponse.body) +
+			// 			// 	'"></embed>';
+
+			// 			// // Open PDF in new browser window
+			// 			// var detailWindow = window.open("", winlogicalname, winparams);
+			// 			// detailWindow.document.write(htmlText);
+			// 			// detailWindow.document.close();
+
+			// 			// console.log(oResponse);
+			// 			// // create `objectURL` of `this.response` : `.pdf` as `Blob`
+			// 			// var file = window.URL.createObjectURL(oResponse.body);
+			// 			// var a = document.createElement("a");
+			// 			// a.href = file;
+			// 			// a.download = oResponse.body.name || "TireQuotePDF";
+			// 			// document.body.appendChild(a);
+			// 			// a.click();
+			// 			// // remove `a` following `Save As` dialog, 
+			// 			// // `window` regains `focus`
+			// 			// window.onfocus = function () {
+			// 			// 	document.body.removeChild(a);
+			// 			// }
+
+			// 			// var blob = new Blob([oResponse]);
+			// 			// var link = document.createElement('a');
+			// 			// link.href = window.URL.createObjectURL(blob);
+			// 			// link.download = "filename.pdf";
+			// 			// link.click();
+			// 			// var blob = new Blob([oResponse], {
+			// 			// 	type: 'application/pdf'
+			// 			// });
+			// 			// var a = window.document.createElement("a");
+			// 			// a.href = window.URL.createObjectURL(blob, {
+			// 			// 	type: "application/pdf"
+			// 			// });
+			// 			// a.download = "filename.pdf";
+			// 			// document.body.appendChild(a);
+			// 			// a.click();
+			// 			// document.body.removeChild(a);
+			// 			// window.open(oResponse.requestUri);
+			// 			// var res = btoa(escape(oResponse.body));
+			// 			//  window.open("data:application/pdf," + escape(res));
+			// 			// window.open("data:application/pdf;base64, " +res, '', 'height=650,width=840');
+			// 			// window.open("data:application/pdf," + escape(oResponse.body));
+			// 		},
+			// 		error: function (oError) {
+			// 			console.log("oError", oError);
+			// 		}
+			// 	});
+
+			/*Need to removed once pdf is working fine*/
 			// this.oPDFModel = new sap.ui.model.odata.v2.ODataModel(this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01", true);
 			// this.oPDFModel.setUseBatch(false);
 			// this.oPDFModel.setHeaders(headers);
@@ -733,6 +879,25 @@ sap.ui.define([
 			// 			that._pdfViewer.setSource(htmlText);
 			// 			that._pdfViewer.setTitle("Tire Quotation");
 			// 			that._pdfViewer.open();
+
+			// var link = document.createElement('a');
+			// link.target = '_blank';
+			// link.href = oResponse.requestUri;
+			// document.body.appendChild(link); // Required for Firefox
+			// link.click();
+			// link.remove();
+			// var oHTML = new sap.ui.core.HTML({});
+			// oHTML.setContent("<iframe src=" + oResponse.requestUri + " width='700' height='700'></iframe>");
+			// // that.addContent(oHTML);
+			// sap.m.URLHelper.redirect( oResponse.requestUri, true );
+			// var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oResponse.requestUri) +
+			// '"></embed>';
+			// that._pdfViewer = new PDFViewer();
+			// that.getView().addDependent(that._pdfViewer);
+			// that._pdfViewer.setSource(oResponse.requestUri);
+			// that._pdfViewer.setTitle("Tire Quotation");
+			// that._pdfViewer.open();
+
 			// 		},
 			// 		error: function (oError) {
 			// 			var htmlText = '<embed width=100% height=100%' + ' type="application/pdf"' + ' src="data:application/pdf,' + escape(oError.responseText) +
@@ -744,6 +909,7 @@ sap.ui.define([
 			// 			that._pdfViewer.open();
 			// 		}
 			// 	});
+			/*Need to removed once pdf is working fine*/
 		},
 
 		changeUnitPrice: function (oUnitPrice) {
