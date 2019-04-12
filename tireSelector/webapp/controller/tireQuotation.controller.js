@@ -128,16 +128,36 @@ sap.ui.define([
 			_this._oViewModel.getData().expiryDate = _this.oDateFormatShort.format(new Date(expiry));
 		},
 
+		onUserDealerPhoneChange: function (oEvent) {
+			debugger;
+			var cleaned = ('' + oEvent.getParameters().value).replace(/\D/g, '');
+			var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+			if (match) {
+				_this.phoneNumber = match[1] + '-' + match[2] + '-' + match[3];
+				_this.getView().byId("DealerPhone").setValue(_this.phoneNumber);
+			}
+			// return null
+		},
+		onUserInputChange: function (oEvent) {
+			debugger;
+			var cleaned = ('' + oEvent.getParameters().value).replace(/\D/g, '');
+			var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+			if (match) {
+				_this.rowData.CustPhone = '(' + match[1] + ') ' + match[2] + '-' + match[3];
+				_this.oTireQuotationModel.getData().CustPhone = this.rowData.CustPhone;
+				_this.oTireQuotationModel.updateBindings(true);
+			}
+			// return null
+		},
 		formatPhoneNumber: function (phoneNumberString) {
 			var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
 			var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
 			if (match) {
-				return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+				return '(' + match[1] + ') ' + match[2] + '-' + match[3];
 			}
 			return null
 		},
 		_oQuoteRoute: function (oEvent) {
-
 			function formatPhoneNumber(phoneNumberString) {
 				var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
 				var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
@@ -642,7 +662,7 @@ sap.ui.define([
 			});
 			this.CurrentDate = this.oDateFormatShort.format(new Date(ModelData3.CurrentDate));
 
-			var headers = {
+			this.headers = {
 				"x-odata-custom-rhp_pln_desc": this.getView().byId("id_RHP").getSelectedKey(),
 				"x-odata-custom-rhp_unit": this.getView().byId("id_RHPUnitPrice").getValue(),
 				"x-odata-custom-rhp_qty": this.getView().byId("id_RHPsQty").getValue(),
@@ -686,20 +706,22 @@ sap.ui.define([
 				"x-odata-custom-quote_date": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
 				"x-odata-custom-offer_exp_dt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
 				"x-odata-custom-cust_name": ModelData.CustName,
-				"x-odata-custom-cust_add_l1": ModelData.CustAddress,
-				"x-odata-custom-cust_add_l2": "",
-				"x-odata-custom-cust_add_l3": ModelData.CustPostalCode,
+				// "x-odata-custom-cust_add_l1": ModelData.CustAddress,
+				// "x-odata-custom-cust_add_l2": "",
+				// "x-odata-custom-cust_add_l3": ModelData.CustPostalCode,
 				"x-odata-custom-cust_tel": ModelData.CustPhone,
 				"x-odata-custom-logo_info": sDivision
 			};
-			$.each(headers, function (key, value) {
+
+			var that = this;
+			$.each(that.headers, function (key, value) {
 				if (value === "" || value === null || value === undefined) {
-					delete headers[key];
+					delete that.headers[key];
 				}
 			});
 
 			$.ajaxSetup({
-				headers:headers
+				headers: that.headers
 			});
 			$.ajax({
 				cache: false,
@@ -713,6 +735,7 @@ sap.ui.define([
 				},
 				success: function (response, status, xhr) {
 					// check for a filename
+					that.headers = {};
 					var filename = "";
 					var disposition = xhr.getResponseHeader('Content-Disposition');
 					if (disposition && disposition.indexOf('attachment') !== -1) {
@@ -749,8 +772,56 @@ sap.ui.define([
 							window.location = downloadUrl;
 						}
 					}
+					that.clearData();
+				},
+				error: function (oErrEvent) {
+					console.log("oErrEvent", oErrEvent);
+					that.headers = {};
+					that.clearData();
 				}
 			});
+		},
+
+		clearData: function () {
+			_this.getView().byId("id_tirePrice").setValue("");
+			_this.getView().byId("id_tireQty").setValue("");
+			_this.getView().byId("id_RHPPrice").setValue("");
+			_this.getView().byId("id_RHPsQty").setValue("");
+			_this.getView().byId("id_wheelsUnitPrice").setValue("");
+			_this.getView().byId("id_wheelsPrice").setValue("");
+			_this.getView().byId("id_wheelsQty").setValue("");
+			_this.getView().byId("wheelsText").setValue("");
+			_this.getView().byId("id_TPMSUnitPrice").setValue("");
+			_this.getView().byId("id_TPMSQty").setValue("");
+			_this.getView().byId("tmpsTxt").setValue("");
+
+			_this.getView().byId("id_TPMSPrice").setValue("");
+			_this.getView().byId("id_FittingKitUnitPrice").setValue("");
+			_this.getView().byId("id_FittingKitQty").setValue("");
+			_this.getView().byId("fittingkitTxt").setValue("");
+			_this.getView().byId("id_FittingKitPrice").setValue("");
+
+			_this.getView().byId("TireTxt1").setText("");
+			_this.getView().byId("TireTxt3").setText("");
+			_this.getView().byId("TireTxt3").setText("");
+			_this.getView().byId("dealerTxt").setValue("");
+			_this.getView().byId("valItem1").setValue("");
+			_this.getView().byId("valItem2").setValue("");
+			_this.getView().byId("valItem3").setValue("");
+			_this.getView().byId("valItem4").setValue("");
+
+			_this.getView().byId("id_OtherItemPrice").setValue("");
+			_this.getView().byId("id_OtherItem2Price").setValue("");
+			_this.getView().byId("id_OtherItem3Price").setValue("");
+			_this.getView().byId("id_OtherItem4Price").setValue("");
+
+			_this.getView().byId("id_subTotal").setValue("");
+			_this.getView().byId("id_total").setValue("");
+			_this.getView().byId("id_proTaxCode").setValue("");
+			_this.getView().byId("id_fedTaxCode").setValue("");
+			_this.getView().byId("id_freeDescp").setValue("");
+
+			_this.getView().byId("id_MnBPrice").setValue("");
 		},
 
 		changeUnitPrice: function (oUnitPrice) {

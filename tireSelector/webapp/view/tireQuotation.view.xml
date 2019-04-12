@@ -43,7 +43,7 @@
 							<Text text="{DealerModel>/DealerData/BusinessPartnerAddress} - {DealerModel>/DealerData/Region}"/>
 							<Label text="{i18n>DealerTel}"/>
 							<!--<Input type="Number" value="{TireQuoteModel>/PhoneNumber}"/>-->
-							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"/>
+							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"  liveChange="onUserDealerPhoneChange"/>
 							<Label text="{i18n>QuoteDate}" required="true"/>
 							<DatePicker id="id_QuoteDate" value="{TireQuoteModel>/CurrentDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy"
 								change="handleQuoteDateChange" class="sapUiSmallMarginBottom"/>

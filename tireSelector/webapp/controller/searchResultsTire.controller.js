@@ -134,26 +134,6 @@ sap.ui.define([
 				}
 			});
 
-			// that.oXSOServiceModel.read("/DealerMarkUp", {
-			// 	success: $.proxy(function (oData) {
-			// 		if (oData.results.length > 0) {
-			// 			console.log("XSO data", oData);
-			// 			that.oProdMarkupModel.setData(oData);
-			// 			that.oProdMarkupModel.updateBindings(true);
-			// 			that.getView().setModel(that.oProdMarkupModel, "ProdMarkupModel");
-			// 		} else {
-			// 			// sap.m.MessageBox.error(
-			// 			// 	"NO Data found for Product Markup"
-			// 			// );
-			// 		}
-			// 	}, that),
-			// 	error: function (oError) {
-			// 		// sap.m.MessageBox.error(
-			// 		// 	"NO Data found for Product Markup"
-			// 		// );
-			// 	}
-			// });
-
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
 			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
