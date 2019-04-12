@@ -168,6 +168,9 @@
 			}
 		},
 		"resources": {
+			"js": [{
+				"uri": "utils/formatter.js"
+			}],
 			"css": [{
 				"uri": "css/style.css"
 			}]

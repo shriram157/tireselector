@@ -2,10 +2,12 @@ sap.ui.define([
 	'sap/ui/core/mvc/Controller',
 	'sap/ui/model/json/JSONModel',
 	"sap/ui/core/routing/History",
-	'tireSelector/controller/BaseController'
-], function (Controller, JSONModel, History, BaseController) {
+	'tireSelector/controller/BaseController',
+	"sap/ui/core/format/NumberFormat"
+
+], function (Controller, JSONModel, History, BaseController,NumberFormat) {
 	"use strict";
-	var _this, sSelectedLocale,sDivision, DivUser;
+	var _this, sSelectedLocale, sDivision, DivUser;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -150,28 +152,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			var scopes = _this.userData.userContext.scopes;
-				console.log("scopes", scopes);
-				var accessAll = false,
-					accesslimited = false;
-
-				for (var s = 0; s < scopes.length; s++) {
-					if (scopes[s] != "openid") {
-						if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-							accessAll = true;
-						} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-							accesslimited = true;
-						} else {
-							accessAll = false;
+			/*			var scopes = _this.userData.userContext.scopes;
+						console.log("scopes", scopes);
+						var accessAll = false,
 							accesslimited = false;
+
+						for (var s = 0; s < scopes.length; s++) {
+							if (scopes[s] != "openid") {
+								if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+									accessAll = true;
+								} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+									accesslimited = true;
+								} else {
+									accessAll = false;
+									accesslimited = false;
+								}
+							}
 						}
-					}
-				}
-				if (accessAll == true && accesslimited == true) {
-					_this._oViewModel.setProperty("/enableProdMarkup", true);
-				} else {
-					_this._oViewModel.setProperty("/enableProdMarkup", false);
-				}
+						if (accessAll == true && accesslimited == true) {
+							_this._oViewModel.setProperty("/enableProdMarkup", true);
+						} else {
+							_this._oViewModel.setProperty("/enableProdMarkup", false);
+						}*/
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -627,17 +629,26 @@ sap.ui.define([
 		},
 
 		getUnitPrice: function (oUnit) {
-			var oUnitPrice = oUnit.getSource().getValue();
+			var oUnitPrice = parseFloat(oUnit.getSource().getValue()).toFixed(2);
+			var oCurrencyFormat = NumberFormat.getCurrencyInstance({currencyCode: false});
+			//oUnitPrice = oCurrencyFormat.format(oUnitPrice,"USD");
+			oUnit.getSource().setValue(oUnitPrice);
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
 			if (oUnit.getSource().getId().split("_")[3] == "tireUnitPrice") {
+				//var tierUP = parseFloat(oUnitPrice).toFixed(2);
+				//var oCurrencyFormat = NumberFormat.getCurrencyInstance({currencyCode: false});
+				//var tUp = oCurrencyFormat.format(tierUP, "USD");
 				_this.oTireQuotationModel.getData().Retails = parseFloat(oUnitPrice).toFixed(2);
 				if (_this.getView().byId("id_tireQty").getValue() != "") {
 					data.TiresPrice = _this.decimalFormatter(Number(oUnitPrice) * Number(_this.getView().byId("id_tireQty").getValue()));
+				//oCurrencyFormat.format(data.TiresPrice,"USD");
+					
 				}
 			} else if (oUnit.getSource().getId().split("_")[3] == "wheelsUnitPrice") {
 				if (_this.getView().byId("id_wheelsQty").getValue() != "") {
 					data.WheelsPrice = _this.decimalFormatter(Number(oUnitPrice) * Number(_this.getView().byId("id_wheelsQty").getValue()));
+					//oCurrencyFormat.format(	data.WheelsPrice,"USD");
 				}
 			} else if (oUnit.getSource().getId().split("_")[3] == "TPMSUnitPrice") {
 				if (_this.getView().byId("id_TPMSQty").getValue() != "") {
@@ -653,8 +664,10 @@ sap.ui.define([
 			for (var key in arrPrices) {
 				summed += Number(arrPrices[key]);
 			}
+			/*var subTotalPrice =_this.decimalFormatter(summed);
+			subTotalPrice = oCurrencyFormat.format(subTotalPrice, "USD");
+			dataRes.subTotal = subTotalPrice;*/
 			dataRes.subTotal = _this.decimalFormatter(summed);
-			//_this.oTireQuotationModel.getData().Retails = oUnitPrice;
 			_this.oTireQuotationModel.updateBindings(true);
 			_this.sub = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 
@@ -684,7 +697,11 @@ sap.ui.define([
 			}
 			_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
 			// _this.TotalAmount.setValue(_this.decimalFormatter(_this.sub));
-			dataRes.Total = _this.decimalFormatter(_this.sub);
+			
+			var totalPrice =_this.decimalFormatter(_this.sub);
+			totalPrice = oCurrencyFormat.format(totalPrice, "USD");
+			dataRes.Total = totalPrice;
+			//dataRes.Total = _this.decimalFormatter(_this.sub);
 			_this.oTirePriceModel.updateBindings(true);
 			_this.oTireQuotationModel.updateBindings(true);
 		},
@@ -692,6 +709,7 @@ sap.ui.define([
 		calculatePrice: function (oQty) {
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
+			var oCurrencyFormat = NumberFormat.getCurrencyInstance({currencyCode: false});
 
 			var oQtyVal = oQty.getParameter("newValue");
 			if (oQtyVal !== undefined || oQtyVal != null || oQtyVal != "") {
@@ -777,7 +795,11 @@ sap.ui.define([
 			}
 			_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
 			// _this.TotalAmount.setValue(_this.decimalFormatter(_this.sub));
-			dataRes.Total = _this.decimalFormatter(_this.sub);
+			//dataRes.Total = _this.decimalFormatter(_this.sub);
+			var totalPrice =_this.decimalFormatter(_this.sub);
+			totalPrice = oCurrencyFormat.format(totalPrice, "USD");
+			dataRes.Total = totalPrice;
+			
 			_this.oTirePriceModel.updateBindings(true);
 			_this.oTireQuotationModel.updateBindings(true);
 
@@ -885,6 +907,16 @@ sap.ui.define([
 			} else if (_oSelectedScreen == _this.oI18nModel.getResourceBundle().getText("ReportError")) {
 				_this.getRouter().navTo("reportError");
 			}
+		},
+
+
+		fnFormatCurrency: function (val, oLocalCur) {
+			sap.ui.require(["sap/ui/core/format/NumberFormat"], function (NumberFormat) {
+				var oCurrencyFormat = NumberFormat.getCurrencyInstance({currencyCode: false});
+
+				//return oCurrencyFormat.format(val, oLocalCur);
+
+			});
 		},
 		onAfterRendering: function () {
 

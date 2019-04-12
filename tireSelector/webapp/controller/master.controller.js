@@ -99,7 +99,7 @@ sap.ui.define([
 					}
 					_that.dealerName = _that.userData.userContext.userInfo.logonName;
 					//Start: comment for local testing
-					var scopes = _that.userData.userContext.scopes;
+/*					var scopes = _that.userData.userContext.scopes;
 					console.log("scopes", scopes);
 					var accessAll = false,
 						accesslimited = false;
@@ -120,7 +120,7 @@ sap.ui.define([
 						_that._oViewModel.setProperty("/enableProdMarkup", true);
 					} else {
 						_that._oViewModel.setProperty("/enableProdMarkup", false);
-					}
+					}*/
 					// Stop: comment for local testing
 					_that.DealerData = {};
 					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");

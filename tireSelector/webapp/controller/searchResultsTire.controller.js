@@ -150,7 +150,7 @@ sap.ui.define([
 			});
 
 			//START: uncomment below for cloud testing
-						var scopes = that.userDetails.userContext.scopes;
+/*						var scopes = that.userDetails.userContext.scopes;
 						console.log("scopes", scopes);
 						var accessAll = false,
 							accesslimited = false;
@@ -171,7 +171,7 @@ sap.ui.define([
 							that._oViewModel.setProperty("/enableProdMarkup", true);
 						} else {
 							that._oViewModel.setProperty("/enableProdMarkup", false);
-						}
+						}*/
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");

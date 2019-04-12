@@ -58,20 +58,15 @@
 							<Input type="Text" value="{TireQuotationModel>/VModelYear} {TireQuotationModel>/VehicleSeriesDescp}" id="ID_SeriesYear"/>
 							<Label text="{i18n>VIN}"/>
 							<Input type="Text" value="{TireQuotationModel>/VIN}" id="ID_VINQuote"/>
-							
 							<Label text="{i18n>Name}" labelFor="nameMandat"/>
 							<Input type="Text" value="" id="nameMandat" required="false"/>
-							
 							<Label text="{i18n>Address}" labelFor="addressMandat"/>
 							<Input type="Text" value="" id="addressMandat" required="false"/>
-							
 							<Label text="{i18n>PostalCode}" labelFor="postalCodeMandat"/>
 							<Input type="Text" value="" id="postalCodeMandat" required="false"/>
-							
 							<Label text="{i18n>Phone}" labelFor="phoneMandat"/>
 							<Input type="Text" value="" id="phoneMandat" required="false"/>
 							<Label text="{i18n>CreditApp}"/>
-							
 							<Input type="Text" value="" liveChange="ChangeLabelMandatory"/>
 						</f:content>
 					</f:SimpleForm>
@@ -103,7 +98,7 @@
 										<Text id="TireTxt3" text="{TireQuotationModel>/Material}"/>
 									</VBox>
 									<!--"{TirePriceModel>/TiresPrice}" -->
-									<Input value="{path:'TireQuotationModel>/Retails'}" id="id_tireUnitPrice" submit="getUnitPrice" change ="changeUnitPrice"/>
+									<Input value="{path:'TireQuotationModel>/Retails'}" id="id_tireUnitPrice" submit="getUnitPrice" change="changeUnitPrice"/>
 									<Input value="" id="id_tireQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/TiresPrice'}" id="id_tirePrice" editable="false"/>
 								</cells>
@@ -140,7 +135,7 @@
 										<Label text="{i18n>Wheels}"/>
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="wheelsText"/>
 									</VBox>
-									<Input value="" required="true" id="id_wheelsUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" required="true" id="id_wheelsUnitPrice" submit="getUnitPrice"/>
 									<Input value="" required="true" id="id_wheelsQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/WheelsPrice'}" id="id_wheelsPrice" editable="false"/>
 								</cells>
@@ -151,7 +146,7 @@
 										<Label text="{i18n>TPMS}"/>
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="tmpsTxt"/>
 									</VBox>
-									<Input value="" required="true" id="id_TPMSUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" required="true" id="id_TPMSUnitPrice" submit="getUnitPrice"/>
 									<Input value="" required="true" id="id_TPMSQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/TPMSPrice'}" id="id_TPMSPrice" editable="false"/>
 								</cells>
@@ -162,7 +157,7 @@
 										<Label text="{i18n>FittingKits}"/>
 										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="fittingkitTxt"/>
 									</VBox>
-									<Input value="" required="true" id="id_FittingKitUnitPrice" liveChange="getUnitPrice"/>
+									<Input value="" required="true" id="id_FittingKitUnitPrice" submit="getUnitPrice"/>
 									<Input value="" required="true" id="id_FittingKitQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/FittingKitPrice'}" id="id_FittingKitPrice" editable="false"/>
 								</cells>
@@ -265,7 +260,8 @@
 									<VBox>
 										<Label text="{i18n>Total}"/>
 									</VBox>
-									<Input value="{path:'TireQuotationModel>/Total'}" id="id_total" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/Total' }"
+										id="id_total" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -292,7 +288,6 @@
 				<footer>
 					<Toolbar>
 						<!--<ToolbarSpacer/>-->
-						
 					</Toolbar>
 				</footer>
 			</Page>
