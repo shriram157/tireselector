@@ -155,17 +155,17 @@ sap.ui.define([
 			if (match) {
 				return match[1] + '-' + match[2] + '-' + match[3];
 			}
-			return null
+			return null;
+		},
+		userInputFormatPhoneNumber: function (phoneNumberString) {
+			var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+			var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+			if (match) {
+				return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+			}
+			return null;
 		},
 		_oQuoteRoute: function (oEvent) {
-			function formatPhoneNumber(phoneNumberString) {
-				var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
-				var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
-				if (match) {
-					return '(' + match[1] + ') ' + match[2] + '-' + match[3]; 
-				}
-				return null;
-			}
 			_this.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			_this.userData = sap.ui.getCore().getModel("DealerModel").getData();
 			_this.phoneNumber = this.formatPhoneNumber(sap.ushell.components.dealerPhoneNumber);
