@@ -8,10 +8,10 @@ sap.ui.define([
 	"sap/ui/core/routing/History",
 	"sap/m/MessageBox",
 	'sap/m/MessageToast'
-], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox,MessageToast) {
+], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox, MessageToast) {
 	"use strict";
-	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale,sDivision, DivUser;
-	 
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser;
+
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
 			that = this;
@@ -73,6 +73,23 @@ sap.ui.define([
 				}
 			}
 
+			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			if (isDivisionSent) {
+				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+				var currentImageSource;
+				if (sDivision == '10') // set the toyoto logo
+				{
+					// DivUser = "TOY";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+
+				} else { // set the lexus logo
+					// DivUser = "LEX";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/LexusNew.png");
+				}
+			}
+
 			sap.ui.core.UIComponent.getRouterFor(that).attachRoutePatternMatched(that._oSelectTireRoute, that);
 
 			that.oTable = that.getView().byId("idTireSelectionTable");
@@ -82,15 +99,22 @@ sap.ui.define([
 			sap.ushell.components.FacetFilters = that.byId("idVBox");
 		},
 
-			_oSelectTireRoute: function (oEvent) {
+		_oSelectTireRoute: function (oEvent) {
 			//fetching data from HDB for porduct markup 
 			that.oXSOServiceModel = that.getOwnerComponent().getModel("XsodataModel");
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 			that.getView().setModel(that.oProdMarkupModel, "ProdMarkupModel");
 			sap.ui.getCore().setModel(that.oProdMarkupModel, "ProdMarkupModel");
-			console.log("XSO model data", that.oXSOServiceModel);
 
+			that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
+			that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
+
+			console.log("XSO model data", that.oXSOServiceModel);
+			//"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 			that.oXSOServiceModel.read("/DealerMarkUp", {
+				urlParameters: {
+					"$filter": "Dealer_code eq" + "'" + (that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '" + sDivision + "'"
+				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
 						console.log("XSO data", oData);
@@ -125,9 +149,6 @@ sap.ui.define([
 
 			that.getView().setModel(that._oViewModel, "FitmentPageModel");
 
-			that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-			that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
-
 			that.AddressID = that.userDetails.DealerData.AddressID;
 			that.BusinessPartner = that.userDetails.DealerData.BusinessPartner;
 			that.oBusinessPartnerModel = that.getOwnerComponent().getModel("BusinessPartnerModel");
@@ -150,28 +171,30 @@ sap.ui.define([
 			});
 
 			//START: uncomment below for cloud testing
-/*						var scopes = that.userDetails.userContext.scopes;
-						console.log("scopes", scopes);
-						var accessAll = false,
-							accesslimited = false;
 
-						for (var s = 0; s < scopes.length; s++) {
-							if (scopes[s] != "openid") {
-								if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-									accessAll = true;
-								} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-									accesslimited = true;
-								} else {
-									accessAll = false;
-									accesslimited = false;
-								}
-							}
-						}
-						if (accessAll == true && accesslimited == true) {
-							that._oViewModel.setProperty("/enableProdMarkup", true);
-						} else {
-							that._oViewModel.setProperty("/enableProdMarkup", false);
-						}*/
+			var scopes = that.userDetails.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
+
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				that._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				that._oViewModel.setProperty("/enableProdMarkup", false);
+			}
+
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
@@ -804,18 +827,18 @@ sap.ui.define([
 			var oFacetFilter = oEvent.getSource();
 			this._filterModel(oFacetFilter);
 			/* DEFECT ID : 10207
-			*
-			*
-			* START */
-			
+			 *
+			 *
+			 * START */
+
 			oEvent.bCancelBubble = true;
 			oEvent.preventDefault();
 			oEvent.bPreventDefault = true;
-			
-			 /*DEFECT ID : 10207
-			 END
-			 */
-			
+
+			/*DEFECT ID : 10207
+			END
+			*/
+
 			// MessageToast.show("confirm event fired");
 		},
 

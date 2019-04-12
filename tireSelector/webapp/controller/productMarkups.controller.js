@@ -120,7 +120,12 @@ sap.ui.define([
 				}
 
 				_localScope.oXSOServiceModel = _localScope.getOwnerComponent().getModel("XsodataModel");
+				// var filter= "?$filter=Dealer_code eq '"+ _localScope.userData.DealerData.DealerCode +"' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'";
+				// var query = "/DealerMarkUp?$filter=Dealer_code eq '" + _localScope.userData.DealerData.DealerCode + "'";
 				_localScope.oXSOServiceModel.read("/DealerMarkUp", {
+					urlParameters: {
+						"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+					},
 					success: $.proxy(function (oData) {
 						console.log("XSO data", oData);
 						if (oData.results.length == 0) {
@@ -271,6 +276,9 @@ sap.ui.define([
 						newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 						//newDataFromModel.IsLive = "Y";
 						oModel.create("/DealerMarkUp", newDataFromModel, null, {
+							urlParameters: {
+								"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+							},
 							success: function (oData, oResponse) {
 								postSuccessFlag = true;
 							},
@@ -359,7 +367,11 @@ sap.ui.define([
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 					newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
 					newDataFromModel.IsLive = "";
+					oModel.refreshSecurityToken();
 					oModel.create("/DealerMarkUp", newDataFromModel, null, {
+						urlParameters: {
+							"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+						},
 						success: function (oData, oResponse) {
 							postSuccessFlag = true;
 						},
@@ -397,6 +409,9 @@ sap.ui.define([
 			console.log("XSO model data", _localScope.oXSOServiceModel);
 			var flagNoData = false;
 			_localScope.oXSOServiceModel.read("/DealerMarkUp", {
+				urlParameters: {
+					"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
 						console.log("XSO data", oData);

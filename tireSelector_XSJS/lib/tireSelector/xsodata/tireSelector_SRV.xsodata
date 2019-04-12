@@ -1,5 +1,8 @@
-service{
-
+service {
 	"tireSelector.dealerMarkUp" as "DealerMarkUp";
-	
+}
+settings {
+	support null;
+	content cache-control "no-store";
+	metadata cache-control "max-age=86401,must-revalidate";
 }

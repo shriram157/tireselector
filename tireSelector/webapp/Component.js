@@ -26,6 +26,25 @@ sap.ui.define([
 
 			// set the device model
 			this.setModel(models.createDeviceModel(), "device");
+			
+			//For BP model 
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+
+		
+			var mConfig01 = this.getMetadata().getManifestEntry("/sap.app/dataSources/API_BUSINESS_PARTNER");
+
+			if (sLocation_conf == 0) {
+				mConfig01.uri = "/tireSelector-dest" + mConfig01.uri;
+			} else {
+
+			} // facilitate local testing.
+
+			var oDataModel01 = new sap.ui.model.odata.ODataModel(mConfig01.uri, {
+				useBatch: false,
+				json: true
+			});
+			this.setModel(oDataModel01, "BusinessPartnerModel");
 		}
 	});
 });

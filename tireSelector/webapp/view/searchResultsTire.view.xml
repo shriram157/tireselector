@@ -12,9 +12,6 @@
 							<Text class="clCustomFont" text="{i18n>PageTitle}"/>
 						</contentLeft>
 						<contentMiddle><Text text="" id="selectedModelText"/></contentMiddle>
-						<contentRight>
-							<Button text="{i18n>Logout}" type="Default"/>
-						</contentRight>
 					</Bar>
 				</customHeader>
 				<tnt:ToolHeader backgroundDesign="Translucent">

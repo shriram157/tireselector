@@ -12,9 +12,6 @@
 							<Text class="clCustomFont" text="{i18n>PageTitle}"/>
 						</contentLeft>
 						<contentMiddle><Text text="" id="selectedModelText"/></contentMiddle>
-						<contentRight>
-							<Button text="{i18n>Logout}" type="Default"/>
-						</contentRight>
 					</Bar>
 				</customHeader>
 				<tnt:ToolHeader backgroundDesign="Translucent">
@@ -46,7 +43,7 @@
 							<Text text="{DealerModel>/DealerData/BusinessPartnerAddress} - {DealerModel>/DealerData/Region}"/>
 							<Label text="{i18n>DealerTel}"/>
 							<!--<Input type="Number" value="{TireQuoteModel>/PhoneNumber}"/>-->
-							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"/>
+							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"  liveChange="onUserDealerPhoneChange"/>
 							<Label text="{i18n>QuoteDate}" required="true"/>
 							<DatePicker id="id_QuoteDate" value="{TireQuoteModel>/CurrentDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy"
 								change="handleQuoteDateChange" class="sapUiSmallMarginBottom"/>
@@ -59,13 +56,29 @@
 							<Label text="{i18n>VIN}"/>
 							<Input type="Text" value="{TireQuotationModel>/VIN}" id="ID_VINQuote"/>
 							<Label text="{i18n>Name}" labelFor="nameMandat"/>
+<<<<<<< HEAD
 							<Input type="Text" value="" id="nameMandat" required="false"/>
+=======
+							<Input type="Text" value="{TireQuotationModel>/CustName}" id="nameMandat" required="false"/>
+							
+>>>>>>> refs/heads/bugfix
 							<Label text="{i18n>Address}" labelFor="addressMandat"/>
+<<<<<<< HEAD
 							<Input type="Text" value="" id="addressMandat" required="false"/>
+=======
+							<Input type="Text" value="{TireQuotationModel>/CustAddress}" id="addressMandat" required="false"/>
+							
+>>>>>>> refs/heads/bugfix
 							<Label text="{i18n>PostalCode}" labelFor="postalCodeMandat"/>
+<<<<<<< HEAD
 							<Input type="Text" value="" id="postalCodeMandat" required="false"/>
+=======
+							<Input type="Text" value="{TireQuotationModel>/CustPostalCode}" id="postalCodeMandat" required="false"/>
+							
+>>>>>>> refs/heads/bugfix
 							<Label text="{i18n>Phone}" labelFor="phoneMandat"/>
-							<Input type="Text" value="" id="phoneMandat" required="false"/>
+							<Input type="Text" value="{path:'TireQuotationModel>/CustPhone', formatter: '.formatPhoneNumber'}" id="phoneMandat" required="false" liveChange="onUserInputChange"/>
+							
 							<Label text="{i18n>CreditApp}"/>
 							<Input type="Text" value="" liveChange="ChangeLabelMandatory"/>
 						</f:content>

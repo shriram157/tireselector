@@ -10,11 +10,12 @@ sap.ui.define([
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
 	var sDivision, DivUser, _that, count = 0,
-		sTerm;
+		sTerm, sSelectedLocale;
 	return BaseController.extend("tireSelector.controller.master", {
 		/* Function for Initialization of model and variables for view */
 
 		onInit: function () {
+			
 			_that = this;
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
@@ -66,6 +67,33 @@ sap.ui.define([
 
 			_that.getView().setModel(_that._oViewModel, "MasterModel");
 
+			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			_that.getView().setModel(_that.oI18nModel, "i18n");
+
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "EN"; // default is english 
+			}
+			if (sSelectedLocale == "fr") {
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(_that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(_that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
+
 			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 			if (isDivisionSent) {
 				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
@@ -92,8 +120,12 @@ sap.ui.define([
 					console.log("User Data", userData);
 					_that._oDealerModel = new sap.ui.model.json.JSONModel(userData);
 					_that.userData = userData;
+					//2400599999
 					if (_that.userData.userContext.userAttributes.DealerCode !== undefined) {
 						_that.dealerCode = _that.userData.userContext.userAttributes.DealerCode[0];
+					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+						// NationalUser = "National";
+						_that.dealerCode = "2400599998";
 					} else {
 						_that.dealerCode = "";
 					}
@@ -124,7 +156,13 @@ sap.ui.define([
 					// Stop: comment for local testing
 					_that.DealerData = {};
 					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
-					var queryString1 = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
+					var queryString1;
+					if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+						queryString1 = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
+					} else {
+						queryString1 = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
+					}
+
 					_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString1, {
 						success: $.proxy(function (oDealerData) {
 							// if (oDealerData.results.length > 0) {
@@ -141,8 +179,12 @@ sap.ui.define([
 								_that.DealerData.Region = address.Region;
 								_that._oDealerModel.getData().DealerData = _that.DealerData;
 								_that._oDealerModel.updateBindings(true);
-								var queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode +
-									"' &$expand=to_Customer";
+								var queryString;
+								if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+									queryString = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_Customer";
+								} else {
+									queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_Customer";
+								}
 								_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString, {
 									success: $.proxy(function (oDealerData) {
 										console.log("Business Partner Data", oDealerData.results);
@@ -173,33 +215,37 @@ sap.ui.define([
 
 											_that.getView().setModel(_that._oDealerModel, "DealerModel");
 											sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
+											_that.userDetails = _that.getView().getModel("DealerModel").getData();
 											_that._oDealerModel.updateBindings(true);
 											_that._oDealerModel.refresh(true);
 
-											// var attributeFromSAP;
-											// attributeFromSAP = oDealerData.results[i].to_Customer.Attribute1;
-
-											// switch (attributeFromSAP) {
-											// case "01":
-											// 	_that.DealerData.Division = "10";
-											// 	_that.DealerData.Attribute = "01";
-											// 	_that.DealerData.Div = "TOY";
-											// 	break;
-											// case "02":
-											// 	_that.DealerData.Division = "20";
-											// 	_that.DealerData.Attribute = "02";
-											// 	_that.DealerData.Div = "LEX";
-											// 	break;
-											// case "03":
-											// 	_that.DealerData.Division = "";
-											// 	_that.DealerData.Attribute = "03";
-											// 	_that.DealerData.Div = "";
-											// 	break;
-											// default:
-											// 	_that.DealerData.Division = "10"; //  lets put that as a toyota dealer
-											// 	_that.DealerData.Attribute = "01";
-											// 	_that.DealerData.Div = "TOY";
-											// }
+											_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
+			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			console.log("XSO model data", _that.oXSOServiceModel);
+			
+			_that.oXSOServiceModel.read("/DealerMarkUp", {
+				urlParameters: {
+					"$filter": "Dealer_code eq" + "'" + (_that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ sDivision +"'"
+				},
+				success: $.proxy(function (oData) {
+					if (oData.results.length > 0) {
+						console.log("XSO data", oData);
+						_that.oProdMarkupModel.setData(oData);
+						_that.oProdMarkupModel.updateBindings(true);
+						_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+					} else {
+						// sap.m.MessageBox.error(
+						// 	"NO Data found for Product Markup"
+						// );
+					}
+				}, _that),
+				error: function (oError) {
+					// sap.m.MessageBox.error(
+					// 	"NO Data found for Product Markup"
+					// );
+				}
+			});
 										}
 									}, _that),
 									error: function (oError) {
@@ -220,29 +266,31 @@ sap.ui.define([
 				error: function (oError) {}
 			});
 
-			_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
-			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
-			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-			console.log("XSO model data", _that.oXSOServiceModel);
+			
 
-			_that.oXSOServiceModel.read("/DealerMarkUp", {
-				success: $.proxy(function (oData) {
-					if (oData.results.length > 0) {
-						console.log("XSO data", oData);
-						_that.oProdMarkupModel.setData(oData);
-						_that.oProdMarkupModel.updateBindings(true);
-					} else {
-						// sap.m.MessageBox.error(
-						// 	"NO Data found for Product Markup"
-						// );
-					}
-				}, _that),
-				error: function (oError) {
-					// sap.m.MessageBox.error(
-					// 	"NO Data found for Product Markup"
-					// );
-				}
-			});
+			// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
+			// _that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
+			// sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+			// console.log("XSO model data", _that.oXSOServiceModel);
+
+			// _that.oXSOServiceModel.read("/DealerMarkUp", {
+			// 	success: $.proxy(function (oData) {
+			// 		if (oData.results.length > 0) {
+			// 			console.log("XSO data", oData);
+			// 			_that.oProdMarkupModel.setData(oData);
+			// 			_that.oProdMarkupModel.updateBindings(true);
+			// 		} else {
+			// 			// sap.m.MessageBox.error(
+			// 			// 	"NO Data found for Product Markup"
+			// 			// );
+			// 		}
+			// 	}, _that),
+			// 	error: function (oError) {
+			// 		// sap.m.MessageBox.error(
+			// 		// 	"NO Data found for Product Markup"
+			// 		// );
+			// 	}
+			// });
 
 			_that.oGlobalJSONModel = new sap.ui.model.json.JSONModel();
 			_that.oGlobalJSONModel.setSizeLimit(5000);
@@ -251,26 +299,21 @@ sap.ui.define([
 			// _that.oGlobalJSONModel.setData();
 			_that.oGlobalJSONModel.updateBindings();
 
-			_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				bundleUrl: "i18n/i18n.properties"
-			});
-			_that.getView().setModel(_that.oI18nModel, "i18n");
-
-			if (window.location.search == "?language=fr") {
-				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("fr")
-				});
-				_that.getView().setModel(_that.oI18nModel, "i18n");
-				_that.sCurrentLocale = 'FR';
-			} else {
-				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("en")
-				});
-				_that.getView().setModel(_that.oI18nModel, "i18n");
-				_that.sCurrentLocale = 'EN';
-			}
+			// if (window.location.search == "?language=fr") {
+			// 	_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+			// 		bundleUrl: "i18n/i18n.properties",
+			// 		bundleLocale: ("fr")
+			// 	});
+			// 	_that.getView().setModel(_that.oI18nModel, "i18n");
+			// 	_that.sCurrentLocale = 'FR';
+			// } else {
+			// 	_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+			// 		bundleUrl: "i18n/i18n.properties",
+			// 		bundleLocale: ("en")
+			// 	});
+			// 	_that.getView().setModel(_that.oI18nModel, "i18n");
+			// 	_that.sCurrentLocale = 'EN';
+			// }
 
 			_that.SearchOptionList = _that.getView().byId("searchOptionList");
 			_that.ForVehicleSearchOnly = _that.getView().byId("forVehicleSearchOnly");
@@ -674,13 +717,13 @@ sap.ui.define([
 					error: function (oError) {
 						_that.ModelNodataFlag = true;
 					},
-					complete:function(){
+					complete: function () {
 						_that.SearchOptionVehicle.setValue();
 						_that.ModelSeriesCombo.setValue();
 						_that.SearchOptionVehicle.setSelectedKey(null);
 						_that.ModelSeriesCombo.setSelectedKey(null);
 					}
-					
+
 				});
 
 				if (_that.ModelNodataFlag == true) {
