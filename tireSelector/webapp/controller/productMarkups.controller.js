@@ -124,7 +124,8 @@ sap.ui.define([
 				// var query = "/DealerMarkUp?$filter=Dealer_code eq '" + _localScope.userData.DealerData.DealerCode + "'";
 				_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 					urlParameters: {
-						"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+						"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '" + _localScope.userData
+							.DealerData.Division + "'"
 					},
 					success: $.proxy(function (oData) {
 						console.log("XSO data", oData);
@@ -140,25 +141,51 @@ sap.ui.define([
 					}
 				});
 
+				// _localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				// 	bundleUrl: "i18n/i18n.properties"
+				// });
+				// _localScope.getView().setModel(_localScope.oI18nModel, "i18n");
+
+				// if (window.location.search == "?language=fr") {
+				// 	_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				// 		bundleUrl: "i18n/i18n.properties",
+				// 		bundleLocale: ("fr")
+				// 	});
+				// 	_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
+				// 	_localScope.sCurrentLocale = 'FR';
+				// } else {
+				// 	_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				// 		bundleUrl: "i18n/i18n.properties",
+				// 		bundleLocale: ("en")
+				// 	});
+				// 	_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
+				// 	_localScope.sCurrentLocale = 'EN';
+				// }
 				_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties"
 				});
 				_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
 
-				if (window.location.search == "?language=fr") {
+				var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+				if (isLocaleSent) {
+					_localScope.sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+				} else {
+					_localScope.sSelectedLocale = "EN"; // default is english 
+				}
+				if (_localScope.sSelectedLocale == "fr") {
 					_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
 						bundleUrl: "i18n/i18n.properties",
 						bundleLocale: ("fr")
 					});
-					_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
-					_localScope.sCurrentLocale = 'FR';
+					this.getView().setModel(_localScope.oI18nModel, "i18n");
+					this.sCurrentLocale = 'FR';
 				} else {
 					_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
 						bundleUrl: "i18n/i18n.properties",
 						bundleLocale: ("en")
 					});
-					_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
-					_localScope.sCurrentLocale = 'EN';
+					this.getView().setModel(_localScope.oI18nModel, "i18n");
+					this.sCurrentLocale = 'EN';
 				}
 
 			}, _localScope);
@@ -277,7 +304,8 @@ sap.ui.define([
 						//newDataFromModel.IsLive = "Y";
 						oModel.create("/DealerMarkUp", newDataFromModel, null, {
 							urlParameters: {
-								"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+								"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '" + _localScope.userData
+									.DealerData.Division + "'"
 							},
 							success: function (oData, oResponse) {
 								postSuccessFlag = true;
@@ -370,7 +398,8 @@ sap.ui.define([
 					oModel.refreshSecurityToken();
 					oModel.create("/DealerMarkUp", newDataFromModel, null, {
 						urlParameters: {
-							"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+							"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '" + _localScope.userData
+								.DealerData.Division + "'"
 						},
 						success: function (oData, oResponse) {
 							postSuccessFlag = true;
@@ -410,7 +439,8 @@ sap.ui.define([
 			var flagNoData = false;
 			_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 				urlParameters: {
-					"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
+					"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '" + _localScope.userData
+						.DealerData.Division + "'"
 				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
