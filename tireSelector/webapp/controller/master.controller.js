@@ -222,10 +222,10 @@ sap.ui.define([
 			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
 			console.log("XSO model data", _that.oXSOServiceModel);
-
+			
 			_that.oXSOServiceModel.read("/DealerMarkUp", {
 				urlParameters: {
-					"$filter": "Dealer_code eq" + "'" + (_that.userDetails.DealerData.DealerCode) + "'"
+					"$filter": "Dealer_code eq" + "'" + (_that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ sDivision +"'"
 				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {

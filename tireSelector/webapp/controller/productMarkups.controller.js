@@ -124,7 +124,7 @@ sap.ui.define([
 				// var query = "/DealerMarkUp?$filter=Dealer_code eq '" + _localScope.userData.DealerData.DealerCode + "'";
 				_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 					urlParameters: {
-						"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "'"
+						"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 					},
 					success: $.proxy(function (oData) {
 						console.log("XSO data", oData);
@@ -277,7 +277,7 @@ sap.ui.define([
 						//newDataFromModel.IsLive = "Y";
 						oModel.create("/DealerMarkUp", newDataFromModel, null, {
 							urlParameters: {
-								"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "'"
+								"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 							},
 							success: function (oData, oResponse) {
 								postSuccessFlag = true;
@@ -370,7 +370,7 @@ sap.ui.define([
 					oModel.refreshSecurityToken();
 					oModel.create("/DealerMarkUp", newDataFromModel, null, {
 						urlParameters: {
-							"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "'"
+							"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 						},
 						success: function (oData, oResponse) {
 							postSuccessFlag = true;
@@ -410,7 +410,7 @@ sap.ui.define([
 			var flagNoData = false;
 			_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 				urlParameters: {
-					"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "'"
+					"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {

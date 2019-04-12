@@ -110,10 +110,10 @@ sap.ui.define([
 			that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
 			
 			console.log("XSO model data", that.oXSOServiceModel);
-
+			//"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 			that.oXSOServiceModel.read("/DealerMarkUp", {
 				urlParameters: {
-					"$filter": "Dealer_code eq" + "'" + (that.userDetails.DealerData.DealerCode) + "'"
+					"$filter": "Dealer_code eq" + "'" + (that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ sDivision +"'"
 				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
