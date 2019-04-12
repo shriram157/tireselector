@@ -15,6 +15,7 @@ sap.ui.define([
 		/* Function for Initialization of model and variables for view */
 
 		onInit: function () {
+			
 			_that = this;
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
