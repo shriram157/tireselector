@@ -159,7 +159,6 @@ sap.ui.define([
 				type: "GET",
 				dataType: "json",
 				success: function (oData) {
-					debugger;
 					// var userScopes = oData;
 					// userScopes.forEach(function (data) {
 
@@ -184,7 +183,7 @@ sap.ui.define([
 
 					case "TCIAdminECPDept":
 
-						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
