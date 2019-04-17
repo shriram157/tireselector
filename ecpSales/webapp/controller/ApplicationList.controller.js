@@ -77,7 +77,7 @@ sap.ui.define([
 					case "TCIAdminECPDept":
 
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
-						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 
 						break;
