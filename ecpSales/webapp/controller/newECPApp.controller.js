@@ -2230,6 +2230,9 @@ return Controller.extend("zecp.controller.newECPApp", {
 								},
 								success: function (ret) {
 									console.log(ret);
+									if(ret.results[0] && (parseInt(ret.results[0].CancelFee) === 0)){
+										ret.results[0].CancelFee = "100.00";
+									}
 									that.getView().getModel("LocalDataModel").setProperty("/AgreementData", ret.results[0]);
 									var oDealer = ret.results[0].DealershipNumber;
 									if (oDealer) {
