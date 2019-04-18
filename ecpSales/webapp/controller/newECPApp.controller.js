@@ -1630,7 +1630,6 @@ sap.ui.define([
 				ZbenefitFlag: this.oECPData.ZecpBenefitsFlg,
 				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice
 			};
-
 			return crudObj;
 		},
 		onSaveApp: function () {
