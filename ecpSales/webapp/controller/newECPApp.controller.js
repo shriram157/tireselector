@@ -2269,9 +2269,9 @@ return Controller.extend("zecp.controller.newECPApp", {
 							// 	animationDuration: 2000
 							// });
 
-							var oDialogBox = sap.ui.xmlfragment("zecp.view.fragments.AgreementDetails", that);
-							that.getView().addDependent(oDialogBox);
-							oDialogBox.open();
+							that.printPrevDialogBox = sap.ui.xmlfragment("zecp.view.fragments.AgreementDetails", that);
+							that.getView().addDependent(that.printPrevDialogBox);
+							that.printPrevDialogBox.open();
 							that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 						},
 						error: function () {
@@ -2323,6 +2323,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 		this.getRouter().navTo("ApplicationList");
 	},
 	onPressBackPressAgr: function () {
+		var that= this;
 		if (this.getModel("LocalDataModel").getProperty("/printBtnState") == true) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var dialog = new Dialog({
@@ -2352,6 +2353,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 						}
 
 						dialog.close();
+						that.printPrevDialogBox.destroy();
 						this.getRouter().navTo("ApplicationList");
 					}, this)
 				}),
@@ -2360,16 +2362,19 @@ return Controller.extend("zecp.controller.newECPApp", {
 					text: oBundle.getText("No"),
 					press: $.proxy(function () {
 						dialog.close();
+						that.printPrevDialogBox.destroy();
 						this.getRouter().navTo("ApplicationList");
 					}, this)
 				}),
 				afterClose: function () {
+					that.printPrevDialogBox.destroy();
 					dialog.destroy();
 				}
 			});
 
 			dialog.open();
 		} else {
+			that.printPrevDialogBox.destroy();
 			this.getRouter().navTo("ApplicationList");
 		}
 
