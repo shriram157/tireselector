@@ -1265,7 +1265,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
 				} else {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-					this.getView().byId("idNewECPMsgStrip").setText("ECP Plan cannot be sold as it is exceeding 31 Days from RDR Date");
+					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("RDR31Days"));
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
@@ -2235,6 +2235,8 @@ return Controller.extend("zecp.controller.newECPApp", {
 									}
 									that.getView().getModel("LocalDataModel").setProperty("/AgreementData", ret.results[0]);
 									var oDealer = ret.results[0].DealershipNumber;
+									var dealerStr = ret.results[0].DealershipNumber
+									ret.results[0].DealershipNumber = dealerStr.substring(dealerStr.length-5, dealerStr.length);
 									if (oDealer) {
 										oBusinessModel.read("/A_BusinessPartner", {
 											urlParameters: {
