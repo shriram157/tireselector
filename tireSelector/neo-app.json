@@ -1,63 +1,11 @@
 {
 	"welcomeFile": "/webapp/index.html",
-	"headerWhiteList": [
-		"x-odata-custom-rhp_pln_desc",
-		"x-odata-custom-rhp_unit",
-		"x-odata-custom-rhp_qty",
-		"x-odata-custom-rhp_price",
-		"x-odata-custom-waers",
-		"x-odata-custom-mtbl_price",
-		"x-odata-custom-wheels_desc",
-		"x-odata-custom-wheels_unit",
-		"x-odata-custom-wheels_qty",
-		"x-odata-custom-wheels_price",
-		"x-odata-custom-tpms_desc",
-		"x-odata-custom-tpms_unit",
-		"x-odata-custom-tpms_qty",
-		"x-odata-custom-tpms_price",
-		"x-odata-custom-fit_desc",
-		"x-odata-custom-fit_unit",
-		"x-odata-custom-fit_qty",
-		"x-odata-custom-fit_price",
-		"x-odata-custom-oth_itms_1",
-		"x-odata-custom-oth_itms_1_pr",
-		"x-odata-custom-oth_itms_2",
-		"x-odata-custom-oth_itms_2_pr",
-		"x-odata-custom-oth_itms_3",
-		"x-odata-custom-oth_itms_3_pr",
-		"x-odata-custom-oth_itms_4",
-		"x-odata-custom-oth_itms_4_pr",
-		"x-odata-custom-sub_total",
-		"x-odata-custom-env_fee_cost",
-		"x-odata-custom-env_fee",
-		"x-odata-custom-gst",
-		"x-odata-custom-pst",
-		"x-odata-custom-total",
-		"x-odata-custom-tire_desc",
-		"x-odata-custom-tire_size_info",
-		"x-odata-custom-unit",
-		"x-odata-custom-quantity",
-		"x-odata-custom-price",
-		"x-odata-custom-dlr_tel",
-		"x-odata-custom-vehicle_des",
-		"x-odata-custom-vin_num ",
-		"x-odata-custom-quote_date ",
-		"x-odata-custom-offer_exp_dt",
-		"x-odata-custom-cust_name",
-		"x-odata-custom-cust_add_l1",
-		"x-odata-custom-cust_add_l2",
-		"x-odata-custom-cust_add_l3",
-		"x-odata-custom-cust_tel",
-		"x-odata-custom-logo_info"
-	],
-
 	"routes": [{
 		"path": "/resources",
 		"target": {
 			"type": "service",
 			"name": "sapui5",
-			"entryPath": "/resources",
-			"version": "1.52.22"
+			"entryPath": "/resources"
 		},
 		"description": "SAPUI5 Resources"
 	}, {
@@ -65,8 +13,7 @@
 		"target": {
 			"type": "service",
 			"name": "sapui5",
-			"entryPath": "/test-resources",
-			"version": "1.52.22"
+			"entryPath": "/test-resources"
 		},
 		"description": "SAPUI5 Test Resources"
 	}, {

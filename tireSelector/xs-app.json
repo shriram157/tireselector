@@ -1,33 +1,47 @@
 {
-	"welcomeFile": "/tireselector/index.html",
-	"authenticationMethod": "route",
-	"logout": {
-		"logoutEndpoint": "/do/logout"
-	},
-	"routes": [{
-		"source": "^/tireselector/index.html$",
-		"target": "index.html",
-		"localDir": "webapp",
-		"cacheControl": "no-cache, no-store, must-revalidate"
-	}, {
-		"source": "^/tireselector/(.*)$",
-		"target": "$1",
-		"localDir": "webapp"
-	}, {
-		"source": "/node(.*)",
-		"destination": "tireSelector-node-backend",
-		"csrfProtection": false
-	}, {
-		"source": "/appdata(.*)",
-		"destination": "tireSelector-node-backend",
-		"csrfProtection": false
-	}, {
-		"source": "/xsodata(.*)",
-		"destination": "tireSelector-xsjs-backend",
-		"csrfProtection": false
-	}, {
-		"source": "(.*)(.xsodata)",
-		"destination": "tireSelector-xsjs-backend",
-		"csrfProtection": false
-	}]
+  "welcomeFile": "/tireselector/index.html",
+  "authenticationMethod": "route",
+  "logout": {
+    "logoutEndpoint": "/do/logout"
+  },
+  "routes": [
+    {
+      "source": "^/S4HANA_GW/(.*)$",
+      "target": "$1",
+      "authenticationType": "none",
+      "destination": "S4HANA_GW",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/tireselector/index.html$",
+      "target": "index.html",
+      "localDir": "webapp",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
+    {
+      "source": "^/tireselector/(.*)$",
+      "target": "$1",
+      "localDir": "webapp"
+    },
+    {
+      "source": "/node(.*)",
+      "destination": "tireSelector-node-backend",
+      "csrfProtection": false
+    },
+    {
+      "source": "/appdata(.*)",
+      "destination": "tireSelector-node-backend",
+      "csrfProtection": false
+    },
+    {
+      "source": "/xsodata(.*)",
+      "destination": "tireSelector-xsjs-backend",
+      "csrfProtection": false
+    },
+    {
+      "source": "(.*)(.xsodata)",
+      "destination": "tireSelector-xsjs-backend",
+      "csrfProtection": false
+    }
+  ]
 }

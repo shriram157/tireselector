@@ -117,7 +117,7 @@ sap.ui.define([
 			// }
 		},
 		textCount: function (count) {
-			debugger;
+			// debugger;
 			var oTextArea = count.getSource();
 			var iValueLength = oTextArea.getValue().length + " " + _this.oI18nModel.getResourceBundle().getText("characters");
 			_this.getView().byId("textCount").setText(iValueLength);
@@ -129,7 +129,7 @@ sap.ui.define([
 		},
 
 		onUserDealerPhoneChange: function (oEvent) {
-			debugger;
+			// debugger;
 			var cleaned = ('' + oEvent.getParameters().value).replace(/\D/g, '');
 			var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
 			if (match) {
@@ -139,7 +139,7 @@ sap.ui.define([
 			// return null
 		},
 		onUserInputChange: function (oEvent) {
-			debugger;
+			// debugger;
 			var cleaned = ('' + oEvent.getParameters().value).replace(/\D/g, '');
 			var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
 			if (match) {
@@ -662,123 +662,130 @@ sap.ui.define([
 			});
 			this.CurrentDate = this.oDateFormatShort.format(new Date(ModelData3.CurrentDate));
 
-			this.headers = {
-				"x-odata-custom-rhp_pln_desc": this.getView().byId("id_RHP").getSelectedKey(),
-				"x-odata-custom-rhp_unit": this.getView().byId("id_RHPUnitPrice").getValue(),
-				"x-odata-custom-rhp_qty": this.getView().byId("id_RHPsQty").getValue(),
-				"x-odata-custom-rhp_price": ModelData2.RHPPriceSum,
-				"x-odata-custom-waers": "CAD",
-				"x-odata-custom-mtbl_price": ModelData2.MnBPrice,
-				"x-odata-custom-wheels_desc": this.getView().byId("wheelsText").getValue(),
-				"x-odata-custom-wheels_unit": this.getView().byId("id_wheelsUnitPrice").getValue(),
-				"x-odata-custom-wheels_qty": this.getView().byId("id_wheelsQty").getValue(),
-				"x-odata-custom-wheels_price": ModelData2.WheelsPrice,
-				"x-odata-custom-tpms_desc": this.getView().byId("tmpsTxt").getValue(),
-				"x-odata-custom-tpms_unit": this.getView().byId("id_TPMSUnitPrice").getValue(),
-				"x-odata-custom-tpms_qty": this.getView().byId("id_TPMSQty").getValue(),
-				"x-odata-custom-tpms_price": ModelData2.TPMSPrice,
-				"x-odata-custom-fit_desc": this.getView().byId("fittingkitTxt").getValue(),
-				"x-odata-custom-fit_unit": this.getView().byId("id_FittingKitUnitPrice").getValue(),
-				"x-odata-custom-fit_qty": this.getView().byId("id_FittingKitQty").getValue(),
-				"x-odata-custom-fit_price": ModelData2.FittingKitPrice,
-				"x-odata-custom-oth-itms_1": this.getView().byId("valItem1").getValue(),
-				"x-odata-custom-oth-itms_1_pr": ModelData2.otherItemPrice1,
-				"x-odata-custom-oth-itms_2": this.getView().byId("valItem2").getValue(),
-				"x-odata-custom-oth-itms_2_pr": ModelData2.otherItemPrice2,
-				"x-odata-custom-oth-itms_3": this.getView().byId("valItem3").getValue(),
-				"x-odata-custom-oth-itms_3_pr": ModelData2.otherItemPrice3,
-				"x-odata-custom-oth-itms_4": this.getView().byId("valItem4").getValue(),
-				"x-odata-custom-oth-itms_4_pr": ModelData2.otherItemPrice4,
-				"x-odata-custom-sub_total": ModelData.subTotal,
-				"x-odata-custom-env_fee_cost": ModelData.EHFPRice,
-				"x-odata-custom-env_fee": ModelData.EHFPriceSum,
-				"x-odata-custom-gst": ModelData.FederalTaxSum,
-				"x-odata-custom-pst": ModelData.ProvincialTaxSum,
-				"x-odata-custom-total": ModelData.Total,
-				"x-odata-custom-tire_desc": ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
-				"x-odata-custom-tire_size_info": ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
-				"x-odata-custom-unit": ModelData.Retails,
-				"x-odata-custom-quantity": this.getView().byId("id_tireQty").getValue(),
-				"x-odata-custom-price": ModelData2.TiresPrice,
-				"x-odata-custom-dlr_tel": ModelData3.PhoneNumber,
-				"x-odata-custom-vehicle_des": ModelData.VehicleSeriesDescp,
-				"x-odata-custom-vin_num ": ModelData.VIN,
-				"x-odata-custom-quote_date": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
-				"x-odata-custom-offer_exp_dt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
-				"x-odata-custom-cust_name": ModelData.CustName,
-				// "x-odata-custom-cust_add_l1": ModelData.CustAddress,
-				// "x-odata-custom-cust_add_l2": "",
-				// "x-odata-custom-cust_add_l3": ModelData.CustPostalCode,
-				"x-odata-custom-cust_tel": ModelData.CustPhone,
-				"x-odata-custom-logo_info": sDivision
+			this.obj = {
+				"d": {
+					"DlrName": "testadd", //this.userData.DealerData.BusinessPartnerName,
+					"DlrAddL1": "testadd", //this.userData.DealerData.BusinessPartnerAddress,
+					"DlrAddL2": "testadd", //Region,
+					"DlrAddL3": "testadd", //"",
+					"DlrTel": ModelData3.PhoneNumber,
+					"VehicleDes": ModelData.VehicleSeriesDescp,
+					"VinNum": ModelData.VIN,
+					"QuoteDate": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
+					"OfferExpDt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
+					"RhpPlnDesc": this.getView().byId("id_RHP").getSelectedKey(),
+					"RhpUnit": this.getView().byId("id_RHPUnitPrice").getValue(),
+					"RhpQty": this.getView().byId("id_RHPsQty").getValue(),
+					"RhpPrice": ModelData2.RHPPriceSum,
+					"Waers": "CAD",
+					"MtblPrice": ModelData2.MnBPrice,
+					"WheelsDesc": this.getView().byId("wheelsText").getValue(),
+					"WheelsUnit": this.getView().byId("id_wheelsUnitPrice").getValue(),
+					"WheelsQty": this.getView().byId("id_wheelsQty").getValue(),
+					"WheelsPrice": ModelData2.WheelsPrice,
+					"TpmsDesc": this.getView().byId("tmpsTxt").getValue(),
+					"TpmsUnit": this.getView().byId("id_TPMSUnitPrice").getValue(),
+					"TpmsQty": this.getView().byId("id_TPMSQty").getValue(),
+					"TpmsPrice": ModelData2.TPMSPrice,
+					"FitDesc": this.getView().byId("fittingkitTxt").getValue(),
+					"FitUnit": this.getView().byId("id_FittingKitUnitPrice").getValue(),
+					"FitQty": this.getView().byId("id_FittingKitQty").getValue(),
+					"FitPrice": ModelData2.FittingKitPrice,
+					"OthItms1": this.getView().byId("valItem1").getValue(),
+					"OthItms1Pr": ModelData2.otherItemPrice1,
+					"OthItms2": this.getView().byId("valItem2").getValue(),
+					"OthItms2Pr": ModelData2.otherItemPrice2,
+					"OthItms3": this.getView().byId("valItem3").getValue(),
+					"OthItms3Pr": ModelData2.otherItemPrice3,
+					"OthItms4": this.getView().byId("valItem4").getValue(),
+					"OthItms4Pr": ModelData2.otherItemPrice4,
+					"SubTotal": ModelData.subTotal,
+					"EnvFeeCost": ModelData.EHFPRice,
+					"EnvFee": ModelData.EHFPriceSum,
+					"Gst": ModelData.FederalTaxSum,
+					"Pst": ModelData.ProvincialTaxSum,
+					"Total": ModelData.Total,
+					"TireDesc": "sjhfkjds", // ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
+					"TireSizeInfo": (ModelData.TireSize).replace("/", "%2F") + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
+					"Unit": ModelData.Retails,
+					"Quantity": this.getView().byId("id_tireQty").getValue(),
+					"Price": ModelData2.TiresPrice,
+					"MimeType": "application/json",
+					"logo_info": sDivision
+				}
 			};
 
 			var that = this;
-			$.each(that.headers, function (key, value) {
-				if (value === "" || value === null || value === undefined) {
-					delete that.headers[key];
+			$.each(that.obj.d, function (key, value) {
+				if (value === null || value === "" || value === undefined) {
+					delete that.obj.d[key];
 				}
 			});
 
-			$.ajaxSetup({
-				headers: that.headers
-			});
+			that.url = this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/TireQuotePdfSet";
 			$.ajax({
-				cache: false,
-				type: 'GET',
-				url: this.nodeJsUrl + "/ZSD_TIRE_QUOTATION_PDF_SRV_01/zc_tirequoteSet(DlrName='" +
-					this.userData.DealerData.BusinessPartnerName +
-					"',DlrAddL1='" + this.userData.DealerData.BusinessPartnerAddress + "',DlrAddL2='" + Region + "')/$value",
-				//xhrFields is what did the trick to read the blob to pdf
-				xhrFields: {
-					responseType: 'arraybuffer'
+				type: "GET",
+				headers: {
+					"X-Csrf-Token": "Fetch"
 				},
-				success: function (response, status, xhr) {
-					// check for a filename
-					that.headers = {};
-					var filename = "";
-					var disposition = xhr.getResponseHeader('Content-Disposition');
-					if (disposition && disposition.indexOf('attachment') !== -1) {
-						var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
-						var matches = filenameRegex.exec(disposition);
-						if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
-					}
+				url: that.url,
+				success: function (data, textStatus, request) {
+						// console.log("request", request);
+						that.csrfToken = request.getResponseHeader('X-Csrf-Token');
+						console.log("csrfToken", that.csrfToken);
+						$.ajax({
+							dataType: "json",
+							cache: false,
+							type: "POST",
+							url: that.url,
+							data: JSON.stringify(that.obj),
+							headers: {
+								"X-Csrf-Token": that.csrfToken,
+								"Content-Type": "application/json; charset=utf-8"
+							},
+							// xhrFields is what did the trick to read the blob to pdf
+							// xhrFields: {
+							// 	responseType: 'arraybuffer'
+							// },
+							success: function (response, status, xhr) {
+								var contentType = 'application/pdf',
+									sliceSize = 512;
+								// var b64toBlob = (response.d.Content, contentType = '', sliceSize = 512) => {
+								var byteCharacters = atob(response.d.Content);
+								var byteArrays = [];
 
-					var type = xhr.getResponseHeader('Content-Type');
-					var blob = new Blob([response], {
-						type: type
-					});
+								for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+									var slice = byteCharacters.slice(offset, offset + sliceSize);
+									var byteNumbers = new Array(slice.length);
+									for (var i = 0; i < slice.length; i++) {
+										byteNumbers[i] = slice.charCodeAt(i);
+									}
+									var byteArray = new Uint8Array(byteNumbers);
+									byteArrays.push(byteArray);
+								}
 
-					if (typeof window.navigator.msSaveBlob !== 'undefined') {
-						// IE workaround for "HTML7007: One or more blob URLs were revoked by closing the blob for which they were created. These URLs will no longer resolve as the data backing the URL has been freed."
-						window.navigator.msSaveBlob(blob, filename);
-					} else {
-						var URL = window.URL || window.webkitURL;
-						var downloadUrl = URL.createObjectURL(blob);
-
-						if (filename) {
-							// use HTML5 a[download] attribute to specify filename
-							var a = document.createElement("a");
-							// safari doesn't support this yet
-							if (typeof a.download === 'undefined') {
-								window.location = downloadUrl;
-							} else {
-								a.href = downloadUrl;
-								a.download = filename;
+								var blob = new Blob(byteArrays, {
+									type: contentType
+								});
+								
+								var a = window.document.createElement("a");
+								a.href = window.URL.createObjectURL(blob, {
+									type: "application/pdf"
+								});
+								a.download = "TireQuotation.pdf";
 								document.body.appendChild(a);
 								a.click();
+								document.body.removeChild(a);
+								// // sap.ui.core.util.File.save(bin, "TireQuotation", "pdf", "application/pdf");
+								that.clearData();
+							},
+							error: function (oErrEvent) {
+								console.log("oErrEvent", oErrEvent);
+								// that.headers = {};
+								// that.clearData();
 							}
-						} else {
-							window.location = downloadUrl;
-						}
+						});
 					}
-					that.clearData();
-				},
-				error: function (oErrEvent) {
-					console.log("oErrEvent", oErrEvent);
-					that.headers = {};
-					that.clearData();
-				}
 			});
 		},
 
