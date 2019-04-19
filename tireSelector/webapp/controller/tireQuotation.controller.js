@@ -664,10 +664,10 @@ sap.ui.define([
 
 			this.obj = {
 				"d": {
-					"DlrName": "testadd", //this.userData.DealerData.BusinessPartnerName,
-					"DlrAddL1": "testadd", //this.userData.DealerData.BusinessPartnerAddress,
-					"DlrAddL2": "testadd", //Region,
-					"DlrAddL3": "testadd", //"",
+					"DlrName": this.userData.DealerData.BusinessPartnerName,
+					"DlrAddL1": this.userData.DealerData.BusinessPartnerAddress,
+					"DlrAddL2": Region,
+					"DlrAddL3": "",
 					"DlrTel": ModelData3.PhoneNumber,
 					"VehicleDes": ModelData.VehicleSeriesDescp,
 					"VinNum": ModelData.VIN,
