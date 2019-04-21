@@ -190,28 +190,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			// var scopes = _this.userData.userContext.scopes;
-			// console.log("scopes", scopes);
-			// var accessAll = false,
-			// 	accesslimited = false;
+			var scopes = _this.userData.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
 
-			// for (var s = 0; s < scopes.length; s++) {
-			// 	if (scopes[s] != "openid") {
-			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-			// 			accessAll = true;
-			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-			// 			accesslimited = true;
-			// 		} else {
-			// 			accessAll = false;
-			// 			accesslimited = false;
-			// 		}
-			// 	}
-			// }
-			// if (accessAll == true && accesslimited == true) {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", true);
-			// } else {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", false);
-			// }
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				_this._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				_this._oViewModel.setProperty("/enableProdMarkup", false);
+			}
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -705,12 +705,17 @@ sap.ui.define([
 					"Gst": ModelData.FederalTaxSum,
 					"Pst": ModelData.ProvincialTaxSum,
 					"Total": ModelData.Total,
-					"TireDesc": "sjhfkjds", // ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
+					"TireDesc": ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
 					"TireSizeInfo": (ModelData.TireSize).replace("/", "%2F") + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
 					"Unit": ModelData.Retails,
 					"Quantity": this.getView().byId("id_tireQty").getValue(),
 					"Price": ModelData2.TiresPrice,
 					"MimeType": "application/json",
+					"CustName":ModelData.CustName,
+					"CustAddL1":ModelData.CustAddress,
+					"CustAddL2":"",
+					"CustAddL3":ModelData.CustPostalCode,
+					"CustTel":ModelData.CustPhone,
 					"logo_info": sDivision
 				}
 			};
