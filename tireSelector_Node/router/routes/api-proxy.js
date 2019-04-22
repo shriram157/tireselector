@@ -56,28 +56,28 @@ module.exports = function (appContext) {
 		proxiedReqHeaders["X-Csrf-Token"] = csrfTokenHeaderValue;
 
 		// Add custom OData headers from original request
-		// Object.keys(req.headers).forEach(key => {
-		// 	if (key.startsWith("x-odata-custom-")) {
-		// 		var actualKey = key.replace("x-odata-custom-", "");
-		// 		if (!proxiedReqHeaders[actualKey]) {
-		// 			proxiedReqHeaders[actualKey] = req.headers[key];
-		// 			tracer.debug("Added custom header [ %s ] with value [ %s ] as [ %s ] to proxied request.", key, req.headers[key], actualKey);
-		// 		}
-		// 	}
-		// });
+		Object.keys(req.headers).forEach(key => {
+			if (key.startsWith("x-odata-custom-")) {
+				var actualKey = key.replace("x-odata-custom-", "");
+				if (!proxiedReqHeaders[actualKey]) {
+					proxiedReqHeaders[actualKey] = req.headers[key];
+					tracer.debug("Added custom header [ %s ] with value [ %s ] as [ %s ] to proxied request.", key, req.headers[key], actualKey);
+				}
+			}
+		});
 
-		// // Redact security-sensitive header values before writing to trace log
-		// var traceProxiedReqHeaders = JSON.parse(JSON.stringify(proxiedReqHeaders));
-		// var secSensitiveHeaderNames = ["authorization", "apikey", "x-csrf-token"];
-		// Object.keys(traceProxiedReqHeaders).forEach(key => {
-		// 	if (secSensitiveHeaderNames.includes(key.toLowerCase())) {
-		// 		traceProxiedReqHeaders[key] = "REDACTED";
-		// 	}
-		// });
+		// Redact security-sensitive header values before writing to trace log
+		var traceProxiedReqHeaders = JSON.parse(JSON.stringify(proxiedReqHeaders));
+		var secSensitiveHeaderNames = ["authorization", "apikey", "x-csrf-token"];
+		Object.keys(traceProxiedReqHeaders).forEach(key => {
+			if (secSensitiveHeaderNames.includes(key.toLowerCase())) {
+				traceProxiedReqHeaders[key] = "REDACTED";
+			}
+		});
 
-		// tracer.debug("Proxied Method: %s", proxiedMethod);
-		// tracer.debug("Proxied request headers: %s", JSON.stringify(traceProxiedReqHeaders));
-		// tracer.debug("Proxied URL: %s", proxiedUrl);
+		tracer.debug("Proxied Method: %s", proxiedMethod);
+		tracer.debug("Proxied request headers: %s", JSON.stringify(traceProxiedReqHeaders));
+		tracer.debug("Proxied URL: %s", proxiedUrl);
 
 		let proxiedReq = request({
 			headers: proxiedReqHeaders,
