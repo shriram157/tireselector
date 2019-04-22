@@ -687,7 +687,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 										this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
 									} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpModelcode") == "Imported US Vehicle") {
 										this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-										this.getView().byId("idNewECPMsgStrip").setText("ECP Sale For Foreign VINs are Not Allowed");
+										this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ForeginVINError"));
 										this.getView().byId("idNewECPMsgStrip").setType("Error");
 										this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 										this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
@@ -706,7 +706,9 @@ return Controller.extend("zecp.controller.newECPApp", {
 											oVin.setValueState(sap.ui.core.ValueState.None);
 										}, this)).fail($.proxy(function (oData) {
 											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-											this.getView().byId("idNewECPMsgStrip").setText("Mismatch between Dealer type and Vehicle Make");
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("MisMatchDealertypeAndVehicle"));
+											
+										
 											this.getView().byId("idNewECPMsgStrip").setType("Error");
 										}, this));
 										// this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
@@ -1789,7 +1791,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", true);
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
+			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
 		} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") == "" && this.getView().getModel("EcpFieldData").getProperty(
 				"/ZecpLienholder") == "" && this.getView().getModel("EcpFieldData").getProperty(
 				"/ZecpLienterms") != "") {
@@ -1801,7 +1803,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
+			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
 		} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") == "" && this.getView().getModel("EcpFieldData").getProperty(
 				"/ZecpLienterms") == "" && this.getView().getModel("EcpFieldData").getProperty(
 				"/ZecpLienholder") != "") {
@@ -1813,7 +1815,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", true);
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
+			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
 		} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpLienholder") != "" && this.getView().getModel("EcpFieldData").getProperty(
 				"/ZecpLienterms") == "" && this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") != "") {
 			this.getModel("LocalDataModel").setProperty("/AmtFinReq", false);
@@ -1833,7 +1835,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
+			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
 		} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") != "" && this.getView().getModel("EcpFieldData").getProperty(
 				"/ZecpLienterms") != "" && this.getView().getModel("EcpFieldData").getProperty(
 				"/ZecpLienholder") == "") {
@@ -1845,7 +1847,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
+			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
 		}
 
 		// else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") != "" && this.getView().getModel("EcpFieldData").getProperty(
