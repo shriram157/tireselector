@@ -673,7 +673,7 @@ sap.ui.define([
 					"VinNum": ModelData.VIN,
 					"QuoteDate": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
 					"OfferExpDt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
-					"RhpPlnDesc": this.getView().byId("id_RHP").getSelectedKey(),
+					"RhpPlnDesc": this.getView().byId("id_RHP")._getSelectedItemText(),
 					"RhpUnit": this.getView().byId("id_RHPUnitPrice").getValue(),
 					"RhpQty": this.getView().byId("id_RHPsQty").getValue(),
 					"RhpPrice": ModelData2.RHPPriceSum,
