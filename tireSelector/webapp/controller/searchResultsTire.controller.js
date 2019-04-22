@@ -100,6 +100,7 @@ sap.ui.define([
 		},
 
 		_oSelectTireRoute: function (oEvent) {
+			
 			//fetching data from HDB for porduct markup 
 			that.oXSOServiceModel = that.getOwnerComponent().getModel("XsodataModel");
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
