@@ -270,7 +270,7 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>DealerMessage}"/>
-										<TextArea id="dealerTxt" placeholder="Enter Text" maxLength="350" showExceededText="false" width="100%" liveChange="textCount"/>
+										<TextArea id="dealerTxt" placeholder="Enter Text" value="{TireQuotationModel>/dealerMessage}"  maxLength="350" showExceededText="false" width="100%" liveChange="textCount"/>
 										<Text id="textCount" text="" class="sapUiTinyMarginTop"/>
 									</VBox>
 									<Input value="" visible="{TireQuoteModel>/enableInput}"/>

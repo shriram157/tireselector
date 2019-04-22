@@ -253,6 +253,7 @@ sap.ui.define([
 				_this.rowData.CustAddress = "";
 				_this.rowData.CustPostalCode = "";
 				_this.rowData.CustPhone = "";
+				_this.rowData.dealerMessage ="";
 
 				var oMat = _this.rowData.Material;
 				var oMaterial = oMat;
@@ -675,7 +676,7 @@ sap.ui.define([
 					"DlrAddL2": Region,
 					"DlrAddL3": "",
 					"DlrTel": ModelData3.PhoneNumber,
-					"VehicleDes": ModelData.VehicleSeriesDescp,
+					"VehicleDes": ModelData.VehicleSeriesDescp +" "+ ModelData.VModelYear,
 					"VinNum": ModelData.VIN,
 					"QuoteDate": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
 					"OfferExpDt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
@@ -722,7 +723,8 @@ sap.ui.define([
 					"CustAddL2":"",
 					"CustAddL3":ModelData.CustPostalCode,
 					"CustTel":ModelData.CustPhone,
-					"logo_info": sDivision
+					"logo_info": sDivision,
+					"DlrComment":ModelData.dealerMessage
 				}
 			};
 
