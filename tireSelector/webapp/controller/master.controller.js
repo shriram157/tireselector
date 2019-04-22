@@ -15,7 +15,7 @@ sap.ui.define([
 		/* Function for Initialization of model and variables for view */
 
 		onInit: function () {
-			
+
 			_that = this;
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
@@ -220,32 +220,33 @@ sap.ui.define([
 											_that._oDealerModel.refresh(true);
 
 											_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
-			_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
-			sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-			console.log("XSO model data", _that.oXSOServiceModel);
-			
-			_that.oXSOServiceModel.read("/DealerMarkUp", {
-				urlParameters: {
-					"$filter": "Dealer_code eq" + "'" + (_that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ sDivision +"'"
-				},
-				success: $.proxy(function (oData) {
-					if (oData.results.length > 0) {
-						console.log("XSO data", oData);
-						_that.oProdMarkupModel.setData(oData);
-						_that.oProdMarkupModel.updateBindings(true);
-						_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-					} else {
-						// sap.m.MessageBox.error(
-						// 	"NO Data found for Product Markup"
-						// );
-					}
-				}, _that),
-				error: function (oError) {
-					// sap.m.MessageBox.error(
-					// 	"NO Data found for Product Markup"
-					// );
-				}
-			});
+											_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
+											sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+											console.log("XSO model data", _that.oXSOServiceModel);
+
+											_that.oXSOServiceModel.read("/DealerMarkUp", {
+												urlParameters: {
+													"$filter": "Dealer_code eq" + "'" + (_that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '" +
+														sDivision + "'"
+												},
+												success: $.proxy(function (oData) {
+													if (oData.results.length > 0) {
+														console.log("XSO data", oData);
+														_that.oProdMarkupModel.setData(oData);
+														_that.oProdMarkupModel.updateBindings(true);
+														_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
+													} else {
+														// sap.m.MessageBox.error(
+														// 	"NO Data found for Product Markup"
+														// );
+													}
+												}, _that),
+												error: function (oError) {
+													// sap.m.MessageBox.error(
+													// 	"NO Data found for Product Markup"
+													// );
+												}
+											});
 										}
 									}, _that),
 									error: function (oError) {
@@ -265,8 +266,6 @@ sap.ui.define([
 				},
 				error: function (oError) {}
 			});
-
-			
 
 			// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 			// _that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
