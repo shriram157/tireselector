@@ -1758,7 +1758,8 @@ return Controller.extend("zecp.controller.newECPApp", {
 
 		return crudObj;
 	},
-	onSaveApp: function () {
+	onSaveApp: function (isFromSubmit) {
+		this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 		if ($.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "Error");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
@@ -1863,7 +1864,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 		// 	this.getView().byId("idNewECPMsgStrip").setType("Error");
 		// 	this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
 		// }
-		else if (this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false) {
+		else if ((this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false)  && !(isFromSubmit)) {
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 			this.getView().byId("idNewECPMsgStrip").setText("");
@@ -2142,7 +2143,17 @@ return Controller.extend("zecp.controller.newECPApp", {
 	onSubmitApp: function () {
 		//this._Step04MandatoryFn();
 		this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
-
+		//Verify Defect_ID: 8432
+		//ReValidating form
+		if(!this.oECPData){
+			this.oECPData = this.getView().getModel("EcpFieldData").getData();
+		}
+		$.proxy(this.onSaveApp(true),this);
+	
+		if(this.getView().byId("idNewECPMsgStrip").getProperty("visible")){
+			this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
+			return;
+		}
 		//Verify Address Defect_ID: 9618
 		if (!this.validateAgrmtOwnrNVechOwnr()) {
 			this.showSubmitValidationError();
