@@ -712,7 +712,7 @@ sap.ui.define([
 					"Pst": ModelData.ProvincialTaxSum,
 					"Total": ModelData.Total,
 					"TireDesc": ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
-					"TireSizeInfo": (ModelData.TireSize).replace("/", "%2F") + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
+					"TireSizeInfo": ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
 					"Unit": ModelData.Retails,
 					"Quantity": this.getView().byId("id_tireQty").getValue(),
 					"Price": ModelData2.TiresPrice,
