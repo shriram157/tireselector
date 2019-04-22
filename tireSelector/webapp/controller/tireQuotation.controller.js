@@ -700,7 +700,7 @@ sap.ui.define([
 					"OthItms4": this.getView().byId("valItem4").getValue(),
 					"OthItms4Pr": ModelData2.otherItemPrice4,
 					"SubTotal": ModelData.subTotal,
-					"EnvFeeCost": ModelData.EHFPRice,
+					"EnvFeeCost": (ModelData.EHFPRice).toString(),
 					"EnvFee": ModelData.EHFPriceSum,
 					"Gst": ModelData.FederalTaxSum,
 					"Pst": ModelData.ProvincialTaxSum,
