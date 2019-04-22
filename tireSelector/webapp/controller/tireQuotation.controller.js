@@ -650,6 +650,12 @@ sap.ui.define([
 			var ModelData = oEvent.getSource().getParent().getParent().getModel("TireQuotationModel").getData();
 			var ModelData2 = oEvent.getSource().getParent().getParent().getModel("TirePriceModel").getData();
 			var ModelData3 = oEvent.getSource().getParent().getParent().getModel("TireQuoteModel").getData();
+			if(ModelData.EHFPRice != "" || ModelData.EHFPRice !=null || ModelData.EHFPRice!= undefined){
+				ModelData.EHFPRice = (ModelData.EHFPRice).toString();
+			}
+			else{
+				ModelData.EHFPRice = "";
+			}
 			if (this.userData.DealerData.Region != undefined) {
 				var Region = this.userData.DealerData.Region;
 			} else {
@@ -700,7 +706,7 @@ sap.ui.define([
 					"OthItms4": this.getView().byId("valItem4").getValue(),
 					"OthItms4Pr": ModelData2.otherItemPrice4,
 					"SubTotal": ModelData.subTotal,
-					"EnvFeeCost": (ModelData.EHFPRice).toString(),
+					"EnvFeeCost": ModelData.EHFPRice,
 					"EnvFee": ModelData.EHFPriceSum,
 					"Gst": ModelData.FederalTaxSum,
 					"Pst": ModelData.ProvincialTaxSum,
