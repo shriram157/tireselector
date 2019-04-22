@@ -1660,7 +1660,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			ZecpListpurprice: this.oECPData.ZecpListpurprice,
 			ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt,
 			ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
-			ZecpBenefitsFlg: this.oECPData.ZecpBenefitsFlg,
+			ZecpBenefitsFlg: this.getView().getModel("EcpFieldData").getProperty("/ZbenefitFlag"),
 			BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
 			ZecpSource: "ECP",
 			ZecpDatecreated: this._fnDateFormat02(currentDate),
@@ -1705,7 +1705,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			BccDlrCommsnAmt: "0.00",
 			BccCdbCustNum: this.oECPData.ZecpCustNum,
 			BccAgrmntThruKm: "0.00",
-			BccLubBnftFlg: this.oECPData.ZecpBenefitsFlg,
+			BccLubBnftFlg: "",
 			BccVehStsKm: this.oECPData.ZecpOdometer,
 			BccAgrmntDlrPfl: "",
 			BccPlnLienHldr: "",
@@ -1750,7 +1750,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			BccLstUpdTmstmp: "",
 			ZamtFincd: "0.00",
 			ZretailPrice: "0.00",
-			ZbenefitFlag: this.oECPData.ZecpBenefitsFlg,
+			ZbenefitFlag: "",
 			ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice
 		};
 
