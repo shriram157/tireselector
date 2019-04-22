@@ -650,7 +650,7 @@ sap.ui.define([
 			var ModelData = oEvent.getSource().getParent().getParent().getModel("TireQuotationModel").getData();
 			var ModelData2 = oEvent.getSource().getParent().getParent().getModel("TirePriceModel").getData();
 			var ModelData3 = oEvent.getSource().getParent().getParent().getModel("TireQuoteModel").getData();
-			if(ModelData.EHFPRice != "" || ModelData.EHFPRice !=null || ModelData.EHFPRice!= undefined){
+			if(ModelData.EHFPRice != "" && ModelData.EHFPRice !=null && ModelData.EHFPRice!= undefined){
 				ModelData.EHFPRice = (ModelData.EHFPRice).toString();
 			}
 			else{
