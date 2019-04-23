@@ -727,6 +727,10 @@ sap.ui.define([
 					"DlrComment":ModelData.dealerMessage
 				}
 			};
+			
+			if(this.obj.d.VehicleDes == "undefined " || "undefined"){
+				this.obj.d.VehicleDes="";
+			}
 
 			var that = this;
 			$.each(that.obj.d, function (key, value) {
