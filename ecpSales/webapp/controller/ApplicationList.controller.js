@@ -15,7 +15,6 @@ sap.ui.define([
 		onInit: function () {
 			var oModelDate = new JSONModel();
 			this.beforedate = new Date();
-			
 
 			this.priordate = new Date(new Date().setDate(this.beforedate.getDate() - 30));
 			oModelDate.setData({
@@ -57,7 +56,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
-				switch (userType) {
+					switch (userType) {
 					case "DealerSalesUSer":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
@@ -195,6 +194,28 @@ sap.ui.define([
 			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - End
 			//======================================================================================================================//				
 
+			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			this.getView().setModel(this.oI18nModel, "i18n");
+			 var winUrl = window.location.search;
+		
+			if (winUrl.indexOf("language=fr")>-1) {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
+
 		},
 
 		onBeforeRendering: function () {
@@ -240,7 +261,7 @@ sap.ui.define([
 			var oval = 404;
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
 				appId: oval,
-				ODealer : this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
+				ODealer: this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
 			});
 		},
 		handleValueHelp: function (oController) {
@@ -360,21 +381,21 @@ sap.ui.define([
 
 		onSelectionChange: function (oEvent) {
 			var oProp = this.getModel("LocalDataModel").getProperty("/newAppLink");
-			
+
 			//remove before delpoyment
-				// oProp = true;
+			// oProp = true;
 			//end removal of code
 
 			// if (oProp == true) {
 
-				var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
+			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
 
-				this.getOwnerComponent().getRouter().navTo("newECPApp", {
-					appId: obj.InternalApplicationID,
-					ODealer : this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
-				});
-				this.getView().byId("idApplicationTable").removeSelections("true");
-				this.getModel("EcpSalesModel").refresh();
+			this.getOwnerComponent().getRouter().navTo("newECPApp", {
+				appId: obj.InternalApplicationID,
+				ODealer: this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
+			});
+			this.getView().byId("idApplicationTable").removeSelections("true");
+			this.getModel("EcpSalesModel").refresh();
 			//}
 		},
 
