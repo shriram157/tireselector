@@ -53,7 +53,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getView().setModel(this.oI18nModel, "i18n");
 			 var winUrl = window.location.search;
 		
-			if (winUrl.indexOf("language=fr")>-1) {
+			if (winUrl.indexOf("=fr")>-1) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -835,7 +835,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 					);
 				}
 			},
-			
+			//Auth: Vinay
 			//this method is to fix the key tranlation issue while calling the zc_ecp_valid_plansSet with Plane type New/used/Ext
 			// Becoz this key are getting translated due to language and Service is not able to identified/incorporate the translated key in Service
 			getTypeOfAggreementKey:function(planTypeStr){
