@@ -728,7 +728,7 @@ sap.ui.define([
 				}
 			};
 			
-			if(this.obj.d.VehicleDes == "undefined " || "undefined"){
+			if(this.obj.d.VehicleDes == "undefined " || this.obj.d.VehicleDes == "undefined"){
 				this.obj.d.VehicleDes="";
 			}
 
