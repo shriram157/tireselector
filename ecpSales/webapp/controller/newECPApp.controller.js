@@ -1323,7 +1323,9 @@ return Controller.extend("zecp.controller.newECPApp", {
 
 		if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 			this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
-			this.getView().getModel("oSetProperty").setProperty("/oSurcharge", true);
+			
+			//Fixing Defect #11008 Hiding Surcharge boxes
+			this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
 			if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.mxMillage) && oMonthDef <= MaxDays) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
