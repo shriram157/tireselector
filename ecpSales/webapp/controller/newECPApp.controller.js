@@ -1800,6 +1800,8 @@ return Controller.extend("zecp.controller.newECPApp", {
 	},
 	onSaveApp: function (isFromSubmit) {
 		this.oBundle = this.getView().getModel("i18n").getResourceBundle();
+		var oOdometer = this.getView().byId("idOdoVal");
+		var oOdoVal = oOdometer.getValue();
 		if ($.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "Error");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
@@ -1904,6 +1906,13 @@ return Controller.extend("zecp.controller.newECPApp", {
 		// 	this.getView().byId("idNewECPMsgStrip").setType("Error");
 		// 	this.getView().byId("idNewECPMsgStrip").setText("Please Fill up all Mandatory Fields.");
 		// }
+		else if(oOdoVal ==""){
+				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
+			
+			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+			this.getView().byId("idNewECPMsgStrip").setType("Error");
+			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
+		}
 		else if ((this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false)  && !(isFromSubmit)) {
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
@@ -1917,6 +1926,8 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+			
+			this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
 			var objSave = this._fnObject("SAVE", "PENDING");
@@ -2180,11 +2191,38 @@ return Controller.extend("zecp.controller.newECPApp", {
 		
 	},
 	/* end of Defect 9937 Auth Vinay Chandra*/
+	
+	
+	/*
+		Defect:8432
+		Auth Vinay Chandra
+	*/
+	resetValidationError:function(){
+		
+		//Lien related Input Fields
+
+		this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+		this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
+		this.getModel("LocalDataModel").setProperty("/AmtFinState", "None");
+		
+		this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
+		this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
+		this.getView().byId("idNewECPMsgStrip").setText("");
+		this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+		this.getView().byId("idNewECPMsgStrip").setType("None");
+		this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
+		
+	},
+	
+	
+	
 	onSubmitApp: function () {
 		//this._Step04MandatoryFn();
+		
 		this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
-		//Verify Defect_ID: 8432
+		//Verify Defect_ID: 8432 	Auth Vinay Chandra
 		//ReValidating form
+		this.resetValidationError();
 		if(!this.oECPData){
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
 		}
@@ -2194,18 +2232,18 @@ return Controller.extend("zecp.controller.newECPApp", {
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 			return;
 		}
-		//Verify Address Defect_ID: 9618
+		//Verify Address Defect_ID: 9618 	Auth Vinay Chandra
 		if (!this.validateAgrmtOwnrNVechOwnr()) {
 			this.showSubmitValidationError();
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 			return;
 		}
-		// Fixing defect #8693
+		// Fixing defect #8693 	Auth Vinay Chandra
 		if (!this.validateLineFields()) {
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 			return;
 		}
-		// Fixing defect #8516
+		// Fixing defect #8516 	Auth Vinay Chandra
 		var oEcpFieldM = this.getView().getModel("EcpFieldData").getData();
 		var oZECPModel = this.getModel("EcpSalesModel");
 		oZECPModel.read("/zc_ecp_vehicle_detailSet", {
