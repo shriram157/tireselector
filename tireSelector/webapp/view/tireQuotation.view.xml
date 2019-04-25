@@ -40,7 +40,7 @@
 							<Label text=""/>
 							<Text text="{DealerModel>/DealerData/BusinessPartnerName}"/>
 							<Label text=""/>
-							<Text text="{DealerModel>/DealerData/BusinessPartnerAddress} - {DealerModel>/DealerData/Region}"/>
+							<Text text="{DealerModel>/DealerData/BusinessPartnerAddress1}{DealerModel>/DealerData/BusinessPartnerAddress2} - {DealerModel>/DealerData/Region}"/>
 							<Label text="{i18n>DealerTel}"/>
 							<!--<Input type="Number" value="{TireQuoteModel>/PhoneNumber}"/>-->
 							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"  liveChange="onUserDealerPhoneChange"/>

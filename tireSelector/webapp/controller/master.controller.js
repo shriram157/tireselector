@@ -24,7 +24,8 @@ sap.ui.define([
 				_that.DealerData = {
 					"Attribute": "01",
 					"BusinessPartner": "2400042120",
-					"BusinessPartnerAddress": "3300 Steeles Ave E,Markham,CA-L3R 1G9",
+					"BusinessPartnerAddress1": "3300 Steeles Ave E,",
+					"BusinessPartnerAddress2": "Markham,CA-L3R 1G9",
 					"BusinessPartnerKey": "42120",
 					"BusinessPartnerName": "Don Valley North Toyota...",
 					"BusinessPartnerName2": "WEINS CANADA",
@@ -173,8 +174,8 @@ sap.ui.define([
 								_that.DealerData.BusinessPartnerNo = address.BusinessPartner;
 								_that.getPhoneNumber(_that.DealerData.BusinessPartnerNo, _that.DealerData.AddressID);
 
-								_that.DealerData.BusinessPartnerAddress = address.StreetName + "," + address.CityName + "," +
-									address.Country + "-" + address.PostalCode;
+								_that.DealerData.BusinessPartnerAddress1 = address.StreetName + "," + address.CityName ;
+								_that.DealerData.BusinessPartnerAddress2 = "," + address.Country + "-" + address.PostalCode;
 								_that.DealerData.BusinessPartnerPhone = "";
 								_that.DealerData.Region = address.Region;
 								_that._oDealerModel.getData().DealerData = _that.DealerData;
