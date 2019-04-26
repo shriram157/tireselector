@@ -794,12 +794,10 @@ sap.ui.define([
 								a.click();
 								document.body.removeChild(a);
 								// // sap.ui.core.util.File.save(bin, "TireQuotation", "pdf", "application/pdf");
-								that.clearData();
+								// that.clearData();
 							},
 							error: function (oErrEvent) {
 								console.log("oErrEvent", oErrEvent);
-								// that.headers = {};
-								// that.clearData();
 							}
 						});
 					}
