@@ -37,9 +37,16 @@
 					"odataVersion": "2.0",
 					"localUri": "localService/API_BUSINESS_PARTNER/metadata.xml"
 				}
+			},
+			"ZDLR_CLAIM_SRV": {
+				"uri": "/node/ZDLR_CLAIM_SRV/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "2.0",
+					"localUri": "localService/ZDLR_CLAIM_SRV/metadata.xml"
+				}
 			}
-
-			}
+		}
 	
 	},
 	"sap.ui": {
@@ -93,9 +100,6 @@
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
-					"serviceUrlParams": {
-            			"sap-client": "200"
-        			},
 					"json": true,
 					"useBatch": false
 				},	
@@ -110,9 +114,6 @@
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
-					"serviceUrlParams": {
-            			"sap-client": "200"
-        			},
 					"json": true,
 					"useBatch": false
 				},
@@ -127,13 +128,23 @@
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
-					"serviceUrlParams": {
-            			"sap-client": "200"
-        			},
 					"json": true,
 					"useBatch": false
 				},
 				"dataSource": "API_BUSINESS_PARTNER",
+				"preload": false
+			},
+			"ClaimService":{
+				"uri": "/node/ZDLR_CLAIM_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request",
+					"json": true,
+					"useBatch": false
+				},
+				"dataSource": "ZDLR_CLAIM_SRV",
 				"preload": false
 			}
 		},

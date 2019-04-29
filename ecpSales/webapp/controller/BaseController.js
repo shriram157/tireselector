@@ -177,11 +177,13 @@ sap.ui.define([
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
 						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
+						that._resetView();
+						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 
 					case "TCIAdminECPDept":
 
-						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
@@ -189,11 +191,13 @@ sap.ui.define([
 						break;
 					case "internalTCIUser":
 
-						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that.getModel("LocalDataModel").setProperty("/editableField", false);
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
 						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
+						that._resetView();
+						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 					case "TCIZoneUser":
 
