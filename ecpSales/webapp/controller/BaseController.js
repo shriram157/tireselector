@@ -199,7 +199,7 @@ sap.ui.define([
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
 						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						that._resetView();
-						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
+						//that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 
 					case "TCIAdminECPDept":
