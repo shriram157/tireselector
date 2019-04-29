@@ -15,7 +15,7 @@
 											columnsM="1" singleContainerFullSize="false">
 											<f:content>
 												<Label text="{i18n>Customer}"/>
-												<Text text="{path: 'LocalDataModel>/AgreementOwnerDetail/Customer'}"/>
+												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/BusinessPartner'}"/>
 												<Label text="{i18n>Type}"/>
 												<Text id="idType" text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
 												<Label text="{i18n>Language}"/>
@@ -47,7 +47,7 @@
 											<f:content>
 											
 												<Label text="{i18n>Customer}"/>
-												<Text text="{path: 'LocalDataModel>/AgreementOwnerDetail/Customer'}"/>
+												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/BusinessPartner'}"/>
 												<Label text="{i18n>Type}"/>
 												<Text text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
 												<Label text="{i18n>Language}"/>

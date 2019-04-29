@@ -246,6 +246,10 @@ sap.ui.define([
 				});
 
 			}
+			
+			var productInput = this.getView().byId("idVin");
+			productInput.setValue("");
+			
 		},
 
 		onAfterRendering: function () {
