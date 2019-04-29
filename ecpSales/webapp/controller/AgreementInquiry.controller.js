@@ -11,7 +11,7 @@ sap.ui.define([
 		 * @memberOf zecp.view.AgreementInquiry
 		 */
 		onInit: function () {
-			this.getDealer();
+
 			var oNodeModel = new sap.ui.model.json.JSONModel();
 			oNodeModel.loadData(jQuery.sap.getModulePath("zecp.utils", "/Nodes.json"));
 			this.getView().setModel(oNodeModel, "ClaimModel");
