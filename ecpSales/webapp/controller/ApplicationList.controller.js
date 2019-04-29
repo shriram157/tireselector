@@ -57,13 +57,13 @@ sap.ui.define([
 
 					var userType = oData.loggedUserType[0];
 					switch (userType) {
-					case "DealerSalesUSer":
+					case "Dealer_Sales_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 
 						break;
-					case "DealerServiceUser":
+					case "Dealer_Service_User":
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
@@ -72,21 +72,21 @@ sap.ui.define([
 
 						break;
 
-					case "TCIAdminECPDept":
+					case "TCI_Admin":
 
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 
 						break;
-					case "internalTCIUser":
+					case "TCI_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that._resetView();
 						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
-					case "TCIZoneUser":
+					case "Zone_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);

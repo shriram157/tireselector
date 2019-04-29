@@ -185,13 +185,13 @@ sap.ui.define([
 
 					var userType = oData.loggedUserType[0];
 					switch (userType) {
-					case "DealerSalesUSer":
+					case "Dealer_Sales_User":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 						that.getModel("LocalDataModel").setProperty("/editableField", true);
 						break;
-					case "DealerServiceUser":
+					case "Dealer_Service_User":
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
@@ -202,7 +202,7 @@ sap.ui.define([
 						//that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 
-					case "TCIAdminECPDept":
+					case "TCI_Admin":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
@@ -210,7 +210,7 @@ sap.ui.define([
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
 						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
-					case "internalTCIUser":
+					case "TCI_User":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
@@ -220,7 +220,7 @@ sap.ui.define([
 						that._resetView();
 						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
-					case "TCIZoneUser":
+					case "Zone_User":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);

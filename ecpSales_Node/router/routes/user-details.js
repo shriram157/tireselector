@@ -8,450 +8,265 @@ module.exports = function (appContext) {
 	var request = require("request");
 	var xsenv = require("@sap/xsenv");
 
-	var auth64;
-
-	var uaaService = xsenv.getServices({
-		uaa: {
-			tag: "xsuaa"
-		}
-	});
-	var uaa = uaaService.uaa;
-
-	var app = express.Router();
+	var router = express.Router();
 
 	// Get UPS name from env var UPS_NAME
 	var apimServiceName = process.env.UPS_NAME;
 	var options = {};
 	options = Object.assign(options, xsenv.getServices({
-		api: {
+		apim: {
 			name: apimServiceName
 		}
 	}));
 
-	var uname = options.api.user,
-		pwd = options.api.password,
-		url = options.api.host,
-		APIKey = options.api.APIKey,
-		client = options.api.client;
+	var xsuaaService = xsenv.getServices({
+		xsuaa: {
+			tag: "xsuaa"
+		}
+	}).xsuaa;
 
-	auth64 = 'Basic ' + new Buffer(uname + ':' + pwd).toString('base64');
+	var url = options.apim.host;
+	var APIKey = options.apim.APIKey;
+	var s4Client = options.apim.client;
+	var s4User = options.apim.user;
+	var s4Password = options.apim.password;
 
-	var reqHeader = {
-		"Authorization": auth64,
-		"Content-Type": "application/json",
-		"APIKey": APIKey,
-		"x-csrf-token": "Fetch"
-	};
+	router.get(["/attributes", "/attributesforlocaltesting"], (req, res) => {
+		var logger = req.loggingContext.getLogger("/Application/Route/UserDetails/Attributes");
+		var tracer = req.loggingContext.getTracer(__filename);
+		var userProfile = req.user;
+		var userAttributes = req.authInfo.userAttributes;
+		tracer.debug("User profile from JWT: %s", JSON.stringify(userProfile));
+		tracer.debug("User attributes from JWT: %s", JSON.stringify(userAttributes));
 
-	app.use(function (req, res, next) {
-		res.header("Access-Control-Allow-Origin", "*");
-		res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-		next();
-	});
-
-	app.get("/currentScopesForUser", (req, res) => {
-		var xsAppName = uaa.xsappname;
-		var parsedData = JSON.stringify(req.authInfo.userAttributes);
-		var obj_data = JSON.parse(parsedData);
-
-		let legacyDealerCode;
-		try {
-			legacyDealerCode = obj_data.DealerCode[0];
-			var legacyDealerCodeAvailable = true;
-			console.log('Dealer code from the SAML Token is', legacyDealerCodeAvailable, legacyDealerCode)
-		} catch (e) {
-			console.log("Dealer Code is blank or is a local testing run")
-				// return;
-			var legacyDealerCodeAvailable = false;
+		// If there is no user type, it is most probably a call from Neo, in which case we can fake the data as TCI user
+		if (!userAttributes.UserType) {
+			tracer.debug("JWT likely refers to a development user from Neo, switch to mock user attributes: %s", JSON.stringify(userAttributes));
+			userAttributes = {
+				Language: ["English"],
+				UserType: ["National"]
+			};
 		}
 
-		var scopeData = req.authInfo.scopes;
-		var viewECPApplication = false;
-		var viewECPAgreement = false;
+		var resBody = {
+			"attributes": [],
+			"userProfile": userProfile,
+			"samlAttributes": [userAttributes],
+			legacyDealer: "",
+			legacyDealerName: ""
+		};
+
+		var userType = userAttributes.UserType[0];
+		var dealerCode = null;
+		var zone = null;
+		var bpZone = null;
+		var bpReqUrl = null;
+
+		// Dealer user
+		if (userType === "Dealer") {
+			dealerCode = userAttributes.DealerCode[0];
+			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json&$filter=SearchTerm2 eq '" +
+				dealerCode + "'&$expand=to_Customer";
+		}
+
+		// Zone user
+		else if (userType === "Zone") {
+			zone = userAttributes.Zone[0];
+			if (zone === "1") {
+				bpZone = "1000";
+			} else if (zone === "2") {
+				bpZone = "2000";
+			} else if (zone === "3") {
+				bpZone = "3000";
+			} else if (zone === "4") {
+				bpZone = "5000";
+			} else if (zone === "5") {
+				bpZone = "4000";
+			} else if (zone === "7") {
+				bpZone = "9000";
+			} else {
+				logger.warning("Unrecognized zone ID: %s", zone);
+				return res.type("plain/text").status(400).send("Unknown zone ID.");
+			}
+
+			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json" +
+				"&$expand=to_Customer/to_CustomerSalesArea&$filter=(BusinessPartnerType eq 'Z001' or " +
+				"BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X'" +
+				"&$orderby=BusinessPartner asc";
+		}
+
+		// National user (TCI user)
+		else {
+			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json" +
+				"&$expand=to_Customer/to_CustomerSalesArea&$filter=(BusinessPartnerType eq 'Z001' or " +
+				"BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X'" +
+				"&$orderby=BusinessPartner asc";
+		}
+
+		tracer.debug("BP URL: %s", bpReqUrl);
+		var bpReqHeaders = {
+			"APIKey": APIKey,
+			"Authorization": "Basic " + new Buffer(s4User + ":" + s4Password).toString("base64"),
+			"Content-Type": "application/json"
+		};
+		request({
+			url: bpReqUrl,
+			headers: bpReqHeaders
+		}, function (bpErr, bpRes, bpResBodyStr) {
+			var toCustomerAttr1 = null;
+			var bpAttributes = null;
+
+			tracer.debug("Response body from proxied BP call: %s", bpResBodyStr);
+
+			if (!bpErr && bpRes.statusCode === 200) {
+				var bpResBody = JSON.parse(bpResBodyStr);
+				var bpResults = bpResBody.d.results;
+
+				// Filter BP results by sales area for zone user
+				if (userType === "Zone") {
+					bpResults = bpResults.filter(o => {
+						if (!o.to_Customer) {
+							return false;
+						}
+						var customerSalesArea = o.to_Customer.to_CustomerSalesArea;
+						if (!customerSalesArea) {
+							return false;
+						}
+						for (var i = 0; i < customerSalesArea.results.length; i++) {
+							if (customerSalesArea.results[i].SalesOffice === bpZone) {
+								return true;
+							}
+						}
+						return false;
+					});
+				}
+				if (userType === "National") {
+					bpResults = bpResults.filter(o => {
+						return !!o.to_Customer;
+					});
+				}
+
+				for (var i = 0; i < bpResults.length; i++) {
+					var bpLength = bpResults[i].BusinessPartner.length;
+					bpAttributes = {
+						BusinessPartnerName: bpResults[i].OrganizationBPName1,
+						BusinessPartnerKey: bpResults[i].BusinessPartner,
+						BusinessPartner: bpResults[i].BusinessPartner.substring(5, bpLength),
+						BusinessPartnerType: bpResults[i].BusinessPartnerType,
+						SearchTerm2: bpResults[i].SearchTerm2
+					};
+					try {
+						toCustomerAttr1 = bpResults[i].to_Customer.Attribute1;
+					} catch (e) {
+						logger.error("The Data is sent without Attribute value for the BP: %s", bpResults[i].BusinessPartner);
+					}
+
+					if (toCustomerAttr1 === "01") {
+						bpAttributes.Division = "10"; //TOY
+						bpAttributes.Attribute = "01";
+					} else if (toCustomerAttr1 === "02") {
+						bpAttributes.Division = "20"; //LEX
+						bpAttributes.Attribute = "02";
+					} else if (toCustomerAttr1 === "03") {
+						bpAttributes.Division = "Dual"; //DUAL
+						bpAttributes.Attribute = "03";
+					} else if (toCustomerAttr1 === "04") {
+						bpAttributes.Division = "10";
+						bpAttributes.Attribute = "04";
+					} else if (toCustomerAttr1 === "05") {
+						bpAttributes.Division = "Dual";
+						bpAttributes.Attribute = "05";
+					} else {
+						// Set as Toyota dealer as fallback
+						bpAttributes.Division = "10";
+						bpAttributes.Attribute = "01";
+					}
+
+					if (userType === "Dealer") {
+						if (bpAttributes.BusinessPartner === dealerCode || bpAttributes.SearchTerm2 === dealerCode) {
+							resBody.legacyDealer = bpAttributes.BusinessPartner;
+							resBody.legacyDealerName = bpAttributes.BusinessPartnerName;
+							resBody.attributes.push(bpAttributes);
+
+							// Dealer should only return one BP result anyway, but break here just in case
+							break;
+						}
+					} else {
+						resBody.attributes.push(bpAttributes);
+					}
+				}
+				tracer.debug("Response body: %s", JSON.stringify(resBody));
+				return res.type("application/json").status(200).send(resBody);
+			} else {
+				logger.error("Proxied BP call %s FAILED: %s", bpReqUrl, bpErr);
+				return res.type("application/json").status(400).send(bpResBody);
+			}
+		});
+	});
+
+	router.get(["/currentScopesForUser", "/currentScopesForUserLocaltesting"], (req, res) => {
+		var logger = req.loggingContext.getLogger("/Application/Route/UserDetails/CurrentScopesForUser");
+		var tracer = req.loggingContext.getTracer(__filename);
+		var xsAppName = xsuaaService.xsappname;
+		var scopes = req.authInfo.scopes;
+		var userAttributes = req.authInfo.userAttributes;
+
+		tracer.debug("Scopes from JWT: %s", JSON.stringify(scopes));
+		tracer.debug("User attributes from JWT: %s", JSON.stringify(userAttributes));
+
+		// If there is no user type, it is most probably a call from Neo, in which case we can fake the data as TCI user
+		if (!userAttributes.UserType) {
+			tracer.debug("JWT likely refers to a development user from Neo, switch to mock user type.");
+			return res.type("application/json").status(200).send(JSON.stringify({
+				loggedUserType: ["TCI_User"]
+			}));
+		}
+
+		var role = "Unknown";
 		var inquiry = false;
+		var manageEcpApplication = false;
+		var viewEcpAgreement = false;
+		var viewEcpApplication = false;
 		var viewEcpClaim = false;
 
-		var sendUserData = {
-			"loggedUserType": []
-		};
-
-		for (var i = 0; i < scopeData.length; i++) {
-
-			if (scopeData[i] == xsAppName + ".Manage_ECP_Application") {
-				var userType = "DealerSalesUSer";
-				sendUserData.loggedUserType.push(userType);
-
-				return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
-				break;
-			}
-
-			if (scopeData[i] == xsAppName + ".View_ECP_Application") {
-				viewECPApplication = true;
-			}
-			if (scopeData[i] == xsAppName + ".View_ECP_Agreement") {
-				viewECPAgreement = true;
-			}
-			if (scopeData[i] == xsAppName + ".Inquiry") {
+		for (var i = 0; i < scopes.length; i++) {
+			if (scopes[i] === xsAppName + ".Inquiry") {
 				inquiry = true;
-			}
-			if (scopeData[i] == xsAppName + ".View_ECP_Claim") {
+			} else if (scopes[i] === xsAppName + ".Manage_ECP_Application") {
+				manageEcpApplication = true;
+			} else if (scopes[i] === xsAppName + ".View_ECP_Agreement") {
+				viewEcpAgreement = true;
+			} else if (scopes[i] === xsAppName + ".View_ECP_Application") {
+				viewEcpApplication = true;
+			} else if (scopes[i] === xsAppName + ".View_ECP_Claim") {
 				viewEcpClaim = true;
-			}
-
-		}; // enf for for loop. 
-
-		console.log('viewECPApplication', viewECPApplication);
-		console.log('viewECPAgreement', viewECPAgreement);
-		console.log('inquiry', inquiry);
-		console.log('legacyDealerCodeAvailable', legacyDealerCodeAvailable);
-		console.log('viewEcpClaim', viewEcpClaim);
-
-		if (viewECPApplication == false && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == true && viewEcpClaim ==
-			true) {
-			// if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a ECP Service user. 
-
-			var userType = "DealerServiceUser";
-			sendUserData.loggedUserType.push(userType);
-
-			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
-
-		}
-
-		//if you see scopes view ecp application, view ecp claim, view ecp agreement, 
-		// view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
-		// or ECP ZONE USER
-		if (viewECPApplication == true && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
-			true) {
-			var userType = "TCIAdminECPDept";
-			if (obj_data.Zone != null) {
-				userType = "TCIZoneUser";
-			}
-			sendUserData.loggedUserType.push(userType);
-			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
-
-		}
-
-		// if you see scopes View ECP Claim, view ECP Agreement, Inqyiry with no delaer code no zone then this is a Internal TCI User
-		if (viewECPApplication == false && viewECPAgreement == true && inquiry == true && legacyDealerCodeAvailable == false && viewEcpClaim ==
-			true) {
-			var userType = "internalTCIUser"; //
-			sendUserData.loggedUserType.push(userType);
-
-			return res.type("text/plain").status(200).send(JSON.stringify(sendUserData));
-		}
-
-		// var scope = `${req.authInfo.xsappname}.Manage_ECP_Application`;
-		// if (req.authInfo && req.authInfo.checkScope(scope)) {
-		// 	var userType = "DealerSalesUSer";
-		// 	return res.type("text/plain").status(403).send("DealerSalesUSer");
-		// }
-
-		// res.type("application/json").status(200).send(JSON.stringify(req.authInfo.scopes));
-	});
-
-	// user Information to UI.
-	//Security Attributes received via UserAttributes via Passport
-
-	//the below route for local testing. 
-
-	app.get("/attributesforlocaltesting", (req, res) => {
-
-		var receivedData = {};
-
-		var sendToUi = {
-			"attributes": [],
-			"samlAttributes": [],
-			legacyDealer: "",
-			legacyDealerName: ""
-
-		};
-
-		// ===================only for local testing - remove next deploy
-		var obj_temp = {
-			Language: ['English', 'English'],
-			UserType: ['National', 'National'],
-			DealerCode: [' ', ' ']
-		};
-		// console.log(req.authInfo.userAttributes);
-		var parsedData = JSON.stringify(obj_temp);
-		//		 console.log('After Json Stringify', parsedData);
-		var obj_parsed = JSON.parse(parsedData);
-		sendToUi.samlAttributes.push(obj_parsed);
-
-		// =========================================
-
-		//	var parsedData = JSON.stringify(req.authInfo.userAttributes);
-
-		//	var obj = JSON.stringify(req.authInfo.userAttributes);
-		//		var obj_parsed = JSON.parse(obj);
-		var csrfToken;
-		var obj_data = JSON.parse(parsedData);
-		var csrfToken;
-		var samlData = parsedData;
-
-		//	console.log('saml data', samlData);
-
-		//		console.log('send to ui data', sendToUi);
-
-		let checkSAMLDetails;
-		try {
-			checkSAMLDetails = obj_data.DealerCode[0];
-		} catch (e) {
-
-			// return;
-			var nosamlData = true;
-		}
-		sendToUi.samlAttributes.push(obj_parsed);
-
-		var userType = obj_data.UserType[0];
-
-		if (userType == 'Dealer') {
-			var legacyDealer = obj_data.DealerCode[0];
-		}
-
-		//	if  usertype eq dealer then just get the details for that dealer,  otherwise get everything else
-
-		if (userType == 'Dealer') {
-
-			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$filter=SearchTerm2 eq'" + legacyDealer +
-				"' &$expand=to_Customer&$format=json&?sap-client=" + client;
-
-		} else {
-
-			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client +
-				"&$filter=(BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X' &$orderby=BusinessPartner asc";
-
-		}
-
-		request({
-			url: url + url1,
-			headers: reqHeader
-
-		}, function (error, response, body) {
-
-			var attributeFromSAP;
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-
-				var json = JSON.parse(body);
-				// console.log(json);  // // TODO: delete it Guna
-
-				for (var i = 0; i < json.d.results.length; i++) {
-
-					receivedData = {};
-
-					var BpLength = json.d.results[i].BusinessPartner.length;
-					receivedData.BusinessPartnerName = json.d.results[i].OrganizationBPName1;
-					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
-					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
-					receivedData.BusinessPartnerType = json.d.results[i].BusinessPartnerType;
-					receivedData.SearchTerm2 = json.d.results[i].SearchTerm2;
-
-					let attributeFromSAP;
-					try {
-						attributeFromSAP = json.d.results[i].to_Customer.Attribute1;
-					} catch (e) {
-
-						// return;
-					}
-
-					switch (attributeFromSAP) {
-					case "01":
-						receivedData.Division = "10";
-						receivedData.Attribute = "01"
-						break;
-					case "02":
-						receivedData.Division = "20";
-						receivedData.Attribute = "02"
-						break;
-					case "03":
-						receivedData.Division = "Dual";
-						receivedData.Attribute = "03"
-						break;
-					case "04":
-						receivedData.Division = "10";
-						receivedData.Attribute = "04"
-						break;
-					case "05":
-						receivedData.Division = "Dual";
-						receivedData.Attribute = "05"
-						break;
-					default:
-						receivedData.Division = "10"; //  lets put that as a toyota dealer
-						receivedData.Attribute = "01"
-
-					}
-
-					if ((receivedData.BusinessPartner == legacyDealer || receivedData.SearchTerm2 == legacyDealer) && (userType == 'Dealer')) {
-						sendToUi.legacyDealer = receivedData.BusinessPartner,
-							sendToUi.legacyDealerName = receivedData.BusinessPartnerName
-						sendToUi.attributes.push(receivedData);
-						break;
-					}
-
-					if (userType == 'Dealer') {
-						continue;
-					} else {
-						sendToUi.attributes.push(receivedData);
-					}
-				}
-
-				res.type("application/json").status(200).send(sendToUi);
-
 			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
+				tracer.warning("Unrecognized scope: %s", scopes[i]);
 			}
-		});
+		}
 
+		var scopeLogMessage = "inquiry: " + inquiry + "\n";
+		scopeLogMessage += "manageEcpApplication: " + manageEcpApplication + "\n";
+		scopeLogMessage += "viewEcpAgreement: " + viewEcpAgreement + "\n";
+		scopeLogMessage += "viewEcpApplication: " + viewEcpApplication + "\n";
+		scopeLogMessage += "viewEcpClaim: " + viewEcpClaim + "\n";
+		tracer.debug(scopeLogMessage);
+
+		if (inquiry && manageEcpApplication && viewEcpAgreement && viewEcpApplication && viewEcpClaim) {
+			role = "Dealer_Sales_User";
+		} else if (inquiry && !manageEcpApplication && viewEcpAgreement && !viewEcpApplication && viewEcpClaim) {
+			role = userAttributes.DealerCode ? "Dealer_Service_User" : "TCI_User";
+		} else if (inquiry && !manageEcpApplication && viewEcpAgreement && viewEcpApplication && viewEcpClaim) {
+			role = userAttributes.Zone ? "Zone_User" : "TCI_Admin";
+		}
+		tracer.debug("role: %s", role);
+
+		return res.type("application/json").status(200).send(JSON.stringify({
+			loggedUserType: [
+				role
+			]
+		}));
 	});
 
-	app.get("/attributes", (req, res) => {
-		console.log("attributes fetch started")
-
-		var receivedData = {};
-
-		var sendToUi = {
-			"attributes": [],
-			"samlAttributes": [],
-			legacyDealer: "",
-			legacyDealerName: ""
-
-		};
-
-		console.log(req.authInfo.userAttributes);
-		var parsedData = JSON.stringify(req.authInfo.userAttributes);
-		console.log('After Json Stringify', parsedData);
-
-		var obj = JSON.stringify(req.authInfo.userAttributes);
-		var obj_parsed = JSON.parse(obj);
-		var csrfToken;
-		var obj_data = JSON.parse(parsedData);
-		var csrfToken;
-		var samlData = parsedData;
-
-		console.log('saml data', samlData);
-
-		console.log('send to ui data', sendToUi);
-
-		let checkSAMLDetails;
-		try {
-			checkSAMLDetails = obj_data.DealerCode[0];
-		} catch (e) {
-			console.log("Dealer Code is blank or is a local testing run")
-				// return;
-			var nosamlData = true;
-		}
-
-		sendToUi.samlAttributes.push(obj_parsed);
-
-		console.log('after json Parse', obj_data);
-		var userType = obj_data.UserType[0];
-
-		if (userType == 'Dealer') {
-			var legacyDealer = obj_data.DealerCode[0];
-		}
-
-		console.log('Dealer Number logged in and accessed parts Availability App', legacyDealer);
-
-		//	if  usertype eq dealer then just get the details for that dealer,  otherwise get everything else
-
-		if (userType == 'Dealer') {
-
-			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$filter=SearchTerm2 eq'" + legacyDealer +
-				"' &$expand=to_Customer&$format=json&?sap-client=" + client;
-
-		} else {
-
-			var url1 = "/API_BUSINESS_PARTNER/A_BusinessPartner/?$format=json&$expand=to_Customer&?sap-client=" + client +
-				"&$filter=(BusinessPartnerType eq 'Z001' or BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X' &$orderby=BusinessPartner asc";
-
-		}
-		console.log('Final url being fetched', url + url1);
-		request({
-			url: url + url1,
-			headers: reqHeader
-
-		}, function (error, response, body) {
-
-			var attributeFromSAP;
-			if (!error && response.statusCode == 200) {
-				csrfToken = response.headers['x-csrf-token'];
-
-				var json = JSON.parse(body);
-				// console.log(json);  // // TODO: delete it Guna
-
-				for (var i = 0; i < json.d.results.length; i++) {
-
-					receivedData = {};
-
-					var BpLength = json.d.results[i].BusinessPartner.length;
-					receivedData.BusinessPartnerName = json.d.results[i].OrganizationBPName1;
-					receivedData.BusinessPartnerKey = json.d.results[i].BusinessPartner;
-					receivedData.BusinessPartner = json.d.results[i].BusinessPartner.substring(5, BpLength);
-					receivedData.BusinessPartnerType = json.d.results[i].BusinessPartnerType;
-					receivedData.SearchTerm2 = json.d.results[i].SearchTerm2;
-
-					let attributeFromSAP;
-					try {
-						attributeFromSAP = json.d.results[i].to_Customer.Attribute1;
-					} catch (e) {
-						console.log("The Data is sent without Attribute value for the BP", json.d.results[i].BusinessPartner)
-							// return;
-					}
-
-					switch (attributeFromSAP) {
-					case "01":
-						receivedData.Division = "10";
-						receivedData.Attribute = "01"
-						break;
-					case "02":
-						receivedData.Division = "20";
-						receivedData.Attribute = "02"
-						break;
-					case "03":
-						receivedData.Division = "Dual";
-						receivedData.Attribute = "03"
-						break;
-					case "04":
-						receivedData.Division = "10";
-						receivedData.Attribute = "04"
-						break;
-					case "05":
-						receivedData.Division = "Dual";
-						receivedData.Attribute = "05"
-						break;
-					default:
-						receivedData.Division = "10"; //  lets put that as a toyota dealer
-						receivedData.Attribute = "01"
-
-					}
-
-					if ((receivedData.BusinessPartner == legacyDealer || receivedData.SearchTerm2 == legacyDealer) && (userType == 'Dealer')) {
-						sendToUi.legacyDealer = receivedData.BusinessPartner,
-							sendToUi.legacyDealerName = receivedData.BusinessPartnerName
-						sendToUi.attributes.push(receivedData);
-						break;
-					}
-
-					if (userType == 'Dealer') {
-						continue;
-					} else {
-						sendToUi.attributes.push(receivedData);
-					}
-				}
-
-				res.type("application/json").status(200).send(sendToUi);
-				console.log('Results sent successfully');
-			} else {
-
-				var result = JSON.stringify(body);
-				res.type('application/json').status(400).send(result);
-			}
-		});
-
-	});
-
-	return app;
+	return router;
 };
