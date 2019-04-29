@@ -2,10 +2,10 @@ sap.ui.define([
 	"zecp/controller/BaseController",
 	'sap/ui/core/Fragment',
 	'sap/ui/model/json/JSONModel'
-], function (Controller, Fragment, JSONModel) {
+], function (BaseController, Fragment, JSONModel) {
 	"use strict";
 
-	return Controller.extend("zecp.controller.ApplicationList", {
+	return BaseController.extend("zecp.controller.ApplicationList", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -198,9 +198,9 @@ sap.ui.define([
 				bundleUrl: "i18n/i18n.properties"
 			});
 			this.getView().setModel(this.oI18nModel, "i18n");
-			 var winUrl = window.location.search;
-		
-			if (winUrl.indexOf("=fr")>-1) {
+			var winUrl = window.location.search;
+
+			if (winUrl.indexOf("=fr") > -1) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -246,10 +246,10 @@ sap.ui.define([
 				});
 
 			}
-			
+
 			var productInput = this.getView().byId("idVin");
 			productInput.setValue("");
-			
+
 		},
 
 		onAfterRendering: function () {

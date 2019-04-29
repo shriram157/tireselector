@@ -7,10 +7,10 @@ sap.ui.define([
 			'sap/ui/model/Filter',
 			"zecp/controller/BaseController",
 			'sap/m/MessageBox'
-		], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox) {
+		], function (Button, Dialog, Label, MessageToast, Text, Filter, BaseController, MessageBox) {
 			"use strict";
 
-			return Controller.extend("zecp.controller.newECPApp", {
+			return BaseController.extend("zecp.controller.newECPApp", {
 
 						/**
 						 * Called when a controller is instantiated and its View controls (if available) are already created.
