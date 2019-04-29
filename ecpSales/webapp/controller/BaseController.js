@@ -15,13 +15,34 @@ sap.ui.define([
 		getRouter: function () {
 			return this.getOwnerComponent().getRouter();
 		},
+		onInit: function () {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties"
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
 
-		/**
-		 * Convenience method for getting the view model by name in every controller of the application.
-		 * @public
-		 * @param {string} sName the model name
-		 * @returns {sap.ui.model.Model} the model instance
-		 */
+				if (window.location.search == "?language=fr") {
+					this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+						bundleUrl: "i18n/i18n.properties",
+						bundleLocale: ("fr")
+					});
+					this.getView().setModel(this.oI18nModel, "i18n");
+					this.sCurrentLocale = 'FR';
+				} else {
+					this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+						bundleUrl: "i18n/i18n.properties",
+						bundleLocale: ("en")
+					});
+					this.getView().setModel(this.oI18nModel, "i18n");
+					this.sCurrentLocale = 'EN';
+				}
+			},
+			/**
+			 * Convenience method for getting the view model by name in every controller of the application.
+			 * @public
+			 * @param {string} sName the model name
+			 * @returns {sap.ui.model.Model} the model instance
+			 */
 		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},

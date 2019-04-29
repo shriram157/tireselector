@@ -19,6 +19,29 @@ sap.ui.define([
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			this.getDealer();
 			this.getModel("LocalDataModel").setProperty("/rowCount", 0);
+			
+			
+			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			this.getView().setModel(this.oI18nModel, "i18n");
+			 var winUrl = window.location.search;
+		
+			if (winUrl.indexOf("=fr")>-1) {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
 		},
 		onSelectSearchBy: function (oEvent) {
 			var oSelectedIndex = oEvent.getSource().getSelectedIndex();

@@ -3,7 +3,7 @@
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
 	<uxap:ObjectPageLayout id="ObjectAgreementList" enableLazyLoading="true">
 		<uxap:sections>
-			<uxap:ObjectPageSection title="Agreement Inquiry">
+			<uxap:ObjectPageSection title="{i18n>AgreementInquiry}">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title=" ">
 						<uxap:blocks>

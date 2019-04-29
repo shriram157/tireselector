@@ -5,7 +5,7 @@
 		columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 		<f:content>
 			<Label text="{i18n>SaleDate}"/>
-			<DatePicker id="idDate" placeholder="Enter Date ..."
+			<DatePicker id="idDate" placeholder="{i18n>EnterDate}"
 				value="{path : 'EcpFieldData>/ZecpSaleDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"
 				required="true"/>
 			<Label text="{i18n>Odometer}"/>
@@ -17,8 +17,9 @@
 				<core:Item key="{i18n>USEDVEHICLEAGREEMENT}" text="{i18n>USEDVEHICLEAGREEMENT}"/>
 				<core:Item key="{i18n>EXTENSION}" text="{i18n>EXTENSION}" enabled="{oSetProperty>/oFlag}"/>
 			</ComboBox>
-			<Button text="Next" type="Emphasized" press="OnNextStep3" enabled="{oSetProperty>/ostep3}"/>
-			<Button text="Back" type="Back" press="OnBack"/>
+			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep3" enabled="{oSetProperty>/ostep3}"/>
+			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
+			
 		</f:content>
 	</f:SimpleForm>
 	<VBox id="idExtAgrList" visible="{oSetProperty>/oAgreementTable}">

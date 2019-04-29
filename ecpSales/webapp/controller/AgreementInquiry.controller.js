@@ -20,6 +20,28 @@ sap.ui.define([
 			this.getView().setModel(oVehicleMaster, "VinModel");
 
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._onRoutMatched, this);
+			
+			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			this.getView().setModel(this.oI18nModel, "i18n");
+			 var winUrl = window.location.search;
+		
+			if (winUrl.indexOf("=fr")>-1) {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
 		},
 		_onRoutMatched: function (oEvent) {
 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;

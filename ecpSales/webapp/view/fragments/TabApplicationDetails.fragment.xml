@@ -209,18 +209,18 @@
 					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
 					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 					<f:content>
-						<Label text="{i18n>Status}"/>
-						<Text text="{EcpFieldData>/ZecpAppStat}"/>
+						<Label text="{i18n>Status}" />
+						<Text text="{= ${EcpFieldData>/ZecpAppStat} ? ${EcpFieldData>/ZecpAppStat} : 'In Progress' }"/>
 						<!--<Label text="{i18n>SaleDate}" visible="{oSetProperty>/saleDat01Visible}"/>-->
 						<!--<Text visible="{oSetProperty>/saleDat01Visible}" text="{path:'EcpFieldData>/ZecpSaleDate'}"/>-->
 						<Label text="{i18n>SaleDate}"/>
 						<Text
 							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"/>
-						<Label text="{i18n>SubmissionDate}"/>
+						<Label text="{i18n>SubmissionDate}" visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }" />
 						<Text
-							text="{path:'EcpFieldData>/ZecpSubDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"/>
-						<Label text="{i18n>IssueDealer}"/>
-						<Text text="{EcpFieldData>/ZecpDealcode}"/>
+							text="{path:'EcpFieldData>/ZecpSubDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}" visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }"/>
+						<Label text="{i18n>IssueDealer}" visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>
+						<Text text="{EcpFieldData>/ZecpDealcode}" visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>
 						<Label text="{i18n>PreOwnedCert}"/>
 						<Input id="idPrOwndCert" editable="{LocalDataModel>/editableField}" liveChange="onChangePreownedCert"
 							value="{path : 'EcpFieldData>/PrOwndCert', type : 'sap.ui.model.type.String', constraints : { minLength : 2, maxLength : 10 }}"
