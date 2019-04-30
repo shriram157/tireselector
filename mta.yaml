@@ -2,102 +2,102 @@ ID: tireSelector
 _schema-version: '3.1'
 description: Tire Selector consolidated app
 version: 1.1.10
+
 modules:
-  - name: tireSelector_hdb
-    type: hdb
-    path: tireSelector_hdb
-    requires:
-      - name: hdi_tireSelector_hdb
-  - name: tireSelector_Node
-    type: nodejs
-    path: tireSelector_Node
-    parameters:
-      host: tci-dev-tireselector-node
+ - name: tireSelector_hdb
+   type: hdb
+   path: tireSelector_hdb
+   requires:
+    - name: hdi_tireSelector_hdb
+
+ - name: tireSelector_Node
+   type: nodejs
+   path: tireSelector_Node
+   parameters:
       disk-quota: 512M
       memory: 256M
-    properties:
+   properties:
       UPS_NAME: TIRE_SELECTOR_APIM_CUPS
       XS_APP_LOG_LEVEL: info
       XS_LOG_USER: true
       XS_LOG_REFERER: true
       XS_LOG_CONNECTION_DATA: true
       NODE_TLS_REJECT_UNAUTHORIZED: 0
-    provides:
-      - name: tireSelector_Node_api
-        properties:
-          url: '${default-url}'
-    requires:
-      - name: application-logs_tireSelector
-      - name: uaa_tireSelector
-      - name: TIRE_SELECTOR_APIM_CUPS
-  - name: tireSelector_XSJS
-    type: nodejs
-    path: tireSelector_XSJS
-    parameters:
-      host: tci-dev-tireselector-xsjs
+   provides:
+    - name: tireSelector_Node_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: application-logs_tireSelector
+    - name: uaa_tireSelector
+    - name: TIRE_SELECTOR_APIM_CUPS
+
+ - name: tireSelector_XSJS
+   type: nodejs
+   path: tireSelector_XSJS
+   parameters:
       disk-quota: 512M
       memory: 256M
-    provides:
-      - name: tireSelector_XSJS_api
-        properties:
-          url: '${default-url}'
-    requires:
-      - name: tireSelector_hdb
-      - name: hdi_tireSelector_hdb
-      - name: uaa_tireSelector
-  - name: tireSelector
-    type: html5
-    path: tireSelector
-    parameters:
-      host: tci-dev-tireselector
+   provides:
+    - name: tireSelector_XSJS_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: tireSelector_hdb
+    - name: hdi_tireSelector_hdb
+    - name: uaa_tireSelector
+
+ - name: tireSelector
+   type: html5
+   path: tireSelector
+   parameters:
       disk-quota: 512M
       memory: 512M
-    properties:
+   properties:
       XS_APP_LOG_LEVEL: info
-    build-parameters:
+   build-parameters:
       builder: grunt
-    requires:
-      - name: application-logs_tireSelector
-      - name: uaa_tireSelector
-      - name: tireSelector_Node_api
-        group: destinations
-        properties:
-          name: tireSelector-node-backend
-          url: '~{url}'
-          forwardAuthToken: true
-          timeout: 60000
-      - name: tireSelector_XSJS_api
-        group: destinations
-        properties:
-          name: tireSelector-xsjs-backend
-          url: '~{url}'
-          forwardAuthToken: true
-      - name: conn_tireSelector
+      build-result: dist
+   requires:
+    - name: application-logs_tireSelector
+    - name: uaa_tireSelector
+    - name: tireSelector_Node_api
+      group: destinations
+      properties:
+         name: tireSelector-node-backend
+         url: ~{url}
+         forwardAuthToken: true
+         timeout: 60000
+    - name: tireSelector_XSJS_api
+      group: destinations
+      properties:
+         name: tireSelector-xsjs-backend
+         url: ~{url}
+         forwardAuthToken: true
+
 resources:
-  - name: application-logs_tireSelector
-    type: org.cloudfoundry.managed-service
-    parameters:
+ - name: application-logs_tireSelector
+   type: org.cloudfoundry.managed-service
+   parameters:
       service: application-logs
       service-plan: lite
-  - name: hdi_tireSelector_hdb
-    type: com.sap.xs.hdi-container
-    parameters:
+
+ - name: hdi_tireSelector_hdb
+   type: com.sap.xs.hdi-container
+   parameters:
       config:
-        schema: tireSelector
-    properties:
-      hdi-container-name: '${service-name}'
-  - name: uaa_tireSelector
-    type: org.cloudfoundry.managed-service
-    parameters:
+         schema: tireSelector
+   properties:
+      hdi-container-name: ${service-name}
+
+ - name: uaa_tireSelector
+   type: org.cloudfoundry.managed-service
+   parameters:
       service: xsuaa
       service-plan: application
       path: ./xs-security.json
-  - name: TIRE_SELECTOR_APIM_CUPS
-    type: org.cloudfoundry.existing-service
-    parameters:
+
+ - name: TIRE_SELECTOR_APIM_CUPS
+   type: org.cloudfoundry.existing-service
+   parameters:
       service-name: TIRE_SELECTOR_APIM_CUPS
-  - name: conn_tireSelector
-    parameters:
-      service-plan: lite
-      service: connectivity
-    type: org.cloudfoundry.managed-service
