@@ -1,9 +1,9 @@
 sap.ui.define([
 	"zecp/controller/BaseController"
-], function (BaseController) {
+], function (Controller) {
 	"use strict";
 
-	return BaseController.extend("zecp.controller.AgreementInquiry", {
+	return Controller.extend("zecp.controller.AgreementInquiry", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -11,7 +11,6 @@ sap.ui.define([
 		 * @memberOf zecp.view.AgreementInquiry
 		 */
 		onInit: function () {
-
 			var oNodeModel = new sap.ui.model.json.JSONModel();
 			oNodeModel.loadData(jQuery.sap.getModulePath("zecp.utils", "/Nodes.json"));
 			this.getView().setModel(oNodeModel, "ClaimModel");
@@ -21,14 +20,14 @@ sap.ui.define([
 			this.getView().setModel(oVehicleMaster, "VinModel");
 
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._onRoutMatched, this);
-
+			
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
 			this.getView().setModel(this.oI18nModel, "i18n");
-			var winUrl = window.location.search;
-
-			if (winUrl.indexOf("=fr") > -1) {
+			 var winUrl = window.location.search;
+		
+			if (winUrl.indexOf("=fr")>-1) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -45,11 +44,8 @@ sap.ui.define([
 			}
 		},
 		_onRoutMatched: function (oEvent) {
-
-			this.getDealer();
 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
 			this.getModel("LocalDataModel").setProperty("/AgreementNum", oAgrNum);
-
 			// var oVin = oEvent.getParameters().arguments.vin;
 			// var oCustomerNumber = oEvent.getParameters().arguments.customerNumber;
 			// var Oodomtr = oEvent.getParameters().arguments.odometer;
@@ -94,13 +90,13 @@ sap.ui.define([
 						success: $.proxy(function (vedata) {
 
 							this.getModel("LocalDataModel").setProperty("/PricingModelData", vedata.results[0]);
-
-							if (vedata.results[0].MAKE.toUpperCase() === "LEXUS") {
-								this.getModel("LocalDataModel").setProperty("/printBtnState", false);
-
-							} else {
-								this.getModel("LocalDataModel").setProperty("/printBtnState", true);
-							}
+							
+						if(vedata.results[0].MAKE.toUpperCase() === "LEXUS"){
+							this.getModel("LocalDataModel").setProperty("/printBtnState", false);
+							
+						}else{
+							this.getModel("LocalDataModel").setProperty("/printBtnState", true);
+						}
 
 						}, this),
 						error: function () {
@@ -195,20 +191,21 @@ sap.ui.define([
 			this.getModel("LocalDataModel").setProperty("/rowCount", 0);
 		},
 		onPrintPdf: function () {
-			var oAgr = this.getView().getModel("LocalDataModel").getProperty("/AgreementNum");
+				var oAgr = this.getView().getModel("LocalDataModel").getProperty("/AgreementNum");
 
-			var isProxy = "";
-			if (window.document.domain == "localhost") {
-				isProxy = "proxy";
+				var isProxy = "";
+				if (window.document.domain == "localhost") {
+					isProxy = "proxy";
+				}
+				var w = window.open(isProxy +
+					"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value",
+					'_blank');
+				if (w == null) {
+					console.log("Error");
+					//MessageBox.warning(oBundle.getText("Error.PopUpBloqued"));
+				}
 			}
-			var w = window.open(isProxy +
-				"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value",
-				'_blank');
-			if (w == null) {
-				console.log("Error");
-				//MessageBox.warning(oBundle.getText("Error.PopUpBloqued"));
-			}
-		}
+			
 
 		/**
 		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered

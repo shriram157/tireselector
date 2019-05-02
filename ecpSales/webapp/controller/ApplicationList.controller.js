@@ -2,10 +2,10 @@ sap.ui.define([
 	"zecp/controller/BaseController",
 	'sap/ui/core/Fragment',
 	'sap/ui/model/json/JSONModel'
-], function (BaseController, Fragment, JSONModel) {
+], function (Controller, Fragment, JSONModel) {
 	"use strict";
 
-	return BaseController.extend("zecp.controller.ApplicationList", {
+	return Controller.extend("zecp.controller.ApplicationList", {
 
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -57,13 +57,13 @@ sap.ui.define([
 
 					var userType = oData.loggedUserType[0];
 					switch (userType) {
-					case "Dealer_Sales_User":
+					case "DealerSalesUSer":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 
 						break;
-					case "Dealer_Service_User":
+					case "DealerServiceUser":
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
@@ -72,21 +72,21 @@ sap.ui.define([
 
 						break;
 
-					case "TCI_Admin":
+					case "TCIAdminECPDept":
 
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 
 						break;
-					case "TCI_User":
+					case "internalTCIUser":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 						that._resetView();
 						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
-					case "Zone_User":
+					case "TCIZoneUser":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
@@ -198,9 +198,9 @@ sap.ui.define([
 				bundleUrl: "i18n/i18n.properties"
 			});
 			this.getView().setModel(this.oI18nModel, "i18n");
-			var winUrl = window.location.search;
-
-			if (winUrl.indexOf("=fr") > -1) {
+			 var winUrl = window.location.search;
+		
+			if (winUrl.indexOf("=fr")>-1) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -246,10 +246,10 @@ sap.ui.define([
 				});
 
 			}
-
+			
 			var productInput = this.getView().byId("idVin");
 			productInput.setValue("");
-
+			
 		},
 
 		onAfterRendering: function () {

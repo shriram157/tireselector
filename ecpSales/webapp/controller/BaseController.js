@@ -16,33 +16,33 @@ sap.ui.define([
 			return this.getOwnerComponent().getRouter();
 		},
 		onInit: function () {
-			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				bundleUrl: "i18n/i18n.properties"
-			});
-			this.getView().setModel(this.oI18nModel, "i18n");
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties"
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
 
-			if (window.location.search == "?language=fr") {
-				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("fr")
-				});
-				this.getView().setModel(this.oI18nModel, "i18n");
-				this.sCurrentLocale = 'FR';
-			} else {
-				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
-					bundleUrl: "i18n/i18n.properties",
-					bundleLocale: ("en")
-				});
-				this.getView().setModel(this.oI18nModel, "i18n");
-				this.sCurrentLocale = 'EN';
-			}
-		},
-		/**
-		 * Convenience method for getting the view model by name in every controller of the application.
-		 * @public
-		 * @param {string} sName the model name
-		 * @returns {sap.ui.model.Model} the model instance
-		 */
+				if (window.location.search == "?language=fr") {
+					this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+						bundleUrl: "i18n/i18n.properties",
+						bundleLocale: ("fr")
+					});
+					this.getView().setModel(this.oI18nModel, "i18n");
+					this.sCurrentLocale = 'FR';
+				} else {
+					this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+						bundleUrl: "i18n/i18n.properties",
+						bundleLocale: ("en")
+					});
+					this.getView().setModel(this.oI18nModel, "i18n");
+					this.sCurrentLocale = 'EN';
+				}
+			},
+			/**
+			 * Convenience method for getting the view model by name in every controller of the application.
+			 * @public
+			 * @param {string} sName the model name
+			 * @returns {sap.ui.model.Model} the model instance
+			 */
 		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
@@ -185,13 +185,13 @@ sap.ui.define([
 
 					var userType = oData.loggedUserType[0];
 					switch (userType) {
-					case "Dealer_Sales_User":
+					case "DealerSalesUSer":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
 						that.getModel("LocalDataModel").setProperty("/editableField", true);
 						break;
-					case "Dealer_Service_User":
+					case "DealerServiceUser":
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
@@ -199,10 +199,10 @@ sap.ui.define([
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
 						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						that._resetView();
-						//that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
+						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 
-					case "TCI_Admin":
+					case "TCIAdminECPDept":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
@@ -210,7 +210,7 @@ sap.ui.define([
 						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
 						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
-					case "TCI_User":
+					case "internalTCIUser":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
@@ -220,7 +220,7 @@ sap.ui.define([
 						that._resetView();
 						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
-					case "Zone_User":
+					case "TCIZoneUser":
 
 						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
@@ -229,6 +229,7 @@ sap.ui.define([
 						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
 					default:
+						// raise a message, because this should not be allowed. 
 
 					}
 				}
