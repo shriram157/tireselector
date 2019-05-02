@@ -162,7 +162,7 @@
 						<Text text="{EcpFieldData>/ZecpPlancode}" id="idPlanCodeText"/>
 						<Label text="{i18n>PlanPurchasePrice}"/>
 						<Input type="Number" value="{EcpFieldData>/ZecpPlanpurchprice}" id="idPlanPurchase" required="true"
-							valueState="{LocalDataModel>/PlanPurchase}" editable="{LocalDataModel>/editableField}" liveChange="onEnterPlanPurchasePrice"/>
+							valueState="{LocalDataModel>/PlanPurchase}" editable="{LocalDataModel>/editableField}" liveChange="onEnterPlanPurchasePrice" enabled="{oSetProperty>/notUsedPrimPlan}"/>
 						<Label text="{i18n>RetailPrice}"/>
 						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_RET_PRICE}"/>
 						<Label text="{i18n>DeferredSurcharge}"/>

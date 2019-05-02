@@ -219,6 +219,17 @@ return Controller.extend("zecp.controller.newECPApp", {
 
 									//Check and Update Tire Hazard and Benifit Falg for DMS App: Defet ID = 9616
 									this.updateTHazBenFlag();
+									
+									//Defect 12699
+									var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
+									var isUsedPrimPlan=this.check4PrimUsedVehiclePlan(oSelectedPlan);
+									if(isUsedPrimPlan){
+										this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", false);
+										this.oECPData.ZecpPlanpurchprice = "0.01";
+									}else{
+										this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
+									}
+															
 
 								}, this),
 								error: function (err) {
@@ -425,6 +436,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 					this.getView().getModel("oSetProperty").setProperty("/backPrimery", true);
 					this.getView().getModel("oSetProperty").setProperty("/backSecondary", false);
 					this.EcpFieldData.setDefaultBindingMode("TwoWay");
+					this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
 				}
 
 				this.getView().setModel(this.EcpFieldData, "EcpFieldData");
@@ -1172,6 +1184,15 @@ return Controller.extend("zecp.controller.newECPApp", {
 					return false;
 				}
 			},
+			check4PrimUsedVehiclePlan: function (selectedPlan) {
+				var vehiclePlansForPriceDisable = ["ULR1A","ULR2A","ULPZY","ULP1D","ULP2E","UTR1A","UTR1B","UTUZH","UTUWC"];
+				if (vehiclePlansForPriceDisable.indexOf(selectedPlan) > -1) {
+					//New Plan has been slected
+					return true;
+				} else {
+					return false;
+				}
+			},
 			OnNextStep4: function (oEvent) {
 
 				var oPlanArray = ["NTC34", "NTC94", "NTC45", "NTC46", "NTC47", "NTF34", "NTF94", "NTF45", "NTF46", "NTF47", "CTC40", "CTC50"];
@@ -1207,6 +1228,10 @@ return Controller.extend("zecp.controller.newECPApp", {
 						}
 						if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
 							this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+							
+							//For Defect 12699
+							this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
+
 						
 							if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal && this.DifferTime <= this.PlanTime) {
 
@@ -1248,53 +1273,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 
 					}, this));
 
-			// this.getNewVehiclePlnValidated();
-		// };
-
-		// if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
-		// 	this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
-		// 	if(oSelectedPlan == "CTC40" || oSelectedPlan == "CTC46"){
-		// 		this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
-		// 	}
-
-		// 	if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal && this.DifferTime <= this.PlanTime) {
-
-		// 		this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-		// 		this.getView().byId("idNewECPMsgStrip").setType("None");
-		// 		this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
-		// 		oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
-		// 		this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
-
-		// 	} else if ($.isEmptyObject(oidPlanCode)) {
-		// 		this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-		// 		this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
-		// 		this.getView().byId("idNewECPMsgStrip").setType("Error");
-		// 		oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-		// 	} else if (this.oECPData.ZecpOdometer > this.oAdditionalVal) {
-		// 		this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-		// 		this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
-		// 			(this.oECPData.ZecpOdometer - this.oAdditionalVal) + this.oBundle
-		// 			.getText("KMagainstplanmilagevalue"));
-		// 		this.getView().byId("idNewECPMsgStrip").setType("Error");
-		// 		oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-
-		// 	} else if (this.DifferTime > this.PlanTime) {
-		// 		this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-		// 		var oTimeDiffer = this.DifferTime - this.PlanTime;
-
-		// 		var TotalTimeDiffer = this._fnDayHrSecond(oTimeDiffer);
-
-		// 		this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Planperiodexceedsby") + " " +
-		// 			TotalTimeDiffer.month + " Months : " + TotalTimeDiffer.day + " Days : " + TotalTimeDiffer.hour + " Hours : " +
-		// 			TotalTimeDiffer.minute + " Minutes ");
-
-		// 		this.getView().byId("idNewECPMsgStrip").setType("Error");
-		// 		oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-
-		// 	}
-
-		// }
-
+	
 		var difDay = parseInt(this.DifferTime / (24 * 60 * 60 * 1000));
 
 		for (var i = 0; i < oPlanArray.length; i++) {
@@ -1322,6 +1301,17 @@ return Controller.extend("zecp.controller.newECPApp", {
 		var MaxDays = parseInt(this.mxMonth) * 30 * 1000 * 60 * 60 * 24;
 
 		if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+			
+			
+			//to Fix Defect #12699
+			var isUsedPrimPlan=this.check4PrimUsedVehiclePlan(oSelectedPlan);
+			if(isUsedPrimPlan){
+				this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", false);
+				this.oECPData.ZecpPlanpurchprice = "0.01";
+			}else{
+				this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
+			}
+			
 			this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 			
 			//Fixing Defect #11008 Hiding Surcharge boxes
@@ -1804,19 +1794,19 @@ return Controller.extend("zecp.controller.newECPApp", {
 		this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 		var oOdometer = this.getView().byId("idOdoVal");
 		var oOdoVal = oOdometer.getValue();
-		if ($.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
+		if ($.isEmptyObject(this.oECPData.ZecpVehPrice.toString()) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice.toString())) {
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "Error");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 			this.getView().byId("idNewECPMsgStrip").setType("Error");
 			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterMandatoryFields"));
-		} else if (!$.isEmptyObject(this.oECPData.ZecpVehPrice) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
+		} else if (!$.isEmptyObject(this.oECPData.ZecpVehPrice.toString()) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice.toString())) {
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 			this.getView().byId("idNewECPMsgStrip").setType("Error");
 			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterMandatoryFields"));
-		} else if ($.isEmptyObject(this.oECPData.ZecpVehPrice) && !$.isEmptyObject(this.oECPData.ZecpPlanpurchprice)) {
+		} else if ($.isEmptyObject(this.oECPData.ZecpVehPrice.toString()) && !$.isEmptyObject(this.oECPData.ZecpPlanpurchprice.toString())) {
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "Error");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -2212,7 +2202,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 		this.getView().byId("idNewECPMsgStrip").setText("");
 		this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 		this.getView().byId("idNewECPMsgStrip").setType("None");
-		this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
+		this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 		
 	},
 	
