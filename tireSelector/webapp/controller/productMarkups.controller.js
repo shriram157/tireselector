@@ -219,7 +219,10 @@ sap.ui.define([
 					var dataFromModel = bindingContext.getModel().getProperty(bindingContextPath);
 
 					if (dataFromModel) {
-						dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+						/*Fixes for Defect number 12147 start*/
+						//dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+						dataFromModel.Live_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
+						/*Fixes for Defect number 12147 end*/
 						dataFromModel.Preview_Markup_Percentage = "0.00";
 						if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
 							//dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
@@ -255,7 +258,10 @@ sap.ui.define([
 						newDataFromModel.Dealer_Brand = modelData[i].Dealer_Brand;
 						newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 						if (modelData[i].Preview_Markup_Percentage != "0.00") {
-							newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+							/*Fixes for Defect number 12147 start*/
+							//newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+							newDataFromModel.Live_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
+							/*Fixes for Defect number 12147 end*/
 							newDataFromModel.Preview_Markup_Percentage = "0.00";
 						} else {
 							newDataFromModel.Live_Markup_Percentage = "0.00";
@@ -335,7 +341,10 @@ sap.ui.define([
 
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
-					dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					/*Fixes for Defect number 12147 start*/
+					//dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					dataFromModel.Preview_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
+					/*Fixes for Defect number 12147 end*/
 					dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					if (dataFromModel.Live_Markup_Percentage == "0.00") {
 						dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
@@ -361,7 +370,10 @@ sap.ui.define([
 					newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 					newDataFromModel.Live_Markup_Percentage = "0.00";
 					newDataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
-					newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					/*Fixes for Defect number 12147 start*/
+					//newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
+					newDataFromModel.Preview_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
+					/*Fixes for Defect number 12147 end*/
 					newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 					newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 					newDataFromModel.User_First_Name = modelData[i].User_First_Name;
