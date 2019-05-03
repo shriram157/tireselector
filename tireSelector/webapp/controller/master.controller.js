@@ -1036,7 +1036,7 @@ sap.ui.define([
 		},
 
 		navToSelectTire: function (oEvtModel) {
-			debugger;
+			// debugger;
 			var oBj = {};
 			oBj.SearchOptionVehicle = _that.SearchOptionVehicle.getSelectedKey();
 			if (_that.SearchOptionVehicle.getSelectedItem() != null) {

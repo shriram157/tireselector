@@ -100,7 +100,7 @@ sap.ui.define([
 		},
 
 		_oSelectTireRoute: function (oEvent) {
-			
+
 			//fetching data from HDB for porduct markup 
 			that.oXSOServiceModel = that.getOwnerComponent().getModel("XsodataModel");
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
@@ -109,12 +109,12 @@ sap.ui.define([
 
 			that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
-			
+
 			console.log("XSO model data", that.oXSOServiceModel);
 			//"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 			that.oXSOServiceModel.read("/DealerMarkUp", {
 				urlParameters: {
-					"$filter": "Dealer_code eq" + "'" + (that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ sDivision +"'"
+					"$filter": "Dealer_code eq" + "'" + (that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '" + sDivision + "'"
 				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
@@ -172,28 +172,28 @@ sap.ui.define([
 			});
 
 			//START: uncomment below for cloud testing
-			var scopes = that.userDetails.userContext.scopes;
-			console.log("scopes", scopes);
-			var accessAll = false,
-				accesslimited = false;
+			// var scopes = that.userDetails.userContext.scopes;
+			// console.log("scopes", scopes);
+			// var accessAll = false,
+			// 	accesslimited = false;
 
-			for (var s = 0; s < scopes.length; s++) {
-				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-						accesslimited = true;
-					} else {
-						accessAll = false;
-						accesslimited = false;
-					}
-				}
-			}
-			if (accessAll == true && accesslimited == true) {
-				that._oViewModel.setProperty("/enableProdMarkup", true);
-			} else {
-				that._oViewModel.setProperty("/enableProdMarkup", false);
-			}
+			// for (var s = 0; s < scopes.length; s++) {
+			// 	if (scopes[s] != "openid") {
+			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+			// 			accessAll = true;
+			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+			// 			accesslimited = true;
+			// 		} else {
+			// 			accessAll = false;
+			// 			accesslimited = false;
+			// 		}
+			// 	}
+			// }
+			// if (accessAll == true && accesslimited == true) {
+			// 	that._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	that._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
@@ -464,21 +464,22 @@ sap.ui.define([
 										// console.log("fina tempmodel data", value);
 										that.tempStorage = that.tempModel.getData().results;
 										that.Filters = [{
-											"type": "Tire Fitment",
+											"type": that.oI18nModel.getResourceBundle().getText("TireFitment"),
 											"values": []
 										}, {
-											"type": "Tire Category",
+											"type": that.oI18nModel.getResourceBundle().getText("TireCategory"),
 											"values": []
 										}, {
-											"type": "Tire Brand",
+											"type": that.oI18nModel.getResourceBundle().getText("TireBrand"),
 											"values": []
 										}, {
-											"type": "Tire Speed Rating",
+											"type": that.oI18nModel.getResourceBundle().getText("TireSpeedRating"),
 											"values": []
 										}, {
-											"type": "Tire MFG Part No",
+											"type": that.oI18nModel.getResourceBundle().getText("TireMFGPartNo"),
 											"values": []
 										}];
+										
 										for (var l = 0; l < that.tempModel.getData().results.length; l++) {
 											that.Filters[0].values.push({
 												"text": that.tempModel.getData().results[l].TIRE_FITMENT

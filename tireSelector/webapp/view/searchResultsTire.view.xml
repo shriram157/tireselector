@@ -54,8 +54,8 @@
 							rows="{TireFitmentJSONModel>/results}" visibleRowCount="8">
 							<t:toolbar>
 								<Toolbar>
-									<CheckBox text="Show Dealer Net" select="onCheckPress" id="checkDealerNet"/>
-									<CheckBox text="Use Preview Markup" select="onCheckPreview" id="checkPreview"/>
+									<CheckBox text="{i18n>ShowDealerNet}" select="onCheckPress" id="checkDealerNet"/>
+									<CheckBox text="{i18n>UsePreviewMarkup}" select="onCheckPreview" id="checkPreview"/>
 									<!--<Button text="Open View Settings Dialog in Filter view" press="handleOpenDialogFilter"/>-->
 								</Toolbar>
 							</t:toolbar>
