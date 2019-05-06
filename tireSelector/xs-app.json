@@ -8,26 +8,50 @@
 		"source": "^/tireselector/index.html$",
 		"target": "index.html",
 		"localDir": "webapp",
-		"cacheControl": "no-cache, no-store, must-revalidate"
+		"cacheControl": "no-cache, no-store, must-revalidate",
+		"scope": [
+			"$XSAPPNAME.Manage_Product_Markups",
+			"$XSAPPNAME.View_Tire_Quotes"
+		]
 	}, {
 		"source": "^/tireselector/(.*)$",
 		"target": "$1",
-		"localDir": "webapp"
+		"localDir": "webapp",
+		"scope": [
+			"$XSAPPNAME.Manage_Product_Markups",
+			"$XSAPPNAME.View_Tire_Quotes"
+		]
 	}, {
 		"source": "/node(.*)",
 		"destination": "tireSelector-node-backend",
-		"csrfProtection": false
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.Manage_Product_Markups",
+			"$XSAPPNAME.View_Tire_Quotes"
+		]
 	}, {
 		"source": "/appdata(.*)",
 		"destination": "tireSelector-node-backend",
-		"csrfProtection": false
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.Manage_Product_Markups",
+			"$XSAPPNAME.View_Tire_Quotes"
+		]
 	}, {
 		"source": "/xsodata(.*)",
 		"destination": "tireSelector-xsjs-backend",
-		"csrfProtection": false
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.Manage_Product_Markups",
+			"$XSAPPNAME.View_Tire_Quotes"
+		]
 	}, {
 		"source": "(.*)(.xsodata)",
 		"destination": "tireSelector-xsjs-backend",
-		"csrfProtection": false
+		"csrfProtection": false,
+		"scope": [
+			"$XSAPPNAME.Manage_Product_Markups",
+			"$XSAPPNAME.View_Tire_Quotes"
+		]
 	}]
 }
