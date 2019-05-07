@@ -253,7 +253,7 @@ sap.ui.define([
 				_this.rowData.CustAddress = "";
 				_this.rowData.CustPostalCode = "";
 				_this.rowData.CustPhone = "";
-				_this.rowData.dealerMessage ="";
+				_this.rowData.dealerMessage = "";
 
 				var oMat = _this.rowData.Material;
 				var oMaterial = oMat;
@@ -651,10 +651,9 @@ sap.ui.define([
 			var ModelData = oEvent.getSource().getParent().getParent().getModel("TireQuotationModel").getData();
 			var ModelData2 = oEvent.getSource().getParent().getParent().getModel("TirePriceModel").getData();
 			var ModelData3 = oEvent.getSource().getParent().getParent().getModel("TireQuoteModel").getData();
-			if(ModelData.EHFPRice != "" && ModelData.EHFPRice !=null && ModelData.EHFPRice!= undefined){
+			if (ModelData.EHFPRice != "" && ModelData.EHFPRice != null && ModelData.EHFPRice != undefined) {
 				ModelData.EHFPRice = (ModelData.EHFPRice).toString();
-			}
-			else{
+			} else {
 				ModelData.EHFPRice = "";
 			}
 			if (this.userData.DealerData.Region != undefined) {
@@ -676,7 +675,7 @@ sap.ui.define([
 					"DlrAddL2": this.userData.DealerData.BusinessPartnerAddress2,
 					"DlrAddL3": Region,
 					"DlrTel": ModelData3.PhoneNumber,
-					"VehicleDes": ModelData.VModelYear +" "+ ModelData.VehicleSeriesDescp,
+					"VehicleDes": ModelData.VModelYear + " " + ModelData.VehicleSeriesDescp,
 					"VinNum": ModelData.VIN,
 					"QuoteDate": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
 					"OfferExpDt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
@@ -718,18 +717,18 @@ sap.ui.define([
 					"Quantity": this.getView().byId("id_tireQty").getValue(),
 					"Price": ModelData2.TiresPrice,
 					"MimeType": "application/json",
-					"CustName":ModelData.CustName,
-					"CustAddL1":ModelData.CustAddress,
-					"CustAddL2":"",
-					"CustAddL3":ModelData.CustPostalCode,
-					"CustTel":ModelData.CustPhone,
+					"CustName": ModelData.CustName,
+					"CustAddL1": ModelData.CustAddress,
+					"CustAddL2": "",
+					"CustAddL3": ModelData.CustPostalCode,
+					"CustTel": ModelData.CustPhone,
 					"logo_info": sDivision,
-					"DlrComment":ModelData.dealerMessage
+					"DlrComment": ModelData.dealerMessage
 				}
 			};
-			
-			if(this.obj.d.VehicleDes == " undefined" || this.obj.d.VehicleDes == "undefined"){
-				this.obj.d.VehicleDes="";
+
+			if (this.obj.d.VehicleDes == " undefined" || this.obj.d.VehicleDes == "undefined") {
+				this.obj.d.VehicleDes = "";
 			}
 
 			var that = this;
@@ -747,60 +746,60 @@ sap.ui.define([
 				},
 				url: that.url,
 				success: function (data, textStatus, request) {
-						// console.log("request", request);
-						that.csrfToken = request.getResponseHeader('X-Csrf-Token');
-						console.log("csrfToken", that.csrfToken);
-						$.ajax({
-							dataType: "json",
-							cache: false,
-							type: "POST",
-							url: that.url,
-							data: JSON.stringify(that.obj),
-							headers: {
-								"X-Csrf-Token": that.csrfToken,
-								"Content-Type": "application/json; charset=utf-8"
-							},
-							// xhrFields is what did the trick to read the blob to pdf
-							// xhrFields: {
-							// 	responseType: 'arraybuffer'
-							// },
-							success: function (response, status, xhr) {
-								var contentType = 'application/pdf',
-									sliceSize = 512;
-								// var b64toBlob = (response.d.Content, contentType = '', sliceSize = 512) => {
-								var byteCharacters = atob(response.d.Content);
-								var byteArrays = [];
+					// console.log("request", request);
+					that.csrfToken = request.getResponseHeader('X-Csrf-Token');
+					console.log("csrfToken", that.csrfToken);
+					$.ajax({
+						dataType: "json",
+						cache: false,
+						type: "POST",
+						url: that.url,
+						data: JSON.stringify(that.obj),
+						headers: {
+							"X-Csrf-Token": that.csrfToken,
+							"Content-Type": "application/json; charset=utf-8"
+						},
+						// xhrFields is what did the trick to read the blob to pdf
+						// xhrFields: {
+						// 	responseType: 'arraybuffer'
+						// },
+						success: function (response, status, xhr) {
+							var contentType = 'application/pdf',
+								sliceSize = 512;
+							// var b64toBlob = (response.d.Content, contentType = '', sliceSize = 512) => {
+							var byteCharacters = atob(response.d.Content);
+							var byteArrays = [];
 
-								for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-									var slice = byteCharacters.slice(offset, offset + sliceSize);
-									var byteNumbers = new Array(slice.length);
-									for (var i = 0; i < slice.length; i++) {
-										byteNumbers[i] = slice.charCodeAt(i);
-									}
-									var byteArray = new Uint8Array(byteNumbers);
-									byteArrays.push(byteArray);
+							for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+								var slice = byteCharacters.slice(offset, offset + sliceSize);
+								var byteNumbers = new Array(slice.length);
+								for (var i = 0; i < slice.length; i++) {
+									byteNumbers[i] = slice.charCodeAt(i);
 								}
-
-								var blob = new Blob(byteArrays, {
-									type: contentType
-								});
-								
-								var a = window.document.createElement("a");
-								a.href = window.URL.createObjectURL(blob, {
-									type: "application/pdf"
-								});
-								a.download = "TireQuotation.pdf";
-								document.body.appendChild(a);
-								a.click();
-								document.body.removeChild(a);
-								// // sap.ui.core.util.File.save(bin, "TireQuotation", "pdf", "application/pdf");
-								// that.clearData();
-							},
-							error: function (oErrEvent) {
-								console.log("oErrEvent", oErrEvent);
+								var byteArray = new Uint8Array(byteNumbers);
+								byteArrays.push(byteArray);
 							}
-						});
-					}
+
+							var blob = new Blob(byteArrays, {
+								type: contentType
+							});
+
+							var a = window.document.createElement("a");
+							a.href = window.URL.createObjectURL(blob, {
+								type: "application/pdf"
+							});
+							a.download = "TireQuotation.pdf";
+							document.body.appendChild(a);
+							a.click();
+							document.body.removeChild(a);
+							// // sap.ui.core.util.File.save(bin, "TireQuotation", "pdf", "application/pdf");
+							// that.clearData();
+						},
+						error: function (oErrEvent) {
+							console.log("oErrEvent", oErrEvent);
+						}
+					});
+				}
 			});
 		},
 
@@ -1114,6 +1113,13 @@ sap.ui.define([
 		onAfterRendering: function () {
 
 		},
+		// roundedDecimals: function (oNumber) {
+		// 	var oNum;
+		// 	oNumber = parseFloat(oNumber);
+		// 	var oNum;
+		// 	oNum = Math.round(oNumber * 100) / 100;
+		// 	return Num.toFixed(2);
+		// },
 		onExit: function () {
 			_this.oTireQuotationModel.refresh(true);
 			_this.oTirePriceModel.refresh(true);

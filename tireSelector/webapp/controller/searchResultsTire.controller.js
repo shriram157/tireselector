@@ -286,17 +286,17 @@ sap.ui.define([
 												//TIRE_MFG_PART_NUM
 												if (that.fromTireCenter != true) {
 													if (that.tempModel.getData().results[n].TIRE_FITMENT == "PF") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = "Perfect";
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Perfect");
 														that.tempModel.getData().results[n].colorCell = "Green";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "AF") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = "Acceptable";
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Acceptable");
 														that.tempModel.getData().results[n].colorCell = "Yellow";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OE") {
 														that.tempModel.getData().results[n].TIRE_FITMENT = "OE";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = "Other";
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Other");
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = "Discontinued";
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Discontinued");
 														that.tempModel.getData().results[n].colorCell = "Magenta";
 													}
 												} else {
@@ -309,7 +309,7 @@ sap.ui.define([
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
 														that.tempModel.getData().results[n].TIRE_FITMENT = "";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = "Discontinued";
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Discontinued");
 														that.tempModel.getData().results[n].colorCell = "Magenta";
 													}
 
@@ -355,113 +355,12 @@ sap.ui.define([
 									});
 
 									that.msgFlag = false;
-
-									// function getDealerNet(oMaterial) {
-									// 	// sap.ui.core.BusyIndicator.show();
-									// 	that.Division = that.userDetails.DealerData.Division;
-									// 	that.Doctype = "ZAF";
-									// 	that.SalesOrg = "7000";
-									// 	that.DistrChan = "10";
-									// 	that.SoldtoParty = that.userDetails.DealerData.BusinessPartner;
-									// 	var filterdata = "?$filter=Division eq '" + that.Division + "' and DocType eq '" + that.Doctype +
-									// 		"' and SalesOrg eq '" + that.SalesOrg + "' and DistrChan eq '" + that.DistrChan + "' and SoldtoParty eq '" +
-									// 		that.SoldtoParty + "' and Material eq '" + oMaterial + "'";
-
-									// 	tempData = [];
-
-									// 	that.oPriceServiceModel = that.getOwnerComponent().getModel("PriceServiceModel");
-
-									// 	that.promise1 = new Promise(function (resolve, reject) {
-									// 		that.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
-									// 			success: $.proxy(function (oDataPrice) {
-									// 				if (oDataPrice.results.length > 0) {
-									// 					// jQuery.sap.delayedCall(4000, that, function () {
-									// 					for (var l = 0; l < oDataPrice.results.length; l++) {
-									// 						var CndType = oDataPrice.results[l].CndType;
-									// 						var Amount = oDataPrice.results[l].Amount;
-									// 						if (CndType == "ZPG4") {
-									// 							if (Amount != "") {
-									// 								DealerNet = Amount;
-									// 							}
-									// 						}
-									// 						if (CndType == "ZPM3") {
-									// 							if (Amount != "") {
-									// 								MSRP = Amount;
-									// 							}
-									// 						} else if (CndType == "ZPM2") {
-									// 							if (Amount != "") {
-									// 								MSRP = Amount;
-									// 							}
-									// 						}
-									// 					}
-									// 					tempData.push({
-									// 						"DealerNet": DealerNet,
-									// 						"MSRP": MSRP,
-									// 						"oMat": oMaterial
-									// 					});
-									// 					console.log("fetched MSRp DealerNet data", tempData);
-									// 					// });
-									// 				} else {
-									// 					// sap.m.MessageBox.error(
-									// 					// 	"NO Data found for Pricing"
-									// 					// );
-									// 					// that.oGlobalBusyDialog.close();
-									// 				}
-									// 				resolve(tempData);
-									// 			}, that),
-									// 			error: function (oError) {
-									// 				sap.ui.core.BusyIndicator.hide();
-									// 				//coming multiple times, set flag and use it
-									// 				// var err = JSON.parse(oError.response.body);
-									// 				// sap.m.MessageBox.error(err.error.message.value);
-									// 			}
-									// 		});
-									// 	});
-									// }
-									// if (that.tempModel.getData().results != undefined) {
-									// for (var n = 0; n < that.tempModel.getData().results.length; n++) {
-									// 	var oMat = that.tempModel.getData().results[n].MATERIAL;
-									// 	getDealerNet(oMat);
-									// 	console.log("dealernetPrice", tempData);
-									// }
-
-									// // jQuery.sap.delayedCall(0, that, function () {
-									// var promise1 = new Promise(function (resolve, reject) {
+									
 									that.FitmentToCharac = {
 										"results": []
 									};
-									// console.log("Updated Tempdata", tempData);
-									// that.promise1.then(function (value) {
-									// 	console.log("final tempmodel data", value);
-									// 	if (that.tempModel.getData().results.length > 0) {
-									// 		that.promise2 = new Promise(function (resolve1, reject1) {
-									// 			for (var l = 0; l < that.tempModel.getData().results.length; l++) {
-									// 				var checkMat = that.tempModel.getData().results[l].MATERIAL;
-									// 				var dealerNet = that.tempModel.getData().results[l].DealerNet;
-									// 				for (var k = 0; k < tempData.length; k++) {
-									// 					if (tempData[k].oMat === checkMat) {
-									// 						dealerNet = tempData[k].DealerNet;
-									// 						MSRP = tempData[k].MSRP;
-									// 					}
-									// 				}
-									// 				that.tempModel.getData().results[l].DealerNet = dealerNet;
-									// 				that.tempModel.getData().results[l].MSRP = MSRP;
-									// 				that.tempModel.updateBindings(true);
-
-									// 			}
-									// 			// resolve1(that.tempModel);
-									// 		});
-									// 		console.log("stored dealer/MSRP", that.tempModel);
-									// 	} else {
-									// 		sap.ui.core.BusyIndicator.hide();
-									// 		// sap.m.MessageBox.error(
-									// 		// 	"NO Data found for Pricing"
-									// 		// );
-									// 	}
-									// });
+									
 									setTimeout(function () {
-										// that.promise2.then(function (value) {
-										// console.log("fina tempmodel data", value);
 										that.tempStorage = that.tempModel.getData().results;
 										that.Filters = [{
 											"type": that.oI18nModel.getResourceBundle().getText("TireFitment"),
@@ -673,10 +572,10 @@ sap.ui.define([
 		},
 
 		colorFormatter: function (oFitval) {
-			if (oFitval == "Perfect") {
+			if (oFitval == that.oI18nModel.getResourceBundle().getText("Perfect")) {
 				// this.addStyleClass("colorPerfect");//green
 				this.getView().byId("cell_Fitment").addStyleClass("colorPerfect"); //
-			} else if (oFitval == "Acceptable") {
+			} else if (oFitval == that.oI18nModel.getResourceBundle().getText("Acceptable")) {
 				// this.addStyleClass("colorAcceptable");//yellow
 				this.getView().byId("cell_Fitment").addStyleClass("colorAcceptable"); //yellow
 			} else if (oFitval == "Disconitnued") {
