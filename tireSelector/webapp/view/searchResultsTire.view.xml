@@ -51,7 +51,7 @@
 					</VBox>
 					<HBox class="customStyleBox">
 						<t:Table id="idTireSelectionTable" class="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
-							rows="{TireFitmentJSONModel>/results}" visibleRowCount="8">
+							rows="{TireFitmentJSONModel>/results}" visibleRowCount="8" showNoData="false">
 							<t:toolbar>
 								<Toolbar>
 									<CheckBox text="{i18n>ShowDealerNet}" select="onCheckPress" id="checkDealerNet"/>

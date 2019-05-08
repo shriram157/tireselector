@@ -36,7 +36,7 @@
 						<Button text="{i18n>MakePreviewLive}" type="Emphasized" press="updateXSALiveTable"/>
 					</OverflowToolbar>
 					<t:Table id="ID_ProdMarkupsTable" selectionBehavior="Row" selectionMode="None" visibleRowCount="7"
-							rows="{ path: 'ProdMarkupModel>/results', sorter: { path: 'Manufacturer' } }">
+							rows="{ path: 'ProdMarkupModel>/results', sorter: { path: 'Manufacturer' } }"  showNoData="false">
 							<t:columns>
 								<t:Column sortProperty="Manufacturer_code" filterProperty="Manufacturer_code">
 									<Label text="{i18n>Manufacturer}"/>

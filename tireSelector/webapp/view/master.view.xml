@@ -100,7 +100,7 @@
 				</f:SimpleForm>
 				<HBox class="tableSearhResults" visible="{MasterModel>/enableTable}">
 					<t:Table id="idSearchresultsTable" selectionBehavior="Row" selectionMode="None" visibleRowCount="7" cellClick="navToSelectTire"
-						rows="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }">
+						rows="{ path: 'SearchResultModel>/results', sorter: { path: 'Model' } }" showNoData="false">
 						<t:columns>
 							<t:Column>
 								<Label text="{i18n>Model}"/>

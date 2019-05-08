@@ -73,7 +73,7 @@
 							<Input type="Text" value="" liveChange="ChangeLabelMandatory"/>
 						</f:content>
 					</f:SimpleForm>
-					<Table inset="false" id="tableQuotation">
+					<Table inset="false" id="tableQuotation" showNoData="false">
 						<columns>
 							<Column demandPopin="true">
 								<Text text=""/>
