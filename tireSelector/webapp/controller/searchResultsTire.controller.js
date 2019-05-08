@@ -417,20 +417,21 @@ sap.ui.define([
 									
 									setTimeout(function () {
 										that.tempStorage = that.tempModel.getData().results;
+										that.oBundle = that.getView().getModel("i18n").getResourceBundle();
 										that.Filters = [{
-											"type": that.oI18nModel.getResourceBundle().getText("TireFitment"),
+											"type": that.oBundle.getText("TireFitment"),
 											"values": []
 										}, {
-											"type": that.oI18nModel.getResourceBundle().getText("TireCategory"),
+											"type": that.oBundle.getText("TireCategory"),
 											"values": []
 										}, {
-											"type": that.oI18nModel.getResourceBundle().getText("TireBrand"),
+											"type": that.oBundle.getText("TireBrand"),
 											"values": []
 										}, {
-											"type": that.oI18nModel.getResourceBundle().getText("TireSpeedRating"),
+											"type": that.oBundle.getText("TireSpeedRating"),
 											"values": []
 										}, {
-											"type": that.oI18nModel.getResourceBundle().getText("TireMFGPartNo"),
+											"type": that.oBundle.getText("TireMFGPartNo"),
 											"values": []
 										}];
 										
