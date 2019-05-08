@@ -100,21 +100,6 @@ sap.ui.define([
 					currentImageSource.setProperty("src", "images/LexusNew.png");
 				}
 			}
-			// if (window.location.search == "?language=fr") {
-			// 	_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
-			// 		bundleUrl: "i18n/i18n.properties",
-			// 		bundleLocale: ("fr")
-			// 	});
-			// 	_this.getView().setModel(_this.oI18nModel, "i18n");
-			// 	_this.sCurrentLocale = 'FR';
-			// } else {
-			// 	_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
-			// 		bundleUrl: "i18n/i18n.properties",
-			// 		bundleLocale: ("en")
-			// 	});
-			// 	_this.getView().setModel(_this.oI18nModel, "i18n");
-			// 	_this.sCurrentLocale = 'EN';
-			// }
 		},
 		textCount: function (count) {
 			// debugger;
@@ -166,6 +151,48 @@ sap.ui.define([
 			return null;
 		},
 		_oQuoteRoute: function (oEvent) {
+			_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			_this.getView().setModel(_this.oI18nModel, "i18n");
+
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "EN"; // default is english 
+			}
+			if (sSelectedLocale == "fr") {
+				_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(_this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(_this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
+			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			if (isDivisionSent) {
+				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+				var currentImageSource;
+				if (sDivision == '10') // set the toyoto logo
+				{
+					DivUser = "TOY";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+
+				} else { // set the lexus logo
+					DivUser = "LEX";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/LexusNew.png");
+				}
+			}
 			_this.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			_this.userData = sap.ui.getCore().getModel("DealerModel").getData();
 			_this.phoneNumber = this.formatPhoneNumber(sap.ushell.components.dealerPhoneNumber);
@@ -190,28 +217,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			// var scopes = _this.userData.userContext.scopes;
-			// console.log("scopes", scopes);
-			// var accessAll = false,
-			// 	accesslimited = false;
+			var scopes = _this.userData.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
 
-			// for (var s = 0; s < scopes.length; s++) {
-			// 	if (scopes[s] != "openid") {
-			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-			// 			accessAll = true;
-			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-			// 			accesslimited = true;
-			// 		} else {
-			// 			accessAll = false;
-			// 			accesslimited = false;
-			// 		}
-			// 	}
-			// }
-			// if (accessAll == true && accesslimited == true) {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", true);
-			// } else {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", false);
-			// }
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				_this._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				_this._oViewModel.setProperty("/enableProdMarkup", false);
+			}
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 

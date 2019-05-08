@@ -73,22 +73,22 @@ sap.ui.define([
 				}
 			}
 
-			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
-			if (isDivisionSent) {
-				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
-				var currentImageSource;
-				if (sDivision == '10') // set the toyoto logo
-				{
-					// DivUser = "TOY";
-					currentImageSource = this.getView().byId("idLexusLogo");
-					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+			// var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			// if (isDivisionSent) {
+			// 	sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+			// 	var currentImageSource;
+			// 	if (sDivision == '10') // set the toyoto logo
+			// 	{
+			// 		// DivUser = "TOY";
+			// 		currentImageSource = this.getView().byId("idLexusLogo");
+			// 		currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 
-				} else { // set the lexus logo
-					// DivUser = "LEX";
-					currentImageSource = this.getView().byId("idLexusLogo");
-					currentImageSource.setProperty("src", "images/LexusNew.png");
-				}
-			}
+			// 	} else { // set the lexus logo
+			// 		// DivUser = "LEX";
+			// 		currentImageSource = this.getView().byId("idLexusLogo");
+			// 		currentImageSource.setProperty("src", "images/LexusNew.png");
+			// 	}
+			// }
 
 			sap.ui.core.UIComponent.getRouterFor(that).attachRoutePatternMatched(that._oSelectTireRoute, that);
 
@@ -100,7 +100,62 @@ sap.ui.define([
 		},
 
 		_oSelectTireRoute: function (oEvent) {
+			
+			var sLocation = window.location.host;
+			var sLocation_conf = sLocation.search("webide");
+			if (sLocation_conf == 0) {
+				this.sPrefix = "/tireSelector-dest"; //ecpSales_node_secured
+				that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
+			} else {
+				this.sPrefix = "";
+				// this.attributeUrl = "/userDetails/attributes";
+			}
+			// this.sPrefix = "";
+			that.nodeJsUrl = this.sPrefix + "/node";
 
+			that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			that.getView().setModel(that.oI18nModel, "i18n");
+
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "EN"; // default is english 
+			}
+			if (sSelectedLocale == "fr") {
+				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(that.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
+			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
+			if (isDivisionSent) {
+				sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
+				var currentImageSource;
+				if (sDivision == '10') // set the toyoto logo
+				{
+					DivUser = "TOY";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
+
+				} else { // set the lexus logo
+					DivUser = "LEX";
+					currentImageSource = this.getView().byId("idLexusLogo");
+					currentImageSource.setProperty("src", "images/LexusNew.png");
+				}
+			}
+			
 			//fetching data from HDB for porduct markup 
 			that.oXSOServiceModel = that.getOwnerComponent().getModel("XsodataModel");
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
@@ -172,28 +227,28 @@ sap.ui.define([
 			});
 
 			//START: uncomment below for cloud testing
-			// var scopes = that.userDetails.userContext.scopes;
-			// console.log("scopes", scopes);
-			// var accessAll = false,
-			// 	accesslimited = false;
+			var scopes = that.userDetails.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
 
-			// for (var s = 0; s < scopes.length; s++) {
-			// 	if (scopes[s] != "openid") {
-			// 		if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
-			// 			accessAll = true;
-			// 		} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
-			// 			accesslimited = true;
-			// 		} else {
-			// 			accessAll = false;
-			// 			accesslimited = false;
-			// 		}
-			// 	}
-			// }
-			// if (accessAll == true && accesslimited == true) {
-			// 	that._oViewModel.setProperty("/enableProdMarkup", true);
-			// } else {
-			// 	that._oViewModel.setProperty("/enableProdMarkup", false);
-			// }
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				that._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				that._oViewModel.setProperty("/enableProdMarkup", false);
+			}
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
