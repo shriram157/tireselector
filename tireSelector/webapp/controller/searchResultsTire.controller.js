@@ -10,7 +10,7 @@ sap.ui.define([
 	'sap/m/MessageToast'
 ], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox, MessageToast) {
 	"use strict";
-	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser;
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser, localLang;
 
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
@@ -42,6 +42,7 @@ sap.ui.define([
 				sSelectedLocale = "EN"; // default is english 
 			}
 			if (sSelectedLocale == "fr") {
+				localLang = "F";
 				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -49,6 +50,7 @@ sap.ui.define([
 				this.getView().setModel(that.oI18nModel, "i18n");
 				this.sCurrentLocale = 'FR';
 			} else {
+				localLang = "E";
 				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
@@ -72,24 +74,6 @@ sap.ui.define([
 					currentImageSource.setProperty("src", "images/LexusNew.png");
 				}
 			}
-
-			// var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
-			// if (isDivisionSent) {
-			// 	sDivision = window.location.search.match(/Division=([^&]*)/i)[1];
-			// 	var currentImageSource;
-			// 	if (sDivision == '10') // set the toyoto logo
-			// 	{
-			// 		// DivUser = "TOY";
-			// 		currentImageSource = this.getView().byId("idLexusLogo");
-			// 		currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
-
-			// 	} else { // set the lexus logo
-			// 		// DivUser = "LEX";
-			// 		currentImageSource = this.getView().byId("idLexusLogo");
-			// 		currentImageSource.setProperty("src", "images/LexusNew.png");
-			// 	}
-			// }
-
 			sap.ui.core.UIComponent.getRouterFor(that).attachRoutePatternMatched(that._oSelectTireRoute, that);
 
 			that.oTable = that.getView().byId("idTireSelectionTable");
@@ -100,7 +84,6 @@ sap.ui.define([
 		},
 
 		_oSelectTireRoute: function (oEvent) {
-			
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
@@ -125,6 +108,7 @@ sap.ui.define([
 				sSelectedLocale = "EN"; // default is english 
 			}
 			if (sSelectedLocale == "fr") {
+				localLang = "F";
 				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -132,6 +116,7 @@ sap.ui.define([
 				this.getView().setModel(that.oI18nModel, "i18n");
 				this.sCurrentLocale = 'FR';
 			} else {
+				localLang = "E";
 				that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
@@ -273,7 +258,7 @@ sap.ui.define([
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
 					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
-					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
+					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '"+localLang+"'&$format=json";
 
 			} else if (oEvent.getParameter("arguments").tireData !== undefined) {
 				that.fromTireCenter = true;
@@ -286,7 +271,7 @@ sap.ui.define([
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
 					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
-					that.userDetails.DealerData.BusinessPartner + "'&$format=json";
+					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '"+localLang+"'&$format=json";
 			}
 			if (filterData !== undefined) {
 				sap.ui.core.BusyIndicator.show();
@@ -551,7 +536,7 @@ sap.ui.define([
 												"Model": item.Model,
 												"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
 												"Live_Markup_Percentage": item.Live_Markup_Percentage,
-												"MatDesc_EN": item.MatDesc_EN
+												"MatDesc": item.MatDesc
 											});
 										});
 
@@ -836,7 +821,7 @@ sap.ui.define([
 			oPath.Retails = Data.Retails;
 			oPath.Profit = Data.Profit;
 			oPath.TireSize = Data.TireSize.replace("/", "%2F");
-			oPath.MatDesc_EN = Data.MatDesc_EN.replace("/", "%2F");
+			oPath.MatDesc = Data.MatDesc.replace("/", "%2F");
 			oPath.Model = Data.Model;
 			oPath.Preview_Markup_Percentage = Data.Preview_Markup_Percentage;
 			oPath.Live_Markup_Percentage = Data.Live_Markup_Percentage;

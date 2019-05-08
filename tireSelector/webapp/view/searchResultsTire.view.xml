@@ -80,7 +80,7 @@
 								<t:Column sortProperty="Tire Brand" filterProperty="Tire Brand" width="20rem">
 									<Label text="{i18n>TireBrandDesc}"/>
 									<t:template>
-										<Text class="TextPaddig" text="{TireFitmentJSONModel>Tire Brand}-{TireFitmentJSONModel>MatDesc_EN}-{TireFitmentJSONModel>TireSize}" wrapping="false"/>
+										<Text class="TextPaddig" text="{TireFitmentJSONModel>Tire Brand}-{TireFitmentJSONModel>MatDesc}-{TireFitmentJSONModel>TireSize}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="Tire Load Rating" filterProperty="Tire Load Rating" width="7rem">

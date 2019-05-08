@@ -94,7 +94,7 @@
 									<VBox>
 										<Label text="{i18n>Tires}"/>
 										<!--Tire Brand plus Model plus Tire category -->
-										<Text id="TireTxt1" text="{TireQuotationModel>/TireBrand} - {TireQuotationModel>/MatDesc_EN} - {TireQuotationModel>/TireCategory}"/>
+										<Text id="TireTxt1" text="{TireQuotationModel>/TireBrand} - {TireQuotationModel>/MatDesc} - {TireQuotationModel>/TireCategory}"/>
 										<!--Tire Size + Load Rating + Speed Rating -->
 										<Text id="TireTxt2" text="{TireQuotationModel>/TireSize} - {TireQuotationModel>/TireLoad} - {TireQuotationModel>/TireSpeed}"/>
 										<!--TCI Part Number -->

@@ -265,7 +265,7 @@ sap.ui.define([
 				_this.rowData.VehicleSeries = _this.rowData.VehicleSeries;
 				_this.rowData.VehicleSeriesDescp = _this.rowData.VehicleSeriesDescp;
 				_this.rowData.TireSize = _this.rowData.TireSize.replace("%2F", "/");
-				_this.rowData.MatDesc_EN = _this.rowData.MatDesc_EN.replace("%2F", "/");
+				_this.rowData.MatDesc = _this.rowData.MatDesc.replace("%2F", "/");
 				_this.rowData.TireLoad = _this.rowData.TireLoad.replace("%2F", "/");
 				_this.rowData.TireSpeed = _this.rowData.TireSpeed.replace("%2F", "/");
 				_this.rowData.ProvincialTax = "";
@@ -738,7 +738,7 @@ sap.ui.define([
 					"Gst": ModelData.FederalTaxSum,
 					"Pst": ModelData.ProvincialTaxSum,
 					"Total": ModelData.Total,
-					"TireDesc": ModelData.TireBrand + " " + ModelData.MatDesc_EN + " " + ModelData.TireCategory,
+					"TireDesc": ModelData.TireBrand + " " + ModelData.MatDesc + " " + ModelData.TireCategory,
 					"TireSizeInfo": ModelData.TireSize + " " + ModelData.TireLoad + " " + ModelData.TireSpeed,
 					"Unit": ModelData.Retails,
 					"Quantity": this.getView().byId("id_tireQty").getValue(),
