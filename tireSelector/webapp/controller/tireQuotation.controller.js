@@ -224,9 +224,9 @@ sap.ui.define([
 
 			for (var s = 0; s < scopes.length; s++) {
 				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "ManagerProductMarkups") {
+					if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
 						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "ViewTireQuotes") {
+					} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
 						accesslimited = true;
 					} else {
 						accessAll = false;
