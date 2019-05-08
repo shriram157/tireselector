@@ -8,7 +8,6 @@ modules:
    type: nodejs
    path: ecpSales_Node
    parameters:
-      host: tci-dev-ecpsales-node
       disk-quota: 512M
       memory: 256M
    properties:
@@ -31,13 +30,13 @@ modules:
    type: html5
    path: ecpSales
    parameters:
-      host: tci-dev-ecpsales
       disk-quota: 512M
       memory: 256M
    properties:
       XS_APP_LOG_LEVEL: info
    build-parameters:
       builder: grunt
+      build-result: dist
    requires:
     - name: application-logs_ecpSales
     - name: uaa_ecpSales
