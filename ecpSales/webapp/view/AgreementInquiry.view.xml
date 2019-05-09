@@ -17,11 +17,12 @@
 												<Label text="{i18n>Customer}"/>
 												<Text text="{path: 'LocalDataModel>/AgreementInfo/CustomerNumber'}"/>
 												<Label text="{i18n>Type}"/>
-												<Text id="idType" text="{LocalDataModel>/AgrOwnrSectonAddress/BpType}"/>
+												<Text id="idType" text="{LocalDataModel>/AgrOwnrSectonAddress_BpType}"/>
 												<Label text="{i18n>Language}"/>
 												<Text text="{path: 'LocalDataModel>/AgrOwnrSectonAddress/Language'}"/>
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/Name}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress_Name}"/>
+												<!--<Text text="{path: 'LocalDataModel>/AgrOwnrSectonAddress/Name', formatter:'zecp.utils.formatter.bPNameA'}"/>-->
 												<!--<Text text="{LocalDataModel>/AgrOwnrSectonAddress/FirstName} {LocalDataModel>/AgrOwnrSectonAddress/LastName}" visible="{path: 'LocalDataModel>/AgrOwnrSectonAddress/BusinessPartnerCategory', formatter:'zecp.utils.formatter.bPIndvType'}"/>-->
 
 												<Label text="{i18n>Address}"/>
@@ -49,11 +50,13 @@
 												<Label text="{i18n>Customer}"/>
 												<Text text="{path: 'LocalDataModel>/VechOwnrSectonAddress/BusinessPartner'}"/>
 												<Label text="{i18n>Type}"/>
-												<Text text="{LocalDataModel>/VechOwnrSectonAddress/BpType}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress_BpType}"/>
 												<Label text="{i18n>Language}"/>
 												<Text text="{path: 'LocalDataModel>/VechOwnrSectonAddress/Language'}"/>
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>/VechOwnrSectonAddress/Name}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress_Name}"/>
+												<!--<Text text="{path: 'LocalDataModel>/VechOwnrSectonAddress/Name', formatter:'zecp.utils.formatter.bPName'}"/>-->
+												
 												<Label text="{i18n>Address}"/>
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/StreetName}"/>
 												<Label text="{i18n>City}"/>
