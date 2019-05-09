@@ -47,29 +47,29 @@
 											<f:content>
 											
 												<Label text="{i18n>Customer}"/>
-												<Text text="{path: 'LocalDataModel>/VehicleDetails/EndCustomer'}"/>
+												<Text text="{path: 'LocalDataModel>/AgreementOwnerDetail/Customer'}"/>
 												<Label text="{i18n>Type}"/>
 												<Text text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
 												<Label text="{i18n>Language}"/>
 												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerName/LastName} {LocalDataModel>/BusinessPartnerName/FirstName}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/CustomerLastName} {LocalDataModel>/AgreementInfo/CustomerName}"/>
 												<Label text="{i18n>Address}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/StreetName}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/Address}"/>
 												<Label text="{i18n>City}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/CityName}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/City}"/>
 												<Label text="{i18n>Province}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/Region}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/Province}"/>
 												<Label text="{i18n>PostalCode}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/PostalCode}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/PostalCode}"/>
 												<Label text="{i18n>Email}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/EmailAddress}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/Email}"/>
 												<Label text="{i18n>Home}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/PhoneNumber}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>
 												<Label text="{i18n>Business}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/FaxNumber}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>
 												<Label text="{i18n>Mobile}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/MobileNumber}"/>
+												<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>
