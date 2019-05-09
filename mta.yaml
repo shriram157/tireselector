@@ -54,6 +54,7 @@ modules:
       disk-quota: 512M
       memory: 512M
    properties:
+      SESSION_TIMEOUT: 60
       XS_APP_LOG_LEVEL: info
    build-parameters:
       builder: grunt
