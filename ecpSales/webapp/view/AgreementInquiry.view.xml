@@ -17,26 +17,27 @@
 												<Label text="{i18n>Customer}"/>
 												<Text text="{path: 'LocalDataModel>/AgreementInfo/CustomerNumber'}"/>
 												<Label text="{i18n>Type}"/>
-												<Text id="idType" text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
+												<Text id="idType" text="{LocalDataModel>/AgrOwnrSectonAddress/BpType}"/>
 												<Label text="{i18n>Language}"/>
-												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
-												
+												<Text text="{path: 'LocalDataModel>/AgrOwnrSectonAddress/Language'}"/>
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerName/LastName} {LocalDataModel>/BusinessPartnerName/FirstName}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/Name}"/>
+												<!--<Text text="{LocalDataModel>/AgrOwnrSectonAddress/FirstName} {LocalDataModel>/AgrOwnrSectonAddress/LastName}" visible="{path: 'LocalDataModel>/AgrOwnrSectonAddress/BusinessPartnerCategory', formatter:'zecp.utils.formatter.bPIndvType'}"/>-->
+
 												<Label text="{i18n>Address}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/StreetName}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/StreetName}"/>
 												<Label text="{i18n>City}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/CityName}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/CityName}"/>
 												<Label text="{i18n>Province}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/Region}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/Region}"/>
 												<Label text="{i18n>PostalCode}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/PostalCode}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/PostalCode}"/>
 												<Label text="{i18n>Email}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/EmailAddress}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/EmailAddress}"/>
 												<Label text="{i18n>Home}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/PhoneNumber}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/PhoneNumber}"/>
 												<Label text="{i18n>Business}"/>
-												<Text text="{LocalDataModel>/BusinessPartnerData/FaxNumber}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/FaxNumber}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>
@@ -45,31 +46,30 @@
 											labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
 											singleContainerFullSize="false">
 											<f:content>
-											
 												<Label text="{i18n>Customer}"/>
-												<Text text="{path: 'LocalDataModel>/AgreementOwnerDetail/Customer'}"/>
+												<Text text="{path: 'LocalDataModel>/VechOwnrSectonAddress/BusinessPartner'}"/>
 												<Label text="{i18n>Type}"/>
-												<Text text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/BpType}"/>
 												<Label text="{i18n>Language}"/>
-												<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
+												<Text text="{path: 'LocalDataModel>/VechOwnrSectonAddress/Language'}"/>
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/CustomerLastName} {LocalDataModel>/AgreementInfo/CustomerName}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/Name}"/>
 												<Label text="{i18n>Address}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/Address}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/StreetName}"/>
 												<Label text="{i18n>City}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/City}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/CityName}"/>
 												<Label text="{i18n>Province}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/Province}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/Region}"/>
 												<Label text="{i18n>PostalCode}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/PostalCode}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/PostalCode}"/>
 												<Label text="{i18n>Email}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/Email}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/EmailAddress}"/>
 												<Label text="{i18n>Home}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/PhoneNumber}"/>
 												<Label text="{i18n>Business}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/FaxNumber}"/>
 												<Label text="{i18n>Mobile}"/>
-												<Text text="{LocalDataModel>/AgreementOwnerDetail/HomePhone}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/HomePhone}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>
@@ -191,7 +191,7 @@
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="Benefit Coverages">
 						<uxap:blocks>
-							<List items="" headerText="Benefit List">
+							<List headerText="Benefit List">
 								<items>
 									<ObjectListItem title="RENTAL - Rental R1 " type="Active"></ObjectListItem>
 									<ObjectListItem title="RENTAL - Rental R1 " type="Active"></ObjectListItem>
