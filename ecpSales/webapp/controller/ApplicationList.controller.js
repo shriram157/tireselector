@@ -56,6 +56,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
+					userType ="Dealer_Sales_User";
 					switch (userType) {
 					case "Dealer_Sales_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);

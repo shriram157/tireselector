@@ -82,6 +82,61 @@ sap.ui.define([
 							}, this)
 						});
 					}
+					var AgrOwnrSectonCno= data.results[0].CustomerNumber;
+					if(AgrOwnrSectonCno){
+						
+							oBusinessModel.read("/A_BusinessPartnerAddress", {
+						urlParameters: {
+							"$filter": "BusinessPartner eq '" + AgrOwnrSectonCno + "' ",
+							"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress,to_MobilePhoneNumber"
+
+						},
+						success: $.proxy(function (budata) {
+
+								 this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress", budata.results[0]);
+								 if(budata.results[0].to_EmailAddress.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress.results[0].EmailAddress);
+								 	
+								 }
+								  if(budata.results[0].to_PhoneNumber.results.lentgh>0){
+								this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber.results[
+									0].PhoneNumber);
+								  }
+								  if(budata.results[0].to_FaxNumber.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[0]
+									.FaxNumber);
+								  }
+							},
+							this),
+						error: function () {
+							console.log("Error");
+						}
+					});
+						
+						
+					oBusinessModel.read("/A_BusinessPartner", {
+						urlParameters: {
+							"$filter": "BusinessPartner eq '" + AgrOwnrSectonCno + "' "
+						},
+						success: $.proxy(function (bpdata) {
+
+							this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/FirstName", bpdata.results[0].FirstName);
+							this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/LastName", bpdata.results[0].LastName);
+							this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
+							if(bpdata.results[0].BusinessPartnerCategory ==="1"){
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/BpType", "Individual");
+							}else if(bpdata.results[0].BusinessPartnerCategory ==="2"){
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/Name", bpdata.results[0].OrganizationBPName1);
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/BpType", "Organization");
+							}
+
+						}, this),
+						error: function () {
+							console.log("Error");
+						}
+					});	
+					}
 
 					zEcpModel.read("/zc_ecp_vehicle_detailSet", {
 						urlParameters: {
@@ -125,7 +180,74 @@ sap.ui.define([
 						},
 						success: $.proxy(function (zcvedata) {
 
-							this.getModel("LocalDataModel").setProperty("/VehicleDetails", zcvedata.results[0]);
+							this.getModel("LocalDataModel").setProperty("/VehicleDetails", zcvedata.results[0]);// TODO: 
+							
+							
+							var vehcOwnrSectonCno= zcvedata.results[0].EndCustomer;
+						if(vehcOwnrSectonCno){
+						
+							oBusinessModel.read("/A_BusinessPartnerAddress", {
+						urlParameters: {
+							"$filter": "BusinessPartner eq '" + vehcOwnrSectonCno + "' ",
+							"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress,to_MobilePhoneNumber"
+
+						},
+						success: $.proxy(function (budata) {
+
+								 this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
+								 if(budata.results[0].to_EmailAddress.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress.results[0].EmailAddress);
+								  }
+								 if(budata.results[0].to_PhoneNumber.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber.results[0].PhoneNumber);
+								 }
+								 if(budata.results[0].to_FaxNumber.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[0].FaxNumber);
+								}
+								if(budata.results[0].to_MobilePhoneNumber.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Mobile", budata.results[0].to_MobilePhoneNumber.results[0].MobilePhoneNumber);	
+							   }
+							},
+							this),
+						error: function () {
+							console.log("Error");
+						}
+					});
+						
+						oBusinessModel.read("/A_BusinessPartner", {
+						urlParameters: {
+							"$filter": "BusinessPartner eq '" + vehcOwnrSectonCno + "' "
+						},
+						success: $.proxy(function (bpdata) {
+
+							this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/FirstName", bpdata.results[0].FirstName);
+							this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/LastName", bpdata.results[0].LastName);
+							this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
+							this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
+							if(bpdata.results[0].BusinessPartnerCategory ==="1"){
+								this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
+								this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
+
+									
+							}else if(bpdata.results[0].BusinessPartnerCategory ==="2"){
+									this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].OrganizationBPName1);
+									this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Organization");
+							}
+						}, this),
+						error: function () {
+							console.log("Error");
+						}
+					});	
+					
+					
+						
+						
+					}
+							
+							
+							
+							
+							
 						}, this)
 					});
 
