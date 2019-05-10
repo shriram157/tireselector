@@ -2512,6 +2512,54 @@ return Controller.extend("zecp.controller.newECPApp", {
 			}
 		});
 
+	},
+	getCIClink:function(dealercode, vin){
+		var locationHref = window.location.href;
+		var linkAddress ="";
+		if(locationHref.search("tci-dev-ecpsales")>-1 ||locationHref.search("webide")>-1 ){
+			linkAddress= "https://b2b.sit.toyota.ca/CICWeb/customerInfo.htm?.lang=en"; 
+		}else if(locationHref.search("tci-qas-ecpsales")>-1){
+			linkAddress= "https://b2b.qa.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
+		}else if(locationHref.search("tci-uat-ecpsales")>-1){
+			linkAddress= "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
+		}else if(locationHref.search("tci-ecpsales.cfapps")>-1){
+			linkAddress= "https://b2b.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
+		}
+		
+		linkAddress= linkAddress+"&dealerCode="+dealercode+"&vin="+vin;
+		return linkAddress;
+	},
+	performCIC:function(){
+		// 2T3BFREV8HW690278
+		// this.getCIClink();
+		// var linkAddress= "https://b2b.sit.toyota.ca/CICWeb/customerInfo.htm?.lang=en&dealerCode=42120&vin=2T3BFREV8HW690278";
+		var dealerCode = this.getModel("LocalDataModel").getProperty("/currentIssueDealer");
+		var vinNo = this.oECPData.ZecpVin;
+		var linkAddress=this.getCIClink(dealerCode,vinNo);
+		var iframe = new sap.ui.core.HTML();
+		var dialog = new Dialog({
+				title: 'Perform CIC',
+				contentWidth: "80%",
+				contentHeight: "80%",
+				resizable: true,
+				content:iframe,
+				beginButton: new Button({
+					text: 'Close',
+					press: function () {
+						dialog.close();
+					}
+				}),
+				afterClose: function() {
+					dialog.destroy();
+				}
+			});
+ 
+			//to get access to the global model
+			this.getView().addDependent(dialog);
+			
+			iframe.setContent("<iframe src=" + linkAddress +" width='100%' height='700px'></iframe>");
+			dialog.open();
+		
 	}
 
 });
