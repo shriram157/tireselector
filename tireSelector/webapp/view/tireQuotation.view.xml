@@ -136,7 +136,7 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>Wheels}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="wheelsText"/>
+										<TextArea placeholder="{i18n>EnterText}" growing="true" growingMaxLines="3" width="100%" id="wheelsText"/>
 									</VBox>
 									<Input value="" required="true" id="id_wheelsUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_wheelsQty" liveChange="calculatePrice"/>
@@ -147,7 +147,7 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>TPMS}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="tmpsTxt"/>
+										<TextArea placeholder="{i18n>EnterText}" growing="true" growingMaxLines="3" width="100%" id="tmpsTxt"/>
 									</VBox>
 									<Input value="" required="true" id="id_TPMSUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_TPMSQty" liveChange="calculatePrice"/>
@@ -158,7 +158,7 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>FittingKits}"/>
-										<TextArea placeholder="Enter Text" growing="true" growingMaxLines="3" width="100%" id="fittingkitTxt"/>
+										<TextArea placeholder="{i18n>EnterText}" growing="true" growingMaxLines="3" width="100%" id="fittingkitTxt"/>
 									</VBox>
 									<Input value="" required="true" id="id_FittingKitUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_FittingKitQty" liveChange="calculatePrice"/>
@@ -270,7 +270,7 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>DealerMessage}"/>
-										<TextArea id="dealerTxt" placeholder="Enter Text" value="{TireQuotationModel>/dealerMessage}"  maxLength="350" showExceededText="false" width="100%" liveChange="textCount"/>
+										<TextArea id="dealerTxt" placeholder="{i18n>EnterText}" value="{TireQuotationModel>/dealerMessage}"  maxLength="350" showExceededText="false" width="100%" liveChange="textCount"/>
 										<Text id="textCount" text="" class="sapUiTinyMarginTop"/>
 									</VBox>
 									<Input value="" visible="{TireQuoteModel>/enableInput}"/>

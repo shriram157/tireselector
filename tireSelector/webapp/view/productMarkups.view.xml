@@ -17,7 +17,7 @@
 					<Link text="{i18n>ProductMarkups}" visible="{propertiesModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin"
 						press="onMenuLinkPress"/>
 					<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
-					<Link text="Back" press="BackToHistory" class="clCustomFont sapUiSmallMargin"/>
+					<Link text="{i18n>Back}" press="BackToHistory" class="clCustomFont sapUiSmallMargin"/>
 				</tnt:ToolHeader>
 				<content>
 					<l:VerticalLayout class="sapUiContentPadding" width="100%">

@@ -33,7 +33,7 @@
 					<f:content>
 						<VBox>
 							<Label text="{i18n>SearchBy}" required="true"/>
-							<ComboBox id="searchOptionList" selectionChange="changeOptionPress" value="" selectedKey=""
+							<ComboBox placeholder="{i18n>Search}" id="searchOptionList" selectionChange="changeOptionPress" value="" selectedKey=""
 								items="{ path: 'SelectJSONModel>/SearchOptionsList', sorter: { path: 'SearchText' } }">
 								<core:ListItem key="{SelectJSONModel>SearchText}" text="{SelectJSONModel>SearchText}"/>
 								<layoutData>
@@ -43,7 +43,7 @@
 						</VBox>
 						<VBox>
 							<Label id="searchOptionLabel" required="true"/>
-							<Input id="searchOptionVIN" type="Text" visible="{MasterModel>/enableVin}" liveChange="onLiveChangeVIN" showSuggestion="true"
+							<Input placeholder="{i18n>Search}" id="searchOptionVIN" type="Text" visible="{MasterModel>/enableVin}" liveChange="onLiveChangeVIN" showSuggestion="true"
 								suggest="handleVINSuggest" change="onInputEntryVIN" suggestionItems="{GlobalJSONModel>/vinData}" maxLength="17">
 								<suggestionItems>
 									<core:ListItem text="{GlobalJSONModel>VIN}"/>
@@ -56,7 +56,7 @@
 							<!--		<core:Item text="{path:'FitmentDataModel>TIRE_SIZE', formatter: '.formatTireSize'}"/>-->
 							<!--	</suggestionItems>-->
 							<!--</Input>-->
-							<Input id="searchOptionTireSize" visible="{MasterModel>/enableTireSize}" liveChange="onLiveChangeTireSize" change="onInputEntryTireSize"  showSuggestion="true" suggest="handleTireSizeSuggest"
+							<Input placeholder="{i18n>Search}" id="searchOptionTireSize" visible="{MasterModel>/enableTireSize}" liveChange="onLiveChangeTireSize" change="onInputEntryTireSize"  showSuggestion="true" suggest="handleTireSizeSuggest"
 								suggestionItems="{ path: 'FitmentDataModel>/results', sorter: { path: 'TIRE_SIZE' } }">
 								<suggestionItems>
 									<core:ListItem text="{path:'FitmentDataModel>TIRE_SIZE', formatter: '.formatTireSize'}"/>
