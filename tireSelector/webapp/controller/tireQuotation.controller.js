@@ -378,12 +378,13 @@ sap.ui.define([
 							}
 						});
 						console.log("ProductCategoryModel Data", _this.matData);
+						_this.oBundle = _this.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("NoThankYou")
 						_this.oProductCategoryModel = new JSONModel();
 						_this.getView().setModel(_this.oProductCategoryModel, "ProductCategoryModel");
 						_this.oProductCategoryModel.setData(_this.matData);
 						_this.oProductCategoryModel.getData().results.unshift({
-							"MATNR": "No Thank You",
-							"MATNR_DESC": "No Thank You"
+							"MATNR": _this.oBundle.getText("NoThankYou"),
+							"MATNR_DESC": _this.oBundle.getText("NoThankYou")
 						});
 						_this.oProductCategoryModel.updateBindings(true);
 						if (_this.getView().byId("id_RHP") !== undefined) {
@@ -429,8 +430,9 @@ sap.ui.define([
 
 		onMatSelection: function (oChange) {
 			_this.oGlobalBusyDialog.open();
+			_this.oBundle = _this.getView().getModel("i18n").getResourceBundle();
 			var oMat = oChange.getParameter("selectedItem").getProperty("key");
-			if (oMat != "No Thank You") {
+			if (oMat != _this.oBundle.getText("NoThankYou")) {
 				_this.getView().byId("id_RHPsQty").setValue(_this.getView().byId("id_tireQty").getValue());
 				var oMaterial = oMat;
 				_this.Division = _this.userData.DealerData.Division;
@@ -943,11 +945,11 @@ sap.ui.define([
 		calculatePrice: function (oQty) {
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
-
+			_this.oBundle = _this.getView().getModel("i18n").getResourceBundle();
 			var oQtyVal = oQty.getParameter("newValue");
 			if (oQtyVal !== undefined || oQtyVal != null || oQtyVal != "") {
 				if (oQty.getSource().getId().split("_")[3] == "tireQty") {
-					if (_this.getView().byId("id_RHP").getSelectedKey() != "No Thank You") {
+					if (_this.getView().byId("id_RHP").getSelectedKey() != _this.oBundle.getText("NoThankYou")) {
 						_this.getView().byId("id_RHPsQty").setValue(oQtyVal);
 						if (_this.oTireQuotationModel.getData().RHPPRice != "") {
 							data.RHPPriceSum = _this.decimalFormatter(Number(_this.oTireQuotationModel.getData().RHPPRice) * Number(_this.getView()

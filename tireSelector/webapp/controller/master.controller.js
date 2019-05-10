@@ -345,7 +345,7 @@ sap.ui.define([
 				"SearchOptionsList": [{
 					SearchText: _that.oI18nModel.getResourceBundle().getText("VIN")
 				}, {
-					SearchText: "Vehicle Series"
+					SearchText: _that.oI18nModel.getResourceBundle().getText("VehicleSeries")
 				}, {
 					SearchText: _that.oI18nModel.getResourceBundle().getText("TireSize")
 				}]
@@ -664,7 +664,7 @@ sap.ui.define([
 			_that._oViewModel.setProperty("/enableTable", false);
 
 			_that.SearchOptionList.setValueState(sap.ui.core.ValueState.None);
-			if (selectedOption == "Vehicle Series") {
+			if (selectedOption == _that.oI18nModel.getResourceBundle().getText("VehicleSeries")) {
 				_that.SearchOptionVehicle.setValueState(sap.ui.core.ValueState.None);
 				_that.ModelSeriesCombo.setValueState(sap.ui.core.ValueState.None);
 				_that.ModelNodataFlag = false;
@@ -764,7 +764,7 @@ sap.ui.define([
 				});
 			}
 			_that.SearchOptionLabel.setText(selectedOption);
-			if (selectedOption == "Vehicle Series") {
+			if (selectedOption == _that.oI18nModel.getResourceBundle().getText("VehicleSeries")) {
 				_that.SearchOptionVehicle.setValue();
 				_that.ModelSeriesCombo.setValue();
 				_that._oViewModel.setProperty("/enableVehicleInputs", true);
@@ -799,7 +799,7 @@ sap.ui.define([
 				var msg = 'No values added';
 				MessageToast.show(msg);
 			} else {
-				if (selectedOption == "Vehicle Series") {
+				if (selectedOption == _that.oI18nModel.getResourceBundle().getText("VehicleSeries")) {
 					_that.SearchOptionVehicle.setValue();
 					_that.ModelSeriesCombo.setValue();
 					_that.SearchOptionVehicle.setValueState(sap.ui.core.ValueState.None);
@@ -830,11 +830,11 @@ sap.ui.define([
 				return vin.match(re);
 			}
 			var Searchkey = _that.SearchOptionList.getSelectedKey();
-			if ((Searchkey == _that.oI18nModel.getResourceBundle().getText("VIN") || Searchkey == "Vehicle Series") &&
+			if ((Searchkey == _that.oI18nModel.getResourceBundle().getText("VIN") || Searchkey == _that.oI18nModel.getResourceBundle().getText("VehicleSeries")) &&
 				(_that.SearchOptionTireSize.getValue() != "" || _that.SearchOptionVIN.getValue() != "" || _that.SearchOptionVehicle.getSelectedKey() !=
 					"")) {
 				_that.SearchOptionList.setValueState(sap.ui.core.ValueState.Success);
-				if (Searchkey == "Vehicle Series") {
+				if (Searchkey == _that.oI18nModel.getResourceBundle().getText("VehicleSeries")) {
 					// _that.oSelectJSONModel.getData().SearchOptionVal = " > [" + _that.SearchOptionVehicle.getSelectedKey() + "] [" +_that.ModelSeriesCombo.getSelectedKey() + "]";
 					// _that.oSelectJSONModel.updateBindings();
 					_that.SearchOptionVehicle.setValueState(sap.ui.core.ValueState.Success);

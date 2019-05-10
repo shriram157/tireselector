@@ -292,11 +292,11 @@ sap.ui.define([
 								console.log("Initial load Data", oData);
 								that.tempModel.setData(oData);
 								that.tempModel.updateBindings(true);
-
+								that.oBundle = that.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("ErrNOData")
 								if (that.tempModel.getData().results.length <= 0) {
 									sap.ui.core.BusyIndicator.hide();
 									sap.m.MessageBox.error(
-										"NO Data found, Please update search criteria", {
+										that.oBundle.getText("ErrNOData"), {
 											actions: [sap.m.MessageBox.Action.CLOSE],
 											onClose: function (oAction) {
 												that.oTireFitmentJSONModel.setData({});
@@ -311,6 +311,7 @@ sap.ui.define([
 								} else {
 									jQuery.sap.delayedCall(0, that, function () {
 										console.log("Initial load is completed");
+										that.oBundle = that.getView().getModel("i18n").getResourceBundle();
 										if (that.tempModel.getData().results !== undefined) {
 											for (var n = 0; n < that.tempModel.getData().results.length; n++) {
 												//Check with Pranay if we can skip
@@ -326,17 +327,17 @@ sap.ui.define([
 												//TIRE_MFG_PART_NUM
 												if (that.fromTireCenter != true) {
 													if (that.tempModel.getData().results[n].TIRE_FITMENT == "PF") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Perfect");
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oBundle.getText("Perfect");
 														that.tempModel.getData().results[n].colorCell = "Green";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "AF") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Acceptable");
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oBundle.getText("Acceptable");
 														that.tempModel.getData().results[n].colorCell = "Yellow";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OE") {
 														that.tempModel.getData().results[n].TIRE_FITMENT = "OE";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Other");
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oBundle.getText("Other");
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Discontinued");
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oBundle.getText("Discontinued");
 														that.tempModel.getData().results[n].colorCell = "Magenta";
 													}
 												} else {
@@ -349,7 +350,7 @@ sap.ui.define([
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "OF") {
 														that.tempModel.getData().results[n].TIRE_FITMENT = "";
 													} else if (that.tempModel.getData().results[n].TIRE_FITMENT == "DC") {
-														that.tempModel.getData().results[n].TIRE_FITMENT = that.oI18nModel.getResourceBundle().getText("Discontinued");
+														that.tempModel.getData().results[n].TIRE_FITMENT = that.oBundle.getText("Discontinued");
 														that.tempModel.getData().results[n].colorCell = "Magenta";
 													}
 
@@ -402,7 +403,7 @@ sap.ui.define([
 									
 									setTimeout(function () {
 										that.tempStorage = that.tempModel.getData().results;
-										that.oBundle = that.getView().getModel("i18n").getResourceBundle();
+										that.oBundle = that.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("TireFitment")
 										that.Filters = [{
 											"type": that.oBundle.getText("TireFitment"),
 											"values": []
@@ -563,7 +564,7 @@ sap.ui.define([
 									if (that.msgFlag == true) {
 										sap.ui.core.BusyIndicator.hide();
 										sap.m.MessageBox.error(
-											"Missing Pricing", {
+											that.oBundle.getText("MissingPricing"), {
 												actions: [sap.m.MessageBox.Action.CLOSE],
 												onClose: function (oAction) {
 													that.msgFlag = false;
@@ -588,7 +589,7 @@ sap.ui.define([
 								}
 							} else {
 								sap.ui.core.BusyIndicator.hide();
-								sap.m.MessageBox.error("Server Request responded with no data", {
+								sap.m.MessageBox.error(that.oBundle.getText("NoData"), {
 									actions: [sap.m.MessageBox.Action.CLOSE],
 									onClose: function (oAction) {
 										that.oTireFitmentJSONModel.setData({});
@@ -613,16 +614,16 @@ sap.ui.define([
 		},
 
 		colorFormatter: function (oFitval) {
-			if (oFitval == that.oI18nModel.getResourceBundle().getText("Perfect")) {
+			that.oBundle = that.getView().getModel("i18n").getResourceBundle();
+			if (oFitval == that.oBundle.getText("Perfect")) {
 				// this.addStyleClass("colorPerfect");//green
 				this.getView().byId("cell_Fitment").addStyleClass("colorPerfect"); //
-			} else if (oFitval == that.oI18nModel.getResourceBundle().getText("Acceptable")) {
+			} else if (oFitval == that.oBundle.getText("Acceptable")) {
 				// this.addStyleClass("colorAcceptable");//yellow
 				this.getView().byId("cell_Fitment").addStyleClass("colorAcceptable"); //yellow
-			} else if (oFitval == "Disconitnued") {
+			} else if (oFitval == that.oBundle.getText("Disconitnued")) {
 				// this.addSty/leClass("colorDisconitnued");//magenta
 				this.getView().byId("cell_Fitment").addStyleClass("colorDisconitnued"); //magenta
-
 			}
 			return oFitval;
 		},

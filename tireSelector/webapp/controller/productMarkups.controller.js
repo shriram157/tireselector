@@ -233,6 +233,8 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel("XsodataModel");
 			// var Model2 = this.getOwnerComponent().getModel("XsodataModelPost");
 			var modelData = _localScope.oProdMarkupModel.getData().results;
+			_localScope.oBundle = _localScope.getView().getModel("i18n").getResourceBundle(); //_localScope.oBundle.getText("ErrNOData")
+
 			var postSuccessFlag = false;
 			var updateSuccessFlag = false;
 			for (var i = 0; i < modelData.length; i++) { //modelData.length
@@ -327,7 +329,7 @@ sap.ui.define([
 
 			if (postSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					"Live Markup post is successful", {
+					_localScope.oBundle.getText("Successfull"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							_localScope.callUpdatedProdMarkupTab();
@@ -336,7 +338,7 @@ sap.ui.define([
 				);
 			} else if (updateSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					"Live Markup update is successful", {
+					_localScope.oBundle.getText("Successfull"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							ChngedMarkupValsArr = [];
@@ -355,7 +357,7 @@ sap.ui.define([
 			var oModel = this.getOwnerComponent().getModel("XsodataModel");
 			// var Model2 =this.getOwnerComponent().getModel("XsodataModelPost");
 			var modelData = _localScope.oProdMarkupModel.getData().results;
-
+			_localScope.oBundle = _localScope.getView().getModel("i18n").getResourceBundle(); //_localScope.oBundle.getText("ErrNOData")
 			var postSuccessFlag = false;
 			var updateSuccessFlag = false;
 			for (var i = 0; i < modelData.length; i++) { //modelData.length
@@ -425,7 +427,7 @@ sap.ui.define([
 			}
 			if (postSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					"Preview Markup post is successful", {
+					_localScope.oBundle.getText("Successfull"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							_localScope.callUpdatedProdMarkupTab();
@@ -434,7 +436,7 @@ sap.ui.define([
 				);
 			} else if (updateSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					"Preview Markup update is successful", {
+					_localScope.oBundle.getText("Successfull"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							_localScope.callUpdatedProdMarkupTab();

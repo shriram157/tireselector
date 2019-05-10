@@ -107,7 +107,7 @@
 										<Text text="{TireFitmentJSONModel>Tire MFG Part No}" class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_DealerNet" sortProperty="DealerNet" filterProperty="DealerNet" visible="{FitmentPageModel>/enableDealerNet}" width="6rem">
+								<t:Column id="ID_DealerNet" sortProperty="{i18n>DealerNet}" filterProperty="DealerNet" visible="{FitmentPageModel>/enableDealerNet}" width="6rem">
 									<Label text="{i18n>DealerNet}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>DealerNet', formatter: '.decimalFormatter'}" class="TextPaddig" wrapping="false"/>
