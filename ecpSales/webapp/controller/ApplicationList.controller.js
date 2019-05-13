@@ -56,7 +56,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
-					userType ="Dealer_Sales_User";
+					userType = "Dealer_Sales_User";
 					switch (userType) {
 					case "Dealer_Sales_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
@@ -216,7 +216,8 @@ sap.ui.define([
 				this.getView().setModel(this.oI18nModel, "i18n");
 				this.sCurrentLocale = 'EN';
 			}
-
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			document.title = "::: "+oBundle.getText("title")+" :::";
 		},
 
 		onBeforeRendering: function () {

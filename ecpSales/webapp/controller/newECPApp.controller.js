@@ -2267,7 +2267,7 @@ this.performCIC();
 				})
 			],
 			beginButton: new Button({
-				text: oBundle.getText("Yes"),
+				text: oBundle.getText("SubmitApplication"),
 				press: function () {
 
 					that.oECPData = that.getView().getModel("EcpFieldData").getData();
