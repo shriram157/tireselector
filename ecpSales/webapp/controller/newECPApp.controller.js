@@ -864,7 +864,7 @@ return Controller.extend("zecp.controller.newECPApp", {
 				
 			},
 			OnNextStep3: function (oEvent) {
-
+this.performCIC();
 				var oOdometer = this.getView().byId("idOdoVal");
 				var oOdoVal = oOdometer.getValue();
 				var oSaleDateId = this.getView().byId("idDate");
@@ -2556,9 +2556,36 @@ return Controller.extend("zecp.controller.newECPApp", {
  
 			//to get access to the global model
 			this.getView().addDependent(dialog);
+			var tesfun = function(evt){
+				console.log("Heloo");
+				alert("hi");
+				window.parent.dispatchEvent(new CustomEvent("my_event", { 
+						detail: {url: "some url"} 
+					
+					}));
+				
+			};
 			
-			iframe.setContent("<iframe src=" + linkAddress +" width='100%' height='700px'></iframe>");
+			linkAddress = "https://tci-uat-ecpsales.cfapps.us10.hana.ondemand.com/ecpsales/index.html?Division=10&Language=en";
+		iframe.setContent("<iframe id='cicframe' src=" + linkAddress +" width='100%' height='700px'></iframe>");
+				// iframe.setContent("<iframe id='cicframe' src=" + linkAddress +" width='100%' height='700px' onload='function(){alert();}'></iframe>");
+
 			dialog.open();
+			
+			document.getElementById('cicframe').onload = function() {
+  alert('myframe is loaded');
+  	window.parent.dispatchEvent(new CustomEvent("my_event", { 
+						detail: {url: "some url1234"} 
+					
+					}));
+};
+
+
+
+window.addEventListener('my_event', function(e) {
+var url = e.detail.url
+console.log("Test"+url)
+}, false);
 		
 	}
 
