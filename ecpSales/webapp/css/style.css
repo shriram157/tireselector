@@ -72,6 +72,9 @@
 .ClNewECP .sapMITBFilter .sapMITBText {
     overflow: visible!important;
     width: 7rem!important;
+    white-space: initial !important;
+    padding: 0 !important;
+    height: 20px!important;
 }
 
 .clClearAll {

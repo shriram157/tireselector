@@ -5,7 +5,27 @@ sap.ui.define([
 
 	return Controller.extend("zecp.controller.App", {
 		onInit: function () {
+			var winUrl = window.location.search;
+			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+				bundleUrl: "i18n/i18n.properties"
+			});
+			this.getView().setModel(this.oI18nModel, "i18n");
 
+			if (winUrl.indexOf("=fr") > -1) {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("fr")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'FR';
+			} else {
+				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
+					bundleUrl: "i18n/i18n.properties",
+					bundleLocale: ("en")
+				});
+				this.getView().setModel(this.oI18nModel, "i18n");
+				this.sCurrentLocale = 'EN';
+			}
 			var isDivisionSent = window.location.search.match(/Division=([^&]*)/i);
 			var oLexusLogo = this.getView().byId("idLexusLogo");
 			var oToyotaLogo = this.getView().byId("idToyotaLogo");
