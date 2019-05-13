@@ -102,7 +102,7 @@
 							</VBox>
 						</uxap:blocks>
 						<uxap:actions>
-							<Button text="Claim History" press="handlePressClaim"/>
+							<Button text="{i18n>ClaimHistory}" press="handlePressClaim"/>
 						</uxap:actions>
 					</uxap:ObjectPageSubSection>
 					<uxap:ObjectPageSubSection >
@@ -190,25 +190,25 @@
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<uxap:ObjectPageSection title="Benefit Coverages">
+			<uxap:ObjectPageSection  title="{i18n>BenefitCoverages}">
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection title="Benefit Coverages">
+					<uxap:ObjectPageSubSection title="{i18n>BenefitCoverages}">
 						<uxap:blocks>
 							<List headerText="Benefit List">
 								<items>
-									<ObjectListItem title="RENTAL - Rental R1 " type="Active"></ObjectListItem>
-									<ObjectListItem title="RENTAL - Rental R1 " type="Active"></ObjectListItem>
+									<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>
+									<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>
 								</items>
 							</List>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<uxap:ObjectPageSection title="Comments">
+			<uxap:ObjectPageSection title="{i18n>Comments}">
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection title="Comments">
+					<uxap:ObjectPageSubSection title="{i18n>Comments}">
 						<uxap:blocks>
-							<Text width="100%" text="None"/>
+							<Text width="100%" text="{i18n>None}"/>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>

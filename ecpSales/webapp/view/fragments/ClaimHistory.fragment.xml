@@ -27,51 +27,51 @@
 			<!--		</uitb:Column>-->
 			<!--	</uitb:columns>-->
 			<!--</uitb:TreeTable>-->
-			<Table headerText="" items="{ path:'LocalDataModel>/ClaimModelData'}">
+			<Table headerText="" noDataText="{i18n>NoData}" items="{ path:'LocalDataModel>/ClaimModelData'}">
 				<columns>
 					<Column>
 						<header>
-							<Text text="Dealer"/>
+							<Text text="{i18n>Dealer}"/>
 						</header>
 					</Column>
 					<Column>
 						<header>
-							<Text text="RO#"/>
+							<Text text="{i18n>RO#}"/>
 						</header>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="End">
 						<header>
-							<Text text="RO Date"/>
+							<Text text="{i18n>RODate}"/>
 						</header>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
 						<header>
-							<Text text="Claim #"/>
+							<Text text="{i18n>Claim#}"/>
 						</header>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
 						<header>
-							<Text text="Status"/>
+							<Text text="{i18n>Status}"/>
 						</header>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
 						<header>
-							<Text text="Job # "/>
+							<Text text="{i18n>Job#}"/>
 						</header>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
 						<header>
-							<Text text="Operation #"/>
+							<Text text="{i18n>Operation#}"/>
 						</header>
 					</Column>
 					<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center" width="7rem">
 						<header>
-							<Text text="OFP"/>
+							<Text text="{i18n>OFP}"/>
 						</header>
 					</Column>
 					<Column hAlign="End" width="9rem">
 						<header>
-							<Text text="Agreement #"/>
+							<Text text="{i18n>Agreement#}"/>
 						</header>
 					</Column>
 				</columns>

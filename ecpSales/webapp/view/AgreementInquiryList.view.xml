@@ -24,8 +24,8 @@
 										<Label text="{i18n>Agreement#}" textAlign="Begin" id="idInqLabel" textDirection="LTR"/>
 										<Input value="{LocalDataModel>/VINAGR}" id="idVal"/>
 										<core:Title text=""/>
-										<Button text="Search" type="Emphasized" press="onSearchInquiryList"/>
-										<Button text="Reset" press="onPressResetSearch"/>
+										<Button text="{i18n>Search}" type="Emphasized" press="onSearchInquiryList"/>
+										<Button text="{i18n>Reset}" press="onPressResetSearch"/>
 									</f:content>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
