@@ -107,6 +107,26 @@ sap.ui.define([
 			var iValueLength = oTextArea.getValue().length + " " + _this.oI18nModel.getResourceBundle().getText("characters");
 			_this.getView().byId("textCount").setText(iValueLength);
 		},
+
+		//to add $ sign for amount values great than Zero
+		addDollarSign: function (oNum) {
+			debugger;
+			if (oNum != "" && oNum != undefined && oNum !== null) {
+				// return "$"+oNum;
+				return parseFloat(oNum).toFixed(2);
+			} else {
+				return "";
+			}
+		},
+		roundedDecimals: function (oNum) {
+			if (oNum != "" && oNum != undefined && oNum !== null) {
+				var oNumber = parseFloat(oNum);
+				oNum = Math.round(oNumber * 100) / 100;
+				return oNum.toFixed(2);
+			} else {
+				return "";
+			}
+		},
 		handleQuoteDateChange: function (expChange) {
 			var expiry = new Date().setDate(new Date(expChange.getParameter("newValue")).getDate() + 14);
 			_this.expDate = _this.oDateFormatShort.format(new Date(expiry));
@@ -217,28 +237,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			var scopes = _this.userData.userContext.scopes;
-			console.log("scopes", scopes);
-			var accessAll = false,
-				accesslimited = false;
+			// var scopes = _this.userData.userContext.scopes;
+			// console.log("scopes", scopes);
+			// var accessAll = false,
+			// 	accesslimited = false;
 
-			for (var s = 0; s < scopes.length; s++) {
-				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
-						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
-						accesslimited = true;
-					} else {
-						accessAll = false;
-						accesslimited = false;
-					}
-				}
-			}
-			if (accessAll == true && accesslimited == true) {
-				_this._oViewModel.setProperty("/enableProdMarkup", true);
-			} else {
-				_this._oViewModel.setProperty("/enableProdMarkup", false);
-			}
+			// for (var s = 0; s < scopes.length; s++) {
+			// 	if (scopes[s] != "openid") {
+			// 		if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
+			// 			accessAll = true;
+			// 		} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
+			// 			accesslimited = true;
+			// 		} else {
+			// 			accessAll = false;
+			// 			accesslimited = false;
+			// 		}
+			// 	}
+			// }
+			// if (accessAll == true && accesslimited == true) {
+			// 	_this._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	_this._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
 			//END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -1142,13 +1162,6 @@ sap.ui.define([
 		onAfterRendering: function () {
 
 		},
-		// roundedDecimals: function (oNumber) {
-		// 	var oNum;
-		// 	oNumber = parseFloat(oNumber);
-		// 	var oNum;
-		// 	oNum = Math.round(oNumber * 100) / 100;
-		// 	return Num.toFixed(2);
-		// },
 		onExit: function () {
 			_this.oTireQuotationModel.refresh(true);
 			_this.oTirePriceModel.refresh(true);

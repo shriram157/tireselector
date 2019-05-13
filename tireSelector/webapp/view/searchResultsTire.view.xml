@@ -101,8 +101,8 @@
 										<Text text="{TireFitmentJSONModel>Material}" class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="Tire MFG Part No" filterProperty="Tire MFG Part No">
-									<Label text="{i18n>MfPartNumber}" wrapping="false"/>
+								<t:Column sortProperty="Tire MFG Part No" filterProperty="Tire MFG Part No" >
+									<Label text="{i18n>TireMFGPartNo}" wrapping="false"/>
 									<t:template>
 										<Text text="{TireFitmentJSONModel>Tire MFG Part No}" class="TextPaddig" wrapping="false"/>
 									</t:template>

@@ -101,9 +101,9 @@
 										<Text id="TireTxt3" text="{TireQuotationModel>/Material}"/>
 									</VBox>
 									<!--"{TirePriceModel>/TiresPrice}" -->
-									<Input value="{path:'TireQuotationModel>/Retails'}" id="id_tireUnitPrice" submit="getUnitPrice" change ="changeUnitPrice"/>
+									<Input value="{path:'TireQuotationModel>/Retails', formatter: '.addDollarSign'}" id="id_tireUnitPrice" submit="getUnitPrice" change ="changeUnitPrice"/>
 									<Input value="" id="id_tireQty" liveChange="calculatePrice"/>
-									<Input value="{path:'TirePriceModel>/TiresPrice'}" id="id_tirePrice" editable="false"/>
+									<Input value="{path:'TirePriceModel>/TiresPrice', formatter: '.addDollarSign'}" id="id_tirePrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -117,9 +117,9 @@
 											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR_DESC}"/>
 										</Select>
 									</VBox>
-									<Input value="{path:'TireQuotationModel>/RHPPRice'}" id="id_RHPUnitPrice" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/RHPPRice', formatter: '.addDollarSign'}" id="id_RHPUnitPrice" editable="false"/>
 									<Input value="" id="id_RHPsQty" editable="false"/>
-									<Input value="{path:'TirePriceModel>/RHPPriceSum'}" id="id_RHPPrice" editable="false"/>
+									<Input value="{path:'TirePriceModel>/RHPPriceSum', formatter: '.addDollarSign'}" id="id_RHPPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -140,7 +140,7 @@
 									</VBox>
 									<Input value="" required="true" id="id_wheelsUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_wheelsQty" liveChange="calculatePrice"/>
-									<Input value="{path:'TirePriceModel>/WheelsPrice'}" id="id_wheelsPrice" editable="false"/>
+									<Input value="{path:'TirePriceModel>/WheelsPrice', formatter: '.addDollarSign'}" id="id_wheelsPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -151,7 +151,7 @@
 									</VBox>
 									<Input value="" required="true" id="id_TPMSUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_TPMSQty" liveChange="calculatePrice"/>
-									<Input value="{path:'TirePriceModel>/TPMSPrice'}" id="id_TPMSPrice" editable="false"/>
+									<Input value="{path:'TirePriceModel>/TPMSPrice', formatter: '.addDollarSign'}" id="id_TPMSPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -162,7 +162,7 @@
 									</VBox>
 									<Input value="" required="true" id="id_FittingKitUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" required="true" id="id_FittingKitQty" liveChange="calculatePrice"/>
-									<Input value="{path:'TirePriceModel>/FittingKitPrice'}" id="id_FittingKitPrice" editable="false"/>
+									<Input value="{path:'TirePriceModel>/FittingKitPrice', formatter: '.addDollarSign'}" id="id_FittingKitPrice" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">
@@ -223,7 +223,7 @@
 									</VBox>
 									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
 									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
-									<Input value="{path:'TireQuotationModel>/subTotal'}" id="id_subTotal" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/subTotal', formatter: '.addDollarSign'}" id="id_subTotal" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight" visible="{TireTaxModel>/enableFee}">
@@ -233,7 +233,7 @@
 									<VBox>
 										<Label text="{i18n>EnvoFee} (${TireQuotationModel>/EHFPRice} {i18n>FeeDescription})" id="id_EHFDescp"/>
 									</VBox>
-									<Input value="{path:'TireQuotationModel>/EHFPriceSum'}" id="id_freeDescp" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/EHFPriceSum', formatter: '.addDollarSign'}" id="id_freeDescp" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight" visible="{TireTaxModel>/enableFTC}">
@@ -243,7 +243,7 @@
 									<VBox>
 										<Label text="{i18n>FederalTax} ({path:'TireQuotationModel>/FederalTax'}%)" id="id_fedTaxCodeDesc"/>
 									</VBox>
-									<Input value="{path:'TireQuotationModel>/FederalTaxSum'}" id="id_fedTaxCode" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/FederalTaxSum', formatter: '.addDollarSign'}" id="id_fedTaxCode" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight" visible="{TireTaxModel>/enablePTC}">
@@ -253,7 +253,7 @@
 									<VBox>
 										<Label text="{i18n>ProvincialTax} ({path:'TireQuotationModel>/ProvincialTax'})" id="id_proTaxCodeDesc"/>
 									</VBox>
-									<Input value="{path:'TireQuotationModel>/ProvincialTaxSum'}" id="id_proTaxCode" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/ProvincialTaxSum', formatter: '.addDollarSign'}" id="id_proTaxCode" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns alignRight">
@@ -263,7 +263,7 @@
 									<VBox>
 										<Label text="{i18n>Total}"/>
 									</VBox>
-									<Input value="{path:'TireQuotationModel>/Total'}" id="id_total" editable="false"/>
+									<Input value="{path:'TireQuotationModel>/Total', formatter: '.addDollarSign'}" id="id_total" editable="false"/>
 								</cells>
 							</ColumnListItem>
 							<ColumnListItem class="styleColumns">

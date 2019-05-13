@@ -61,19 +61,19 @@ span[data-colorClass="OE"] {
     padding: 12% 0% 6% 6%;
 }
 
-span[data-colorClass="Other"] {
+span[data-colorClass="Other"],span[data-colorClass="Autre"] {
     width: 100%;
     height: 100%;
     padding: 12% 0% 6% 6%;
 }
 
-span[data-colorClass="Discontinued"] {
+span[data-colorClass="Discontinued"], span[data-colorClass="Discontinué"] {
     background-color: red !important;
     width: 100%;
     height: 100%;
     padding: 12% 0% 6% 6%;
 }
-span[data-colorClass="Perfect"] {
+span[data-colorClass="Perfect"] , span[data-colorClass="Parfait"] {
     background-color: green !important;
     width: 100%;
     height: 100%;
