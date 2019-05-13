@@ -259,7 +259,7 @@ sap.ui.define([
 			} else {
 				_this._oViewModel.setProperty("/enableProdMarkup", false);
 			}
-			END: uncomment below for cloud testing
+			// END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
 			function decimalFormatter(oDecVal) {
