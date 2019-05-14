@@ -97,3 +97,6 @@ span.displayBlock{
 	height: 90%;
 	padding-bottom: 2rem;
 }
+
+.alignLeft .sapMInputBaseInner {text-align: left !important; width:10rem;}
+.TinyWidth .sapMILIDiv {margin: 0 0 0 0.25rem !important;}

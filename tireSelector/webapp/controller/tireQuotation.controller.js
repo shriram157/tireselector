@@ -110,21 +110,21 @@ sap.ui.define([
 
 		//to add $ sign for amount values great than Zero
 		addDollarSign: function (oNum) {
-			debugger;
-			if (oNum != "" && oNum != undefined && oNum !== null) {
-				// return "$"+oNum;
-				return parseFloat(oNum).toFixed(2);
-			} else {
-				return "";
-			}
+			// debugger;
+			// if (oNum != "" && oNum != undefined && oNum !== null) {
+			// 	// return "$"+oNum;
+			// 	return parseFloat(oNum).toFixed(2);
+			// } else {
+			// 	return "";
+			// }
 		},
 		roundedDecimals: function (oNum) {
-			if (oNum != "" && oNum != undefined && oNum !== null) {
-				var oNumber = parseFloat(oNum);
+			if (oNum != "" && oNum != undefined && oNum !== null || oNum != "0.00") {
+				var oNumber = parseFloat(oNum).toFixed(2);
 				oNum = Math.round(oNumber * 100) / 100;
-				return oNum.toFixed(2);
+				return oNum;
 			} else {
-				return "";
+				return "0.00";
 			}
 		},
 		handleQuoteDateChange: function (expChange) {
@@ -237,6 +237,7 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
+			
 			var scopes = _this.userData.userContext.scopes;
 			console.log("scopes", scopes);
 			var accessAll = false,
@@ -259,6 +260,7 @@ sap.ui.define([
 			} else {
 				_this._oViewModel.setProperty("/enableProdMarkup", false);
 			}
+			
 			// END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -288,34 +290,39 @@ sap.ui.define([
 				_this.rowData.MatDesc = _this.rowData.MatDesc.replace("%2F", "/");
 				_this.rowData.TireLoad = _this.rowData.TireLoad.replace("%2F", "/");
 				_this.rowData.TireSpeed = _this.rowData.TireSpeed.replace("%2F", "/");
-				_this.rowData.ProvincialTax = "";
-				_this.rowData.FederalTax = "";
-				_this.rowData.ProvincialTaxSum = "";
-				_this.rowData.FederalTaxSum = "";
-				_this.rowData.EHFPriceSum = "";
-				_this.rowData.Total = "";
-				_this.rowData.subTotal = "";
+				_this.rowData.ProvincialTax = "0.00";
+				_this.rowData.FederalTax = "0.00";
+				_this.rowData.ProvincialTaxSum = "0.00";
+				_this.rowData.FederalTaxSum = "0.00";
+				_this.rowData.EHFPriceSum = "0.00";
+				_this.rowData.Total = "0.00";
+				_this.rowData.subTotal = "0.00";
 				_this.rowData.Retails = _this.decimalFormatter(_this.rowData.Retails);
 				_this.rowData.CustName = "";
 				_this.rowData.CustAddress = "";
 				_this.rowData.CustPostalCode = "";
 				_this.rowData.CustPhone = "";
 				_this.rowData.dealerMessage = "";
+				_this.rowData.currency = "$";
 
 				var oMat = _this.rowData.Material;
 				var oMaterial = oMat;
 
 				_this.objPrice = {};
-				_this.objPrice.otherItemPrice1 = "";
-				_this.objPrice.otherItemPrice2 = "";
-				_this.objPrice.otherItemPrice3 = "";
-				_this.objPrice.otherItemPrice4 = "";
-				_this.objPrice.MnBPrice = "";
-				_this.objPrice.TiresPrice = "";
-				_this.objPrice.WheelsPrice = "";
-				_this.objPrice.TPMSPrice = "";
-				_this.objPrice.FittingKitPrice = "";
-				_this.objPrice.RHPPriceSum = "";
+				_this.objPrice.otherItemPrice1 = "0.00";
+				_this.objPrice.otherItemPrice2 = "0.00";
+				_this.objPrice.otherItemPrice3 = "0.00";
+				_this.objPrice.otherItemPrice4 = "0.00";
+				_this.objPrice.MnBPrice = "0.00";
+				_this.objPrice.TiresPrice = "0.00";
+				_this.objPrice.WheelsPrice = "0.00";
+				_this.objPrice.TPMSPrice = "0.00";
+				_this.objPrice.FittingKitPrice = "0.00";
+				_this.objPrice.RHPPriceSum = "0.00";
+				
+				_this.objPrice.FittingKitUnitPrice = "0.00";
+				_this.objPrice.TPMSUnitPrice = "0.00";
+				_this.objPrice.wheelsUnitPrice = "0.00";
 
 				_this.Division = _this.userData.DealerData.Division;
 				_this.Doctype = "ZAF";
@@ -496,7 +503,7 @@ sap.ui.define([
 											_this.oTireQuotationModel.updateBindings(true);
 											_this._oViewModelTax.updateBindings(true);
 										} else {
-											dataRes.FederalTaxSum = "";
+											dataRes.FederalTaxSum = "0.00";
 											_this._oViewModelTax.setProperty("/enableFTC", false);
 											_this.oTireQuotationModel.updateBindings(true);
 											_this._oViewModelTax.updateBindings(true);
@@ -508,7 +515,7 @@ sap.ui.define([
 											_this.oTireQuotationModel.updateBindings(true);
 											_this._oViewModelTax.updateBindings(true);
 										} else {
-											dataRes.ProvincialTaxSum = "";
+											dataRes.ProvincialTaxSum = "0.00";
 											_this._oViewModelTax.setProperty("/enablePTC", false);
 											_this.oTireQuotationModel.updateBindings(true);
 											_this._oViewModelTax.updateBindings(true);
@@ -540,8 +547,8 @@ sap.ui.define([
 					}
 				});
 			} else {
-				_this.oTireQuotationModel.getData().RHPPRice = "";
-				_this.oTirePriceModel.getData().RHPPriceSum = "";
+				_this.oTireQuotationModel.getData().RHPPRice = "0.00";
+				_this.oTirePriceModel.getData().RHPPriceSum = "0.00";
 				_this.getView().byId("id_RHPsQty").setValue();
 				console.log("Updated prices", _this.oTirePriceModel.getData());
 				var arrPrices = _this.oTirePriceModel.getData();
@@ -561,7 +568,7 @@ sap.ui.define([
 					_this.oTireQuotationModel.updateBindings(true);
 					_this._oViewModelTax.updateBindings(true);
 				} else {
-					dataRes.FederalTaxSum = "";
+					dataRes.FederalTaxSum = "0.00";
 					_this._oViewModelTax.setProperty("/enableFTC", false);
 					_this.oTireQuotationModel.updateBindings(true);
 					_this._oViewModelTax.updateBindings(true);
@@ -573,7 +580,7 @@ sap.ui.define([
 					_this.oTireQuotationModel.updateBindings(true);
 					_this._oViewModelTax.updateBindings(true);
 				} else {
-					dataRes.ProvincialTaxSum = "";
+					dataRes.ProvincialTaxSum = "0.00";
 					_this._oViewModelTax.setProperty("/enablePTC", false);
 					_this.oTireQuotationModel.updateBindings(true);
 					_this._oViewModelTax.updateBindings(true);
@@ -735,15 +742,15 @@ sap.ui.define([
 					"Waers": "CAD",
 					"MtblPrice": ModelData2.MnBPrice,
 					"WheelsDesc": this.getView().byId("wheelsText").getValue(),
-					"WheelsUnit": this.getView().byId("id_wheelsUnitPrice").getValue(),
+					"WheelsUnit": ModelData2.wheelsUnitPrice,
 					"WheelsQty": this.getView().byId("id_wheelsQty").getValue(),
 					"WheelsPrice": ModelData2.WheelsPrice,
 					"TpmsDesc": this.getView().byId("tmpsTxt").getValue(),
-					"TpmsUnit": this.getView().byId("id_TPMSUnitPrice").getValue(),
+					"TpmsUnit": ModelData2.TPMSUnitPrice,
 					"TpmsQty": this.getView().byId("id_TPMSQty").getValue(),
 					"TpmsPrice": ModelData2.TPMSPrice,
 					"FitDesc": this.getView().byId("fittingkitTxt").getValue(),
-					"FitUnit": this.getView().byId("id_FittingKitUnitPrice").getValue(),
+					"FitUnit": ModelData2.FittingKitUnitPrice,
 					"FitQty": this.getView().byId("id_FittingKitQty").getValue(),
 					"FitPrice": ModelData2.FittingKitPrice,
 					"OthItms1": this.getView().byId("valItem1").getValue(),
@@ -922,6 +929,18 @@ sap.ui.define([
 				}
 			}
 			var arrPrices = _this.oTirePriceModel.getData();
+			
+			for (var key in arrPrices) {
+				if(arrPrices[key].indexOf(".")==-1){
+					console.log("if",arrPrices[key]);
+					arrPrices[key] = arrPrices[key]+".00";
+					console.log("if",arrPrices[key]);
+				}
+				else{
+					console.log("else",arrPrices[key]);
+				}
+			}
+			
 			var summed = 0;
 			for (var key in arrPrices) {
 				summed += Number(arrPrices[key]);
@@ -967,7 +986,7 @@ sap.ui.define([
 			var dataRes = _this.oTireQuotationModel.getData();
 			_this.oBundle = _this.getView().getModel("i18n").getResourceBundle();
 			var oQtyVal = oQty.getParameter("newValue");
-			if (oQtyVal !== undefined || oQtyVal != null || oQtyVal != "") {
+			if (oQtyVal !== undefined || oQtyVal !== null || oQtyVal != "") {
 				if (oQty.getSource().getId().split("_")[3] == "tireQty") {
 					if (_this.getView().byId("id_RHP").getSelectedKey() != _this.oBundle.getText("NoThankYou")) {
 						_this.getView().byId("id_RHPsQty").setValue(oQtyVal);
@@ -977,13 +996,14 @@ sap.ui.define([
 						}
 					}
 					// _this.oTirePrice = _this.getView().byId("id_tirePrice");
-					_this.oTireUnitPrice = _this.getView().byId("id_tireUnitPrice").getValue();
+					_this.oTireUnitPrice = _this.oTireQuotationModel.getData().Retails;
 					data.TiresPrice = _this.decimalFormatter(Number(oQtyVal * _this.oTireUnitPrice));
 					if (dataRes.EHFPRice != "") {
 						dataRes.EHFPriceSum = _this.decimalFormatter(Number(oQtyVal * dataRes.EHFPRice));
 						_this._oViewModel.setProperty("/enableFee", true);
 						_this._oViewModel.updateBindings(true);
 					} else {
+						dataRes.EHFPriceSum = "0.00";
 						_this._oViewModel.setProperty("/enableFee", false);
 						_this._oViewModel.updateBindings(true);
 					}
@@ -993,19 +1013,19 @@ sap.ui.define([
 
 				} else if (oQty.getSource().getId().split("_")[3] == "wheelsQty") {
 					_this.oWheelsePrice = _this.getView().byId("id_wheelsPrice");
-					_this.oWheelsUnitPrice = _this.getView().byId("id_wheelsUnitPrice").getValue();
+					_this.oWheelsUnitPrice = data.wheelsUnitPrice; //_this.getView().byId("id_wheelsUnitPrice").getValue();
 					data.WheelsPrice = _this.decimalFormatter(Number(oQtyVal * _this.oWheelsUnitPrice));
 					_this.oTireQuotationModel.updateBindings(true);
 					_this.oTirePriceModel.updateBindings(true);
 				} else if (oQty.getSource().getId().split("_")[3] == "TPMSQty") {
 					_this.oTPMSPrice = _this.getView().byId("id_TPMSPrice");
-					_this.oTPMSUnitPrice = _this.getView().byId("id_TPMSUnitPrice").getValue();
+					_this.oTPMSUnitPrice = data.TPMSUnitPrice; //_this.getView().byId("id_TPMSUnitPrice").getValue();
 					data.TPMSPrice = _this.decimalFormatter(Number(oQtyVal * _this.oTPMSUnitPrice));
 					_this.oTireQuotationModel.updateBindings(true);
 					_this.oTirePriceModel.updateBindings(true);
 				} else if (oQty.getSource().getId().split("_")[3] == "FittingKitQty") {
 					_this.oFittingKitPrice = _this.getView().byId("id_FittingKitPrice").getValue();
-					_this.oFittingKitUnitPrice = _this.getView().byId("id_FittingKitUnitPrice").getValue();
+					_this.oFittingKitUnitPrice = data.FittingKitUnitPrice ; //_this.getView().byId("id_FittingKitUnitPrice").getValue();
 					data.FittingKitPrice = _this.decimalFormatter(Number(oQtyVal * _this.oFittingKitUnitPrice));
 					_this.oTireQuotationModel.updateBindings(true);
 					_this.oTirePriceModel.updateBindings(true);
@@ -1108,6 +1128,17 @@ sap.ui.define([
 
 			console.log("Updated prices", _this.oTirePriceModel.getData());
 			var summed = 0;
+			for (var key in arrPrices) {
+				if(arrPrices[key].indexOf(".")==-1){
+					console.log("if",arrPrices[key]);
+					arrPrices[key] = arrPrices[key]+".00";
+					console.log("if",arrPrices[key]);
+				}
+				else{
+					console.log("else",arrPrices[key]);
+				}
+			}
+			
 			for (var key in arrPrices) {
 				summed += Number(arrPrices[key]);
 			}

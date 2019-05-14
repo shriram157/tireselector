@@ -10,7 +10,7 @@ sap.ui.define([
 ], function (Controller, JSONModel, ResourceModel, BaseController, MessageToast, Filter, Fragment, MessageBox) {
 	"use strict";
 	var sDivision, DivUser, _that, count = 0,
-		sTerm, sSelectedLocale;
+		sTerm, sSelectedLocale, localLang;
 	return BaseController.extend("tireSelector.controller.master", {
 		/* Function for Initialization of model and variables for view */
 
@@ -80,6 +80,7 @@ sap.ui.define([
 				sSelectedLocale = "EN"; // default is english 
 			}
 			if (sSelectedLocale == "fr") {
+				localLang = "F";
 				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -87,6 +88,7 @@ sap.ui.define([
 				this.getView().setModel(_that.oI18nModel, "i18n");
 				this.sCurrentLocale = 'FR';
 			} else {
+				localLang = "E"
 				_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
@@ -951,7 +953,7 @@ sap.ui.define([
 							var seriesVal = _that.vinResultdata.results[v].seriesVal;
 							//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'LS' and Zdivision eq 'LEX' and ModelYear eq '2018'
 							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal +
-								"' and Zdivision eq '" + DivUser + "' and ModelYear eq '" + modelYearVal + "'";
+								"' and Zdivision eq '" + DivUser + "' and ModelYear eq '" + modelYearVal + "' and LANGUAGE eq '"+localLang+"'";
 							// var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelYearVal +
 							// 	"' and Model eq '" + modelVal + "' and Zzsuffix eq '" + suffixVal + "'&$format=json";
 							$.ajax({
@@ -1001,7 +1003,7 @@ sap.ui.define([
 				// _TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'SIE' and ModelYear eq '2018'
 				//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and Zdivision eq '"+ DivUser +"' and ModelYear eq '" +	modelyear + "'";
 				serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and Zdivision eq '" +
-					DivUser + "' and ModelYear eq '" + modelyear + "'";
+					DivUser + "' and ModelYear eq '" + modelyear + "' and LANGUAGE eq '"+localLang+"'";
 				$.ajax({
 					dataType: "json",
 					url: serviceURL,
@@ -1044,11 +1046,13 @@ sap.ui.define([
 			}
 			oBj.ModelSeriesCombo = _that.ModelSeriesCombo.getSelectedKey();
 			oBj.SearchOptionVIN = _that.SearchOptionVIN.getValue();
-
+			//ModelDesc_EN
 			// var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getSource().getBindingContext(
 			// 	"SearchResultModel").sPath);
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
+			oBj.ModelDesc = oPath.ModelDesc_EN;
+			console.log(oBj);
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)
 			});
