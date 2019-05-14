@@ -31,7 +31,7 @@
 								<VBox class="sapUiLargeMarginBottom">
 									<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single"
 										rows="{ path: '/zc_ecp_agreement', filters : [ { path : 'AgreementElectricVehicletype', operator : 'NE', value1 : 'AGEN'}]}"
-										rowSelectionChange="onNavigate" visibleRowCount="{LocalDataModel>/rowCount}" selectionBehavior="Row" showNoData="true"
+										rowSelectionChange="onNavigate" visibleRowCount="{LocalDataModel>/rowCount}" selectionBehavior="Row" noData="{i18n>NoData}" showNoData="true"
 										threshold="{LocalDataModel>/rowCount}">
 										<table:columns>
 											<table:Column  >
