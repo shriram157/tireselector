@@ -10,7 +10,7 @@ sap.ui.define([
 	'sap/m/MessageToast'
 ], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox, MessageToast) {
 	"use strict";
-	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser, localLang;
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser, localLang, ModelDesc;
 
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
@@ -252,10 +252,12 @@ sap.ui.define([
 			if (oEvent.getParameter("arguments").modelData !== undefined) {
 				//VIN, VehicleSeries, VModelYear
 				that.oModelData = JSON.parse(oEvent.getParameter("arguments").modelData);
+				console.log(that.oModelData);
 				VIN = that.oModelData.SearchOptionVIN;
 				VModelYear = that.oModelData.ModelSeriesCombo;
 				VehicleSeries = that.oModelData.SearchOptionVehicle;
 				VehicleSeriesDescp = that.oModelData.SeriesDescp;
+				ModelDesc = that.oModelData.ModelDesc;
 				// filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
@@ -269,6 +271,7 @@ sap.ui.define([
 				VModelYear = that.oTireData.ModelSeriesCombo;
 				VehicleSeries = that.oTireData.SearchOptionVehicle;
 				VehicleSeriesDescp = that.oTireData.SeriesDescp;
+				ModelDesc = "";
 				// filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
