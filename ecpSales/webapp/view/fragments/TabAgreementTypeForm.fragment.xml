@@ -25,7 +25,7 @@
 	<VBox id="idExtAgrList" visible="{oSetProperty>/oAgreementTable}">
 		<Text class="sapUiSmallMarginBottom" id="idWarningText" text="{i18n>TableSelectMessage}"/>
 		<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single" rows="{ path: 'LocalDataModel>/AgreementDataActive' }"
-			rowSelectionChange="onSelectAgrRow" visibleRowCount="{RowCountModel>/rowCount}" selectionBehavior="Row" showNoData="true"
+			rowSelectionChange="onSelectAgrRow" visibleRowCount="{RowCountModel>/rowCount}" selectionBehavior="Row" showNoData="true" noData="{i18n>NoData}"
 			threshold="{RowCountModel>/rowCount}" enableBusyIndicator="true">
 			<table:columns>
 				<table:Column>
