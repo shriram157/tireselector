@@ -10,7 +10,8 @@ sap.ui.define([
 	'sap/m/MessageToast'
 ], function (Controller, JSONModel, ResourceModel, Filter, ObjectIdentifier, BaseController, History, MessageBox, MessageToast) {
 	"use strict";
-	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser, localLang, ModelDesc;
+	var that, DealerNet, MSRP, oTable, tempData, VIN, VehicleSeries, VModelYear, VehicleSeriesDescp, sSelectedLocale, sDivision, DivUser,
+		localLang, ModelDesc;
 
 	return BaseController.extend("tireSelector.controller.searchResultsTire", {
 		onInit: function () {
@@ -140,7 +141,18 @@ sap.ui.define([
 					currentImageSource.setProperty("src", "images/LexusNew.png");
 				}
 			}
-			
+			if (sSelectedLocale == "fr") {
+				var oViewModel = new sap.ui.model.json.JSONModel({
+					localLang: "F"
+				});
+			} else {
+				oViewModel = new sap.ui.model.json.JSONModel({
+					localLang: "E"
+				});
+			}
+
+			this.getView().setModel(oViewModel, "languageModel");
+
 			//fetching data from HDB for porduct markup 
 			that.oXSOServiceModel = that.getOwnerComponent().getModel("XsodataModel");
 			that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
@@ -212,30 +224,30 @@ sap.ui.define([
 			});
 
 			//START: uncomment below for cloud testing
-			
-			var scopes = that.userDetails.userContext.scopes;
-			console.log("scopes", scopes);
-			var accessAll = false,
-				accesslimited = false;
 
-			for (var s = 0; s < scopes.length; s++) {
-				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
-						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
-						accesslimited = true;
-					} else {
-						accessAll = false;
-						accesslimited = false;
-					}
-				}
-			}
-			if (accessAll == true && accesslimited == true) {
-				that._oViewModel.setProperty("/enableProdMarkup", true);
-			} else {
-				that._oViewModel.setProperty("/enableProdMarkup", false);
-			}
-			
+			// var scopes = that.userDetails.userContext.scopes;
+			// console.log("scopes", scopes);
+			// var accessAll = false,
+			// 	accesslimited = false;
+
+			// for (var s = 0; s < scopes.length; s++) {
+			// 	if (scopes[s] != "openid") {
+			// 		if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
+			// 			accessAll = true;
+			// 		} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
+			// 			accesslimited = true;
+			// 		} else {
+			// 			accessAll = false;
+			// 			accesslimited = false;
+			// 		}
+			// 	}
+			// }
+			// if (accessAll == true && accesslimited == true) {
+			// 	that._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	that._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
+
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
@@ -262,7 +274,7 @@ sap.ui.define([
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
 					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
-					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '"+localLang+"'&$format=json";
+					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '" + localLang + "'&$format=json";
 
 			} else if (oEvent.getParameter("arguments").tireData !== undefined) {
 				that.fromTireCenter = true;
@@ -276,7 +288,7 @@ sap.ui.define([
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
 					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
-					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '"+localLang+"'&$format=json";
+					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '" + localLang + "'&$format=json";
 			}
 			if (filterData !== undefined) {
 				sap.ui.core.BusyIndicator.show();
@@ -401,11 +413,11 @@ sap.ui.define([
 									});
 
 									that.msgFlag = false;
-									
+
 									that.FitmentToCharac = {
 										"results": []
 									};
-									
+
 									setTimeout(function () {
 										that.tempStorage = that.tempModel.getData().results;
 										that.oBundle = that.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("TireFitment")
@@ -425,7 +437,7 @@ sap.ui.define([
 											"type": that.oBundle.getText("TireMFGPartNo"),
 											"values": []
 										}];
-										
+
 										for (var l = 0; l < that.tempModel.getData().results.length; l++) {
 											that.Filters[0].values.push({
 												"text": that.tempModel.getData().results[l].TIRE_FITMENT
@@ -516,36 +528,76 @@ sap.ui.define([
 										that.Filters[3] = removeDuplicates(that.Filters[3]);
 
 										that.Filters[4] = removeDuplicates(that.Filters[4]);
-
+										that.oBundle = that.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("TireFitment")
 										$.each(that.tempModel.getData().results, function (i, item) {
-											that.FitmentToCharac.results.push({
-												"Tire Fitment": item.TIRE_FITMENT,
-												"TireFitment": item.TIRE_FITMENT,
-												"Tire Speed Rating": item.TIRE_SPEED_RATING,
-												"Tire Load Rating": item.TIRE_LOAD_RATING,
-												"TireSpeed": item.TIRE_SPEED_RATING,
-												"TireLoad": item.TIRE_LOAD_RATING,
-												"Tire Brand": item.TIRE_BRAND_NAME,
-												"TireBrand": item.TIRE_BRAND_NAME,
-												"Tire Category": item.TIRE_CATEGORY,
-												"TireCategory": item.TIRE_CATEGORY,
-												"Tire Brand ID": item.TIRE_BRAND_ID,
-												"TireBrandID": item.TIRE_BRAND_ID,
-												"Material": item.MATERIAL,
-												"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
-												"TireMFGPartNo": item.TIRE_MFG_PART_NUM,
-												"MSRP": item.MSRP,
-												"DealerNet": item.DealerNet,
-												"Retails": item.Retails,
-												"Profit": item.Profit,
-												"TireSize": item.TIRE_SIZE,
-												"Model": item.Model,
-												"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
-												"Live_Markup_Percentage": item.Live_Markup_Percentage,
-												"MatDesc": item.MatDesc
-											});
+											// var jsonOBJ;
+											// jsonOBJ[that.oBundle.getText("RimType")] = item.TIRE_FITMENT;
+											// console.log(jsonOBJ);
+											// if (localLang == "F") {
+												that.FitmentToCharac.results.push({
+													"Tire Fitment": item.TIRE_FITMENT,
+													"Utilisation de pneu": item.TIRE_FITMENT,
+													"TireFitment": item.TIRE_FITMENT,
+													"Tire Speed Rating": item.TIRE_SPEED_RATING,
+													"Tire Load Rating": item.TIRE_LOAD_RATING,
+													"Indice de vitesse": item.TIRE_SPEED_RATING,
+													"Indice de charge": item.TIRE_LOAD_RATING,
+													"TireSpeed": item.TIRE_SPEED_RATING,
+													"TireLoad": item.TIRE_LOAD_RATING,
+													"Tire Brand": item.TIRE_BRAND_NAME,
+													"Description de marque de pneu": item.TIRE_BRAND_NAME,
+													"TireBrand": item.TIRE_BRAND_NAME,
+													"Tire Category": item.TIRE_CATEGORY,
+													"Catégorie de pneu": item.TIRE_CATEGORY,
+													"TireCategory": item.TIRE_CATEGORY,
+													"Marque de pneu": item.TIRE_BRAND_ID,
+													"TireBrandID": item.TIRE_BRAND_ID,
+													"Material": item.MATERIAL,
+													"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
+													"N° de pièce du fabricant de pneus": item.TIRE_MFG_PART_NUM,
+													"TireMFGPartNo": item.TIRE_MFG_PART_NUM,
+													"MSRP": item.MSRP,
+													"DealerNet": item.DealerNet,
+													"Retails": item.Retails,
+													"Profit": item.Profit,
+													"TireSize": item.TIRE_SIZE,
+													"Model": item.Model,
+													"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
+													"Live_Markup_Percentage": item.Live_Markup_Percentage,
+													"MatDesc": item.MatDesc,
+													"localLang": localLang
+												});
+											// } else {
+											// 	that.FitmentToCharac.results.push({
+											// 		"Tire Fitment": item.TIRE_FITMENT,
+											// 		"TireFitment": item.TIRE_FITMENT,
+											// 		"Tire Speed Rating": item.TIRE_SPEED_RATING,
+											// 		"Tire Load Rating": item.TIRE_LOAD_RATING,
+											// 		"TireSpeed": item.TIRE_SPEED_RATING,
+											// 		"TireLoad": item.TIRE_LOAD_RATING,
+											// 		"Tire Brand": item.TIRE_BRAND_NAME,
+											// 		"TireBrand": item.TIRE_BRAND_NAME,
+											// 		"Tire Category": item.TIRE_CATEGORY,
+											// 		"TireCategory": item.TIRE_CATEGORY,
+											// 		"Tire Brand ID": item.TIRE_BRAND_ID,
+											// 		"TireBrandID": item.TIRE_BRAND_ID,
+											// 		"Material": item.MATERIAL,
+											// 		"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
+											// 		"TireMFGPartNo": item.TIRE_MFG_PART_NUM,
+											// 		"MSRP": item.MSRP,
+											// 		"DealerNet": item.DealerNet,
+											// 		"Retails": item.Retails,
+											// 		"Profit": item.Profit,
+											// 		"TireSize": item.TIRE_SIZE,
+											// 		"Model": item.Model,
+											// 		"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
+											// 		"Live_Markup_Percentage": item.Live_Markup_Percentage,
+											// 		"MatDesc": item.MatDesc,
+											// 		"localLang": localLang
+											// 	});
+											// }
 										});
-
+										debugger;
 										that.oTireFitmentJSONModel.setData(that.FitmentToCharac);
 										that.oTireFitmentJSONModel.getData().Filters = [];
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[0]);

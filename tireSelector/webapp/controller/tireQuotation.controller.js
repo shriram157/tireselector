@@ -7,7 +7,7 @@ sap.ui.define([
 	"sap/m/PDFViewer",
 ], function (Controller, JSONModel, History, BaseController, MessageToast, PDFViewer) {
 	"use strict";
-	var _this, sSelectedLocale, sDivision, DivUser;
+	var _this, sSelectedLocale, sDivision, DivUser, localLang;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -70,6 +70,7 @@ sap.ui.define([
 				sSelectedLocale = "EN"; // default is english 
 			}
 			if (sSelectedLocale == "fr") {
+				localLang = "F";
 				_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -77,6 +78,7 @@ sap.ui.define([
 				this.getView().setModel(_this.oI18nModel, "i18n");
 				this.sCurrentLocale = 'FR';
 			} else {
+				localLang = "E";
 				_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("en")
@@ -237,28 +239,29 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			var scopes = _this.userData.userContext.scopes;
-			console.log("scopes", scopes);
-			var accessAll = false,
-				accesslimited = false;
+			// var scopes = _this.userData.userContext.scopes;
+			// console.log("scopes", scopes);
+			// var accessAll = false,
+			// 	accesslimited = false;
 
-			for (var s = 0; s < scopes.length; s++) {
-				if (scopes[s] != "openid") {
-					if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
-						accessAll = true;
-					} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
-						accesslimited = true;
-					} else {
-						accessAll = false;
-						accesslimited = false;
-					}
-				}
-			}
-			if (accessAll == true && accesslimited == true) {
-				_this._oViewModel.setProperty("/enableProdMarkup", true);
-			} else {
-				_this._oViewModel.setProperty("/enableProdMarkup", false);
-			}
+			// for (var s = 0; s < scopes.length; s++) {
+			// 	if (scopes[s] != "openid") {
+			// 		if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
+			// 			accessAll = true;
+			// 		} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
+			// 			accesslimited = true;
+			// 		} else {
+			// 			accessAll = false;
+			// 			accesslimited = false;
+			// 		}
+			// 	}
+			// }
+			// if (accessAll == true && accesslimited == true) {
+			// 	_this._oViewModel.setProperty("/enableProdMarkup", true);
+			// } else {
+			// 	_this._oViewModel.setProperty("/enableProdMarkup", false);
+			// }
+			
 			// END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -772,7 +775,8 @@ sap.ui.define([
 					"CustAddL3": ModelData.CustPostalCode,
 					"CustTel": ModelData.CustPhone,
 					"logo_info": sDivision,
-					"DlrComment": ModelData.dealerMessage
+					"DlrComment": ModelData.dealerMessage,
+					"LANGUAGE" : localLang
 				}
 			};
 
