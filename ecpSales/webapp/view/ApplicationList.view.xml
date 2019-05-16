@@ -16,7 +16,7 @@
 										<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop" alignItems="Center" alignContent="Center">
 											<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"
 												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
-											<Label text="Dealer Code" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
+											<Label text="{i18n>DealerCode}" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
 											<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer" 
 											
 										    	items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'BusinessPartner' }, length:750 }" 
