@@ -27,7 +27,10 @@ sap.ui.define([
 			this.getView().setModel(this.oI18nModel, "i18n");
 			 var winUrl = window.location.search;
 		
-			if (winUrl.indexOf("=fr")>-1) {
+		var userLang = navigator.language || navigator.userLanguage;
+		
+		
+			if ((winUrl.indexOf("=fr")>-1) || (userLang =="fr") ) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -322,8 +325,14 @@ sap.ui.define([
 				if (window.document.domain == "localhost") {
 					isProxy = "proxy";
 				}
-				var w = window.open(isProxy +
-					"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='E')/$value",
+					var winUrl = window.location.search;
+			var userLang = navigator.language || navigator.userLanguage;
+			var lanKey ='E';
+			if ((winUrl.indexOf("=fr")>-1) || (userLang =="fr") ) {
+				lanKey ='F';
+			}
+			var w = window.open(isProxy +
+					"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='"+lanKey+"')/$value",
 					'_blank');
 				if (w == null) {
 					console.log("Error");

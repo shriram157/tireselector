@@ -11,7 +11,10 @@ sap.ui.define([
 			});
 			this.getView().setModel(this.oI18nModel, "i18n");
 
-			if (winUrl.indexOf("=fr") > -1) {
+			var userLang = navigator.language || navigator.userLanguage;
+			if ((winUrl.indexOf("=fr")>-1) || (userLang =="fr") ) {
+
+			// if (winUrl.indexOf("=fr") > -1) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")

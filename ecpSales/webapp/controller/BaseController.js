@@ -20,8 +20,10 @@ sap.ui.define([
 				bundleUrl: "i18n/i18n.properties"
 			});
 			this.getView().setModel(this.oI18nModel, "i18n");
+			var userLang = navigator.language || navigator.userLanguage;
+		
 
-			if (window.location.search == "?language=fr") {
+			if ((window.location.search == "?language=fr") || (userLang =="fr") ){
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -184,6 +186,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
+					// userType= "Dealer_Sales_User";
 					switch (userType) {
 					case "Dealer_Sales_User":
 
