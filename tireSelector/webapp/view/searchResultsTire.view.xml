@@ -65,35 +65,36 @@
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Tire Fitment'}" app:colorClass="{TireFitmentJSONModel>colorCell}" wrapping="false" id="cell_Fitment">
 											<customData>
-										<core:CustomData key="colorClass" value="{ path:'TireFitmentJSONModel>Tire Fitment'}" writeToDom="true"/>
+										<core:CustomData key="colorClass" value="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Fitment}:${TireFitmentJSONModel>Utilisation de pneu}}" writeToDom="true"/>
 											</customData>
 										</Text>
-										<!--{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}-->
+										<!--{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Fitment}:${TireFitmentJSONModel>Utilisation de pneu}}-->
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>TireCategory}" filterProperty="{i18n>TireCategory}" width="7rem">
 									<Label text="{i18n>TireCategory}"/>
 									<t:template>
-										<Text class="TextPaddig" text="{TireFitmentJSONModel>Tire Category}" wrapping="false"/>
+										<!--{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Category}:${TireFitmentJSONModel>Catégorie de pneu}}-->
+										<Text class="TextPaddig" text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Category}:${TireFitmentJSONModel>Catégorie de pneu}}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>TireBrandDesc}" filterProperty="{i18n>TireBrandDesc}" width="20rem">
 									<Label text="{i18n>TireBrandDesc}"/>
 									<t:template>
-										<!--{=${localLang}==='F' ? ${TireFitmentJSONModel>Tire Brand}:${TireFitmentJSONModel>Description de marque de pneu} }" -->
-										<Text class="TextPaddig" text="{{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Brand}:${TireFitmentJSONModel>Description de marque de pneu}}-{TireFitmentJSONModel>MatDesc}-{TireFitmentJSONModel>TireSize}" wrapping="false"/>
+										<!--{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Brand}:${TireFitmentJSONModel>Description de marque de pneu} }" -->
+										<Text class="TextPaddig" text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Brand}:${TireFitmentJSONModel>Marque de pneu}}-{TireFitmentJSONModel>MatDesc}-{TireFitmentJSONModel>TireSize}" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>LoadRating}" filterProperty="{i18n>LoadRating}" width="7rem">
 									<Label text="{i18n>LoadRating}"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire Load Rating}" class="TextPaddig" wrapping="false"/>
+										<Text text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Load Rating}:${TireFitmentJSONModel>Indice de charge}}" class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>SpeedRating}" filterProperty="{i18n>SpeedRating}" width="7rem">
 									<Label text="{i18n>SpeedRating}"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire Speed Rating}" class="TextPaddig" wrapping="false"/>
+										<Text text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Speed Rating}:${TireFitmentJSONModel>Indice de vitesse}}" class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>TCIPartNumber}" filterProperty="{i18n>TCIPartNumber}">
@@ -105,7 +106,7 @@
 								<t:Column sortProperty="{i18n>TireMFGPartNo}" filterProperty="{i18n>TireMFGPartNo}" >
 									<Label text="{i18n>TireMFGPartNo}" wrapping="false"/>
 									<t:template>
-										<Text text="{TireFitmentJSONModel>Tire MFG Part No}" class="TextPaddig" wrapping="false"/>
+										<Text text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire MFG Part No}:${TireFitmentJSONModel>N° de pièce du fabricant de pneus}}" class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column id="ID_DealerNet" sortProperty="{i18n>DealerNet}" filterProperty="{i18n>DealerNet}" visible="{FitmentPageModel>/enableDealerNet}" width="6rem">

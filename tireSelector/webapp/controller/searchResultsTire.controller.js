@@ -225,28 +225,28 @@ sap.ui.define([
 
 			//START: uncomment below for cloud testing
 
-			// var scopes = that.userDetails.userContext.scopes;
-			// console.log("scopes", scopes);
-			// var accessAll = false,
-			// 	accesslimited = false;
+			var scopes = that.userDetails.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
 
-			// for (var s = 0; s < scopes.length; s++) {
-			// 	if (scopes[s] != "openid") {
-			// 		if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
-			// 			accessAll = true;
-			// 		} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
-			// 			accesslimited = true;
-			// 		} else {
-			// 			accessAll = false;
-			// 			accesslimited = false;
-			// 		}
-			// 	}
-			// }
-			// if (accessAll == true && accesslimited == true) {
-			// 	that._oViewModel.setProperty("/enableProdMarkup", true);
-			// } else {
-			// 	that._oViewModel.setProperty("/enableProdMarkup", false);
-			// }
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				that._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				that._oViewModel.setProperty("/enableProdMarkup", false);
+			}
 
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
@@ -550,7 +550,7 @@ sap.ui.define([
 													"Tire Category": item.TIRE_CATEGORY,
 													"Catégorie de pneu": item.TIRE_CATEGORY,
 													"TireCategory": item.TIRE_CATEGORY,
-													"Marque de pneu": item.TIRE_BRAND_ID,
+													"Marque de pneu": item.TIRE_BRAND_NAME,
 													"TireBrandID": item.TIRE_BRAND_ID,
 													"Material": item.MATERIAL,
 													"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
@@ -597,7 +597,7 @@ sap.ui.define([
 											// 	});
 											// }
 										});
-										debugger;
+										// debugger;
 										that.oTireFitmentJSONModel.setData(that.FitmentToCharac);
 										that.oTireFitmentJSONModel.getData().Filters = [];
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[0]);

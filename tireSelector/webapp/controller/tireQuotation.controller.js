@@ -112,7 +112,7 @@ sap.ui.define([
 
 		//to add $ sign for amount values great than Zero
 		addDollarSign: function (oNum) {
-			debugger;
+			// debugger;
 			if (oNum != "" && oNum != undefined && oNum !== null) {
 				// return "$"+oNum;
 				return parseFloat(oNum).toFixed(2);
@@ -239,28 +239,28 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModel, "TireQuoteModel");
 
 			//START: uncomment below for cloud testing
-			// var scopes = _this.userData.userContext.scopes;
-			// console.log("scopes", scopes);
-			// var accessAll = false,
-			// 	accesslimited = false;
+			var scopes = _this.userData.userContext.scopes;
+			console.log("scopes", scopes);
+			var accessAll = false,
+				accesslimited = false;
 
-			// for (var s = 0; s < scopes.length; s++) {
-			// 	if (scopes[s] != "openid") {
-			// 		if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
-			// 			accessAll = true;
-			// 		} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
-			// 			accesslimited = true;
-			// 		} else {
-			// 			accessAll = false;
-			// 			accesslimited = false;
-			// 		}
-			// 	}
-			// }
-			// if (accessAll == true && accesslimited == true) {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", true);
-			// } else {
-			// 	_this._oViewModel.setProperty("/enableProdMarkup", false);
-			// }
+			for (var s = 0; s < scopes.length; s++) {
+				if (scopes[s] != "openid") {
+					if (scopes[s].split(".")[1] == "Manage_Product_Markups") {
+						accessAll = true;
+					} else if (scopes[s].split(".")[1] == "View_Tire_Quotes") {
+						accesslimited = true;
+					} else {
+						accessAll = false;
+						accesslimited = false;
+					}
+				}
+			}
+			if (accessAll == true && accesslimited == true) {
+				_this._oViewModel.setProperty("/enableProdMarkup", true);
+			} else {
+				_this._oViewModel.setProperty("/enableProdMarkup", false);
+			}
 			
 			// END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();

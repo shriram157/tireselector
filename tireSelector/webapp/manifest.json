@@ -23,7 +23,7 @@
 				}
 			},
 			"Z_TIRESELECTOR_SRV": {
-				"uri": "/tireSelector-dest/node/Z_TIRESELECTOR_SRV/",
+				"uri": "/node/Z_TIRESELECTOR_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
@@ -31,7 +31,7 @@
 				}
 			},
 			"MD_PRODUCT_FS_SRV": {
-				"uri": "/tireSelector-dest/node/MD_PRODUCT_FS_SRV/",
+				"uri": "/node/MD_PRODUCT_FS_SRV/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
@@ -39,7 +39,7 @@
 				}
 			},
 			"API_BUSINESS_PARTNER": {
-				"uri": "/tireSelector-dest/node/API_BUSINESS_PARTNER/",
+				"uri": "/node/API_BUSINESS_PARTNER/",
 				"type": "OData",
 				"settings": {
 					"odataVersion": "2.0",
@@ -47,7 +47,7 @@
 				}
 			},
 			"ZSD_TIRE_QUOTATION_PDF_SRV_01": {
-				"uri": "/tireSelector-dest/node/ZSD_TIRE_QUOTATION_PDF_SRV_01/",
+				"uri": "/node/ZSD_TIRE_QUOTATION_PDF_SRV_01/",
 				"type": "OData",
 				"settings": {
 					"localUri": "localService/ZSD_TIRE_QUOTATION_PDF_SRV_01/metadata.xml"
@@ -123,7 +123,7 @@
 				}
 			},
 			"FitmentModel": {
-				"uri": "/tireSelector-dest/node/Z_TIRESELECTOR_SRV/",
+				"uri": "/node/Z_TIRESELECTOR_SRV/",
 				"type": "sap.ui.model.odata.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
@@ -136,7 +136,7 @@
 				"preload": false
 			},
 			"PriceServiceModel": {
-				"uri": "/tireSelector-dest/node/MD_PRODUCT_FS_SRV/",
+				"uri": "/node/MD_PRODUCT_FS_SRV/",
 				"type": "sap.ui.model.odata.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
@@ -149,7 +149,7 @@
 				"preload": false
 			},
 			"BusinessPartnerModel": {
-				"uri": "/tireSelector-dest/node/API_BUSINESS_PARTNER/",
+				"uri": "/node/API_BUSINESS_PARTNER/",
 				"type": "sap.ui.model.odata.ODataModel",
 				"settings": {
 					"defaultOperationMode": "Server",
