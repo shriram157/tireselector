@@ -298,6 +298,47 @@ sap.ui.define([
 					console.log("Error");
 				}
 			});
+			
+			//Reading benefit List
+			
+			var oBenefitDataModel = new sap.ui.model.json.JSONModel();
+			oBenefitDataModel.setData({
+				
+			});
+			this.getView().setModel(oBenefitDataModel, "oBenefitDataModel");
+			var userLang = navigator.language || navigator.userLanguage;
+			var winUrl = window.location.search;
+			var lanKey ='EN';
+			if ((winUrl.indexOf("=fr")>-1) || (userLang =="fr") ) {
+				lanKey ='FR';
+			}
+				var oZECPModel = this.getModel("EcpSalesModel");
+				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
+				$.ajaxSetup({
+					headers: {
+						'X-CSRF-Token': this._oToken
+					}
+				});
+				oZECPModel.read("/zc_ecp_valid_plansSet", {
+					urlParameters: {
+						"$filter": "LANGUAGE eq '"+lanKey+"' and BCC_ECP_AGRMNT_NUM eq '"+oAgrNum+"'" ,
+						"$expand":"ZC_ECP_BENEFITSET"
+					},
+					success: $.proxy(function (data) {
+						console.log(data)
+						
+						oBenefitDataModel.setData({
+							benefitList:data.results[0].ZC_ECP_BENEFITSET.results
+							
+						});
+						
+					}, this),
+					error: function () {
+						console.log("Error");
+					}
+				});
+		//	LANGUAGE eq 'EN' and BCC_ECP_AGRMNT_NUM eq 'G50000104NTC04000'&$expand=ZC_ECP_BENEFITSET
+			
 
 		},
 		handlePressClaim: function (oEvent) {

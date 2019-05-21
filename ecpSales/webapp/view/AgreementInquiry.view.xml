@@ -194,10 +194,10 @@
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="{i18n>BenefitCoverages}">
 						<uxap:blocks>
-							<List headerText="Benefit List">
+							<List headerText="Benefit List" items="{path: 'oBenefitDataModel>/benefitList'}">
 								<items>
-									<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>
-									<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>
+									<ObjectListItem title="{oBenefitDataModel>ZBENEFIT_DESC}" type="Active"></ObjectListItem>
+									<!--<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>-->
 								</items>
 							</List>
 						</uxap:blocks>
