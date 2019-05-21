@@ -137,7 +137,8 @@
 						singleContainerFullSize="false">
 						<f:content>
 							<Label text="{i18n>Status}"/>
-							<Text text="{LocalDataModel>/AgreementData/AgreementStatus}"/>
+							<!--<Text text="{LocalDataModel>/AgreementData/AgreementStatus}"/> commented this line and hard coded the status-->
+							<Text text="{i18n>Active}"/>
 							<Label text="{i18n>StatusDate}"/>
 							<Text
 								text="{path : 'LocalDataModel>/AgreementData/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
