@@ -52,7 +52,7 @@
 								change="handleExpiryChange" class="sapUiSmallMarginBottom"/>
 							<core:Title text=""/>
 							<Label text="{i18n>Vehicle}"/>
-							<Input type="Text" value="{TireQuotationModel>/VModelYear} {TireQuotationModel>/VehicleSeriesDescp}" id="ID_SeriesYear"/>
+							<Input type="Text" value="{TireQuotationModel>/ModelDesc} {TireQuotationModel>/VModelYear}" id="ID_SeriesYear"/>
 							<Label text="{i18n>VIN}"/>
 							<Input type="Text" value="{TireQuotationModel>/VIN}" id="ID_VINQuote"/>
 							

@@ -565,7 +565,11 @@ sap.ui.define([
 													"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
 													"Live_Markup_Percentage": item.Live_Markup_Percentage,
 													"MatDesc": item.MatDesc,
-													"localLang": localLang
+													"localLang": localLang,
+													"ModelDesc":ModelDesc,
+													"VehicleSeries":VehicleSeries,
+													"VModelYear":VModelYear,
+													"VehicleSeriesDescp":VehicleSeriesDescp
 												});
 											// } else {
 											// 	that.FitmentToCharac.results.push({
@@ -886,6 +890,7 @@ sap.ui.define([
 			oPath.VIN = VIN;
 			oPath.VehicleSeries = VehicleSeries;
 			oPath.VModelYear = VModelYear;
+			oPath.ModelDesc = ModelDesc;
 			oPath.VehicleSeriesDescp = VehicleSeriesDescp;
 			sap.ui.core.UIComponent.getRouterFor(that).navTo("tireQuotation", {
 				rowData: JSON.stringify(oPath)

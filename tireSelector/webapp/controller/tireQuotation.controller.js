@@ -287,6 +287,7 @@ sap.ui.define([
 				_this.rowData.VModelYear = _this.rowData.VModelYear;
 				_this.rowData.VehicleSeries = _this.rowData.VehicleSeries;
 				_this.rowData.VehicleSeriesDescp = _this.rowData.VehicleSeriesDescp;
+				_this.rowData.ModelDesc = _this.rowData.ModelDesc;
 				_this.rowData.TireSize = _this.rowData.TireSize.replace("%2F", "/");
 				_this.rowData.MatDesc = _this.rowData.MatDesc.replace("%2F", "/");
 				_this.rowData.TireLoad = _this.rowData.TireLoad.replace("%2F", "/");
