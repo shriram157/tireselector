@@ -2319,7 +2319,10 @@ sap.ui.define([
 										if (ret.results[0] && (parseInt(ret.results[0].CancelFee) === 0)) {
 											ret.results[0].CancelFee = "100.00";
 										}
+										ret.results[0].RoadHazard = that.oBundle.getText(ret.results[0].RoadHazard); // added translation
+										ret.results[0].BenefitsFlag = that.oBundle.getText(ret.results[0].BenefitsFlag);// added translation
 										that.getView().getModel("LocalDataModel").setProperty("/AgreementData", ret.results[0]);
+										
 										var oDealer = ret.results[0].DealershipNumber;
 										var dealerStr = ret.results[0].DealershipNumber
 										ret.results[0].DealershipNumber = dealerStr.substring(dealerStr.length - 5, dealerStr.length);

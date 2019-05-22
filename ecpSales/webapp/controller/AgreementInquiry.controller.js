@@ -128,10 +128,10 @@ sap.ui.define([
 							this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
 							if(bpdata.results[0].BusinessPartnerCategory ==="1"){
 									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress_Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
-									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress_BpType", "Individual");
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress_BpType", this.getView().getModel("i18n").getResourceBundle().getText("Individual"));// added translation
 							}else if(bpdata.results[0].BusinessPartnerCategory ==="2"){
 									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress_Name", bpdata.results[0].OrganizationBPName1);
-									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress_BpType", "Organization");
+									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress_BpType",this.getView().getModel("i18n").getResourceBundle().getText("Organization"));// added translation
 							}
 
 						}, this),
@@ -232,7 +232,7 @@ sap.ui.define([
 								// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
 								
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress_Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
-								this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress_BpType", "Individual");
+								this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress_BpType", this.getView().getModel("i18n").getResourceBundle().getText("Individual"));// added translation
 
 									
 							}else if(bpdata.results[0].BusinessPartnerCategory ==="2"){
