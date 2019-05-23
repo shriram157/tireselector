@@ -42,7 +42,10 @@ sap.ui.define([
 
 			var oDataModel01 = new sap.ui.model.odata.ODataModel(mConfig01.uri, {
 				useBatch: false,
-				json: true
+				json: true,
+				headers: {
+					"X-Requested-With": "XMLHttpRequest"
+				}
 			});
 			this.setModel(oDataModel01, "BusinessPartnerModel");
 		}
