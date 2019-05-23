@@ -43,7 +43,10 @@ sap.ui.define([
 				useBatch: false,
 				// disableHeadRequestForToken: false,
 				defaultUpdateMethod: 'PUT',
-				json: true
+				json: true,
+				headers: {
+					"X-Requested-With": "XMLHttpRequest"
+				}
 			});
 
 		
@@ -57,7 +60,10 @@ sap.ui.define([
 				useBatch: false,
 				// disableHeadRequestForToken: true,
 				defaultUpdateMethod: 'PUT',
-				json: true
+				json: true,
+				headers: {
+					"X-Requested-With": "XMLHttpRequest"
+				}
 			});
 
 			
@@ -72,7 +78,10 @@ sap.ui.define([
 				useBatch: false,
 				// disableHeadRequestForToken: true,
 				defaultUpdateMethod: 'PUT',
-				json: true
+				json: true,
+				headers: {
+					"X-Requested-With": "XMLHttpRequest"
+				}
 			});
 		
 			this.setModel(oDataModel02, "ApiBusinessModel");
@@ -89,7 +98,10 @@ sap.ui.define([
 				useBatch: false,
 				// disableHeadRequestForToken: true,
 				defaultUpdateMethod: 'PUT',
-				json: true
+				json: true,
+				headers: {
+					"X-Requested-With": "XMLHttpRequest"
+				}
 			});
 		
 			this.setModel(oDataModel03, "ClaimServiceModel");
