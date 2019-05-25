@@ -5,10 +5,21 @@ extends: tireSelector
 modules:
  - name: tireSelector_Node
    parameters:
-      host: tci-dev-tireselector-node
+      host: dev-tireselector-node
+      domain: scp.toyota.ca
  - name: tireSelector_XSJS
    parameters:
-      host: tci-dev-tireselector-xsjs
+      host: dev-tireselector-xsjs
+      domain: scp.toyota.ca
  - name: tireSelector
    parameters:
-      host: tci-dev-tireselector
+      host: dev-tireselector
+      domain: scp.toyota.ca
+
+resources:
+ - name: uaa_tireSelector
+   parameters:
+      config:
+         oauth2-configuration:
+            redirect-uris:
+               - https://dev-tireselector.scp.toyota.ca/login/callback
