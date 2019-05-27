@@ -56,7 +56,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
-					// userType = "Dealer_Sales_User";
+					 //userType = "Dealer_Sales_User";
 					switch (userType) {
 					case "Dealer_Sales_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
@@ -323,12 +323,15 @@ sap.ui.define([
 			var oDateRadioSelected = this.getView().byId("idDateRadio").getSelected();
 			var oVinRadioSelected = this.getView().byId("idVinRadio").getSelected();
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
+			var oBundleObj =this.getView().getModel("i18n").getResourceBundle();
 			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 			$.ajaxSetup({
 				headers: {
 					'X-CSRF-Token': this._oToken
 				}
 			});
+			this.getView().byId("idAppListMsgStrip").setProperty("visible", false);
+			
 			var oDealerCode = this.getView().byId("idDealerCode").getSelectedKey();
 
 			if (oDateRadioSelected && !oVinRadioSelected) {
@@ -381,6 +384,10 @@ sap.ui.define([
 						}, this)
 					});
 
+				}else{
+				this.getView().byId("idAppListMsgStrip").setProperty("visible", true);
+				this.getView().byId("idAppListMsgStrip").setType("Error");
+				this.getView().byId("idAppListMsgStrip").setText(oBundleObj.getText("ECP0001E"));
 				}
 			}
 		},

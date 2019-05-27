@@ -58,7 +58,10 @@ sap.ui.define([
 			var sQuery = this.getView().byId("idVal").getValue();
 			var andFilter = [];
 			this.oTable = this.getView().byId("idAgreementTable");
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oBindItems = "";
+			this.getView().byId("idAgrInqMsgStrp").setProperty("visible", false);
+					
 			if (oIndex === 0) {
 				if (!$.isEmptyObject(sQuery)) {
 
@@ -70,7 +73,12 @@ sap.ui.define([
 					});
 
 				} else {
-					andFilter = [];
+						this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
+						this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0006E"));
+						this.getView().byId("idAgrInqMsgStrp").setType("Error");
+						return;
+					
+					// andFilter = [];
 				}
 
 				oBindItems = this.oTable.getBinding("rows");
@@ -87,7 +95,11 @@ sap.ui.define([
 						and: false
 					});
 				} else {
-					andFilter = [];
+						this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
+						this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0001E"));
+						this.getView().byId("idAgrInqMsgStrp").setType("Error");
+						return;
+					// andFilter = [];
 				}
 
 				oBindItems = this.oTable.getBinding("rows");
@@ -106,7 +118,7 @@ sap.ui.define([
 		},
 		onNavigate: function (oEvent) {
 			var obj = oEvent.getSource().getModel().getProperty(oEvent.getParameters().rowContext.sPath);
-			console.log(obj);
+		
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiry", {
 				AgrNum: obj.AgreementNumber
 			});

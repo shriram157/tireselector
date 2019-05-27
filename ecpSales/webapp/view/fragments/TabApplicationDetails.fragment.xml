@@ -136,7 +136,7 @@
 						<Text text="{LocalDataModel>/PricingModelData/DEALTYPEDESC}"/>
 						<Label text="{i18n>VehiclePrice}"/>
 						<Input liveChange="onChangeAmt" type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" value="{EcpFieldData>/ZecpVehPrice}" required="true"
-							valueState="{LocalDataModel>/VehPriceState}"/>
+							valueState="{LocalDataModel>/VehPriceState}" class="ZecpVehPriceCls"/>
 						<Label text="{i18n>AmtFinanced}"/>
 						<Input liveChange="onChangeAmt" required="{LocalDataModel>/AmtFinReq}" valueState="{LocalDataModel>/AmtFinState}" type="Number"
 							value="{EcpFieldData>/ZecpAmtFin}" editable="{LocalDataModel>/editableField}" />
@@ -161,7 +161,7 @@
 						<Label text="{i18n>PlanCode}"/>
 						<Text text="{EcpFieldData>/ZecpPlancode}" id="idPlanCodeText"/>
 						<Label text="{i18n>PlanPurchasePrice}"/>
-						<Input type="Number" value="{EcpFieldData>/ZecpPlanpurchprice}" id="idPlanPurchase" required="true"
+						<Input type="Number" value="{EcpFieldData>/ZecpPlanpurchprice}" id="idPlanPurchase" required="true" class="ZecpPlanpurchpriceCls"
 							valueState="{LocalDataModel>/PlanPurchase}" editable="{LocalDataModel>/editableField}" liveChange="onEnterPlanPurchasePrice" enabled="{oSetProperty>/notUsedPrimPlan}"/>
 						<Label text="{i18n>RetailPrice}"/>
 						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_RET_PRICE}"/>
