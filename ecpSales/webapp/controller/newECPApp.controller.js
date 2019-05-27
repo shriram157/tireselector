@@ -2566,15 +2566,17 @@ sap.ui.define([
 
 		},
 		getCIClink: function (dealercode, vin) {
+			
+			
 			var locationHref = window.location.href;
 			var linkAddress = "";
-			if (locationHref.search("tci-dev-ecpsales") > -1 || locationHref.search("webide") > -1) {
+			if (locationHref.search("dev-ecpsales") > -1 || locationHref.search("webide") > -1) {
 				linkAddress = "https://b2b.sit.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
-			} else if (locationHref.search("tci-qas-ecpsales") > -1) {
+			} else if (locationHref.search("qas-ecpsales") > -1) {
 				linkAddress = "https://b2b.qa.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
-			} else if (locationHref.search("tci-uat-ecpsales") > -1) {
+			} else if (locationHref.search("uat-ecpsales") > -1) {
 				linkAddress = "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
-			} else if (locationHref.search("tci-ecpsales.cfapps") > -1) {
+			} else if (locationHref.search("ecpsales.cfapps") > -1) {
 				linkAddress = "https://b2b.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			}
 
