@@ -5,10 +5,20 @@ extends: ecpSales
 modules:
  - name: ecpSales_Node
    parameters:
-      host: tci-dev-${app-name}
+      host: dev-ecpsales-node
+      domain: scp.toyota.ca
    properties:
       MOCK_USER_MODE: true
       MOCK_USER_ORIGIN: d36z7bqhz1-GSR-Neo-to-CF
  - name: ecpSales
    parameters:
-      host: tci-dev-${app-name}
+      host: dev-ecpsales
+      domain: scp.toyota.ca
+
+resources:
+ - name: uaa_ecpSales
+   parameters:
+      config:
+         oauth2-configuration:
+            redirect-uris:
+               - https://dev-ecpsales.scp.toyota.ca/login/callback
