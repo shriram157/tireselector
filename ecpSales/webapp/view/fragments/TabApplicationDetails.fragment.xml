@@ -69,7 +69,7 @@
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Language}"/>
 						<Label text="{i18n>Name}"/>
 						<!--<Text text="{LocalDataModel>/ApplicationOwnerData/CustomerName} {LocalDataModel>/ApplicationOwnerData/CustomerLastName}"/>-->
-							<Text text="{ApplicationOwnerData/ApplicationOwnerData_Name}"/>
+							<Text text="{LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_Name}"/>
 						<Label text="{i18n>Address}"/>
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Address}"/>
 						<Label text="{i18n>City}"/>
