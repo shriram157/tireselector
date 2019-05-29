@@ -78,5 +78,15 @@ zecp.utils.formatter = {
 			}
 		}
 		return OnewVal;
+	},
+	appListName:function(custNameF,custNameL,custType,companyNm){
+		
+		if(custType.toUpperCase() ==="INDIVIDUAL"){
+			return custNameF+" "+custNameL;
+		}else{
+			return companyNm;
+		}
+		
+		// return cutNameF+CustNameL+custType+companyNm;
 	}
 };

@@ -97,7 +97,9 @@
 						<Label text="{i18n>Language}"/>
 						<Text text="{LocalDataModel>/OwnerData/Language}"/>
 						<Label text="{i18n>Name}"/>
-						<Text text="{LocalDataModel>/AgreementOwnerName/FirstName} {LocalDataModel>/AgreementOwnerName/LastName}"/>
+						<!--<Text text="{LocalDataModel>/AgreementOwnerName/FirstName} {LocalDataModel>/AgreementOwnerName/LastName}"/>-->
+						<Text text="{LocalDataModel>/VechOwnrSectAddOnAppSub_Name}"/>
+						
 						<Label text="{i18n>Address}"/>
 						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
 						<Label text="{i18n>City}"/>
