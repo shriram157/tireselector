@@ -261,6 +261,53 @@ sap.ui.define([
 
 			var filterData;
 			that.fromTireCenter = false;
+			that.oSuggestedBpData = [{
+				"BPNumber": "2400599987",
+				"BPRegion": "AB"
+			}, {
+				"BPNumber": "2400599988",
+				"BPRegion": "BC"
+			}, {
+				"BPNumber": "2400599989",
+				"BPRegion": "MB"
+			}, {
+				"BPNumber": "2400599990",
+				"BPRegion": "SK"
+			}, {
+				"BPNumber": "2400599991",
+				"BPRegion": "QC"
+			}, {
+				"BPNumber": "2400599992",
+				"BPRegion": "NB"
+			}, {
+				"BPNumber": "2400599993",
+				"BPRegion": "NL"
+			}, {
+				"BPNumber": "2400599994",
+				"BPRegion": "NS"
+			}, {
+				"BPNumber": "2400599995",
+				"BPRegion": "PE"
+			}, {
+				"BPNumber": "2400599996",
+				"BPRegion": "NT"
+			}, {
+				"BPNumber": "2400599997",
+				"BPRegion": "NU"
+			}, {
+				"BPNumber": "2400599998",
+				"BPRegion": "YT"
+			}, {
+				"BPNumber": "2400599999",
+				"BPRegion": "ON"
+			}];
+			var CustomerRegion = that.userDetails.DealerData.Region;
+			var BPFiltered = that.oSuggestedBpData.filter(function (val) {
+				return val.BPRegion == CustomerRegion;
+			});
+			console.log("BPFiltered", BPFiltered);
+			that.SoldtoParty = BPFiltered[0].BPNumber;
+
 			if (oEvent.getParameter("arguments").modelData !== undefined) {
 				//VIN, VehicleSeries, VModelYear
 				that.oModelData = JSON.parse(oEvent.getParameter("arguments").modelData);
@@ -272,9 +319,8 @@ sap.ui.define([
 				ModelDesc = that.oModelData.ModelDesc;
 				// filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
-					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
-					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
-					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '" + localLang + "'&$format=json";
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '00' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					that.SoldtoParty + "' and LANGUAGE eq '" + localLang + "'&$format=json";
 
 			} else if (oEvent.getParameter("arguments").tireData !== undefined) {
 				that.fromTireCenter = true;
@@ -534,43 +580,43 @@ sap.ui.define([
 											// jsonOBJ[that.oBundle.getText("RimType")] = item.TIRE_FITMENT;
 											// console.log(jsonOBJ);
 											// if (localLang == "F") {
-												that.FitmentToCharac.results.push({
-													"Tire Fitment": item.TIRE_FITMENT,
-													"Utilisation de pneu": item.TIRE_FITMENT,
-													"TireFitment": item.TIRE_FITMENT,
-													"Tire Speed Rating": item.TIRE_SPEED_RATING,
-													"Tire Load Rating": item.TIRE_LOAD_RATING,
-													"Indice de vitesse": item.TIRE_SPEED_RATING,
-													"Indice de charge": item.TIRE_LOAD_RATING,
-													"TireSpeed": item.TIRE_SPEED_RATING,
-													"TireLoad": item.TIRE_LOAD_RATING,
-													"Tire Brand": item.TIRE_BRAND_NAME,
-													"Description de marque de pneu": item.TIRE_BRAND_NAME,
-													"TireBrand": item.TIRE_BRAND_NAME,
-													"Tire Category": item.TIRE_CATEGORY,
-													"Catégorie de pneu": item.TIRE_CATEGORY,
-													"TireCategory": item.TIRE_CATEGORY,
-													"Marque de pneu": item.TIRE_BRAND_NAME,
-													"TireBrandID": item.TIRE_BRAND_ID,
-													"Material": item.MATERIAL,
-													"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
-													"N° de pièce du fabricant de pneus": item.TIRE_MFG_PART_NUM,
-													"TireMFGPartNo": item.TIRE_MFG_PART_NUM,
-													"MSRP": item.MSRP,
-													"DealerNet": item.DealerNet,
-													"Retails": item.Retails,
-													"Profit": item.Profit,
-													"TireSize": item.TIRE_SIZE,
-													"Model": item.Model,
-													"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
-													"Live_Markup_Percentage": item.Live_Markup_Percentage,
-													"MatDesc": item.MatDesc,
-													"localLang": localLang,
-													"ModelDesc":ModelDesc,
-													"VehicleSeries":VehicleSeries,
-													"VModelYear":VModelYear,
-													"VehicleSeriesDescp":VehicleSeriesDescp
-												});
+											that.FitmentToCharac.results.push({
+												"Tire Fitment": item.TIRE_FITMENT,
+												"Utilisation de pneu": item.TIRE_FITMENT,
+												"TireFitment": item.TIRE_FITMENT,
+												"Tire Speed Rating": item.TIRE_SPEED_RATING,
+												"Tire Load Rating": item.TIRE_LOAD_RATING,
+												"Indice de vitesse": item.TIRE_SPEED_RATING,
+												"Indice de charge": item.TIRE_LOAD_RATING,
+												"TireSpeed": item.TIRE_SPEED_RATING,
+												"TireLoad": item.TIRE_LOAD_RATING,
+												"Tire Brand": item.TIRE_BRAND_NAME,
+												"Description de marque de pneu": item.TIRE_BRAND_NAME,
+												"TireBrand": item.TIRE_BRAND_NAME,
+												"Tire Category": item.TIRE_CATEGORY,
+												"Catégorie de pneu": item.TIRE_CATEGORY,
+												"TireCategory": item.TIRE_CATEGORY,
+												"Marque de pneu": item.TIRE_BRAND_NAME,
+												"TireBrandID": item.TIRE_BRAND_ID,
+												"Material": item.MATERIAL,
+												"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
+												"N° de pièce du fabricant de pneus": item.TIRE_MFG_PART_NUM,
+												"TireMFGPartNo": item.TIRE_MFG_PART_NUM,
+												"MSRP": item.MSRP,
+												"DealerNet": item.DealerNet,
+												"Retails": item.Retails,
+												"Profit": item.Profit,
+												"TireSize": item.TIRE_SIZE,
+												"Model": item.Model,
+												"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
+												"Live_Markup_Percentage": item.Live_Markup_Percentage,
+												"MatDesc": item.MatDesc,
+												"localLang": localLang,
+												"ModelDesc": ModelDesc,
+												"VehicleSeries": VehicleSeries,
+												"VModelYear": VModelYear,
+												"VehicleSeriesDescp": VehicleSeriesDescp
+											});
 											// } else {
 											// 	that.FitmentToCharac.results.push({
 											// 		"Tire Fitment": item.TIRE_FITMENT,
