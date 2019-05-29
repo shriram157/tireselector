@@ -280,7 +280,7 @@ sap.ui.define([
 
 			if (oEvent.getParameter("arguments").rowData !== undefined) {
 				_this.rowData = {};
-				_this.BpData = [{
+				_this.oSuggestedBpData = [{
 						"BPNumber": "2400599987",
 						"BPRegion": "AB"
 					}, {
@@ -361,16 +361,19 @@ sap.ui.define([
 				_this.objPrice.FittingKitPrice = "";
 				_this.objPrice.RHPPriceSum = "";
 				
+				console.log("oSuggestedBpData", _this.oSuggestedBpData);
+				console.log("CustomerRegion", _this.userData.DealerData.CustomerRegion);
 				var CustomerRegion = _this.userData.DealerData.CustomerRegion;
 				_this.Division = "00"; //_this.userData.DealerData.Division;
 				_this.Doctype = "ZAF";
 				_this.SalesOrg = "7000";
 				_this.DistrChan = "10";
-				var BPFiltered = _this.BpData.filter(function(val){
+				var BPFiltered = _this.oSuggestedBpData.filter(function(val){
 					return val.BPRegion == CustomerRegion;
 				});
+				console.log("BPFiltered", BPFiltered);
 				_this.SoldtoParty = BPFiltered[0].BPNumber;
-
+				
 				var filterdata = "?$filter=Division eq '" + _this.Division + "' and DocType eq '" + _this.Doctype + "' and SalesOrg eq '" +
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty +
 					"' and Material eq '" + oMaterial + "'";
