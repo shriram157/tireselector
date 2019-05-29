@@ -109,7 +109,10 @@
 					"useBatch": false,
 					"json": true,
 					"defaultBindingMode": "TwoWay",
-					"defaultUpdateMethod": "PUT"
+					"defaultUpdateMethod": "PUT",
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				}
 			},
 			"XsodataModelPost": {
@@ -119,7 +122,10 @@
 				"settings": {
 					"useBatch": false,
 					"json": true,
-					"defaultBindingMode": "TwoWay"
+					"defaultBindingMode": "TwoWay",
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				}
 			},
 			"FitmentModel": {
@@ -130,7 +136,10 @@
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
 					"json": true,
-					"useBatch": false
+					"useBatch": false,
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				},
 				"dataSource": "Z_TIRESELECTOR_SRV",
 				"preload": false
@@ -143,7 +152,10 @@
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
 					"json": true,
-					"useBatch": false
+					"useBatch": false,
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				},
 				"dataSource": "MD_PRODUCT_FS_SRV",
 				"preload": false
@@ -156,7 +168,10 @@
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
 					"json": true,
-					"useBatch": false
+					"useBatch": false,
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				},
 				"dataSource": "API_BUSINESS_PARTNER",
 				"preload": false
@@ -167,7 +182,10 @@
 					"defaultOperationMode": "Server",
 					"defaultBindingMode": "OneWay",
 					"defaultCountMode": "Request",
-					"useBatch": false
+					"useBatch": false,
+					"headers": {
+						"X-Requested-With": "XMLHttpRequest"
+					}
 				},
 				"dataSource": "ZSD_TIRE_QUOTATION_PDF_SRV_01",
 				"preload": false
