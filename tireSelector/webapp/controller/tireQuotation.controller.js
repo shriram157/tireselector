@@ -7,7 +7,7 @@ sap.ui.define([
 	"sap/m/PDFViewer",
 ], function (Controller, JSONModel, History, BaseController, MessageToast, PDFViewer) {
 	"use strict";
-	var _this, sSelectedLocale, sDivision, DivUser, localLang;
+	var _this, sSelectedLocale, sDivision, DivUser, localLang, oSuggestedBpData;
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -173,6 +173,46 @@ sap.ui.define([
 			return null;
 		},
 		_oQuoteRoute: function (oEvent) {
+			oSuggestedBpData = [{
+				"BPNumber": "2400599987",
+				"BPRegion": "AB"
+			}, {
+				"BPNumber": "2400599988",
+				"BPRegion": "BC"
+			}, {
+				"BPNumber": "2400599989",
+				"BPRegion": "MB"
+			}, {
+				"BPNumber": "2400599990",
+				"BPRegion": "SK"
+			}, {
+				"BPNumber": "2400599991",
+				"BPRegion": "QC"
+			}, {
+				"BPNumber": "2400599992",
+				"BPRegion": "NB"
+			}, {
+				"BPNumber": "2400599993",
+				"BPRegion": "NL"
+			}, {
+				"BPNumber": "2400599994",
+				"BPRegion": "NS"
+			}, {
+				"BPNumber": "2400599995",
+				"BPRegion": "PE"
+			}, {
+				"BPNumber": "2400599996",
+				"BPRegion": "NT"
+			}, {
+				"BPNumber": "2400599997",
+				"BPRegion": "NU"
+			}, {
+				"BPNumber": "2400599998",
+				"BPRegion": "YT"
+			}, {
+				"BPNumber": "2400599999",
+				"BPRegion": "ON"
+			}];
 			_this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
@@ -280,46 +320,6 @@ sap.ui.define([
 
 			if (oEvent.getParameter("arguments").rowData !== undefined) {
 				_this.rowData = {};
-				_this.oSuggestedBpData = [{
-						"BPNumber": "2400599987",
-						"BPRegion": "AB"
-					}, {
-						"BPNumber": "2400599988",
-						"BPRegion": "BC"
-					}, {
-						"BPNumber": "2400599989",
-						"BPRegion": "MB"
-					}, {
-						"BPNumber": "2400599990",
-						"BPRegion": "SK"
-					}, {
-						"BPNumber": "2400599991",
-						"BPRegion": "QC"
-					}, {
-						"BPNumber": "2400599992",
-						"BPRegion": "NB"
-					}, {
-						"BPNumber": "2400599993",
-						"BPRegion": "NL"
-					}, {
-						"BPNumber": "2400599994",
-						"BPRegion": "NS"
-					}, {
-						"BPNumber": "2400599995",
-						"BPRegion": "PE"
-					}, {
-						"BPNumber": "2400599996",
-						"BPRegion": "NT"
-					}, {
-						"BPNumber": "2400599997",
-						"BPRegion": "NU"
-					}, {
-						"BPNumber": "2400599998",
-						"BPRegion": "YT"
-					}, {
-						"BPNumber": "2400599999",
-						"BPRegion": "ON"
-					}];
 
 				// console.log("rowData", oEvent.getParameter("arguments").rowData);
 				_this.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
@@ -360,20 +360,20 @@ sap.ui.define([
 				_this.objPrice.TPMSPrice = "";
 				_this.objPrice.FittingKitPrice = "";
 				_this.objPrice.RHPPriceSum = "";
-				
-				console.log("oSuggestedBpData", _this.oSuggestedBpData);
+
+				console.log("oSuggestedBpData", oSuggestedBpData);
 				console.log("CustomerRegion", _this.userData.DealerData.Region);
 				var CustomerRegion = _this.userData.DealerData.Region;
 				_this.Division = "00"; //_this.userData.DealerData.Division;
 				_this.Doctype = "ZAF";
 				_this.SalesOrg = "7000";
 				_this.DistrChan = "10";
-				var BPFiltered = _this.oSuggestedBpData.filter(function(val){
+				var BPFiltered = oSuggestedBpData.filter(function (val) {
 					return val.BPRegion == CustomerRegion;
 				});
 				console.log("BPFiltered", BPFiltered);
 				_this.SoldtoParty = BPFiltered[0].BPNumber;
-				
+
 				var filterdata = "?$filter=Division eq '" + _this.Division + "' and DocType eq '" + _this.Doctype + "' and SalesOrg eq '" +
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty +
 					"' and Material eq '" + oMaterial + "'";
@@ -506,11 +506,16 @@ sap.ui.define([
 			if (oMat != _this.oBundle.getText("NoThankYou")) {
 				_this.getView().byId("id_RHPsQty").setValue(_this.getView().byId("id_tireQty").getValue());
 				var oMaterial = oMat;
-				_this.Division = _this.userData.DealerData.Division;
+				var CustomerRegion = _this.userData.DealerData.Region;
+				_this.Division = "00";
 				_this.Doctype = "ZAF";
 				_this.SalesOrg = "7000";
 				_this.DistrChan = "10";
-				_this.SoldtoParty = _this.userData.DealerData.BusinessPartner;
+				var BPFiltered = oSuggestedBpData.filter(function (val) {
+					return val.BPRegion == CustomerRegion;
+				});
+				console.log("BPFiltered", BPFiltered);
+				_this.SoldtoParty = BPFiltered[0].BPNumber;
 
 				var filterdata = "?$filter=Division eq '" + _this.Division + "' and DocType eq '" + _this.Doctype + "' and SalesOrg eq '" +
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty + "' and Material eq '" +
