@@ -133,6 +133,7 @@ sap.ui.define([
 						"$filter": "InternalApplicationID eq '" + this.oAppId + "' "
 					},
 					success: $.proxy(function (data) {
+						debugger;
 						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 						this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
 							"/ApplicationOwnerData/ECPPlanCode"));
@@ -304,6 +305,77 @@ sap.ui.define([
 							this.getView().getModel("oSetProperty").setProperty("/oAgrOwnerDMS", false);
 							this.getView().getModel("oSetProperty").setProperty("/backBtnP", true);
 						}
+						
+						//Read Busness Partner Data 
+						
+						
+						
+						
+						var oBusinessModelAgrOwnerSect = this.getModel("ApiBusinessModel");
+						this._oToken = oBusinessModelAgrOwnerSect.getHeaders()['x-csrf-token'];
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-Token': this._oToken
+							}
+						});
+						
+						var agrCustNumber =this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Customer");
+						oBusinessModelAgrOwnerSect.read("/A_BusinessPartner", {
+						urlParameters: {
+							"$filter": "BusinessPartner eq '" + agrCustNumber + "' "
+						},
+						success: $.proxy(function (bpdata) {
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/AgrOwnerNM", data.results[0]);
+						
+						
+						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/BPTYPE", bpdata.results[0].BusinessPartnerCategory);
+					
+						if (bpdata.results[0].BusinessPartnerCategory === "1") {
+							// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
+							// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
+
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].FirstName + " " + bpdata.results[
+								0].LastName);
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel("i18n").getResourceBundle()
+								.getText("Individual")); // added translation
+
+						} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].OrganizationBPName1);
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel("i18n").getResourceBundle()
+								.getText("Organization"));
+						}
+					
+						
+						}, this),
+						error: function () {}
+					});
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
+						
 
 					}, this),
 					error: function (err) {
@@ -685,7 +757,7 @@ sap.ui.define([
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "' "
 					},
 					success: $.proxy(function (data) {
-
+    
 						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
 						this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -1468,7 +1540,7 @@ sap.ui.define([
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber.results[
 									0].MobilePhoneNumber);
 							}
-							debugger;
+						
 						},
 						this),
 					error: function () {
@@ -1497,9 +1569,10 @@ sap.ui.define([
 
 						} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
 							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].OrganizationBPName1);
-							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", "Organization");
+							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle()
+								.getText("Organization"));
 						}
-						debugger;
+					
 					}, this),
 					error: function () {
 						console.log("Error");
