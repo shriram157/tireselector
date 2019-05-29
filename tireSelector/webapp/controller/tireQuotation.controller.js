@@ -362,8 +362,8 @@ sap.ui.define([
 				_this.objPrice.RHPPriceSum = "";
 				
 				console.log("oSuggestedBpData", _this.oSuggestedBpData);
-				console.log("CustomerRegion", _this.userData.DealerData.CustomerRegion);
-				var CustomerRegion = _this.userData.DealerData.CustomerRegion;
+				console.log("CustomerRegion", _this.userData.DealerData.Region);
+				var CustomerRegion = _this.userData.DealerData.Region;
 				_this.Division = "00"; //_this.userData.DealerData.Division;
 				_this.Doctype = "ZAF";
 				_this.SalesOrg = "7000";

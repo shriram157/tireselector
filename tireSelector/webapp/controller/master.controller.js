@@ -206,7 +206,7 @@ sap.ui.define([
 											_that.DealerData.SearchTerm2 = oDealerData.results[i].SearchTerm2;
 											_that.DealerData.CustomerRegion = oDealerData.results[i].Region;
 											console.log("_that.DealerData",_that.DealerData);
-											console.log("CustomerRegion",_that.DealerData.CustomerRegion);
+											// console.log("CustomerRegion",_that.DealerData.Region);
 											_that._oDealerModel.getData().BusinessPartnerData = oDealerData.results;
 											_that.DealerData.DealerCode = _that.dealerCode;
 											_that.DealerData.DealerName = _that.dealerName;
