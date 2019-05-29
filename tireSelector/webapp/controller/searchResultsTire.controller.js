@@ -332,9 +332,8 @@ sap.ui.define([
 				ModelDesc = "";
 				// filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
-					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '" + that.userDetails.DealerData.Division +
-					"' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
-					that.userDetails.DealerData.BusinessPartner + "' and LANGUAGE eq '" + localLang + "'&$format=json";
+					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '00' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
+					that.SoldtoParty + "' and LANGUAGE eq '" + localLang + "'&$format=json";
 			}
 			if (filterData !== undefined) {
 				sap.ui.core.BusyIndicator.show();
