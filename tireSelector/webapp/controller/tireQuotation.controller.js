@@ -261,7 +261,7 @@ sap.ui.define([
 			} else {
 				_this._oViewModel.setProperty("/enableProdMarkup", false);
 			}
-			
+
 			// END: uncomment below for cloud testing
 			_this.oGlobalBusyDialog = new sap.m.BusyDialog();
 
@@ -280,6 +280,46 @@ sap.ui.define([
 
 			if (oEvent.getParameter("arguments").rowData !== undefined) {
 				_this.rowData = {};
+				_this.BpData = [{
+						"BPNumber": "2400599987",
+						"BPRegion": "AB"
+					}, {
+						"BPNumber": "2400599988",
+						"BPRegion": "BC"
+					}, {
+						"BPNumber": "2400599989",
+						"BPRegion": "MB"
+					}, {
+						"BPNumber": "2400599990",
+						"BPRegion": "SK"
+					}, {
+						"BPNumber": "2400599991",
+						"BPRegion": "QC"
+					}, {
+						"BPNumber": "2400599992",
+						"BPRegion": "NB"
+					}, {
+						"BPNumber": "2400599993",
+						"BPRegion": "NL"
+					}, {
+						"BPNumber": "2400599994",
+						"BPRegion": "NS"
+					}, {
+						"BPNumber": "2400599995",
+						"BPRegion": "PE"
+					}, {
+						"BPNumber": "2400599996",
+						"BPRegion": "NT"
+					}, {
+						"BPNumber": "2400599997",
+						"BPRegion": "NU"
+					}, {
+						"BPNumber": "2400599998",
+						"BPRegion": "YT"
+					}, {
+						"BPNumber": "2400599999",
+						"BPRegion": "ON"
+					}];
 
 				// console.log("rowData", oEvent.getParameter("arguments").rowData);
 				_this.rowData = JSON.parse(oEvent.getParameter("arguments").rowData);
@@ -320,12 +360,16 @@ sap.ui.define([
 				_this.objPrice.TPMSPrice = "";
 				_this.objPrice.FittingKitPrice = "";
 				_this.objPrice.RHPPriceSum = "";
-
-				_this.Division = _this.userData.DealerData.Division;
+				
+				var CustomerRegion = _this.userData.DealerData.CustomerRegion;
+				_this.Division = "00"; //_this.userData.DealerData.Division;
 				_this.Doctype = "ZAF";
 				_this.SalesOrg = "7000";
 				_this.DistrChan = "10";
-				_this.SoldtoParty = _this.userData.DealerData.BusinessPartner;
+				var BPFiltered = _this.BpData.filter(function(val){
+					return val.BPRegion == CustomerRegion;
+				});
+				_this.SoldtoParty = BPFiltered[0].BPNumber;
 
 				var filterdata = "?$filter=Division eq '" + _this.Division + "' and DocType eq '" + _this.Doctype + "' and SalesOrg eq '" +
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty +
@@ -777,7 +821,7 @@ sap.ui.define([
 					"CustTel": ModelData.CustPhone,
 					"logo_info": sDivision,
 					"DlrComment": ModelData.dealerMessage,
-					"LANGUAGE" : localLang
+					"LANGUAGE": localLang
 				}
 			};
 
