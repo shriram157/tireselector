@@ -143,11 +143,12 @@
 												<Label text="{i18n>StartOdometer}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/ODMTR}"/>
 												<Label text="{i18n>ExpiryOdometer}"/>
-												<Text text="{LocalDataModel>/AgreementInfo/AgreementthruKMreading}"/>
-												<Label text="{i18n>RoadHazardExpiry}"/>
-												<Text text="{path:'LocalDataModel>/AgreementInfo/RoadHazardExpiryDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<!--<Text text="{LocalDataModel>/AgreementInfo/AgreementthruKMreading}"/>-->
+												<Label text="{i18n>RoadHazard}"/>
+												<!--<Text text="{path:'LocalDataModel>/AgreementInfo/RoadHazardExpiryDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>-->
+												<Text text="{LocalDataModel>/AgreementInfo/RoadHazardTranslates}"/>
 												<Label text="{i18n>BenefitsFlag}"/>
-												<Text text="{LocalDataModel>/AgreementInfo/BenefitsFlag}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/BenefitsFlagTranlates}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>

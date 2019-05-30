@@ -71,6 +71,26 @@ sap.ui.define([
 				success: $.proxy(function (data) {
 
 					this.getModel("LocalDataModel").setProperty("/AgreementInfo", data.results[0]);
+					
+					//Fixing translation for RoadHazard Yes/No
+					var TireHazard = this.getModel("LocalDataModel").getProperty("/AgreementInfo/RoadHazard")
+					if(TireHazard.toUpperCase() =="YES"){
+						
+						this.getModel("LocalDataModel").setProperty("/AgreementInfo/RoadHazardTranslates",this.getView().getModel("i18n").getResourceBundle().getText("Yes"));
+					}else{
+						this.getModel("LocalDataModel").setProperty("/AgreementInfo/RoadHazardTranslates",this.getView().getModel("i18n").getResourceBundle().getText("No"));
+					}
+					
+					var BenefitsFlag = this.getModel("LocalDataModel").getProperty("/AgreementInfo/BenefitsFlag")
+					if(BenefitsFlag.toUpperCase() =="YES"){
+						
+						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates",this.getView().getModel("i18n").getResourceBundle().getText("Yes"));
+					}else{
+						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates",this.getView().getModel("i18n").getResourceBundle().getText("No"));
+					}
+				
+					
+					
 					this.getView().byId("sAgreementEnq").bindElement("/zc_ecp_agreement(VIN='" + this.getModel("LocalDataModel").getProperty(
 						"/AgreementInfo/VIN") + "',AgreementNumber='" + oAgrNum + "')");
 					var oDealer = data.results[0].DealershipNumber;
@@ -266,12 +286,22 @@ sap.ui.define([
 						success: $.proxy(function (budata) {
 
 								this.getModel("LocalDataModel").setProperty("/BusinessPartnerData", budata.results[0]);
-								this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/EmailAddress", budata.results[0].to_EmailAddress.results[
+								
+								if(budata.results[0].to_EmailAddress.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/EmailAddress", budata.results[0].to_EmailAddress.results[
 									0].EmailAddress);
-								this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/PhoneNumber", budata.results[0].to_PhoneNumber.results[
+								}
+								
+								
+								if(budata.results[0].to_PhoneNumber.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/PhoneNumber", budata.results[0].to_PhoneNumber.results[
 									0].PhoneNumber);
-								this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", budata.results[0].to_FaxNumber.results[0]
+								}
+								
+								if(budata.results[0].to_FaxNumber.results.lentgh>0){
+									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", budata.results[0].to_FaxNumber.results[0]
 									.FaxNumber);
+								}
 							},
 							this),
 						error: function () {

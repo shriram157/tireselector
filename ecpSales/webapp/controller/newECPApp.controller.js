@@ -141,6 +141,30 @@ sap.ui.define([
 							"/ApplicationOwnerData/Odometer"));
 						this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
 							"/ApplicationOwnerData/AgreementType"));
+							
+							
+							
+							// ApplicationOwnerData_Name
+							
+							if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
+
+								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+											"i18n").getResourceBundle()
+										.getText("Organization"));
+									
+
+								} else  {
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
+										" " + data.results[0].CustomerLastName);
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+											"i18n").getResourceBundle()
+										.getText("Individual")); // added translation
+							}
+							
+							
+							
+							
 
 						oVehicleMaster.read("/zc_c_vehicle", {
 							urlParameters: {
@@ -307,40 +331,40 @@ sap.ui.define([
 
 						//Read Busness Partner Data 
 
-						var oBusinessModelAgrOwnerSect = this.getModel("ApiBusinessModel");
-						this._oToken = oBusinessModelAgrOwnerSect.getHeaders()['x-csrf-token'];
-						$.ajaxSetup({
-							headers: {
-								'X-CSRF-Token': this._oToken
-							}
-						});
+						// var oBusinessModelAgrOwnerSect = this.getModel("ApiBusinessModel");
+						// this._oToken = oBusinessModelAgrOwnerSect.getHeaders()['x-csrf-token'];
+						// $.ajaxSetup({
+						// 	headers: {
+						// 		'X-CSRF-Token': this._oToken
+						// 	}
+						// });
 
-						var agrCustNumber = this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Customer");
-						oBusinessModelAgrOwnerSect.read("/A_BusinessPartner", {
-							urlParameters: {
-								"$filter": "BusinessPartner eq '" + agrCustNumber + "' "
-							},
-							success: $.proxy(function (bpdata) {
-								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/BPTYPE", bpdata.results[0].BusinessPartnerCategory);
+						// var agrCustNumber = this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Customer");
+						// oBusinessModelAgrOwnerSect.read("/A_BusinessPartner", {
+						// 	urlParameters: {
+						// 		"$filter": "BusinessPartner eq '" + agrCustNumber + "' "
+						// 	},
+						// 	success: $.proxy(function (bpdata) {
+						// 		this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/BPTYPE", bpdata.results[0].BusinessPartnerCategory);
 
-								if (bpdata.results[0].BusinessPartnerCategory === "1") {
+						// 		if (bpdata.results[0].BusinessPartnerCategory === "1") {
 
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].FirstName +
-										" " + bpdata.results[
-											0].LastName);
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-											"i18n").getResourceBundle()
-										.getText("Individual")); // added translation
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].FirstName +
+						// 				" " + bpdata.results[
+						// 					0].LastName);
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+						// 					"i18n").getResourceBundle()
+						// 				.getText("Individual")); // added translation
 
-								} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].OrganizationBPName1);
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-											"i18n").getResourceBundle()
-										.getText("Organization"));
-								}
+						// 		} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].OrganizationBPName1);
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+						// 					"i18n").getResourceBundle()
+						// 				.getText("Organization"));
+						// 		}
 
-							}, this),
-						});
+						// 	}, this),
+						// });
 
 					}, this),
 					error: function (err) {
