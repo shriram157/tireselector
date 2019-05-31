@@ -780,7 +780,7 @@ sap.ui.define([
 					"DlrAddL2": this.userData.DealerData.BusinessPartnerAddress2,
 					"DlrAddL3": Region,
 					"DlrTel": ModelData3.PhoneNumber,
-					"VehicleDes": ModelData.VModelYear + " " + ModelData.VehicleSeriesDescp,
+					"VehicleDes": ModelData.ModelDesc,
 					"VinNum": ModelData.VIN,
 					"QuoteDate": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
 					"OfferExpDt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
