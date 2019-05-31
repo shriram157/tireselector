@@ -37,7 +37,8 @@ sap.ui.define([
 					"SearchTerm2": "42120",
 					"CurrentDate": new Date(),
 					"AddressID": "31298",
-					"Div": "TOY"
+					"Div": "TOY",
+					"Region":"ON"
 				};
 				_that._oDealerModel = new sap.ui.model.json.JSONModel();
 				var dealer = _that.DealerData.BusinessPartner;
@@ -970,7 +971,9 @@ sap.ui.define([
 												"ModelDesc_EN": item.ModelDesc_EN,
 												"Zzsuffix": item.Zzsuffix,
 												"ZtireSize": item.ZtireSize,
-												"ZrimType": item.ZrimType
+												"ZrimType": item.ZrimType,
+												"SuffixDesc":item.SuffixDesc,
+												"ModelYear":item.ModelYear
 											});
 										});
 										_that.SearchResultModel.setData(_that.searchresultObj);
@@ -1053,7 +1056,7 @@ sap.ui.define([
 			// 	"SearchResultModel").sPath);
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
-			oBj.ModelDesc = oPath.ModelDesc_EN;
+			oBj.ModelDesc = oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
 			console.log(oBj);
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)
