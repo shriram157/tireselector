@@ -1,7 +1,7 @@
 ID: tireSelector
 _schema-version: '3.1'
 description: Tire Selector consolidated app
-version: 1.1.10
+version: 1.0.0
 
 modules:
  - name: tireSelector_hdb
