@@ -2676,7 +2676,9 @@ sap.ui.define([
 			} else if (locationHref.search("qas-ecpsales") > -1) {
 				linkAddress = "https://b2b.qa.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			} else if (locationHref.search("uat-ecpsales") > -1) {
-				linkAddress = "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
+				// linkAddress = "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
+				//Changed ling to QA in UAT/ Based on Defect Id:13822,10002
+				linkAddress = "https://b2b.qa.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			} else if (locationHref.search("ecpsales.cfapps") > -1) {
 				linkAddress = "https://b2b.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			}
@@ -2687,6 +2689,9 @@ sap.ui.define([
 		performCIC: function () {
 
 			var dealerCode = this.getModel("LocalDataModel").getProperty("/currentIssueDealer");
+			if(!this.oECPData){
+				this.oECPData =this.getView().getModel("EcpFieldData").getData();
+			}
 			var vinNo = this.oECPData.ZecpVin;
 			var linkAddress = this.getCIClink(dealerCode, vinNo);
 			var iframe = new sap.ui.core.HTML();
