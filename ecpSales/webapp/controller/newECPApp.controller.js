@@ -2679,7 +2679,7 @@ sap.ui.define([
 				// linkAddress = "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 				//Changed ling to QA in UAT/ Based on Defect Id:13822,10002
 				linkAddress = "https://b2b.qa.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
-			} else if (locationHref.search("ecpsales.cfapps") > -1) {
+			} else if (locationHref.search("ecpsales.scp") > -1) {
 				linkAddress = "https://b2b.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			}
 
