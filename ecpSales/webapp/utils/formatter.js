@@ -88,5 +88,21 @@ zecp.utils.formatter = {
 		}
 		
 		// return cutNameF+CustNameL+custType+companyNm;
+	},
+	enquiryPageCnclFee:function(cancleFee,planCode){
+		//UTR3A 
+			var vehCnclFeeNAPlan = ["ULR1A", "ULR2A", "ULPZY", "ULP1D", "ULP2E", "UTR1A", "UTR1B", "UTUZH", "UTUWC"];
+			if(planCode){
+				if (vehCnclFeeNAPlan.indexOf(planCode.toUpperCase()) > -1) {
+					return "100";
+				}else{
+					return "N/A";
+					
+				}
+			
+			}else{
+				return cancleFee;
+			}
+			
 	}
 };

@@ -121,7 +121,10 @@
 												<Label text="{i18n>Deductible}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/Deductible}"/>
 												<Label text="{i18n>CancelFee}"/>
-												<Text text="{LocalDataModel>/AgreementInfo/CancelFee}"/>
+												<!--<Text text="{LocalDataModel>/AgreementInfo/CancelFee}"/>-->
+												<Text text="{ parts: [ 'LocalDataModel>/AgreementInfo/CancelFee', 'LocalDataModel>/AgreementInfo/PlanType' ], formatter : 'zecp.utils.formatter.enquiryPageCnclFee'}"/>
+												
+												
 												<Label text="{i18n>DeferredSurcharge}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/SurchargeAmount}"/>
 												<Label text="{i18n>VehicleSurcharge}"/>
@@ -141,7 +144,7 @@
 												<Text
 													text="{path: 'LocalDataModel>/AgreementInfo/AgreementthruDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<Label text="{i18n>StartOdometer}"/>
-												<Text text="{LocalDataModel>/AgreementInfo/ODMTR}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/StatusKMReading}"/>
 												<Label text="{i18n>ExpiryOdometer}"/>
 												<!--<Text text="{LocalDataModel>/AgreementInfo/AgreementthruKMreading}"/>-->
 												<Label text="{i18n>RoadHazard}"/>
