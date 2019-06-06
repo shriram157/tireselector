@@ -121,8 +121,8 @@
 												<Label text="{i18n>Deductible}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/Deductible}"/>
 												<Label text="{i18n>CancelFee}"/>
-												<!--<Text text="{LocalDataModel>/AgreementInfo/CancelFee}"/>-->
-												<Text text="{ parts: [ 'LocalDataModel>/AgreementInfo/CancelFee', 'LocalDataModel>/AgreementInfo/PlanType' ], formatter : 'zecp.utils.formatter.enquiryPageCnclFee'}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/CancelFee}"/>
+												<!--<Text text="{ parts: [ 'LocalDataModel>/AgreementInfo/PlanType' , 'LocalDataModel>/AgreementInfo/CancelFee'], formatter : 'zecp.utils.formatter.enquiryPageCnclFee'}"/>-->
 												
 												
 												<Label text="{i18n>DeferredSurcharge}"/>
@@ -167,18 +167,21 @@
 													text="{path : 'LocalDataModel>/AgreementInfo/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<Label text="{i18n>StatusReason}"/>
 												<Text text="{path:'LocalDataModel>/AgreementInfo/Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}"/>
-												<Label text="{i18n>Odometer}"/>
-												<Text text="{LocalDataModel>/AgreementInfo/ODMTR}"/>
+												<Label text="{i18n>OdometerNewLbl}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/AgreementthruKMreading}"/>
 												<Label text="{i18n>SaleDate}"/>
 												<Text
 													text="{path:'LocalDataModel>/AgreementInfo/AgreementSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
-												<Label text="{i18n>SubmissionDate}"/>
+												<Label text="{i18n>ExpDate}"/>
 												<Text
-													text="{path:'LocalDataModel>/AgreementInfo/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+													text="{path:'LocalDataModel>/AgreementInfo/AgreementthruDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<Label text="{i18n>IssueDealer}"/>
-												<Text text="{LocalDataModel>/AgreementInfo/DealershipNumber}"/>
+												<!--<Text text="{LocalDataModel>/AgreementInfo/DealershipNumber}"/>-->
+												<Text text="{path:'LocalDataModel>/AgreementInfo/DealershipNumber', formatter : 'zecp.utils.formatter.fnFormatDealerCode'}"/>
 												<Label text="{i18n>Dealership}"/>
-												<Text text="{LocalDataModel>/DealerData/BusinessPartnerName}"/>
+												<!--<Text text="{LocalDataModel>/DealerData/BusinessPartnerName}"/>-->
+												<Text text="{LocalDataModel>/DealerData/OrganizationBPName1}"/>
+												
 												<Label text="{i18n>PreOwnedCert}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/PROWNDCERT}"/>
 												<Label text="{i18n>TransferDate}"/>

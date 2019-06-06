@@ -89,11 +89,18 @@ zecp.utils.formatter = {
 		
 		// return cutNameF+CustNameL+custType+companyNm;
 	},
-	enquiryPageCnclFee:function(cancleFee,planCode){
+	enquiryPageCnclFee:function(planCode,cancleFee){
 		//UTR3A 
 			var vehCnclFeeNAPlan = ["ULR1A", "ULR2A", "ULPZY", "ULP1D", "ULP2E", "UTR1A", "UTR1B", "UTUZH", "UTUWC"];
-			if(planCode){
-				if (vehCnclFeeNAPlan.indexOf(planCode.toUpperCase()) > -1) {
+			//check lenth of plan code if >5 take only first 5
+			var pCode=planCode;
+			if(planCode && planCode.length>5){
+				pCode = planCode.substring(0, 5);
+			}
+		
+			
+			if(pCode){
+				if (vehCnclFeeNAPlan.indexOf(pCode.toUpperCase()) > -1) {
 					return "100";
 				}else{
 					return "N/A";
@@ -104,5 +111,12 @@ zecp.utils.formatter = {
 				return cancleFee;
 			}
 			
+	},
+	fnFormatDealerCode:function(dealerCode){
+		if(dealerCode){
+			return dealerCode.substring(dealerCode.length - 5, dealerCode.length);
+		}
+		return dealerCode;
+		
 	}
 };
