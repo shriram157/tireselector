@@ -5,12 +5,7 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("tireSelector.controller.reportError", {
-
-		/**
-		 * Called when a controller is instantiated and its View controls (if available) are already created.
-		 * Can be used to modify the View before it is displayed, to bind event handlers and do other one-time initialization.
-		 * @memberOf tireSelector.view.reportError
-		 */
+		
 		onInit: function () {
 			_scopeLocal.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/_scopeLocal.oI18nModelproperties"
@@ -33,6 +28,7 @@ sap.ui.define([
 				_scopeLocal.sCurrentLocale = 'EN';
 			}
 		},
+		
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");
@@ -44,37 +40,13 @@ sap.ui.define([
 				_scopeLocal.getRouter().navTo("reportError");
 			}
 		},
+		
 		NavBackToSearch: function () {
-			// _scopeLocal.oSelectJSONModel.refresh();
 			_scopeLocal.getRouter().navTo("master");
 		},
 
-		/**
-		 * Similar to onAfterRendering, but this hook is invoked before the controller's View is re-rendered
-		 * (NOT before the first rendering! onInit() is used for that one!).
-		 * @memberOf tireSelector.view.reportError
-		 */
-		//	onBeforeRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the View has been rendered (so its HTML is part of the document). Post-rendering manipulations of the HTML could be done here.
-		 * This hook is the same one that SAPUI5 controls get after being rendered.
-		 * @memberOf tireSelector.view.reportError
-		 */
-		//	onAfterRendering: function() {
-		//
-		//	},
-
-		/**
-		 * Called when the Controller is destroyed. Use this one to free resources and finalize activities.
-		 * @memberOf tireSelector.view.reportError
-		 */
 		onExit: function () {
 			_scopeLocal.destroy();
 		}
-
 	});
-
 });

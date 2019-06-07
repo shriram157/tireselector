@@ -42,7 +42,6 @@
 							<Label text=""/>
 							<Text text="{DealerModel>/DealerData/BusinessPartnerAddress1}{DealerModel>/DealerData/BusinessPartnerAddress2} - {DealerModel>/DealerData/Region}"/>
 							<Label text="{i18n>DealerTel}"/>
-							<!--<Input type="Number" value="{TireQuoteModel>/PhoneNumber}"/>-->
 							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"  liveChange="onUserDealerPhoneChange"/>
 							<Label text="{i18n>QuoteDate}" required="true"/>
 							<DatePicker id="id_QuoteDate" value="{TireQuoteModel>/CurrentDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy"
@@ -93,14 +92,10 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>Tires}"/>
-										<!--Tire Brand plus Model plus Tire category -->
 										<Text id="TireTxt1" text="{TireQuotationModel>/TireBrand} - {TireQuotationModel>/MatDesc} - {TireQuotationModel>/TireCategory}"/>
-										<!--Tire Size + Load Rating + Speed Rating -->
 										<Text id="TireTxt2" text="{TireQuotationModel>/TireSize} - {TireQuotationModel>/TireLoad} - {TireQuotationModel>/TireSpeed}"/>
-										<!--TCI Part Number -->
 										<Text id="TireTxt3" text="{TireQuotationModel>/Material}"/>
 									</VBox>
-									<!--"{TirePriceModel>/TiresPrice}" -->
 									<Input value="{path:'TireQuotationModel>/Retails', formatter: '.addDollarSign'}" id="id_tireUnitPrice" submit="getUnitPrice" change ="changeUnitPrice"/>
 									<Input value="" id="id_tireQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/TiresPrice', formatter: '.addDollarSign'}" id="id_tirePrice" editable="false"/>
@@ -173,8 +168,6 @@
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
 									<Input value="{path:'TirePriceModel>/otherItemPrice1'}" required="true" id="id_OtherItemPrice" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
@@ -185,8 +178,6 @@
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
 									<Input value="{path:'TirePriceModel>/otherItemPrice2'}" required="true" id="id_OtherItem2Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
@@ -197,8 +188,6 @@
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
 									<Input value="{path:'TirePriceModel>/otherItemPrice3'}" required="true" id="id_OtherItem3Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
@@ -209,8 +198,6 @@
 									</VBox>
 									<Label text=""/>
 									<Label text=""/>
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
 									<Input value="{path:'TirePriceModel>/otherItemPrice4'}" required="true" id="id_OtherItem4Price" liveChange="onValueChange"/>
 								</cells>
 							</ColumnListItem>
@@ -221,8 +208,6 @@
 									<VBox>
 										<Label text="{i18n>SubTotal}"/>
 									</VBox>
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
-									<!--<Input value="" visible="{TireQuoteModel>/enableInput}"/>-->
 									<Input value="{path:'TireQuotationModel>/subTotal', formatter: '.addDollarSign'}" id="id_subTotal" editable="false"/>
 								</cells>
 							</ColumnListItem>
@@ -283,15 +268,11 @@
 					<OverflowToolbar class="noBottomBorder">
 						<Label text="{i18n>Disclaimer}"/>
 						<ToolbarSpacer/>
-						<!--<Button text="{i18n>PrintQuote}" type="Emphasized" press="generatePDF"/>-->
 						<Button press="generatePDF" icon="sap-icon://print" data:targetId="idTireQuotation" type="Emphasized" text="{i18n>PrintQuote}"/>
 					</OverflowToolbar>
 				</content>
 				<footer>
-					<Toolbar>
-						<!--<ToolbarSpacer/>-->
-						
-					</Toolbar>
+					<Toolbar> </Toolbar>
 				</footer>
 			</Page>
 		</pages>

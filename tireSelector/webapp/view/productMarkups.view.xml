@@ -70,45 +70,9 @@
 								</t:Column>
 							</t:columns>
 						</t:Table>
-					<!--<Table id="ID_ProdMarkupsTable" inset="false" items="{ path: 'ProdMarkupModel>/results', sorter: { path: 'Manufacturer' } }" growing="false"-->
-					<!--	growingScrollToLoad="true">-->
-						<!--<Toolbar>-->
-						
-						<!--</Toolbar>-->
-					<!--	<columns>-->
-					<!--		<Column demandPopin="true">-->
-					<!--			<Text text="{i18n>Manufacturer}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Tablet" demandPopin="true" hAlign="Center">-->
-					<!--			<Text text="{i18n>Preview}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">-->
-					<!--			<Text text="{i18n>Live}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">-->
-					<!--			<Text text="{i18n>LastUpdated}"/>-->
-					<!--		</Column>-->
-					<!--		<Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">-->
-					<!--			<Text text="{i18n>LastUpdatedBy}"/>-->
-					<!--		</Column>-->
-					<!--	</columns>-->
-					<!--	<items>-->
-					<!--		<ColumnListItem vAlign="Middle">-->
-					<!--			<cells>-->
-					<!--				<Text text="{ProdMarkupModel>Manufacturer_code}"/>-->
-					<!--				<Input value="{ProdMarkupModel>Preview_Markup_Percentage}" change="updatePostdateLive"/>-->
-					<!--				<Text text="{ProdMarkupModel>Live_Markup_Percentage}"/>-->
-					<!--				<Text text="{ProdMarkupModel>Live_Last_Updated}"/>-->
-					<!--				<Text text="{ProdMarkupModel>Live_Last_Updated_By}"/>-->
-					<!--			</cells>-->
-					<!--		</ColumnListItem>-->
-					<!--	</items>-->
-					<!--</Table>-->
 				</content>
 				<footer>
-					<Toolbar>
-						<!--<ToolbarSpacer/>-->
-					</Toolbar>
+					<Toolbar> </Toolbar>
 				</footer>
 			</Page>
 		</pages>

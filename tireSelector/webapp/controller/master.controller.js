@@ -50,7 +50,6 @@ sap.ui.define([
 				sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
 			} else {
 				this.sPrefix = "";
-				// this.attributeUrl = "/userDetails/attributes";
 			}
 			// this.sPrefix = "";
 			_that.nodeJsUrl = this.sPrefix + "/node";
@@ -121,14 +120,12 @@ sap.ui.define([
 				url: "/appdata/whoAmI",
 				type: "GET",
 				success: function (userData) {
-					console.log("User Data", userData);
 					_that._oDealerModel = new sap.ui.model.json.JSONModel(userData);
 					_that.userData = userData;
 					//2400599999
 					if (_that.userData.userContext.userAttributes.DealerCode !== undefined) {
 						_that.dealerCode = _that.userData.userContext.userAttributes.DealerCode[0];
 					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
-						// NationalUser = "National";
 						_that.dealerCode = "2400599998";
 					} else {
 						_that.dealerCode = "";
@@ -136,7 +133,6 @@ sap.ui.define([
 					_that.dealerName = _that.userData.userContext.userInfo.logonName;
 					//Start: comment for local testing
 					var scopes = _that.userData.userContext.scopes;
-					console.log("scopes", scopes);
 					var accessAll = false,
 						accesslimited = false;
 
@@ -169,8 +165,6 @@ sap.ui.define([
 
 					_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString1, {
 						success: $.proxy(function (oDealerData) {
-							// if (oDealerData.results.length > 0) {
-							console.log("Business Partner Data", oDealerData.results);
 							for (var i = 0; i < oDealerData.results.length; i++) {
 								var address = oDealerData.results[i].to_BusinessPartnerAddress.results[0];
 								_that.DealerData.AddressID = address.AddressID;
@@ -191,14 +185,11 @@ sap.ui.define([
 								}
 								_that.oBusinessPartnerModel.read("/A_BusinessPartner" + queryString, {
 									success: $.proxy(function (oDealerData) {
-										console.log("Business Partner Data", oDealerData.results);
 										for (var i = 0; i < oDealerData.results.length; i++) {
 
 											var BpLength = oDealerData.results[i].BusinessPartner.length;
 
 											_that.getPhoneNumber(_that.DealerData.BusinessPartnerNo, _that.DealerData.AddressID);
-											// _that.DealerData.BusinessPartnerFullName = oDealerData.results[i].BusinessPartnerFullName;
-											// jQuery.sap.delayedCall(1000, _that, function () {
 											_that.DealerData.BusinessPartnerName = oDealerData.results[i].OrganizationBPName1;
 											_that.DealerData.BusinessPartnerName2 = oDealerData.results[i].OrganizationBPName2;
 											_that.DealerData.BusinessPartner = oDealerData.results[i].BusinessPartner;
@@ -206,8 +197,6 @@ sap.ui.define([
 											_that.DealerData.BusinessPartnerType = oDealerData.results[i].BusinessPartnerType;
 											_that.DealerData.SearchTerm2 = oDealerData.results[i].SearchTerm2;
 											_that.DealerData.CustomerRegion = oDealerData.results[i].Region;
-											console.log("_that.DealerData",_that.DealerData);
-											// console.log("CustomerRegion",_that.DealerData.Region);
 											_that._oDealerModel.getData().BusinessPartnerData = oDealerData.results;
 											_that.DealerData.DealerCode = _that.dealerCode;
 											_that.DealerData.DealerName = _that.dealerName;
@@ -215,7 +204,6 @@ sap.ui.define([
 											_that.DealerData.Division = sDivision;
 
 											_that._oDealerModel.getData().DealerData = _that.DealerData;
-											console.log("Dealer data fetched", _that._oDealerModel.getData().DealerData);
 											_that._oDealerModel.updateBindings(true);
 											_that._oDealerModel.refresh(true);
 
@@ -228,7 +216,6 @@ sap.ui.define([
 											_that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
 											_that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
 											sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-											console.log("XSO model data", _that.oXSOServiceModel);
 
 											_that.oXSOServiceModel.read("/DealerMarkUp", {
 												urlParameters: {
@@ -237,7 +224,6 @@ sap.ui.define([
 												},
 												success: $.proxy(function (oData) {
 													if (oData.results.length > 0) {
-														console.log("XSO data", oData);
 														_that.oProdMarkupModel.setData(oData);
 														_that.oProdMarkupModel.updateBindings(true);
 														_that.getView().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
@@ -273,52 +259,10 @@ sap.ui.define([
 				error: function (oError) {}
 			});
 
-			// _that.oXSOServiceModel = _that.getOwnerComponent().getModel("XsodataModel");
-			// _that.oProdMarkupModel = new sap.ui.model.json.JSONModel();
-			// sap.ui.getCore().setModel(_that.oProdMarkupModel, "ProdMarkupModel");
-			// console.log("XSO model data", _that.oXSOServiceModel);
-
-			// _that.oXSOServiceModel.read("/DealerMarkUp", {
-			// 	success: $.proxy(function (oData) {
-			// 		if (oData.results.length > 0) {
-			// 			console.log("XSO data", oData);
-			// 			_that.oProdMarkupModel.setData(oData);
-			// 			_that.oProdMarkupModel.updateBindings(true);
-			// 		} else {
-			// 			// sap.m.MessageBox.error(
-			// 			// 	"NO Data found for Product Markup"
-			// 			// );
-			// 		}
-			// 	}, _that),
-			// 	error: function (oError) {
-			// 		// sap.m.MessageBox.error(
-			// 		// 	"NO Data found for Product Markup"
-			// 		// );
-			// 	}
-			// });
-
 			_that.oGlobalJSONModel = new sap.ui.model.json.JSONModel();
 			_that.oGlobalJSONModel.setSizeLimit(5000);
-			_that.getView().setModel(
-				_that.oGlobalJSONModel, "GlobalJSONModel");
-			// _that.oGlobalJSONModel.setData();
+			_that.getView().setModel(_that.oGlobalJSONModel, "GlobalJSONModel");
 			_that.oGlobalJSONModel.updateBindings();
-
-			// if (window.location.search == "?language=fr") {
-			// 	_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-			// 		bundleUrl: "i18n/i18n.properties",
-			// 		bundleLocale: ("fr")
-			// 	});
-			// 	_that.getView().setModel(_that.oI18nModel, "i18n");
-			// 	_that.sCurrentLocale = 'FR';
-			// } else {
-			// 	_that.oI18nModel = new sap.ui.model.resource.ResourceModel({
-			// 		bundleUrl: "i18n/i18n.properties",
-			// 		bundleLocale: ("en")
-			// 	});
-			// 	_that.getView().setModel(_that.oI18nModel, "i18n");
-			// 	_that.sCurrentLocale = 'EN';
-			// }
 
 			_that.SearchOptionList = _that.getView().byId("searchOptionList");
 			_that.ForVehicleSearchOnly = _that.getView().byId("forVehicleSearchOnly");
@@ -363,13 +307,10 @@ sap.ui.define([
 		},
 
 		getPhoneNumber: function (dealer, addressID) {
-			//A_BusinessPartnerAddress(BusinessPartner='2400042120',AddressID='31298')/to_PhoneNumber
 			_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 			var queryString1 = "(BusinessPartner='" + dealer + "',AddressID='" + addressID + "')/to_PhoneNumber";
 			_that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
 				success: $.proxy(function (oDealerContactData) {
-					// if (oDealerData.results.length > 0) {
-					console.log("oDealerContactData", oDealerContactData.results);
 					_that.DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
 				}, _that),
 				error: function (oError) {
@@ -389,10 +330,8 @@ sap.ui.define([
 		},
 
 		handleVINSuggest: function (oEvent) {
-			// var oSource = oEvent.getSource();
 			sTerm = oEvent.getParameter("suggestValue");
 			_that._forhandleVINSuggesCallData(sTerm);
-			// var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
 			if (sTerm) {
 				aFilters.push(new Filter("VIN", sap.ui.model.FilterOperator.StartsWith, sTerm));
@@ -402,7 +341,6 @@ sap.ui.define([
 			_that._oViewModel.setProperty("/enableSearchBtn", true);
 		},
 		_forhandleVINSuggesCallData: function (sTerm) {
-			//Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN('01010101010101010')
 			_that.firstload = false;
 			$.ajax({
 				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + sTerm + "')&$top=200&$skip=" +
@@ -415,16 +353,13 @@ sap.ui.define([
 					} else {
 						count = 0;
 						_that.firstload = true;
-						console.log("_that.vindata", oDataResponse.d.results);
 						for (var n = 0; n < oDataResponse.d.results.length; n++) {
 							_that.oGlobalJSONModel.getData().vinData = oDataResponse.d.results;
 						}
 						_that.oGlobalJSONModel.updateBindings(true);
 						_that.oGlobalJSONModel.refresh(true);
 						if (_that.firstload == true) {
-							// _that._oViewModel.setProperty("/enableMore", true);
 							count = _that.oGlobalJSONModel.getData().vinData.length;
-							console.log("VIn count", count);
 							$.ajax({
 								url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + sTerm +
 									"')&$top=100&$skip=" +
@@ -432,7 +367,6 @@ sap.ui.define([
 								type: "GET",
 								dataType: "json",
 								success: function (oDataResponse2) {
-									console.log("Second load recurrance", oDataResponse.d.results.length);
 									if (oDataResponse.d.results.length <= 0) {
 										_that.firstload = false;
 										return;
@@ -448,7 +382,6 @@ sap.ui.define([
 									}
 								},
 								error: function (oError) {
-									console.log("oError", oError);
 									// MessageBox.error(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
 								}
 							});
@@ -457,7 +390,6 @@ sap.ui.define([
 				},
 				error: function (oError) {
 					_that.firstload = false;
-					console.log("oError", oError);
 					// MessageBox.error(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
 				}
 			});
@@ -465,7 +397,6 @@ sap.ui.define([
 
 		loadMoreVin: function () {
 			count = _that.oGlobalJSONModel.getData().vinData.length;
-			console.log("VIN count", count);
 			$.ajax({
 				url: _that.nodeJsUrl + "/Z_VEHICLE_MASTER_SRV/ZC_GET_VLCVEHICLE_VIN?$filter=startswith(VIN,'" + sTerm + "')&$top=100&$skip=" +
 					count + "",
@@ -473,15 +404,10 @@ sap.ui.define([
 				dataType: "json",
 				success: function (oDataResponse) {
 					if (oDataResponse.d.results.length <= 0) {
-						// _that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
-						// _that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("NoData"));
 					} else {
-						// _that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-						console.log("_that.vindata", oDataResponse.d.results);
 						for (var n = 0; n < oDataResponse.d.results.length; n++) {
 							_that.oGlobalJSONModel.getData().vinData.push(oDataResponse.d.results[n]);
 						}
-						// _that.oGlobalJSONModel.getData().vinData = oDataResponse.d.results;
 						_that.oGlobalJSONModel.updateBindings(true);
 						_that.oGlobalJSONModel.refresh(true);
 
@@ -494,7 +420,6 @@ sap.ui.define([
 					}
 				},
 				error: function (oError) {
-					console.log("oError", oError);
 					// MessageBox.error(_that.oI18nModel.getResourceBundle().getText("InvalidVIN"));
 				}
 			});
@@ -513,42 +438,6 @@ sap.ui.define([
 			oEvent.getSource().getBinding("suggestionItems").refresh(true);
 		},
 
-		// handleTireSizeValueHelp: function (oEvent) {
-		// 	var sInputValue = oEvent.getSource().getValue();
-		// 	this.inputId = oEvent.getSource().getId();
-		// 	// create value help dialog
-		// 	if (!this._valueHelpDialog) {
-		// 		this._valueHelpDialog = sap.ui.xmlfragment(
-		// 			"tireSelector.view.Fragment.tiresizeDialog", this
-		// 		);
-		// 		this.getView().addDependent(this._valueHelpDialog);
-		// 	}
-		// 	// create a filter for the binding
-		// 	this._valueHelpDialog.getBinding("items").filter([new Filter(
-		// 		"TIRE_SIZE",
-		// 		sap.ui.model.FilterOperator.Contains, sInputValue
-		// 	)]);
-
-		// 	// open value help dialog filtered by the input value
-		// 	this._valueHelpDialog.open(sInputValue);
-		// },
-		// _handleValueHelpSearch: function (evt) {
-		// 	var sValue = evt.getParameter("value");
-		// 	var oFilter = new Filter(
-		// 		"TIRE_SIZE",
-		// 		sap.ui.model.FilterOperator.Contains, sValue
-		// 	);
-		// 	evt.getSource().getBinding("items").filter([oFilter]);
-		// },
-
-		// _handleValueHelpClose: function (evt) {
-		// 	var oSelectedItem = evt.getParameter("selectedItem");
-		// 	if (oSelectedItem) {
-		// 		var Input = this.byId(this.inputId);
-		// 		Input.setValue(oSelectedItem.getTitle());
-		// 	}
-		// 	evt.getSource().getBinding("items").filter([]);
-		// },
 		/*Functions for searchOption value change*/
 		onVehicleChange: function () {
 			// _that.oGlobalBusyDialog = new sap.m.BusyDialog();
@@ -570,7 +459,6 @@ sap.ui.define([
 				success: function (oDataResponse2) {
 					sap.ui.core.BusyIndicator.hide();
 					if (oDataResponse2.d.results.length > 0) {
-						console.log("ZC_MODEL_DETAILS Data", oDataResponse2);
 						_that.oGlobalJSONModel.getData().modelDetailsData = oDataResponse2.d.results;
 						_that.oGlobalJSONModel.updateBindings(true);
 					} else {
@@ -584,7 +472,6 @@ sap.ui.define([
 			});
 
 			if (_that.ModelNodataFlag == true) {
-				// _that.oGlobalBusyDialog.close();
 				sap.ui.core.BusyIndicator.hide();
 				// sap.m.MessageBox.error(
 				// 	"NO Data found"
@@ -600,7 +487,6 @@ sap.ui.define([
 		},
 
 		onInputEntryVIN: function (oEntry) {
-			// console.log("Entry input change", oEntry);
 			if (!_that.SearchOptionVIN.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
@@ -608,7 +494,6 @@ sap.ui.define([
 			}
 		},
 		onInputEntryTireSize: function (oEntry) {
-			// console.log("Entry input change", oEntry);
 			if (!_that.SearchOptionTireSize.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
@@ -617,7 +502,6 @@ sap.ui.define([
 		},
 
 		onComboInputChange: function (oEntry) {
-			// console.log("Entry input live change", oEntry);
 			if (!_that.ModelSeriesCombo.getValue() || !_that.SearchOptionVehicle.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
@@ -626,7 +510,6 @@ sap.ui.define([
 		},
 
 		onLiveChangeVIN: function (oEntry) {
-			// console.log("oEntry input live change", oEntry);
 			if (!_that.SearchOptionVIN.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
@@ -634,7 +517,6 @@ sap.ui.define([
 			}
 		},
 		onLiveChangeTireSize: function (oEntry) {
-			// console.log("oEntry input live change", oEntry);
 			if (!_that.SearchOptionTireSize.getValue()) {
 				_that._oViewModel.setProperty("/enableSearchBtn", false);
 			} else {
@@ -679,8 +561,6 @@ sap.ui.define([
 					dataType: "json",
 					success: function (oDataResponse) {
 						if (oDataResponse.d.results.length > 0) {
-							console.log("Series All", oDataResponse.d.results);
-							// if (_that.DealerData.Div == "") {
 							_that.vehicleSeriesData = {
 								"results": []
 							};
@@ -692,27 +572,6 @@ sap.ui.define([
 									});
 								}
 							});
-							// } else {
-							// 	_that.vehicleSeriesData = {
-							// 		"results": []
-							// 	};
-							// 	for (var d = 0; d < oDataResponse.d.results.length; d++) {
-							// 		// _that.DealerData.Div ="TOY";
-							// 		if (_that.DealerData.Div == oDataResponse.d.results[d].Division) {
-							// 			//if(_that.DealerData.Attribute == "01"){ _that.DealerData.Div="TOY"} else if(_that.DealerData.Attribute == "02"){ _that.DealerData.Div="LEX"}
-							// 			// $.each(oDataResponse.d.results, function (i, item) {
-							// 			if (oDataResponse.d.results[d].ModelSeriesNo != "") {
-							// 				_that.vehicleSeriesData.results.push({
-							// 					"ModelSeriesNo": oDataResponse.d.results[d].ModelSeriesNo,
-							// 					"TCISeriesDescriptionEN": oDataResponse.d.results[d].TCISeriesDescriptionEN
-							// 				});
-							// 			}
-							// 			//});
-							// 		}
-							// 	}
-							// }
-
-							console.log("zc_mmfields Data", _that.vehicleSeriesData);
 							_that.oGlobalJSONModel.getData().vehicleSeriesData = _that.vehicleSeriesData.results;
 							_that.oGlobalJSONModel.updateBindings(true);
 						} else {
@@ -747,7 +606,6 @@ sap.ui.define([
 					type: "GET",
 					success: function (oDataResponse) {
 						if (oDataResponse.d.results.length > 0) {
-							console.log("Tire Size Data", oDataResponse.d.results);
 							for (var n = 0; n < oDataResponse.d.results.length; n++) {
 								oDataResponse.d.results[n].__metadata = "";
 							}
@@ -816,7 +674,6 @@ sap.ui.define([
 					_that.SearchOptionTireSize.setValue();
 					_that.SearchOptionTireSize.setValueState(sap.ui.core.ValueState.None);
 				}
-				// _that.SearchOptionList.setSelectedKey();
 				_that.SearchOptionList.setValueState(sap.ui.core.ValueState.None);
 			}
 			_that._oViewModel.setProperty("/enableSearchBtn", false);
@@ -831,7 +688,6 @@ sap.ui.define([
 
 			function validateVin(vin) {
 				var re = new RegExp("[a-zA-Z0-9]{9}[a-zA-Z0-9-]{2}[0-9]{6}");
-				// var re = new RegExp("^[A-HJ-NPR-Z\\d]{9}[\\dX][A-HJ-NPR-Z\\d]{2}\\d{6}$");
 				return vin.match(re);
 			}
 			var Searchkey = _that.SearchOptionList.getSelectedKey();
@@ -840,20 +696,14 @@ sap.ui.define([
 					"")) {
 				_that.SearchOptionList.setValueState(sap.ui.core.ValueState.Success);
 				if (Searchkey == _that.oI18nModel.getResourceBundle().getText("VehicleSeries")) {
-					// _that.oSelectJSONModel.getData().SearchOptionVal = " > [" + _that.SearchOptionVehicle.getSelectedKey() + "] [" +_that.ModelSeriesCombo.getSelectedKey() + "]";
-					// _that.oSelectJSONModel.updateBindings();
 					_that.SearchOptionVehicle.setValueState(sap.ui.core.ValueState.Success);
 					_that.ModelSeriesCombo.setValueState(sap.ui.core.ValueState.Success);
 					_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-					// _that.getRouter().navTo("searchResults");
 					_that.showResultsData();
 				} else {
 					if (validateVin(_that.SearchOptionVIN.getValue())) {
-						// _that.oSelectJSONModel.getData().SearchOptionVal = "";
 						_that.SearchOptionVIN.setValueState(sap.ui.core.ValueState.Success);
-						// _that.oSelectJSONModel.updateBindings();
 						_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-						// _that.getRouter().navTo("searchResults");
 						_that.showResultsData();
 					} else {
 						_that._oViewModel.setProperty("/enableTable", false);
@@ -865,12 +715,9 @@ sap.ui.define([
 				_that.SearchOptionList.setValueState(sap.ui.core.ValueState.Success);
 				_that.SearchOptionTireSize.setValueState(sap.ui.core.ValueState.Success);
 				_that.getView().byId("ID_ErrMsgStrip").setProperty("visible", false);
-				// _that.getRouter().navTo("searchResultsTireNoData");
 				_that.routeToTireSelect(oSearchResults);
 			} else {
 				_that._oViewModel.setProperty("/enableTable", false);
-				// _that.getView().byId("ID_ErrMsgStrip").setProperty("visible", true);
-				// _that.getView().byId("ID_ErrMsgStrip").setText(_that.oI18nModel.getResourceBundle().getText("ErrTSE00001"));
 				if (_that.SearchOptionList.getSelectedKey() == "") {
 					_that.SearchOptionList.setValueState(sap.ui.core.ValueState.Error);
 				} else if ((_that.SearchOptionTireSize.getValue() == "" || _that.SearchOptionVIN.getValue() == "") && (_that.SearchOptionTireSize
@@ -900,10 +747,8 @@ sap.ui.define([
 			for (var n = 0; n < oTireData.length; n++) {
 				if (_that.SearchOptionTireSize.getValue() == oTireData[n].TIRE_SIZE) {
 					oBj.TIRE_SIZE = oTireData[n].TIRE_SIZE.replace("/", "%2F");
-					// var oToBeRoutedTire = oTireData[n];
 				}
 			}
-			// oBj.oToBeRoutedTire = oToBeRoutedTire;
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTireNoData", {
 				tireData: JSON.stringify(oBj)
 			});
@@ -914,7 +759,6 @@ sap.ui.define([
 			_that.SearchResultModel = new sap.ui.model.json.JSONModel();
 			_that.getView().setModel(_that.SearchResultModel, "SearchResultModel");
 			var serviceURL;
-			// if (_that.SearchOptionVIN !== undefined && _that.SearchOptionVIN !== "") {
 			if (_that.SearchOptionVIN.getValue() != "" && _that.SearchOptionVIN.getValue() !== undefined) {
 				var serviceURL1 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_VLCVEHICLE?$filter=VHVIN eq '" + _that.SearchOptionVIN
 					.getValue() + "'";
@@ -926,7 +770,6 @@ sap.ui.define([
 						_that.vinResultdata = {
 							"results": []
 						};
-						console.log("VIN Search Result data", oData.d.results);
 						if (oData.d.results.length > 0) {
 							$.each(oData.d.results, function (i, item) {
 								_that.vinResultdata.results.push({
@@ -954,17 +797,13 @@ sap.ui.define([
 						for (v = 0; v < _that.vinResultdata.results.length; v++) {
 							var modelYearVal = _that.vinResultdata.results[v].modelYearVal;
 							var seriesVal = _that.vinResultdata.results[v].seriesVal;
-							//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'LS' and Zdivision eq 'LEX' and ModelYear eq '2018'
 							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal +
 								"' and Zdivision eq '" + DivUser + "' and ModelYear eq '" + modelYearVal + "' and LANGUAGE eq '"+localLang+"'";
-							// var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_FitmentSet?$filter=Zzmoyr eq '" + modelYearVal +
-							// 	"' and Model eq '" + modelVal + "' and Zzsuffix eq '" + suffixVal + "'&$format=json";
 							$.ajax({
 								dataType: "json",
 								url: serviceURL2,
 								type: "GET",
 								success: function (oSearchData) {
-									console.log("Search Result data", oSearchData.d.results);
 									if (oSearchData.d.results.length > 0) {
 										$.each(oSearchData.d.results, function (i, item) {
 											_that.searchresultObj.results.push({
@@ -1005,8 +844,6 @@ sap.ui.define([
 				var TCIseries = _that.SearchOptionVehicle.getSelectedKey();
 				var modelyear = _that.ModelSeriesCombo.getSelectedKey();
 				var flagNODATFOUND = false;
-				// _TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq 'SIE' and ModelYear eq '2018'
-				//Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and Zdivision eq '"+ DivUser +"' and ModelYear eq '" +	modelyear + "'";
 				serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and Zdivision eq '" +
 					DivUser + "' and ModelYear eq '" + modelyear + "' and LANGUAGE eq '"+localLang+"'";
 				$.ajax({
@@ -1014,9 +851,7 @@ sap.ui.define([
 					url: serviceURL,
 					type: "GET",
 					success: function (oData) {
-						console.log("Search Result data", oData.d.results);
 						if (oData.d.results.length > 0) {
-							console.log("response for Fitmentset", oData.d.results);
 							_that.SearchResultModel.setData(oData.d);
 							_that.SearchResultModel.updateBindings(true);
 							_that.SearchResultModel.refresh(true);
@@ -1043,7 +878,6 @@ sap.ui.define([
 		},
 
 		navToSelectTire: function (oEvtModel) {
-			// debugger;
 			var oBj = {};
 			oBj.SearchOptionVehicle = _that.SearchOptionVehicle.getSelectedKey();
 			if (_that.SearchOptionVehicle.getSelectedItem() != null) {
@@ -1051,15 +885,11 @@ sap.ui.define([
 			}
 			oBj.ModelSeriesCombo = _that.ModelSeriesCombo.getSelectedKey();
 			oBj.SearchOptionVIN = _that.SearchOptionVIN.getValue();
-			//ModelDesc_EN
-			// var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getSource().getBindingContext(
-			// 	"SearchResultModel").sPath);
+			
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
-			// Changed - June 8 as requested. 
-			// oBj.ModelDesc =  oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
-			oBj.ModelDesc = oPath.ModelYear + " " + oPath.SuffixDesc;
-			console.log(oBj);
+			oBj.ModelDesc = oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
+			
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)
 			});
@@ -1085,10 +915,6 @@ sap.ui.define([
 
 		/*Exit Function for refreshing/resetting view */
 		onExit: function () {
-			// if (_that.getView().byId("searchOptionList") != undefined) {
-			// 	_that.getView().byId("searchOptionList").setValue();
-			// 	_that.getView().byId("searchOptionLabel").setText();
-			// }
 			if (_that.getView().byId("VehicleSearchCombo") != undefined) {
 				_that.getView().byId("ModelSeriesCombo").setValue();
 				_that.getView().byId("VehicleSearchCombo").setValue();

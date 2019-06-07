@@ -10,12 +10,11 @@ sap.ui.define([
 ], function (Controller, JSONModel, ResourceModel, BaseController, History, Filter) {
 	"use strict";
 
-	//https://tci-dev-tireselector.cfapps.us10.hana.ondemand.com/tireSelector/xsodata/tireSelector_SRV.xsodata/$metadata?sap-language=EN
+
 	var sDivision, DivUser;
 	return BaseController.extend("tireSelector.controller.productMarkups", {
 		onInit: function () {
 			_localScope = this;
-			// _localScope.userloginCount = 1;
 
 			_localScope.getRouter().attachRouteMatched(function (oEvent) {
 				_localScope._oViewModel = new sap.ui.model.json.JSONModel({
@@ -84,7 +83,6 @@ sap.ui.define([
 				});
 
 				function callECCData() {
-					// "/ZC_Product_CategorySet?$filter=PRODH eq 'PARP05' and CHARAC eq 'TIRE_BRAND_NAME' and CLASS eq 'TIRE_INFORMATION' &$expand=CategToCharac&$format=json", {
 					_localScope.oProdMarkupModel.setData();
 					_localScope.oProdMarkupModel.updateBindings(true);
 					_localScope.oPriceServiceModel = _localScope.getOwnerComponent().getModel("PriceServiceModel");
@@ -93,12 +91,11 @@ sap.ui.define([
 							_localScope.tireBrandData = {
 								"results": []
 							};
-							// var data = oECCData.results[0].CategToCharac;
 							$.each(data.results, function (i, item) {
 								_localScope.tireBrandData.results.push({
 									"Dealer_code": _localScope.userData.DealerData.DealerCode,
 									"Dealer_Brand": _localScope.userData.DealerData.Division,
-									"Manufacturer_code": item.VALUE, //TIRE_BRAND_DESCP, //length is only 10 char for  
+									"Manufacturer_code": item.VALUE, 
 									"Preview_Markup_Percentage": "0.00",
 									"Live_Markup_Percentage": "0.00",
 									"Live_Last_Updated": _localScope.oDateFormat.format(new Date()),
@@ -111,24 +108,18 @@ sap.ui.define([
 							});
 							_localScope.oProdMarkupModel.setData(_localScope.tireBrandData);
 							_localScope.oProdMarkupModel.updateBindings(true);
-							console.log("ECC Manufaturer Data", _localScope.oProdMarkupModel);
 						}, _localScope),
-						error: function (oError) {
-							console.log("Error in fetching table", oError);
-						}
+						error: function (oError) {}
 					});
 				}
 
 				_localScope.oXSOServiceModel = _localScope.getOwnerComponent().getModel("XsodataModel");
-				// var filter= "?$filter=Dealer_code eq '"+ _localScope.userData.DealerData.DealerCode +"' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'";
-				// var query = "/DealerMarkUp?$filter=Dealer_code eq '" + _localScope.userData.DealerData.DealerCode + "'";
 				_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 					urlParameters: {
 						"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '" + _localScope.userData
 							.DealerData.Division + "'"
 					},
 					success: $.proxy(function (oData) {
-						console.log("XSO data", oData);
 						if (oData.results.length == 0) {
 							callECCData();
 						} else {
@@ -136,31 +127,9 @@ sap.ui.define([
 							_localScope.oProdMarkupModel.updateBindings(true);
 						}
 					}, _localScope),
-					error: function (oError) {
-						console.log("Error in fetching table", oError);
-					}
+					error: function (oError) {}
 				});
-
-				// _localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				// 	bundleUrl: "i18n/i18n.properties"
-				// });
-				// _localScope.getView().setModel(_localScope.oI18nModel, "i18n");
-
-				// if (window.location.search == "?language=fr") {
-				// 	_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				// 		bundleUrl: "i18n/i18n.properties",
-				// 		bundleLocale: ("fr")
-				// 	});
-				// 	_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
-				// 	_localScope.sCurrentLocale = 'FR';
-				// } else {
-				// 	_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
-				// 		bundleUrl: "i18n/i18n.properties",
-				// 		bundleLocale: ("en")
-				// 	});
-				// 	_localScope.getView().setModel(_localScope.oI18nModel, "i18n");
-				// 	_localScope.sCurrentLocale = 'EN';
-				// }
+			
 				_localScope.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties"
 				});
@@ -187,41 +156,15 @@ sap.ui.define([
 					this.getView().setModel(_localScope.oI18nModel, "i18n");
 					this.sCurrentLocale = 'EN';
 				}
-
 			}, _localScope);
-
 		},
 
 		onPressBreadCrumb: function (oEvtLink) {
 			_localScope.getRouter().navTo("master");
 		},
 
-		// onBrandSearch: function (oQuery) {
-		// 	_localScope.ProdMarkupsTable = _localScope.getView().byId("ID_ProdMarkupsTable");
-		// 	_localScope.oBinding = _localScope.ProdMarkupsTable.getBinding("items");
-		// 	var aFilters = [];
-		// 	var sQuery = oQuery.getSource().getValue();
-		// 	if (sQuery && sQuery.length > 0) {
-		// 		aFilters = new Filter([
-		// 			new Filter("Manufacturer_code", sap.ui.model.FilterOperator.Contains, sQuery)
-		// 		], false);
-		// 		_localScope.oBinding.filter(aFilters);
-		// 	} else {
-		// 		_localScope.oBinding.filter([]);
-		// 	}
-		// },
-
-		// updatePostdate:function(oUpdatedDate) {
-		// 	// var ModelData = _localScope.oProdMarkupModel.getData().results;
-		// 	oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated = new Date();
-		// 	_localScope.oProdMarkupModel.updateBindings(true);
-		// }, 
-
 		updatePostdateLive: function (oUpdatedDate) {
-			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated_update =
-				new Date();
-			console.log("updated date", _localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath())
-				.Live_Last_Updated_update);
+			_localScope.oProdMarkupModel.getProperty(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath()).Live_Last_Updated_update =new Date();
 			ChngedMarkupValsArr[parseInt(oUpdatedDate.getSource().getBindingContext("ProdMarkupModel").getPath().split('/')[2])] = true;
 			_localScope.oProdMarkupModel.updateBindings(true);
 			_localScope.oProdMarkupModel.refresh(true);
@@ -230,14 +173,14 @@ sap.ui.define([
 		updateXSALiveTable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
+			
 			var oModel = this.getOwnerComponent().getModel("XsodataModel");
-			// var Model2 = this.getOwnerComponent().getModel("XsodataModelPost");
 			var modelData = _localScope.oProdMarkupModel.getData().results;
 			_localScope.oBundle = _localScope.getView().getModel("i18n").getResourceBundle(); //_localScope.oBundle.getText("ErrNOData")
 
 			var postSuccessFlag = false;
 			var updateSuccessFlag = false;
-			for (var i = 0; i < modelData.length; i++) { //modelData.length
+			for (var i = 0; i < modelData.length; i++) { 
 				if (ChngedMarkupValsArr[i]) {
 					var sPrikamryKeyofObject = "Dealer_code='" + modelData[i].Dealer_code + "',Dealer_Brand='" + modelData[i].Dealer_Brand +
 						"',Manufacturer_code='" + modelData[i].Manufacturer_code + "'";
@@ -249,35 +192,24 @@ sap.ui.define([
 
 					if (dataFromModel) {
 						/*Fixes for Defect number 12147 start*/
-						//dataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 						dataFromModel.Live_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
 						/*Fixes for Defect number 12147 end*/
 						dataFromModel.Preview_Markup_Percentage = "0.00";
 						if (modelData[i].Live_Last_Updated_update !== "" && modelData[i].Live_Last_Updated_update != undefined) {
-							//dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
 							dataFromModel.Live_Last_Updated = new Date();
 							dataFromModel.IsLive = "Y";
 						} else {
-							//dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 							dataFromModel.Live_Last_Updated = new Date();
 							dataFromModel.IsLive = "";
 							if (dataFromModel.Live_Markup_Percentage == "0.00") {
 								dataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
 							}
 						}
-						// dataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
-						//dataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
-						//dataFromModel.User_First_Name = modelData[i].User_First_Name;
-						//dataFromModel.User_Last_Name = modelData[i].User_Last_Name;
-
 						dataFromModel.Live_Last_Updated_By = _localScope.userData.DealerData.BusinessPartnerName;
 						dataFromModel.User_First_Name = _localScope.userData.DealerData.BusinessPartnerName;
 						dataFromModel.User_Last_Name = _localScope.userData.DealerData.BusinessPartnerName2;
 
-						//dataFromModel.IsLive = "Y";
-
 						oModel.update(bindingContextPath, dataFromModel, null, function (oResponse) {
-							console.log("Post Response", oResponse);
 							updateSuccessFlag = true;
 						});
 						updateSuccessFlag = true;
@@ -288,7 +220,6 @@ sap.ui.define([
 						newDataFromModel.Manufacturer_code = modelData[i].Manufacturer_code;
 						if (modelData[i].Preview_Markup_Percentage != "0.00") {
 							/*Fixes for Defect number 12147 start*/
-							//newDataFromModel.Live_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 							newDataFromModel.Live_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
 							/*Fixes for Defect number 12147 end*/
 							newDataFromModel.Preview_Markup_Percentage = "0.00";
@@ -299,17 +230,13 @@ sap.ui.define([
 						}
 
 						if (modelData[i].Live_Last_Updated_update !== "") {
-							//newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated_update);
 							newDataFromModel.IsLive = "Y";
 						} else {
-							//newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
 							newDataFromModel.IsLive = "";
 						}
-						// newDataFromModel.Live_Last_Updated = new Date(modelData[i].Live_Last_Updated);
 						newDataFromModel.Live_Last_Updated_By = modelData[i].Live_Last_Updated_By;
 						newDataFromModel.User_First_Name = modelData[i].User_First_Name;
 						newDataFromModel.User_Last_Name = modelData[i].User_Last_Name;
-						//newDataFromModel.IsLive = "Y";
 						oModel.create("/DealerMarkUp", newDataFromModel, null, {
 							urlParameters: {
 								"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '" + _localScope.userData
@@ -354,8 +281,8 @@ sap.ui.define([
 		updateXSATable: function () {
 			// ========================================Insert Functionality using xsodata=================================Begin
 			// ================================================== Update Functionality - Begin =================================
+			
 			var oModel = this.getOwnerComponent().getModel("XsodataModel");
-			// var Model2 =this.getOwnerComponent().getModel("XsodataModelPost");
 			var modelData = _localScope.oProdMarkupModel.getData().results;
 			_localScope.oBundle = _localScope.getView().getModel("i18n").getResourceBundle(); //_localScope.oBundle.getText("ErrNOData")
 			var postSuccessFlag = false;
@@ -372,7 +299,6 @@ sap.ui.define([
 				if (dataFromModel) {
 					dataFromModel.Live_Markup_Percentage = modelData[i].Live_Markup_Percentage;
 					/*Fixes for Defect number 12147 start*/
-					//dataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					dataFromModel.Preview_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
 					/*Fixes for Defect number 12147 end*/
 					dataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
@@ -401,7 +327,6 @@ sap.ui.define([
 					newDataFromModel.Live_Markup_Percentage = "0.00";
 					newDataFromModel.tooltipText = _localScope.oI18nModel.getResourceBundle().getText("tooltip");
 					/*Fixes for Defect number 12147 start*/
-					//newDataFromModel.Preview_Markup_Percentage = modelData[i].Preview_Markup_Percentage;
 					newDataFromModel.Preview_Markup_Percentage = Number((parseFloat(modelData[i].Preview_Markup_Percentage)).toFixed(2));
 					/*Fixes for Defect number 12147 end*/
 					newDataFromModel.Live_Last_Updated = modelData[i].Live_Last_Updated;
@@ -447,9 +372,9 @@ sap.ui.define([
 			_localScope.callUpdatedProdMarkupTab();
 			// ===================================================== Update Functionality - End ===============================
 		},
+		
 		callUpdatedProdMarkupTab: function () {
 			_localScope.oXSOServiceModel = this.getOwnerComponent().getModel("XsodataModel");
-			console.log("XSO model data", _localScope.oXSOServiceModel);
 			var flagNoData = false;
 			_localScope.oXSOServiceModel.read("/DealerMarkUp", {
 				urlParameters: {
@@ -458,7 +383,6 @@ sap.ui.define([
 				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
-						console.log("XSO data", oData);
 						_localScope.oProdMarkupModel.setData(oData);
 						_localScope.oProdMarkupModel.updateBindings(true);
 					} else {
@@ -491,7 +415,6 @@ sap.ui.define([
 		BackToHistory: function () {
 			var oHistory = History.getInstance();
 			var sPreviousHash = oHistory.getPreviousHash();
-
 			if (sPreviousHash !== undefined) {
 				window.history.go(-1);
 			} else {

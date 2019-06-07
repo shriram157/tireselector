@@ -36,8 +36,8 @@
 					</OverflowToolbar>
 					<VBox id="idVBox" class="facetStyle">
 						<items>
-							<FacetFilter id="idFacetFilter" type="Simple" showPopoverOKButton="true" showPersonalization="true" showReset="true" reset="handleFacetFilterReset"
-								confirm="handleFacetConfirm" lists="{TireFitmentJSONModel>/Filters}">
+							<FacetFilter id="idFacetFilter" type="Simple" showPopoverOKButton="true" showPersonalization="true" showReset="true"
+								reset="handleFacetFilterReset" confirm="handleFacetConfirm" lists="{TireFitmentJSONModel>/Filters}">
 								<lists>
 									<FacetFilterList title="{TireFitmentJSONModel>type}" key="{TireFitmentJSONModel>text}" mode="MultiSelect"
 										items="{path:'TireFitmentJSONModel>values', templateShareable: 'true'}">
@@ -56,7 +56,6 @@
 								<Toolbar>
 									<CheckBox text="{i18n>ShowDealerNet}" select="onCheckPress" id="checkDealerNet"/>
 									<CheckBox text="{i18n>UsePreviewMarkup}" select="onCheckPreview" id="checkPreview"/>
-									<!--<Button text="Open View Settings Dialog in Filter view" press="handleOpenDialogFilter"/>-->
 								</Toolbar>
 							</t:toolbar>
 							<t:columns>
@@ -65,36 +64,42 @@
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Tire Fitment'}" app:colorClass="{TireFitmentJSONModel>colorCell}" wrapping="false" id="cell_Fitment">
 											<customData>
-										<core:CustomData key="colorClass" value="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Fitment}:${TireFitmentJSONModel>Utilisation de pneu}}" writeToDom="true"/>
+												<core:CustomData key="colorClass"
+													value="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Fitment}:${TireFitmentJSONModel>Utilisation de pneu}}"
+													writeToDom="true"/>
 											</customData>
 										</Text>
-										<!--{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Fitment}:${TireFitmentJSONModel>Utilisation de pneu}}-->
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>TireCategory}" filterProperty="{i18n>TireCategory}" width="7rem">
 									<Label text="{i18n>TireCategory}"/>
 									<t:template>
-										<!--{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Category}:${TireFitmentJSONModel>Catégorie de pneu}}-->
-										<Text class="TextPaddig" text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Category}:${TireFitmentJSONModel>Catégorie de pneu}}" wrapping="false"/>
+										<Text class="TextPaddig"
+											text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Category}:${TireFitmentJSONModel>Catégorie de pneu}}"
+											wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>TireBrandDesc}" filterProperty="{i18n>TireBrandDesc}" width="20rem">
 									<Label text="{i18n>TireBrandDesc}"/>
 									<t:template>
-										<!--{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Brand}:${TireFitmentJSONModel>Description de marque de pneu} }" -->
-										<Text class="TextPaddig" text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Brand}:${TireFitmentJSONModel>Marque de pneu}}-{TireFitmentJSONModel>MatDesc}-{TireFitmentJSONModel>TireSize}" wrapping="false"/>
+										<Text class="TextPaddig"
+											text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Brand}:${TireFitmentJSONModel>Marque de pneu}}-{TireFitmentJSONModel>MatDesc}-{TireFitmentJSONModel>TireSize}"
+											wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>LoadRating}" filterProperty="{i18n>LoadRating}" width="7rem">
 									<Label text="{i18n>LoadRating}"/>
 									<t:template>
-										<Text text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Load Rating}:${TireFitmentJSONModel>Indice de charge}}" class="TextPaddig" wrapping="false"/>
+										<Text text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Load Rating}:${TireFitmentJSONModel>Indice de charge}}"
+											class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>SpeedRating}" filterProperty="{i18n>SpeedRating}" width="7rem">
 									<Label text="{i18n>SpeedRating}"/>
 									<t:template>
-										<Text text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Speed Rating}:${TireFitmentJSONModel>Indice de vitesse}}" class="TextPaddig" wrapping="false"/>
+										<Text
+											text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Speed Rating}:${TireFitmentJSONModel>Indice de vitesse}}"
+											class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
 								<t:Column sortProperty="{i18n>TCIPartNumber}" filterProperty="{i18n>TCIPartNumber}">
@@ -103,13 +108,16 @@
 										<Text text="{TireFitmentJSONModel>Material}" class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="{i18n>TireMFGPartNo}" filterProperty="{i18n>TireMFGPartNo}" >
+								<t:Column sortProperty="{i18n>TireMFGPartNo}" filterProperty="{i18n>TireMFGPartNo}">
 									<Label text="{i18n>TireMFGPartNo}" wrapping="false"/>
 									<t:template>
-										<Text text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire MFG Part No}:${TireFitmentJSONModel>N° de pièce du fabricant de pneus}}" class="TextPaddig" wrapping="false"/>
+										<Text
+											text="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire MFG Part No}:${TireFitmentJSONModel>N° de pièce du fabricant de pneus}}"
+											class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_DealerNet" sortProperty="{i18n>DealerNet}" filterProperty="{i18n>DealerNet}" visible="{FitmentPageModel>/enableDealerNet}" width="6rem">
+								<t:Column id="ID_DealerNet" sortProperty="{i18n>DealerNet}" filterProperty="{i18n>DealerNet}" visible="{FitmentPageModel>/enableDealerNet}"
+									width="6rem">
 									<Label text="{i18n>DealerNet}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>DealerNet', formatter: '.decimalFormatter'}" class="TextPaddig" wrapping="false"/>
@@ -130,12 +138,9 @@
 							</t:columns>
 						</t:Table>
 					</HBox>
-					<!--<Button text="NextPage" type="Emphasized" press="onRowPress"/>-->
 				</content>
 				<footer>
-					<Toolbar>
-						<!--<ToolbarSpacer/>-->
-					</Toolbar>
+					<Toolbar> </Toolbar>
 				</footer>
 			</Page>
 		</pages>

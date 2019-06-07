@@ -22,11 +22,10 @@ sap.ui.define([
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
-				this.sPrefix = "/tireSelector-dest"; //ecpSales_node_secured
+				this.sPrefix = "/tireSelector-dest"; 
 				that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			} else {
 				this.sPrefix = "";
-				// this.attributeUrl = "/userDetails/attributes";
 			}
 			// this.sPrefix = "";
 			that.nodeJsUrl = this.sPrefix + "/node";
@@ -88,11 +87,10 @@ sap.ui.define([
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
-				this.sPrefix = "/tireSelector-dest"; //ecpSales_node_secured
+				this.sPrefix = "/tireSelector-dest"; 
 				that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			} else {
 				this.sPrefix = "";
-				// this.attributeUrl = "/userDetails/attributes";
 			}
 			// this.sPrefix = "";
 			that.nodeJsUrl = this.sPrefix + "/node";
@@ -162,15 +160,12 @@ sap.ui.define([
 			that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			that.userDetails = sap.ui.getCore().getModel("DealerModel").getData();
 
-			console.log("XSO model data", that.oXSOServiceModel);
-			//"$filter": "Dealer_code eq" + "'" + (_localScope.userData.DealerData.DealerCode) + "' and Dealer_Brand eq '"+ _localScope.userData.DealerData.Division +"'"
 			that.oXSOServiceModel.read("/DealerMarkUp", {
 				urlParameters: {
 					"$filter": "Dealer_code eq" + "'" + (that.userDetails.DealerData.DealerCode) + "' and Dealer_Brand eq '" + sDivision + "'"
 				},
 				success: $.proxy(function (oData) {
 					if (oData.results.length > 0) {
-						console.log("XSO data", oData);
 						that.oProdMarkupModel.setData(oData);
 						that.oProdMarkupModel.updateBindings(true);
 						that.getView().setModel(that.oProdMarkupModel, "ProdMarkupModel");
@@ -209,8 +204,6 @@ sap.ui.define([
 			jQuery.sap.delayedCall(5000, that, function () {
 				that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
 					success: $.proxy(function (oDealerContactData) {
-						// if (oDealerData.results.length > 0) {
-						console.log("oDealerContactData", oDealerContactData.results);
 						sap.ushell.components.dealerPhoneNumber = oDealerContactData.results[0].PhoneNumber;
 						sap.ui.getCore().getModel("DealerModel").getData().DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
 						sap.ui.getCore().getModel("DealerModel").updateBindings(true);
@@ -224,9 +217,7 @@ sap.ui.define([
 			});
 
 			//START: uncomment below for cloud testing
-
 			var scopes = that.userDetails.userContext.scopes;
-			console.log("scopes", scopes);
 			var accessAll = false,
 				accesslimited = false;
 
@@ -252,10 +243,6 @@ sap.ui.define([
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
 
-			// if (oEvent.getParameter("arguments").tireData == "selectDifferentTire") {
-			// 	that.oTireFitmentJSONModel.setData(true);
-			// 	that.oTireFitmentJSONModel.updateBindings(true);
-			// } else {
 			that.oPriceModel = new sap.ui.model.json.JSONModel();
 			that.oPriceServiceModel = that.getOwnerComponent().getModel("PriceServiceModel");
 
@@ -305,19 +292,15 @@ sap.ui.define([
 			var BPFiltered = that.oSuggestedBpData.filter(function (val) {
 				return val.BPRegion == CustomerRegion;
 			});
-			console.log("BPFiltered", BPFiltered);
 			that.SoldtoParty = BPFiltered[0].BPNumber;
 
 			if (oEvent.getParameter("arguments").modelData !== undefined) {
-				//VIN, VehicleSeries, VModelYear
 				that.oModelData = JSON.parse(oEvent.getParameter("arguments").modelData);
-				console.log(that.oModelData);
 				VIN = that.oModelData.SearchOptionVIN;
 				VModelYear = that.oModelData.ModelSeriesCombo;
 				VehicleSeries = that.oModelData.SearchOptionVehicle;
 				VehicleSeriesDescp = that.oModelData.SeriesDescp;
 				ModelDesc = that.oModelData.ModelDesc;
-				// filterData = "?$filter=ZtireSize eq '" + that.oModelData.ZtireSize + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oModelData.ZtireSize +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '00' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
 					that.SoldtoParty + "' and LANGUAGE eq '" + localLang + "'&$format=json";
@@ -330,18 +313,14 @@ sap.ui.define([
 				VehicleSeries = that.oTireData.SearchOptionVehicle;
 				VehicleSeriesDescp = that.oTireData.SeriesDescp;
 				ModelDesc = "";
-				// filterData = "?$filter=ZtireSize eq '" + that.oTireData.TIRE_SIZE + "'&$expand=FitmentToCharac";
 				filterData = "?$filter=TIRE_SIZE eq '" + that.oTireData.TIRE_SIZE +
 					"' and CLASS eq 'TIRE_INFORMATION' and Division eq '00' and DocType eq 'ZAF' and SalesOrg eq '7000' and DistrChan eq '10' and SoldtoParty eq '" +
 					that.SoldtoParty + "' and LANGUAGE eq '" + localLang + "'&$format=json";
 			}
 			if (filterData !== undefined) {
 				sap.ui.core.BusyIndicator.show();
-				// that.oFitmentModel = new sap.ui.model.odata.ODataModel(this.nodeJsUrl + "/Z_TIRESELECTOR_SRV", true);
 				that.oFitmentModel = that.getOwnerComponent().getModel("FitmentModel");
 				that.tempModel = new sap.ui.model.json.JSONModel();
-
-				// that.oGlobalBusyDialog = new sap.m.BusyDialog();
 
 				that.oFitmentModel.read("/ZC_Characteristic_InfoSet" + filterData, {
 					success: $.proxy(function (oData) {
@@ -351,7 +330,6 @@ sap.ui.define([
 							sap.ushell.components.FacetFilters.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 							that.oTireFitmentJSONModel.updateBindings(true);
 							if (oData.results.length > 0) {
-								console.log("Initial load Data", oData);
 								that.tempModel.setData(oData);
 								that.tempModel.updateBindings(true);
 								that.oBundle = that.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("ErrNOData")
@@ -372,7 +350,6 @@ sap.ui.define([
 									);
 								} else {
 									jQuery.sap.delayedCall(0, that, function () {
-										console.log("Initial load is completed");
 										that.oBundle = that.getView().getModel("i18n").getResourceBundle();
 										if (that.tempModel.getData().results !== undefined) {
 											for (var n = 0; n < that.tempModel.getData().results.length; n++) {
@@ -386,7 +363,6 @@ sap.ui.define([
 												if (that.tempModel.getData().results[n].TIRE_MFG_PART_NUM == "?") {
 													that.tempModel.getData().results[n].TIRE_MFG_PART_NUM = "";
 												}
-												//TIRE_MFG_PART_NUM
 												if (that.fromTireCenter != true) {
 													if (that.tempModel.getData().results[n].TIRE_FITMENT == "PF") {
 														that.tempModel.getData().results[n].TIRE_FITMENT = that.oBundle.getText("Perfect");
@@ -423,7 +399,6 @@ sap.ui.define([
 													if (that.oProdMarkupModel.getData().results.length > 0) {
 														that.oProdMarkupModel = sap.ui.getCore().getModel("ProdMarkupModel");
 														for (var k = 0; k < that.oProdMarkupModel.getData().results.length; k++) {
-															// if (that.oProdMarkupModel.getData().results[k].IsLive == "Y") {
 															if (temp.TIRE_BRAND_NAME == that.oProdMarkupModel.getData().results[k].Manufacturer_code) {
 																if (that.oProdMarkupModel.getData().results[k].Live_Markup_Percentage != undefined) {
 																	temp.Live_Markup_Percentage = that.oProdMarkupModel.getData().results[k].Live_Markup_Percentage;
@@ -433,8 +408,6 @@ sap.ui.define([
 																	that.tempModel.updateBindings(true);
 																}
 															}
-															// }
-															// if (that.ProductMarkupModel.getData().results[k].IsLive == "") {
 															if (temp.TIRE_BRAND_NAME == that.oProdMarkupModel.getData().results[k].Manufacturer_code) {
 																if (that.oProdMarkupModel.getData().results[k].Preview_Markup_Percentage != undefined) {
 																	temp.Preview_Markup_Percentage = that.oProdMarkupModel.getData().results[k].Preview_Markup_Percentage;
@@ -444,7 +417,6 @@ sap.ui.define([
 																	that.tempModel.updateBindings(true);
 																}
 															}
-															// }
 														}
 													} else {
 														temp.Live_Markup_Percentage = 0;
@@ -452,13 +424,11 @@ sap.ui.define([
 														that.tempModel.updateBindings(true);
 													}
 												}
-												console.log("Live/preview values", that.tempModel);
 											}
 										}
 									});
 
 									that.msgFlag = false;
-
 									that.FitmentToCharac = {
 										"results": []
 									};
@@ -501,7 +471,6 @@ sap.ui.define([
 											});
 
 											var tempTireData = that.tempModel.getData().results[l];
-											console.log("calculating Retails", that.tempModel.getData().results[l]);
 											if (tempTireData.DealerNet !== null && tempTireData.DealerNet != undefined) {
 												if (tempTireData.Live_Markup_Percentage == undefined) {
 													tempTireData.Live_Markup_Percentage = 0;
@@ -520,7 +489,6 @@ sap.ui.define([
 												}
 												that.tempModel.getData().results[l].Profit = (Number(tempTireData.Retails)) - (Number(tempTireData.DealerNet));
 												that.tempModel.updateBindings(true);
-												console.log("Updated retails value", that.tempModel);
 											} else {
 												that.msgFlag = true;
 												that.tempModel.getData().results[l].Profit = 0;
@@ -539,7 +507,6 @@ sap.ui.define([
 											array.values = new Array();
 											for (var key in obj)
 												array.values.push(obj[key]);
-											console.log("filter", array);
 											return array;
 										}
 										// Sort Filter 
@@ -573,12 +540,8 @@ sap.ui.define([
 										that.Filters[3] = removeDuplicates(that.Filters[3]);
 
 										that.Filters[4] = removeDuplicates(that.Filters[4]);
-										that.oBundle = that.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("TireFitment")
+										that.oBundle = that.getView().getModel("i18n").getResourceBundle(); 
 										$.each(that.tempModel.getData().results, function (i, item) {
-											// var jsonOBJ;
-											// jsonOBJ[that.oBundle.getText("RimType")] = item.TIRE_FITMENT;
-											// console.log(jsonOBJ);
-											// if (localLang == "F") {
 											that.FitmentToCharac.results.push({
 												"Tire Fitment": item.TIRE_FITMENT,
 												"Utilisation de pneu": item.TIRE_FITMENT,
@@ -616,37 +579,7 @@ sap.ui.define([
 												"VModelYear": VModelYear,
 												"VehicleSeriesDescp": VehicleSeriesDescp
 											});
-											// } else {
-											// 	that.FitmentToCharac.results.push({
-											// 		"Tire Fitment": item.TIRE_FITMENT,
-											// 		"TireFitment": item.TIRE_FITMENT,
-											// 		"Tire Speed Rating": item.TIRE_SPEED_RATING,
-											// 		"Tire Load Rating": item.TIRE_LOAD_RATING,
-											// 		"TireSpeed": item.TIRE_SPEED_RATING,
-											// 		"TireLoad": item.TIRE_LOAD_RATING,
-											// 		"Tire Brand": item.TIRE_BRAND_NAME,
-											// 		"TireBrand": item.TIRE_BRAND_NAME,
-											// 		"Tire Category": item.TIRE_CATEGORY,
-											// 		"TireCategory": item.TIRE_CATEGORY,
-											// 		"Tire Brand ID": item.TIRE_BRAND_ID,
-											// 		"TireBrandID": item.TIRE_BRAND_ID,
-											// 		"Material": item.MATERIAL,
-											// 		"Tire MFG Part No": item.TIRE_MFG_PART_NUM,
-											// 		"TireMFGPartNo": item.TIRE_MFG_PART_NUM,
-											// 		"MSRP": item.MSRP,
-											// 		"DealerNet": item.DealerNet,
-											// 		"Retails": item.Retails,
-											// 		"Profit": item.Profit,
-											// 		"TireSize": item.TIRE_SIZE,
-											// 		"Model": item.Model,
-											// 		"Preview_Markup_Percentage": item.Preview_Markup_Percentage,
-											// 		"Live_Markup_Percentage": item.Live_Markup_Percentage,
-											// 		"MatDesc": item.MatDesc,
-											// 		"localLang": localLang
-											// 	});
-											// }
 										});
-										// debugger;
 										that.oTireFitmentJSONModel.setData(that.FitmentToCharac);
 										that.oTireFitmentJSONModel.getData().Filters = [];
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[0]);
@@ -655,7 +588,6 @@ sap.ui.define([
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[3]);
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[4]);
 										that.oTireFitmentJSONModel.updateBindings(true);
-										console.log("TireFitmentJSONModel Data", that.oTireFitmentJSONModel.getData());
 
 										that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.oTable.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
@@ -663,9 +595,7 @@ sap.ui.define([
 										sap.ui.core.BusyIndicator.hide();
 										that.oTireFitmentJSONModel.refresh(true);
 										that.oTireFitmentJSONModel.updateBindings(true);
-										// });
 									}, 2000);
-									// }
 
 									if (that.msgFlag == true) {
 										sap.ui.core.BusyIndicator.hide();
@@ -722,13 +652,10 @@ sap.ui.define([
 		colorFormatter: function (oFitval) {
 			that.oBundle = that.getView().getModel("i18n").getResourceBundle();
 			if (oFitval == that.oBundle.getText("Perfect")) {
-				// this.addStyleClass("colorPerfect");//green
 				this.getView().byId("cell_Fitment").addStyleClass("colorPerfect"); //
 			} else if (oFitval == that.oBundle.getText("Acceptable")) {
-				// this.addStyleClass("colorAcceptable");//yellow
 				this.getView().byId("cell_Fitment").addStyleClass("colorAcceptable"); //yellow
 			} else if (oFitval == that.oBundle.getText("Disconitnued")) {
-				// this.addSty/leClass("colorDisconitnued");//magenta
 				this.getView().byId("cell_Fitment").addStyleClass("colorDisconitnued"); //magenta
 			}
 			return oFitval;
@@ -764,14 +691,12 @@ sap.ui.define([
 									oData[l].Retails = Number(oData[l].DealerNet) + (Number(oData[l].DealerNet) * (Number(oData[l].Preview_Markup_Percentage) /
 										100));
 									oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
-
 									that.oTireFitmentJSONModel.refresh(true);
 									that.oTireFitmentJSONModel.updateBindings(true);
 									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
 								} else {
 									oData[l].Retails = Number(oData[l].MSRP);
 									oData[l].Profit = Number(oData[l].Retails) - Number(oData[l].DealerNet);
-
 									that.oTireFitmentJSONModel.refresh(true);
 									that.oTireFitmentJSONModel.updateBindings(true);
 									sap.ushell.components.oTable.getModel("TireFitmentJSONModel").updateBindings(true);
@@ -827,7 +752,6 @@ sap.ui.define([
 		},
 
 		onPressBreadCrumb: function (oEvtLink) {
-			// var oSelectedLink = oEvtLink.getSource().getProperty("text");
 			sap.ui.core.UIComponent.getRouterFor(that).navTo("master");
 		},
 
@@ -877,16 +801,12 @@ sap.ui.define([
 			 *
 			 *
 			 * START */
-
 			oEvent.bCancelBubble = true;
 			oEvent.preventDefault();
 			oEvent.bPreventDefault = true;
-
 			/*DEFECT ID : 10207
 			END
 			*/
-
-			// MessageToast.show("confirm event fired");
 		},
 
 		_filterModel: function (oFacetFilter) {
@@ -910,8 +830,6 @@ sap.ui.define([
 		//Facet Filter logic ends here
 
 		onRowPress: function (oRowEvt) {
-			// that.oGlobalBusyDialog.destroy();
-			// debugger;
 			var oPath = {};
 			var Data = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.getParameters().rowBindingContext.sPath);
 

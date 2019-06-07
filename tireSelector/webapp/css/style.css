@@ -10,7 +10,6 @@
 .tireSelector .sapMLabelRequired:before {    display:none !important;}
 .tireSelector .sapMLabelRequired:after {content: "*" !important;color: #c14646;font-size: 1.25rem;font-weight: bold;line-height: 1.25rem; position: relative !important;    top: 0.15rem;}
 .tireSelector .sapMPage> section { background :#fff;}
-/*.form_TireQuotation {width:70%;}*/
 .form_TireQuotation h5.sapUiFormTitle { height: 0 !important}
 .styleFontSize {font-size: 18px;}
 .customToolBarStyle {	height: 4rem;}
@@ -21,7 +20,6 @@
 .formBtnStyle {float:right; clear:both; padding-top:1.5rem !important;}
 .styleSearchForm .sapUiRespGridBreak.sapUiRespGridSpanL4.sapUiRespGridSpanM4.sapUiRespGridSpanS12.sapUiRespGridSpanXL4 { width: auto;}
 @media only screen and (max-width: 600px) {
-/*.styleColumns.alignRight .sapMListTblCell { text-align: left !important;}*/
 .styleSearchForm .sapUiRespGridBreak.sapUiRespGridSpanL4.sapUiRespGridSpanM4.sapUiRespGridSpanS12.sapUiRespGridSpanXL4 { width: 100%;}
 }
 .styleSearchForm .sapMFlexItem,.styleSearchForm .sapMFlexItem .sapMComboBoxTextField {width:100%;}
