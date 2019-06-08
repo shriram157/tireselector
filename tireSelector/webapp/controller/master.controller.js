@@ -1057,8 +1057,8 @@ sap.ui.define([
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
 			// Changed - June 8 as requested. 
-			// oBj.ModelDesc = oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
-			oBj.ModelDesc = oPath.SuffixDesc;
+			// oBj.ModelDesc =  oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
+			oBj.ModelDesc = oPath.ModelYear + " " + oPath.SuffixDesc;
 			console.log(oBj);
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)
