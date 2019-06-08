@@ -1056,7 +1056,9 @@ sap.ui.define([
 			// 	"SearchResultModel").sPath);
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
-			oBj.ModelDesc = oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
+			// Changed - June 8 as requested. 
+			// oBj.ModelDesc = oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
+			oBj.ModelDesc = oPath.SuffixDesc;
 			console.log(oBj);
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)

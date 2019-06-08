@@ -105,7 +105,7 @@
 							<t:Column>
 								<Label text="{i18n>Model}"/>
 								<t:template>
-									<Text text="{SearchResultModel>ModelDesc_EN} {SearchResultModel>SuffixDesc}"/>
+									<Text text="{SearchResultModel>SuffixDesc}"/>
 								</t:template>
 							</t:Column>
 							<t:Column>
