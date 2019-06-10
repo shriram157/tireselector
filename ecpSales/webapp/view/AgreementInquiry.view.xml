@@ -185,9 +185,9 @@
 												<Label text="{i18n>PreOwnedCert}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/PROWNDCERT}"/>
 												<Label text="{i18n>TransferDate}"/>
-												<Text text=""/>
+												<Text text="{path:'LocalDataModel>/AgreementInfo/TrfnrDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<Label text="{i18n>TransferOdometer}"/>
-												<Text text=" "/>
+												<Text text="{LocalDataModel>/AgreementInfo/TrfnrOdometer}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>

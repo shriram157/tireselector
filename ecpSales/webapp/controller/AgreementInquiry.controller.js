@@ -86,7 +86,7 @@ sap.ui.define([
 					}
 
 					var BenefitsFlag = this.getModel("LocalDataModel").getProperty("/AgreementInfo/BenefitsFlag")
-					if (BenefitsFlag.toUpperCase() == "YES") {
+					if (BenefitsFlag.toUpperCase() == "YES" || BenefitsFlag.toUpperCase() == "Y") {
 
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("Yes"));
