@@ -90,9 +90,11 @@ sap.ui.define([
 
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("Yes"));
-					} else {
+					} else if (BenefitsFlag.toUpperCase() == "No" || BenefitsFlag.toUpperCase() == "N")  {
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("No"));
+					}else{
+						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", "");
 					}
 
 					this.getView().byId("sAgreementEnq").bindElement("/zc_ecp_agreement(VIN='" + this.getModel("LocalDataModel").getProperty(
