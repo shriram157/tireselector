@@ -218,7 +218,7 @@ sap.ui.define([
 				this.sCurrentLocale = 'EN';
 			}
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
-			document.title = "::: " + oBundle.getText("title") + " :::";
+			//	document.title = "::: " + oBundle.getText("title") + " :::";
 
 			this.getOwnerComponent().getModel("LocalDataModel").setProperty("/VInBusyInidcator", true);
 
