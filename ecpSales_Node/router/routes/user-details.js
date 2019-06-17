@@ -73,7 +73,7 @@ module.exports = function (appContext) {
 		if (userType === "Dealer") {
 			dealerCode = userAttributes.DealerCode[0];
 			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json&$filter=SearchTerm2 eq '" +
-				dealerCode + "'&$expand=to_Customer";
+				dealerCode + "'&$expand=to_Customer&$select=BusinessPartner,BusinessPartnerName,BusinessPartnerType,OrganizationBPName1,SearchTerm2,to_Customer/Attribute1";
 		}
 
 		// Zone user
@@ -99,7 +99,7 @@ module.exports = function (appContext) {
 			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json" +
 				"&$expand=to_Customer/to_CustomerSalesArea&$filter=(BusinessPartnerType eq 'Z001' or " +
 				"BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X'" +
-				"&$orderby=BusinessPartner asc";
+				"&$orderby=BusinessPartner asc&$select=BusinessPartner,BusinessPartnerName,BusinessPartnerType,OrganizationBPName1,SearchTerm2,to_Customer/Attribute1,to_Customer/to_CustomerSalesArea/SalesOffice";
 		}
 
 		// National user (TCI user)
@@ -107,7 +107,7 @@ module.exports = function (appContext) {
 			bpReqUrl = url + "/API_BUSINESS_PARTNER/A_BusinessPartner?sap-client=" + s4Client + "&$format=json" +
 				"&$expand=to_Customer/to_CustomerSalesArea&$filter=(BusinessPartnerType eq 'Z001' or " +
 				"BusinessPartnerType eq 'Z004' or BusinessPartnerType eq 'Z005') and zstatus ne 'X'" +
-				"&$orderby=BusinessPartner asc";
+				"&$orderby=BusinessPartner asc&$select=BusinessPartner,BusinessPartnerName,BusinessPartnerType,OrganizationBPName1,SearchTerm2,to_Customer/Attribute1,to_Customer/to_CustomerSalesArea/SalesOffice";
 		}
 
 		tracer.debug("BP URL: %s", bpReqUrl);
