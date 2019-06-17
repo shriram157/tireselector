@@ -21,9 +21,8 @@ sap.ui.define([
 			});
 			this.getView().setModel(this.oI18nModel, "i18n");
 			var userLang = navigator.language || navigator.userLanguage;
-		
 
-			if ((window.location.search == "?language=fr") || (userLang =="fr") ){
+			if ((window.location.search == "?language=fr") || (userLang == "fr")) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -186,7 +185,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
-					// userType= "Dealer_Sales_User";
+					//userType = "TCI_User";
 					switch (userType) {
 					case "Dealer_Sales_User":
 
@@ -215,13 +214,13 @@ sap.ui.define([
 						break;
 					case "TCI_User":
 
-						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
-						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
-						that.getModel("LocalDataModel").setProperty("/editableField", false);
-						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
-						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
-						that._resetView();
-						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+						that.getModel("LocalDataModel").setProperty("/editableField", true);
+						//that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
+						//that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
+						//that._resetView();
+						//that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 					case "Zone_User":
 

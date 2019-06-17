@@ -38,6 +38,7 @@ sap.ui.define([
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			this.getView().setModel(oBusinessModel, "OBusinessModel");
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
+			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			// var oEventBus = sap.ui.getCore().getEventBus();
 			// oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
 
@@ -56,7 +57,7 @@ sap.ui.define([
 					// userScopes.forEach(function (data) {
 
 					var userType = oData.loggedUserType[0];
-					 //userType = "Dealer_Sales_User";
+					//	userType = "TCI_User";
 					switch (userType) {
 					case "Dealer_Sales_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
@@ -81,11 +82,11 @@ sap.ui.define([
 
 						break;
 					case "TCI_User":
-						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
-						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
-						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", false);
-						that._resetView();
-						that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
+						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
+						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
+						//that._resetView();
+						//	that.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
 						break;
 					case "Zone_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", false);
@@ -152,7 +153,7 @@ sap.ui.define([
 				}
 			}).done(function (data, textStatus, jqXHR) {
 				that.getModel("LocalDataModel").setProperty("/currentIssueDealer", data.attributes[0].BusinessPartnerKey);
-				var oEcpModel = that.getOwnerComponent().getModel("EcpSalesModel");
+
 				var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 					pattern: "yyyy-MM-ddTHH:mm:ss"
@@ -217,7 +218,8 @@ sap.ui.define([
 				this.sCurrentLocale = 'EN';
 			}
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
-			document.title = "::: "+oBundle.getText("title")+" :::";
+			document.title = "::: " + oBundle.getText("title") + " :::";
+
 		},
 
 		onBeforeRendering: function () {
@@ -259,6 +261,7 @@ sap.ui.define([
 		},
 
 		onSelectiDealer: function (oEvent) {
+			this.getView().byId("idVin").setValue("");
 			this.selectedDealer = oEvent.getSource().getSelectedKey();
 			console.log(this.selectedDealer);
 		},
@@ -271,6 +274,32 @@ sap.ui.define([
 			});
 		},
 		handleValueHelp: function (oController) {
+			var oDealer = this.getView().byId("idDealerCode").getSelectedKey();
+			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
+			oEcpModel.read("/zc_ecp_application", {
+				urlParameters: {
+					"$filter": "DealerCode eq '" + oDealer + "'"
+				},
+				success: $.proxy(function (data) {
+					var oResult = data.results;
+					var elements = oResult.reduce(function (previous, current) {
+
+						var object = previous.filter(function (sobj) {
+							return sobj.VIN === current.VIN;
+						});
+						if (object.length == 0) {
+							previous.push(current);
+						}
+						return previous;
+					}, []);
+
+					//console.log(elements);
+					this.getOwnerComponent().getModel("LocalDataModel").setProperty("/ApplicationVinList", elements);
+
+				}, this),
+				error: function () {}
+			});
+
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oVinRadioSelected = this.getView().byId("idVinRadio").getSelected();
 			if (oVinRadioSelected) {
@@ -311,8 +340,9 @@ sap.ui.define([
 
 		_handleValueHelpClose: function (evt) {
 			this.oSelectedItem = evt.getParameter("selectedItem");
-			this.oSelectedTitle = this.oSelectedItem.getTitle();
+
 			if (this.oSelectedItem) {
+				this.oSelectedTitle = this.oSelectedItem.getTitle();
 				var productInput = this.byId(this.inputId);
 				productInput.setValue(this.oSelectedItem.getTitle());
 			}
@@ -323,7 +353,7 @@ sap.ui.define([
 			var oDateRadioSelected = this.getView().byId("idDateRadio").getSelected();
 			var oVinRadioSelected = this.getView().byId("idVinRadio").getSelected();
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
-			var oBundleObj =this.getView().getModel("i18n").getResourceBundle();
+			var oBundleObj = this.getView().getModel("i18n").getResourceBundle();
 			this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 			$.ajaxSetup({
 				headers: {
@@ -331,7 +361,7 @@ sap.ui.define([
 				}
 			});
 			this.getView().byId("idAppListMsgStrip").setProperty("visible", false);
-			
+
 			var oDealerCode = this.getView().byId("idDealerCode").getSelectedKey();
 
 			if (oDateRadioSelected && !oVinRadioSelected) {
@@ -384,10 +414,10 @@ sap.ui.define([
 						}, this)
 					});
 
-				}else{
-				this.getView().byId("idAppListMsgStrip").setProperty("visible", true);
-				this.getView().byId("idAppListMsgStrip").setType("Error");
-				this.getView().byId("idAppListMsgStrip").setText(oBundleObj.getText("ECP0001E"));
+				} else {
+					this.getView().byId("idAppListMsgStrip").setProperty("visible", true);
+					this.getView().byId("idAppListMsgStrip").setType("Error");
+					this.getView().byId("idAppListMsgStrip").setText(oBundleObj.getText("ECP0001E"));
 				}
 			}
 		},

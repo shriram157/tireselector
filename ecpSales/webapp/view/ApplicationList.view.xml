@@ -17,11 +17,8 @@
 											<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"
 												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
 											<Label text="{i18n>DealerCode}" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
-											<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer" 
-											
-										    	items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'BusinessPartner' }, length:750 }" 
-											
-												selectedKey="{LocalDataModel>/BpDealerModel/0/BusinessPartnerKey}">
+											<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer"
+												items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'LocalDataModel>BusinessPartner' }, length:750 }">
 												<core:ListItem key="{LocalDataModel>BusinessPartnerKey}" text="{path:'LocalDataModel>BusinessPartner'}"
 													additionalText="{LocalDataModel>BusinessPartnerName}"/>
 											</Select>
@@ -37,8 +34,9 @@
 									</VBox>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
-									<Table id="idApplicationTable" enableBusyIndicator="true" mode="SingleSelectMaster" noDataText="{i18n>NoData}" selectionChange="onSelectionChange"
-										alternateRowColors="true" items="{ path: 'LocalDataModel>/EcpApplication' }" growing="true"	growingThreshold="15" growingScrollToLoad="false">
+									<Table id="idApplicationTable" enableBusyIndicator="true" mode="SingleSelectMaster" noDataText="{i18n>NoData}"
+										selectionChange="onSelectionChange" alternateRowColors="true" items="{ path: 'LocalDataModel>/EcpApplication' }" growing="true"
+										growingThreshold="15" growingScrollToLoad="false">
 										<columns>
 											<Column minScreenWidth="Tablet" demandPopin="true">
 												<Text text="{i18n>ApplicationDate}"/>
@@ -65,9 +63,8 @@
 													<Text text="{path:'LocalDataModel>SubmissionDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
 													<Text text="{LocalDataModel>VIN}"/>
 													<!--<Text text="{LocalDataModel>CustomerName} {LocalDataModel>CustomerLastName}"/>-->
-													<Text text="{ parts: [ 'LocalDataModel>CustomerName', 'LocalDataModel>CustomerLastName', 'LocalDataModel>BusinessIndividual', 'LocalDataModel>CompanyName' ], formatter : 'zecp.utils.formatter.appListName' }"/>
-													
-													
+													<Text
+														text="{ parts: [ 'LocalDataModel>CustomerName', 'LocalDataModel>CustomerLastName', 'LocalDataModel>BusinessIndividual', 'LocalDataModel>CompanyName' ], formatter : 'zecp.utils.formatter.appListName' }"/>
 													<Text text="{LocalDataModel>ApplicationStatus}"/>
 													<Text text="{path:'LocalDataModel>SaleDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
 													<Text text="{LocalDataModel>Source}"/>
