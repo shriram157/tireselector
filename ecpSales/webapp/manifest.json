@@ -162,6 +162,9 @@
 		},
 		"resources": {
 			"js": [
+			    	{
+					"uri": "utils/changeFabicon.js"
+				},
 				{
 					"uri": "utils/formatter.js"
 				}

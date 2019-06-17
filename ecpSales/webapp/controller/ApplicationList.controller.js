@@ -220,6 +220,8 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			document.title = "::: " + oBundle.getText("title") + " :::";
 
+			this.getOwnerComponent().getModel("LocalDataModel").setProperty("/VInBusyInidcator", true);
+
 		},
 
 		onBeforeRendering: function () {
@@ -274,6 +276,7 @@ sap.ui.define([
 			});
 		},
 		handleValueHelp: function (oController) {
+
 			var oDealer = this.getView().byId("idDealerCode").getSelectedKey();
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			oEcpModel.read("/zc_ecp_application", {
@@ -281,6 +284,7 @@ sap.ui.define([
 					"$filter": "DealerCode eq '" + oDealer + "'"
 				},
 				success: $.proxy(function (data) {
+					this.getOwnerComponent().getModel("LocalDataModel").setProperty("/VInBusyInidcator", false);
 					var oResult = data.results;
 					var elements = oResult.reduce(function (previous, current) {
 
@@ -297,7 +301,9 @@ sap.ui.define([
 					this.getOwnerComponent().getModel("LocalDataModel").setProperty("/ApplicationVinList", elements);
 
 				}, this),
-				error: function () {}
+				error: $.proxy(function () {
+					this.getOwnerComponent().getModel("LocalDataModel").setProperty("/VInBusyInidcator", false);
+				}, this)
 			});
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
