@@ -262,6 +262,10 @@ sap.ui.define([
 
 		},
 
+		onSelectDateRadio: function (oEvent) {
+			this.getView().byId("idVin").setValue("");
+		},
+
 		onSelectiDealer: function (oEvent) {
 			this.getView().byId("idVin").setValue("");
 			this.selectedDealer = oEvent.getSource().getSelectedKey();

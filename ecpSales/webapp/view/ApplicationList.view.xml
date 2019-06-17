@@ -12,7 +12,7 @@
 								<f:SimpleForm editable="true" layout="ResponsiveLayout">
 									<core:Title text="{i18n>DateRageText}"/>
 									<VBox wrap="Wrap" width="auto">
-										<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true"/>
+										<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true" select="onSelectDateRadio"/>
 										<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop" alignItems="Center" alignContent="Center">
 											<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"
 												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
