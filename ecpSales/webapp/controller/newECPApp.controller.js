@@ -31,19 +31,9 @@ sap.ui.define([
 
 			this._getPropetyData();
 
-			this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
-			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._oRouteNewECP, this);
 			// var oEventBus = sap.ui.getCore().getEventBus();
 			// oEventBus.publish("newECPApp", "Binded", this.onSelectiDealer, this);
-			this.getModel("LocalDataModel").setProperty("/AmtFinReq", false);
-			this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", false);
-			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
-			this.getModel("LocalDataModel").setProperty("/AmtFinState", "None");
-			this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
-			this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
-			this.getModel("LocalDataModel").setProperty("/printBtnState", true);
-			this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -97,10 +87,21 @@ sap.ui.define([
 		},
 		_oRouteNewECP: function (oEvent) {
 
+			this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
+			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
+			this.getModel("LocalDataModel").setProperty("/AmtFinReq", false);
+			this.getModel("LocalDataModel").setProperty("/ZecpLienHolderReq", false);
+			this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
+			this.getModel("LocalDataModel").setProperty("/AmtFinState", "None");
+			this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
+			this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
+			this.getModel("LocalDataModel").setProperty("/printBtnState", true);
+			this.getModel("LocalDataModel").setProperty("/odometerState", "None");
+
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
 			this.getDealer();
-
+			//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
 			if (this.oAppId != 404 && this.oAppId != undefined) {
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
@@ -133,7 +134,7 @@ sap.ui.define([
 						"$filter": "InternalApplicationID eq '" + this.oAppId + "' "
 					},
 					success: $.proxy(function (data) {
-					
+
 						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 						this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
 							"/ApplicationOwnerData/ECPPlanCode"));
@@ -141,30 +142,23 @@ sap.ui.define([
 							"/ApplicationOwnerData/Odometer"));
 						this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
 							"/ApplicationOwnerData/AgreementType"));
-							
-							
-							
-							// ApplicationOwnerData_Name
-							
-							if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
 
-								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-											"i18n").getResourceBundle()
-										.getText("Organization"));
-									
+						// ApplicationOwnerData_Name
 
-								} else  {
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
-										" " + data.results[0].CustomerLastName);
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-											"i18n").getResourceBundle()
-										.getText("Individual")); // added translation
-							}
-							
-							
-							
-							
+						if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
+
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+									"i18n").getResourceBundle()
+								.getText("Organization"));
+
+						} else {
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
+								" " + data.results[0].CustomerLastName);
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+									"i18n").getResourceBundle()
+								.getText("Individual")); // added translation
+						}
 
 						oVehicleMaster.read("/zc_c_vehicle", {
 							urlParameters: {
@@ -653,220 +647,225 @@ sap.ui.define([
 			var oVin = this.getView().byId("idVinNum");
 			var oVal = oVin.getValue();
 			oVin.setValueState(sap.ui.core.ValueState.None);
+			var oZECPModel = this.getModel("EcpSalesModel");
 
-			if (!($.isEmptyObject(oVal)) && oVal.length === 17) {
+			oZECPModel.read("/zc_ecp_valid_vinsSet", {
+				urlParameters: {
+					"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
+				},
+				success: $.proxy(function (vinData) {
+					var oVinLength = vinData.results.length;
+					if (oVinLength > 0) {
+						//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
+						oZECPModel.read("/zc_ecp_valid_plansSet", {
+							urlParameters: {
+								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
+							},
+							success: $.proxy(function (data) {
+								this.oFlag = data.results[0].ZZEXT_FLG;
+								if (this.oFlag === "YES") {
+									this.getView().getModel("oSetProperty").setProperty("/oFlag", true);
 
-				var obj = {
-					VHVIN: oVal,
-					VGUID: "",
-					VHCLE: "",
-					MMSTA: "",
-					SDSTA: ""
-				};
-				var oZECPModel = this.getModel("EcpSalesModel");
-				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
-				oZECPModel.read("/zc_ecp_valid_plansSet", {
-					urlParameters: {
-						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
-					},
-					success: $.proxy(function (data) {
-						this.oFlag = data.results[0].ZZEXT_FLG;
-						if (this.oFlag === "YES") {
-							this.getView().getModel("oSetProperty").setProperty("/oFlag", true);
-
-						} else {
-							this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
-						}
-					}, this),
-					error: function () {
-						console.log("Error");
-					}
-				});
-
-				var winUrl = window.location.search;
-				var userLang = navigator.language || navigator.userLanguage;
-				var vHset_lanKey = 'EN';
-				if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
-					vHset_lanKey = 'FR';
-				}
-
-				oZECPModel.read("/zc_ecp_vehicle_detailSet", {
-					urlParameters: {
-						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "' and  SPRAS eq '" + vHset_lanKey + "'"
-					},
-					success: $.proxy(function (data) {
-
-						this.getModel("LocalDataModel").setProperty("/PricingModelData", data.results[0]);
-
-						if (data.results[0].REG_DATE != "" || data.results[0].REG_DATE != undefined) {
-							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-							this.BccAgrmntPrtDt = data.results[0].REG_DATE;
-
-						} else {
-							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("InvalidRegistrationDate"));
-							this.getView().byId("idNewECPMsgStrip").setType("Error");
-						}
-						if (data.results[0].MAKE != "" || data.results[0].MAKE != undefined) {
-							this.oECPData.ZecpMake = data.results[0].MAKE;
-						}
-						if (data.results[0].VEHICLEMODEL != "" || data.results[0].VEHICLEMODEL != undefined) {
-							this.oECPData.ZecpModelcode = data.results[0].VEHICLEMODEL;
-						}
-
-						if (data.results[0].ZAUTO_CODE != "" || data.results[0].ZAUTO_CODE != undefined) {
-							this.oECPData.ZecpAutocode = data.results[0].ZAUTO_CODE;
-						}
-
-					}, this),
-					error: $.proxy(function () {
-
-						var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
-						MessageBox.error(
-							this.oBundle.getText("InvalidRegistrationDate"), {
-
-								styleClass: bCompact ? "sapUiSizeCompact" : "",
-								onClose: function (sAction) {
-									MessageToast.show(sAction);
+								} else {
+									this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
 								}
+							}, this),
+							error: function () {
+								//console.log("Error");
 							}
-						);
-
-						console.log("Error");
-					}, this)
-				});
-
-				oZECPModel.read("/zc_ecp_application", {
-					urlParameters: {
-						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "' "
-					},
-					success: $.proxy(function (data) {
-
-						this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
-
-						this.oECPData = this.getView().getModel("EcpFieldData").getData();
-
-					}, this),
-					error: function (err) {
-						console.log(err);
-					}
-				});
-				var oPlansArray = ["NLC46", "NTC34", "NTC94", "NTC45", "NTC46", "NTC47"];
-
-				oZECPModel.read("/zc_ecp_agreement", {
-					urlParameters: {
-						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and AgreementElectricVehicletype ne 'AGEN' "
-					},
-					success: $.proxy(function (data) {
-
-						var oDataRes = data.results;
-
-						var oResults = oDataRes.filter(function (v, i) {
-							return ((v["PlanType"] == "NTC34" || v["PlanType"] == "NLC46") || v["PlanType"] == "NTC94" || v["PlanType"] == "NTC45" ||
-								v["PlanType"] == "NTC46" || v["PlanType"] == "NTC47");
 						});
 
-						this.getModel("LocalDataModel").setProperty("/AgreementDataActive", oResults);
+						var winUrl = window.location.search;
+						var userLang = navigator.language || navigator.userLanguage;
+						var vHset_lanKey = 'EN';
+						if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+							vHset_lanKey = 'FR';
+						}
 
-					}, this),
-					error: function (err) {
-						console.log(err);
-					}
-				});
+						oZECPModel.read("/zc_ecp_vehicle_detailSet", {
+							urlParameters: {
+								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "' and  SPRAS eq '" + vHset_lanKey + "'"
+							},
+							success: $.proxy(function (data) {
 
-				var oGetModel = this.getModel("ZVehicleMasterModel");
-				this._oToken = oGetModel.getHeaders()['x-csrf-token'];
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
+								this.getModel("LocalDataModel").setProperty("/PricingModelData", data.results[0]);
 
-				oGetModel.read("/zc_c_vehicle", {
+								if (data.results[0].REG_DATE != "" || data.results[0].REG_DATE != undefined) {
+									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+									this.BccAgrmntPrtDt = data.results[0].REG_DATE;
 
-					urlParameters: {
-						"$filter": "VehicleIdentificationNumber eq '" + this.oECPData.ZecpVin + "' "
-					},
-					success: $.proxy(function (data) {
+								} else {
+									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("InvalidRegistrationDate"));
+									this.getView().byId("idNewECPMsgStrip").setType("Error");
+								}
+								if (data.results[0].MAKE != "" || data.results[0].MAKE != undefined) {
+									this.oECPData.ZecpMake = data.results[0].MAKE;
+								}
+								if (data.results[0].VEHICLEMODEL != "" || data.results[0].VEHICLEMODEL != undefined) {
+									this.oECPData.ZecpModelcode = data.results[0].VEHICLEMODEL;
+								}
 
-						this.CustomerNumberLength = data.results.length;
+								if (data.results[0].ZAUTO_CODE != "" || data.results[0].ZAUTO_CODE != undefined) {
+									this.oECPData.ZecpAutocode = data.results[0].ZAUTO_CODE;
+								}
+
+							}, this),
+							error: $.proxy(function () {
+
+								var bCompact = !!this.getView().$().closest(".sapUiSizeCompact").length;
+								MessageBox.error(
+									this.oBundle.getText("InvalidRegistrationDate"), {
+
+										styleClass: bCompact ? "sapUiSizeCompact" : "",
+										onClose: function (sAction) {
+											MessageToast.show(sAction);
+										}
+									}
+								);
+
+								console.log("Error");
+							}, this)
+						});
 
 						oZECPModel.read("/zc_ecp_application", {
 							urlParameters: {
-								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel(
-									"LocalDataModel").getProperty(
-									"/currentIssueDealer") + "' "
+								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "' "
 							},
-							success: $.proxy(function (odata) {
-								this.oAppdata = odata.results.length;
-								if (data.results.length <= 0) {
+							success: $.proxy(function (data) {
 
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("CustomerNumberNotFound"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
-									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-								}
+								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
-								if (this.oAppdata > 0) {
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("VinAlreadySaved"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
-									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-								} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpModelcode") == "Imported US Vehicle") {
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ForeginVINError"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
-									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-								} else {
-									this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
-									this.oCustomer = data.results[0].EndCustomer;
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+								this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
-									this._deferVINDealer = jQuery.Deferred();
-									this.verifyVinDealer(oVal);
-									this._deferVINDealer.done($.proxy(function (oData) {
-										this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
-										this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-										//this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-										this.getView().byId("idNewECPMsgStrip").setType("None");
-										oVin.setValueState(sap.ui.core.ValueState.None);
-									}, this)).fail($.proxy(function (oData) {
-										this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-										this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("MisMatchDealertypeAndVehicle"));
+							}, this),
+							error: function (err) {
+								console.log(err);
+							}
+						});
+						//	var oPlansArray = ["NLC46", "NTC34", "NTC94", "NTC45", "NTC46", "NTC47"];
 
-										this.getView().byId("idNewECPMsgStrip").setType("Error");
-									}, this));
-								}
-							}, this)
+						oZECPModel.read("/zc_ecp_agreement", {
+							urlParameters: {
+								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and AgreementElectricVehicletype ne 'AGEN' "
+							},
+							success: $.proxy(function (data) {
 
+								var oDataRes = data.results;
+
+								var oResults = oDataRes.filter(function (v, i) {
+									return ((v["PlanType"] == "NTC34" || v["PlanType"] == "NLC46") || v["PlanType"] == "NTC94" || v["PlanType"] ==
+										"NTC45" ||
+										v["PlanType"] == "NTC46" || v["PlanType"] == "NTC47");
+								});
+
+								this.getModel("LocalDataModel").setProperty("/AgreementDataActive", oResults);
+
+							}, this),
+							error: function (err) {
+								console.log(err);
+							}
 						});
 
-					}, this)
-				});
+						var oGetModel = this.getModel("ZVehicleMasterModel");
+						this._oToken = oGetModel.getHeaders()['x-csrf-token'];
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-Token': this._oToken
+							}
+						});
 
-			} else if ($.isEmptyObject(oVal)) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EVIN"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
-				oVin.setValueStateText(this.oBundle.getText("ECP0007EVIN"));
-				oVin.setValueState(sap.ui.core.ValueState.Error);
-			} else if (oVal.length < 17) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PlsEnterValVIN"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
+						oGetModel.read("/zc_c_vehicle", {
 
-				oVin.setValueStateText(this.oBundle.getText("ECP0007EVIN"));
-				oVin.setValueState(sap.ui.core.ValueState.Error);
+							urlParameters: {
+								"$filter": "VehicleIdentificationNumber eq '" + this.oECPData.ZecpVin + "' "
+							},
+							success: $.proxy(function (data) {
 
-			}
+								this.CustomerNumberLength = data.results.length;
+
+								oZECPModel.read("/zc_ecp_application", {
+									urlParameters: {
+										"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel(
+											"LocalDataModel").getProperty(
+											"/currentIssueDealer") + "' "
+									},
+									success: $.proxy(function (odata) {
+										this.oAppdata = odata.results.length;
+										if (data.results.length <= 0) {
+
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("CustomerNumberNotFound"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+											this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+										}
+
+										if (this.oAppdata > 0) {
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("VinAlreadySaved"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+											this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+										} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpModelcode") == "Imported US Vehicle") {
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ForeginVINError"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+											this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+										} else {
+											this.getModel("LocalDataModel").setProperty("/VehicleDetails", data.results[0]);
+											this.oCustomer = data.results[0].EndCustomer;
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+
+											this._deferVINDealer = jQuery.Deferred();
+											this.verifyVinDealer(oVal);
+											this._deferVINDealer.done($.proxy(function (oData) {
+												this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
+												this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+												//this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+												this.getView().byId("idNewECPMsgStrip").setType("None");
+												oVin.setValueState(sap.ui.core.ValueState.None);
+											}, this)).fail($.proxy(function (oData) {
+												this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+												this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("MisMatchDealertypeAndVehicle"));
+
+												this.getView().byId("idNewECPMsgStrip").setType("Error");
+											}, this));
+										}
+									}, this)
+
+								});
+
+							}, this)
+						});
+					} else {
+						//this.getModel("LocalDataModel").setProperty("/enabledNext01", false);
+						this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+						this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PlsEnterValVIN"));
+						this.getView().byId("idNewECPMsgStrip").setType("Error");
+
+						oVin.setValueStateText(this.oBundle.getText("ECP0007EVIN"));
+						oVin.setValueState(sap.ui.core.ValueState.Error);
+					}
+				}, this),
+				error: $.proxy(function (err) {
+					console.log(err);
+					//this.getModel("LocalDataModel").setProperty("/enabledNext01", false);
+				}, this)
+			});
+
+			// 			if (!($.isEmptyObject(oVal)) && oVal.length === 17) {
+
+			// 			} else if ($.isEmptyObject(oVal)) {
+			// 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+			// 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EVIN"));
+			// 				this.getView().byId("idNewECPMsgStrip").setType("Error");
+			// 				oVin.setValueStateText(this.oBundle.getText("ECP0007EVIN"));
+			// 				oVin.setValueState(sap.ui.core.ValueState.Error);
+			// 			} else if (oVal.length < 17) {
+
+			// 			}
 		},
 
 		onSelectAgrType: function (oEvent) {
@@ -963,17 +962,48 @@ sap.ui.define([
 			var oSaleDateId = this.getView().byId("idDate");
 			var oSaleDate = oSaleDateId.getValue();
 			var zEcpModel = this.getModel("EcpSalesModel");
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 
 			var oAgrInptElem = this.getView().byId("idAgrType");
 			oAgrInptElem.setValueState(sap.ui.core.ValueState.None);
 			oOdometer.setValueState(sap.ui.core.ValueState.None);
 			oSaleDateId.setValueState(sap.ui.core.ValueState.None);
-			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-			$.ajaxSetup({
-				headers: {
-					'X-CSRF-Token': this._oToken
-				}
+
+			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
+			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
+			zEcpModel.read("/zc_ecp_agreement", {
+				urlParameters: {
+					"$filter": "VIN eq '" + oVin + "'and AgreementStatus eq 'Active'"
+				},
+				success: $.proxy(function (data) {
+					var oLength = data.results.length;
+					if (oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oLength > 0) {
+						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+							onClose: $.proxy(function () {
+								this.getRouter().navTo("ApplicationList");
+							}, this)
+						});
+
+					} else if (oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oLength > 0) {
+						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+							onClose: $.proxy(function () {
+								this.getRouter().navTo("ApplicationList");
+							}, this)
+						});
+
+					}
+
+				}, this),
+				error: $.proxy(function () {
+
+				}, this)
+
 			});
+
 			if (this.oCustomer) {
 				var oCustomerNum = this.oCustomer.substr(5);
 			}
@@ -2689,8 +2719,8 @@ sap.ui.define([
 		performCIC: function () {
 
 			var dealerCode = this.getModel("LocalDataModel").getProperty("/currentIssueDealer");
-			if(!this.oECPData){
-				this.oECPData =this.getView().getModel("EcpFieldData").getData();
+			if (!this.oECPData) {
+				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 			}
 			var vinNo = this.oECPData.ZecpVin;
 			var linkAddress = this.getCIClink(dealerCode, vinNo);

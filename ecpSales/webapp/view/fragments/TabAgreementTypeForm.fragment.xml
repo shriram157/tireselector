@@ -1,15 +1,24 @@
 <core:FragmentDefinition xmlns:core="sap.ui.core" xmlns:f="sap.ui.layout.form" xmlns:l="sap.ui.layout" xmlns="sap.m"
 	xmlns:table="sap.ui.table" xmlns:custom="zecp.controls">
-	<f:SimpleForm id="spAgreementForm" class="sapUiSmallMarginBottom" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="2"
-		labelSpanL="2" labelSpanM="2" labelSpanS="2" adjustLabelSpan="false" emptySpanXL="3" emptySpanL="3" emptySpanM="3" emptySpanS="2"
-		columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+	<f:SimpleForm id="spAgreementForm" class="sapUiSmallMarginBottom" editable="true" layout="ResponsiveGridLayout" title="" labelSpanXL="3"
+		labelSpanL="3" labelSpanM="4" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="3" emptySpanL="3" emptySpanM="3" emptySpanS="2"
+		columnsXL="2" columnsL="2" columnsM="1" singleContainerFullSize="false">
 		<f:content>
+			<core:Title text=""/>
 			<Label text="{i18n>SaleDate}"/>
 			<DatePicker id="idDate" placeholder="{i18n>EnterDate}"
 				value="{path : 'EcpFieldData>/ZecpSaleDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"
-				required="true"/>
+				required="true">
+				<!--<layoutData>-->
+				<!--	<l:GridData span="XL3 L3 M3 "/>-->
+				<!--</layoutData>-->
+			</DatePicker>
 			<Label text="{i18n>Odometer}"/>
-			<custom:CustomInput id="idOdoVal" value="{EcpFieldData>/ZecpOdometer}"  required="true"/>
+			<custom:CustomInput id="idOdoVal" value="{EcpFieldData>/ZecpOdometer}" required="true">
+				<!--<layoutData>-->
+				<!--	<l:GridData span="XL3 L3 M3 "/>-->
+				<!--</layoutData>-->
+			</custom:CustomInput>
 			<Label text="{i18n>AgreementType}"/>
 			<ComboBox id="idAgrType" selectionChange="onSelectAgrType" required="true" selectedKey="{EcpFieldData>/ZecpAgrType}"
 				value="{EcpFieldData>/ZecpAgrType}">
@@ -17,16 +26,16 @@
 				<core:Item key="{i18n>USEDVEHICLEAGREEMENT}" text="{i18n>USEDVEHICLEAGREEMENT}"/>
 				<core:Item key="{i18n>EXTENSION}" text="{i18n>EXTENSION}" enabled="{oSetProperty>/oFlag}"/>
 			</ComboBox>
+			<core:Title text=""/>
 			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep3" enabled="{oSetProperty>/ostep3}"/>
 			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
-			
 		</f:content>
 	</f:SimpleForm>
 	<VBox id="idExtAgrList" visible="{oSetProperty>/oAgreementTable}">
 		<Text class="sapUiSmallMarginBottom" id="idWarningText" text="{i18n>TableSelectMessage}"/>
 		<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single" rows="{ path: 'LocalDataModel>/AgreementDataActive' }"
-			rowSelectionChange="onSelectAgrRow" visibleRowCount="{RowCountModel>/rowCount}" selectionBehavior="Row" showNoData="true" noData="{i18n>NoData}"
-			threshold="{RowCountModel>/rowCount}" enableBusyIndicator="true">
+			rowSelectionChange="onSelectAgrRow" visibleRowCount="{RowCountModel>/rowCount}" selectionBehavior="Row" showNoData="true"
+			noData="{i18n>NoData}" threshold="{RowCountModel>/rowCount}" enableBusyIndicator="true">
 			<table:columns>
 				<table:Column>
 					<Label text="{i18n>EcpAgreement}" textAlign="Center" width="100%"/>

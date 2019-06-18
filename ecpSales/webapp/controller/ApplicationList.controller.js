@@ -269,7 +269,6 @@ sap.ui.define([
 		onSelectiDealer: function (oEvent) {
 			this.getView().byId("idVin").setValue("");
 			this.selectedDealer = oEvent.getSource().getSelectedKey();
-			console.log(this.selectedDealer);
 		},
 
 		OnCreateApp: function (oEvent) {
