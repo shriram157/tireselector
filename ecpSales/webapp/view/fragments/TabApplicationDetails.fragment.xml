@@ -4,7 +4,7 @@
 		<f:SimpleForm id="idAgreementDetailsFormTop" editable="true" layout="ResponsiveGridLayout"
 			title="{i18n>OriginalAgrDetails} - {LocalDataModel>/AgreementObj/AgreementNumber}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
 			labelSpanS="4" columnsM="2" columnsL="3" columnsXL="3" singleContainerFullSize="false">
-			<f:content>
+			<f:content >
 				<core:Title text=""/>
 				<Label text="{i18n>EffectiveDate}" id="idEfDate"/>
 				<Text
@@ -31,28 +31,28 @@
 				<f:SimpleForm id="AgrOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
 					columnsM="1" singleContainerFullSize="false" visible="{oSetProperty>/oAgrOwner}">
-					<f:content>
-						<Label text="{i18n>Customer}"/>
+					<f:content >
+						<Label text="{i18n>Customer}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/BusinessPartner}"/>
-						<Label text="{i18n>Type}"/>
+						<Label text="{i18n>Type}" textAlign="Begin"/>
 						<Text text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>
-						<Label text="{i18n>Language}"/>
+						<Label text="{i18n>Language}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/Language}"/>
-						<Label text="{i18n>Name}"/>
+						<Label text="{i18n>Name}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/AgreementOwnerName/LastName} {LocalDataModel>/AgreementOwnerName/FirstName}"/>
-						<Label text="{i18n>Address}"/>
+						<Label text="{i18n>Address}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
-						<Label text="{i18n>City}"/>
+						<Label text="{i18n>City}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/CityName}"/>
-						<Label text="{i18n>Province}"/>
+						<Label text="{i18n>Province}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/Region}"/>
-						<Label text="{i18n>PostalCode}"/>
+						<Label text="{i18n>PostalCode}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/PostalCode}"/>
-						<Label text="{i18n>Email}"/>
+						<Label text="{i18n>Email}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/EmailAddress}"/>
-						<Label text="{i18n>Home}"/>
+						<Label text="{i18n>Home}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/PhoneNumber}"/>
-						<Label text="{i18n>Business}"/>
+						<Label text="{i18n>Business}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/FaxNumber}"/>
 					</f:content>
 				</f:SimpleForm>
@@ -64,12 +64,12 @@
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Customer}"/>
 						<Label text="{i18n>Type}"/>
 						<!--<Text text="{path: 'LocalDataModel>/ApplicationOwnerData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>-->
-							<Text text="{LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_BpType}"/>
+						<Text text="{LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_BpType}"/>
 						<Label text="{i18n>Language}"/>
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Language}"/>
 						<Label text="{i18n>Name}"/>
 						<!--<Text text="{LocalDataModel>/ApplicationOwnerData/CustomerName} {LocalDataModel>/ApplicationOwnerData/CustomerLastName}"/>-->
-							<Text text="{LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_Name}"/>
+						<Text text="{LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_Name}"/>
 						<Label text="{i18n>Address}"/>
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Address}"/>
 						<Label text="{i18n>City}"/>
@@ -97,13 +97,11 @@
 						<Label text="{i18n>Type}"/>
 						<!--<Text text="{path: 'LocalDataModel>/PricingModelData/BPTYPE', formatter : 'zecp.utils.formatter.fnFormatType'}"/>-->
 						<Text text="{LocalDataModel>/VechOwnrSectAddOnAppSub_BpType}"/>
-						
 						<Label text="{i18n>Language}"/>
 						<Text text="{LocalDataModel>/OwnerData/Language}"/>
 						<Label text="{i18n>Name}"/>
 						<!--<Text text="{LocalDataModel>/AgreementOwnerName/FirstName} {LocalDataModel>/AgreementOwnerName/LastName}"/>-->
 						<Text text="{LocalDataModel>/VechOwnrSectAddOnAppSub_Name}"/>
-						
 						<Label text="{i18n>Address}"/>
 						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
 						<Label text="{i18n>City}"/>
@@ -141,13 +139,13 @@
 						<Label text="{i18n>DealType}"/>
 						<Text text="{LocalDataModel>/PricingModelData/DEALTYPEDESC}"/>
 						<Label text="{i18n>VehiclePrice}"/>
-						<Input liveChange="onChangeAmt" type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" value="{EcpFieldData>/ZecpVehPrice}" required="true"
-							valueState="{LocalDataModel>/VehPriceState}" class="ZecpVehPriceCls"/>
+						<Input liveChange="onChangeAmt" type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" value="{EcpFieldData>/ZecpVehPrice}"
+							required="true" valueState="{LocalDataModel>/VehPriceState}" class="ZecpVehPriceCls"/>
 						<Label text="{i18n>AmtFinanced}"/>
 						<Input liveChange="onChangeAmt" required="{LocalDataModel>/AmtFinReq}" valueState="{LocalDataModel>/AmtFinState}" type="Number"
-							value="{EcpFieldData>/ZecpAmtFin}" editable="{LocalDataModel>/editableField}" />
+							value="{EcpFieldData>/ZecpAmtFin}" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>LienholderName}"/>
-						<Input  required="{LocalDataModel>/ZecpLienHolderReq}" valueState="{LocalDataModel>/ZecpLienHolderState}"
+						<Input required="{LocalDataModel>/ZecpLienHolderReq}" valueState="{LocalDataModel>/ZecpLienHolderState}"
 							value="{EcpFieldData>/ZecpLienholder}" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>LienTerms}"/>
 						<custom:CustomInput liveChange="onChangeAmt" required="{LocalDataModel>/ZecpTermsReq}" valueState="{LocalDataModel>/ZecpTermsState}"
@@ -168,7 +166,8 @@
 						<Text text="{EcpFieldData>/ZecpPlancode}" id="idPlanCodeText"/>
 						<Label text="{i18n>PlanPurchasePrice}"/>
 						<Input type="Number" value="{EcpFieldData>/ZecpPlanpurchprice}" id="idPlanPurchase" required="true" class="ZecpPlanpurchpriceCls"
-							valueState="{LocalDataModel>/PlanPurchase}" editable="{LocalDataModel>/editableField}" liveChange="onEnterPlanPurchasePrice" enabled="{oSetProperty>/notUsedPrimPlan}"/>
+							valueState="{LocalDataModel>/PlanPurchase}" editable="{LocalDataModel>/editableField}" liveChange="onEnterPlanPurchasePrice"
+							enabled="{oSetProperty>/notUsedPrimPlan}"/>
 						<Label text="{i18n>RetailPrice}"/>
 						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_RET_PRICE}"/>
 						<Label text="{i18n>DeferredSurcharge}"/>
@@ -204,9 +203,11 @@
 							value="{path:'EcpFieldData>/ZecpOdometer', type : 'sap.ui.model.type.Number', constraints : { minLength : 1, maxLength : 7 }}"
 							liveChange="onChangeOdometer" id="idOdo" required="true" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>RoadHazard}"/>
-						<Text text="{EcpFieldData>/ZecpRoadhazard1}"/> <!--changed the entity name from ZecpRoadhazard to ZecpRoadhazard1-->
+						<Text text="{EcpFieldData>/ZecpRoadhazard1}"/>
+						<!--changed the entity name from ZecpRoadhazard to ZecpRoadhazard1-->
 						<Label text="{i18n>BenefitsFlag}"/>
-						<Text text="{EcpFieldData>/ZbenefitFlag1}"/> <!--changed the entity name from ZbenefitFlag to ZecpRoadhazard1-->
+						<Text text="{EcpFieldData>/ZbenefitFlag1}"/>
+						<!--changed the entity name from ZbenefitFlag to ZecpRoadhazard1-->
 					</f:content>
 				</f:SimpleForm>
 			</html:div>
@@ -215,19 +216,21 @@
 					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
 					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 					<f:content>
-						<Label text="{i18n>Status}" />
+						<Label text="{i18n>Status}"/>
 						<Text text="{= ${EcpFieldData>/ZecpAppStat} ? ${EcpFieldData>/ZecpAppStat} : ${i18n>InProgress} }"/>
 						<!--<Label text="{i18n>SaleDate}" visible="{oSetProperty>/saleDat01Visible}"/>-->
 						<!--<Text visible="{oSetProperty>/saleDat01Visible}" text="{path:'EcpFieldData>/ZecpSaleDate'}"/>-->
 						<Label text="{i18n>SaleDate}"/>
 						<Text
 							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"/>
-						<Label text="{i18n>SubmissionDate}" visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }" />
+						<Label text="{i18n>SubmissionDate}" visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }"/>
 						<Text
-							text="{path:'EcpFieldData>/ZecpSubDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}" visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }"/>
+							text="{path:'EcpFieldData>/ZecpSubDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"
+							visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }"/>
 						<Label text="{i18n>IssueDealer}" visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>
 						<!--<Text text="{EcpFieldData>/ZecpDealcode}" visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>-->
-						<Text text="{path:'EcpFieldData>/ZecpDealcode', formatter : 'zecp.utils.formatter.fnFormatDealerCode'}" visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>
+						<Text text="{path:'EcpFieldData>/ZecpDealcode', formatter : 'zecp.utils.formatter.fnFormatDealerCode'}"
+							visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>
 						<Label text="{i18n>PreOwnedCert}"/>
 						<Input id="idPrOwndCert" editable="{LocalDataModel>/editableField}" liveChange="onChangePreownedCert"
 							value="{path : 'EcpFieldData>/PrOwndCert', type : 'sap.ui.model.type.String', constraints : { minLength : 2, maxLength : 10 }}"

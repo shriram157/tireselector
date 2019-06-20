@@ -81,9 +81,6 @@ sap.ui.define([
 			if (oEvent.oCustomEvtObj) {
 				var selectedKeyTab = Event.key;
 			}
-			// var oSelectedTab = oEvent.getSource().getParameters("item");
-			// var selectedKeyTab = oEvent.getSource().getParameters("selectedKey");
-
 		},
 		_oRouteNewECP: function (oEvent) {
 
@@ -249,18 +246,11 @@ sap.ui.define([
 									"'"
 							},
 							success: $.proxy(function (crdata) {
-
 								var EcpFieldData = new sap.ui.model.json.JSONModel(crdata.results[0]);
 								EcpFieldData.setDefaultBindingMode("TwoWay");
 								this.getView().setModel(EcpFieldData, "EcpFieldData");
-
-								//Fix for Defect ID 8348
 								this.getValidPlanSet(EcpFieldData);
-
-								//Check and Update Tire Hazard and Benifit Falg for DMS App: Defet ID = 9616
 								this.updateTHazBenFlag();
-
-								//Defect 12699
 								var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
 								var isUsedPrimPlan = this.check4PrimUsedVehiclePlan(oSelectedPlan);
 								if (isUsedPrimPlan) {
@@ -284,9 +274,7 @@ sap.ui.define([
 									"'and ZECPAGRTYPE eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/AgreementType") + "'"
 							},
 							success: $.proxy(function (pdata) {
-
 								this.getModel("LocalDataModel").setProperty("/oPlanPricingData", pdata.results[0]);
-
 							}, this),
 							error: function (err) {
 								console.log(err);
@@ -322,43 +310,6 @@ sap.ui.define([
 							this.getView().getModel("oSetProperty").setProperty("/oAgrOwnerDMS", false);
 							this.getView().getModel("oSetProperty").setProperty("/backBtnP", true);
 						}
-
-						//Read Busness Partner Data 
-
-						// var oBusinessModelAgrOwnerSect = this.getModel("ApiBusinessModel");
-						// this._oToken = oBusinessModelAgrOwnerSect.getHeaders()['x-csrf-token'];
-						// $.ajaxSetup({
-						// 	headers: {
-						// 		'X-CSRF-Token': this._oToken
-						// 	}
-						// });
-
-						// var agrCustNumber = this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Customer");
-						// oBusinessModelAgrOwnerSect.read("/A_BusinessPartner", {
-						// 	urlParameters: {
-						// 		"$filter": "BusinessPartner eq '" + agrCustNumber + "' "
-						// 	},
-						// 	success: $.proxy(function (bpdata) {
-						// 		this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/BPTYPE", bpdata.results[0].BusinessPartnerCategory);
-
-						// 		if (bpdata.results[0].BusinessPartnerCategory === "1") {
-
-						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].FirstName +
-						// 				" " + bpdata.results[
-						// 					0].LastName);
-						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-						// 					"i18n").getResourceBundle()
-						// 				.getText("Individual")); // added translation
-
-						// 		} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
-						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", bpdata.results[0].OrganizationBPName1);
-						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-						// 					"i18n").getResourceBundle()
-						// 				.getText("Organization"));
-						// 		}
-
-						// 	}, this),
-						// });
 
 					}, this),
 					error: function (err) {
@@ -2232,17 +2183,17 @@ sap.ui.define([
 					return false;
 				}
 				//checking City
-				if (aggreDmsData.City.toUpperCase() !== vechicalOwnerDetail.CityName.toUpperCase()) {
-					return false;
-				}
+				// if (aggreDmsData.City.toUpperCase() !== vechicalOwnerDetail.CityName.toUpperCase()) {
+				// 	return false;
+				// }
 				//checking Province
-				if (aggreDmsData.Province.toUpperCase() !== vechicalOwnerDetail.Region.toUpperCase()) {
-					return false;
-				}
-				//checking Address
-				if (aggreDmsData.Address.toUpperCase() !== vechicalOwnerDetail.StreetName.toUpperCase()) {
-					return false;
-				}
+				// if (aggreDmsData.Province.toUpperCase() !== vechicalOwnerDetail.Region.toUpperCase()) {
+				// 	return false;
+				// }
+				// //checking Address
+				// if (aggreDmsData.Address.toUpperCase() !== vechicalOwnerDetail.StreetName.toUpperCase()) {
+				// 	return false;
+				// }
 				//checking Postal Code
 				if (aggreDmsData.PostalCode.toUpperCase() !== vechicalOwnerDetail.PostalCode.toUpperCase()) {
 					return false;
