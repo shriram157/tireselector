@@ -126,7 +126,7 @@ sap.ui.define([
 					if (_that.userData.userContext.userAttributes.DealerCode !== undefined) {
 						_that.dealerCode = _that.userData.userContext.userAttributes.DealerCode[0];
 					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
-						_that.dealerCode = "2400599998";
+						_that.dealerCode = "2400599999";
 					} else {
 						_that.dealerCode = "";
 					}
