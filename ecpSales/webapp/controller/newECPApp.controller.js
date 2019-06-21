@@ -2183,9 +2183,9 @@ sap.ui.define([
 					return false;
 				}
 				//checking City
-				// if (aggreDmsData.City.toUpperCase() !== vechicalOwnerDetail.CityName.toUpperCase()) {
-				// 	return false;
-				// }
+				if (aggreDmsData.City.toUpperCase() !== vechicalOwnerDetail.CityName.toUpperCase()) {
+					return false;
+				}
 				//checking Province
 				// if (aggreDmsData.Province.toUpperCase() !== vechicalOwnerDetail.Region.toUpperCase()) {
 				// 	return false;

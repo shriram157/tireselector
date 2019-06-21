@@ -93,10 +93,19 @@
 #TreeTableBasic .sapUiTableHdrTitle {
     text-align: center!important;
 }
+
 #idSubmitMessg {
-	font-size:1rem;
+    font-size: 1rem;
 }
 
 html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
     outline: none!important;
+}
+
+.clClaimTable .sapMListTblHeader>.sapMTableTH {
+    background-color: #3f5161;
+}
+
+.clClaimTable .sapMListTblHeader>.sapMTableTH .sapMText {
+    color: #fff;
 }

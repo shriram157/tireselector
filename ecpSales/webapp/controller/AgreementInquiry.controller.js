@@ -90,10 +90,10 @@ sap.ui.define([
 
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("Yes"));
-					} else if (BenefitsFlag.toUpperCase() == "No" || BenefitsFlag.toUpperCase() == "N")  {
+					} else if (BenefitsFlag.toUpperCase() == "No" || BenefitsFlag.toUpperCase() == "N") {
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("No"));
-					}else{
+					} else {
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", "");
 					}
 
@@ -376,8 +376,32 @@ sap.ui.define([
 			//	LANGUAGE eq 'EN' and BCC_ECP_AGRMNT_NUM eq 'G50000104NTC04000'&$expand=ZC_ECP_BENEFITSET
 
 		},
+		fnDateFormat: function (val) {
+			var Oval;
+			if (val) {
+				//var oText = val.toUTCString();
+				Oval = moment.utc(val).format("YYYY-MM-DD");
+			} else {
+				Oval = null;
+			}
+			return Oval;
+
+		},
 		handlePressClaim: function (oEvent) {
-			console.log(oEvent);
+			var oAgr = this.getModel("LocalDataModel").getProperty("/AgreementNum");
+			var oClaimModel = this.getModel("ClaimServiceModel");
+			oClaimModel.read("/ZC_CLAIM_HEAD_NEW", {
+				urlParameters: {
+					"$filter": "AgreementNumber eq '" + oAgr + "'and WarrantyClaimType eq 'ZECP'"
+				},
+				success: $.proxy(function (data) {
+					this.getModel("LocalDataModel").setProperty("/ClaimModelData", data.results);
+				}, this),
+				error: function (error) {
+					console.log(error);
+				}
+			});
+
 			var oDialogBox = sap.ui.xmlfragment("zecp.view.fragments.ClaimHistory", this);
 			this.getView().addDependent(oDialogBox);
 			oDialogBox.open();
