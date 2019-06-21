@@ -2190,10 +2190,7 @@ sap.ui.define([
 				// if (aggreDmsData.Province.toUpperCase() !== vechicalOwnerDetail.Region.toUpperCase()) {
 				// 	return false;
 				// }
-				// //checking Address
-				// if (aggreDmsData.Address.toUpperCase() !== vechicalOwnerDetail.StreetName.toUpperCase()) {
-				// 	return false;
-				// }
+
 				//checking Postal Code
 				if (aggreDmsData.PostalCode.toUpperCase() !== vechicalOwnerDetail.PostalCode.toUpperCase()) {
 					return false;
