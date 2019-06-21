@@ -2175,17 +2175,17 @@ sap.ui.define([
 
 				// ApplicationOwnerData/CustomerName	
 				//checking First Name
-				if (aggreDmsData.CustomerName.toUpperCase() !== vechicalAgreementOwnerDetail.FirstName.toUpperCase()) {
+				if (aggreDmsData.CustomerName.toUpperCase().trim() !== vechicalAgreementOwnerDetail.FirstName.toUpperCase().trim()) {
 					return false;
 				}
 				//checking Last Name
-				if (aggreDmsData.CustomerLastName.toUpperCase() !== vechicalAgreementOwnerDetail.LastName.toUpperCase()) {
+				if (aggreDmsData.CustomerLastName.toUpperCase().trim() !== vechicalAgreementOwnerDetail.LastName.toUpperCase().trim()) {
 					return false;
 				}
 				//checking City
-				if (aggreDmsData.City.toUpperCase() !== vechicalOwnerDetail.CityName.toUpperCase()) {
-					return false;
-				}
+				// if (aggreDmsData.City.toUpperCase() !== vechicalOwnerDetail.CityName.toUpperCase()) {
+				// 	return false;
+				// }
 				//checking Province
 				// if (aggreDmsData.Province.toUpperCase() !== vechicalOwnerDetail.Region.toUpperCase()) {
 				// 	return false;
