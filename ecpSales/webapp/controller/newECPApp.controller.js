@@ -921,7 +921,7 @@ sap.ui.define([
 
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
-			zEcpModel.read("/zc_ecp_agreement", {
+			zEcpModel.read("/zc_ecp_duplicate_agreementSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oVin + "'and AgreementStatus eq 'Active'"
 				},
