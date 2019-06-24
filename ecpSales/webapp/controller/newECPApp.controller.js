@@ -593,7 +593,6 @@ sap.ui.define([
 		OnNextStep2: function () {
 
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
-
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oVin = this.getView().byId("idVinNum");
 			var oVal = oVin.getValue();
@@ -932,6 +931,9 @@ sap.ui.define([
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
 						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+							width: "30em",
+							my: "center center",
+							at: "center center",
 							onClose: $.proxy(function () {
 								this.getRouter().navTo("ApplicationList");
 							}, this)
@@ -941,6 +943,9 @@ sap.ui.define([
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
 						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+							width: "30em",
+							my: "center center",
+							at: "center center",
 							onClose: $.proxy(function () {
 								this.getRouter().navTo("ApplicationList");
 							}, this)
