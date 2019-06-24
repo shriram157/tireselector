@@ -1408,12 +1408,18 @@ sap.ui.define([
 
 				//Fixing Defect #11008 Hiding Surcharge boxes
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
-				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.mxMillage) && oMonthDef <= MaxDays) {
+				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.mxMillage) && oMonthDef <= MaxDays && !($.isEmptyObject(oidPlanCode))) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+				} else if ($.isEmptyObject(oidPlanCode)) {
+					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
+					this.getView().byId("idNewECPMsgStrip").setType("Error");
+					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+					oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
 				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.mxMillage) && oMonthDef > MaxDays) {
 					var TotaldayMonDif = this._fnDayHrSecond(oMonthDef - MaxDays);
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
