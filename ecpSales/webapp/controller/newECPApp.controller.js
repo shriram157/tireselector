@@ -2677,7 +2677,7 @@ sap.ui.define([
 		},
 		performCIC: function () {
 
-			var dealerCode = this.getModel("LocalDataModel").getProperty("/OwnerData/BusinessPartner");
+			var dealerCode = this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer");
 
 			if (!this.oECPData) {
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
