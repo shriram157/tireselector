@@ -2692,8 +2692,9 @@ sap.ui.define([
 				content: iframe,
 				beginButton: new Button({
 					text: 'Close',
-					press: function () {
+					press: $.proxy(function () {
 						console.log("on CLose");
+						console.log(this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer"));
 						var oBusinessModel = this.getModel("ApiBusinessModel");
 						oBusinessModel.read("/A_BusinessPartnerAddress", {
 							urlParameters: {
@@ -2702,6 +2703,7 @@ sap.ui.define([
 								"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
 							},
 							success: $.proxy(function (businessA) {
+								console.log(businessA.results[0]);
 								this.getModel("LocalDataModel").setProperty("/OwnerData", businessA.results[0]);
 								if (businessA.results != "") {
 									if (businessA.results[0].to_EmailAddress.results.length > 0) {
@@ -2732,47 +2734,9 @@ sap.ui.define([
 							}
 						});
 						dialog.close();
-					}
+					}, this)
 				}),
 				afterClose: $.proxy(function () {
-					console.log("hello world!");
-					var oBusinessModel = this.getModel("ApiBusinessModel");
-					oBusinessModel.read("/A_BusinessPartnerAddress", {
-						urlParameters: {
-							"$filter": "BusinessPartner eq '" + this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer") +
-								"' ",
-							"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
-						},
-						success: $.proxy(function (businessA) {
-							this.getModel("LocalDataModel").setProperty("/OwnerData", businessA.results[0]);
-							if (businessA.results != "") {
-								if (businessA.results[0].to_EmailAddress.results.length > 0) {
-									this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", businessA.results[0].to_EmailAddress.results[
-										0].EmailAddress);
-								} else {
-									this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", "");
-								}
-
-								if (businessA.results[0].to_PhoneNumber.results.length > 0) {
-									this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", businessA.results[0].to_PhoneNumber.results[
-										0].PhoneNumber);
-								} else {
-									this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", "");
-
-								}
-								if (businessA.results[0].to_FaxNumber.results.length > 0) {
-									this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", businessA.results[0].to_FaxNumber.results[
-										0].FaxNumber);
-								} else {
-									this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", "");
-
-								}
-							}
-						}, this),
-						error: function () {
-							console.log("Error");
-						}
-					});
 
 					dialog.destroy();
 				}, this)
