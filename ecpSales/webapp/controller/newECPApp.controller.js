@@ -923,7 +923,7 @@ sap.ui.define([
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 			zEcpModel.read("/zc_ecp_duplicate_agreementSet", {
 				urlParameters: {
-					"$filter": "VIN eq '" + oVin + "'and AgreementStatus eq 'Active'"
+					"$filter": "VIN eq '" + oVin + "'and ProcessingFlag eq 'N'"
 				},
 				success: $.proxy(function (data) {
 					var oLength = data.results.length;
