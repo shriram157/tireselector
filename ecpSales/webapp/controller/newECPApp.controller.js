@@ -2693,7 +2693,7 @@ sap.ui.define([
 				beginButton: new Button({
 					text: 'Close',
 					press: function () {
-						alert("on CLose");
+						console.log("on CLose");
 						var oBusinessModel = this.getModel("ApiBusinessModel");
 						oBusinessModel.read("/A_BusinessPartnerAddress", {
 							urlParameters: {
@@ -2735,7 +2735,7 @@ sap.ui.define([
 					}
 				}),
 				afterClose: $.proxy(function () {
-					alert("hello world!");
+					console.log("hello world!");
 					var oBusinessModel = this.getModel("ApiBusinessModel");
 					oBusinessModel.read("/A_BusinessPartnerAddress", {
 						urlParameters: {
