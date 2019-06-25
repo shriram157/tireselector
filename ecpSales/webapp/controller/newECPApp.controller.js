@@ -2677,7 +2677,7 @@ sap.ui.define([
 		},
 		performCIC: function () {
 
-			var dealerCode = this.getModel("LocalDataModel").getProperty("/OwnerData/0/BusinessPartner");
+			var dealerCode = this.getModel("LocalDataModel").getProperty("/OwnerData/BusinessPartner");
 
 			if (!this.oECPData) {
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -2695,7 +2695,7 @@ sap.ui.define([
 					text: 'Close',
 					press: $.proxy(function () {
 						console.log("on CLose");
-
+						console.log(this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer"));
 						var oBusinessModelOnSubmit = this.getModel("ApiBusinessModel");
 						oBusinessModelOnSubmit.read("/A_BusinessPartnerAddress", {
 							urlParameters: {
