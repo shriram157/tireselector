@@ -923,11 +923,11 @@ sap.ui.define([
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 			zEcpModel.read("/zc_ecp_duplicate_agreementSet", {
 				urlParameters: {
-					"$filter": "VIN eq '" + oVin + "'and ProcessingFlag eq 'N'"
+					"$filter": "VIN eq '" + oVin + "'"
 				},
 				success: $.proxy(function (data) {
-					var oLength = data.results.length;
-					if (oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oLength > 0) {
+					var oFlag = data.results[0].ProcessingFlag;
+					if (oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") {
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
 						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
@@ -939,7 +939,7 @@ sap.ui.define([
 							}, this)
 						});
 
-					} else if (oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oLength > 0) {
+					} else if (oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") {
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
 						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
