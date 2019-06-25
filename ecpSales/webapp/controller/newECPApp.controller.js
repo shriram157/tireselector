@@ -2694,76 +2694,98 @@ sap.ui.define([
 				beginButton: new Button({
 					text: 'Close',
 					press: $.proxy(function () {
-						console.log("on CLose");
-						console.log(this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer"));
-						var oBusinessModelOnSubmit = this.getModel("ApiBusinessModel");
-						oBusinessModelOnSubmit.read("/A_BusinessPartnerAddress", {
+
+						var oVehicleMaster = this.getView().getModel("VinModel");
+						oVehicleMaster.read("/zc_c_vehicle", {
 							urlParameters: {
-								"$filter": "BusinessPartner eq '" + dealerCode + "' ",
-								"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress,to_MobilePhoneNumber"
-
+								"$filter": "VehicleIdentificationNumber eq '" + this.getModel("LocalDataModel").getProperty(
+										"/ApplicationOwnerData/VIN") +
+									"' "
 							},
-							success: $.proxy(function (budata) {
+							success: $.proxy(function (vData) {
+								this.getModel("LocalDataModel").setProperty("/VehicleDetails", vData.results[0]);
 
-									this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
-									if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress
-											.results[
-												0].EmailAddress);
+								console.log(this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer"));
+								var oBusinessModelOnSubmit = this.getModel("ApiBusinessModel");
+								oBusinessModelOnSubmit.read("/A_BusinessPartnerAddress", {
+									urlParameters: {
+										"$filter": "BusinessPartner eq '" + this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer") +
+											"' ",
+										"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress,to_MobilePhoneNumber"
+
+									},
+									success: $.proxy(function (budata) {
+
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
+											if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress
+													.results[
+														0].EmailAddress);
+											}
+											if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
+													.results[
+														0].PhoneNumber);
+											}
+											if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber
+													.results[
+														0]
+													.FaxNumber);
+											}
+											if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
+												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber
+													.results[
+														0].MobilePhoneNumber);
+											}
+
+										},
+										this),
+									error: function () {
+										console.log("Error");
 									}
-									if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
-											.results[
-												0].PhoneNumber);
+								});
+
+								oBusinessModelOnSubmit.read("/A_BusinessPartner", {
+									urlParameters: {
+										"$filter": "BusinessPartner eq '" + this.getModel("LocalDataModel").getProperty("/VehicleDetails/EndCustomer") +
+											"' "
+									},
+									success: $.proxy(function (bpdata) {
+
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", bpdata.results[0].FirstName);
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", bpdata.results[0].LastName);
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[
+											0].BusinessPartnerCategory);
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[
+											0].BusinessPartnerCategory);
+										if (bpdata.results[0].BusinessPartnerCategory === "1") {
+											// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
+											// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
+
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].FirstName +
+												" " +
+												bpdata.results[
+													0].LastName);
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n")
+												.getResourceBundle()
+												.getText("Individual")); // added translation
+
+										} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].OrganizationBPName1);
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n")
+												.getResourceBundle()
+												.getText("Organization"));
+										}
+
+									}, this),
+									error: function () {
+										console.log("Error");
 									}
-									if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber.results[
-												0]
-											.FaxNumber);
-									}
-									if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber
-											.results[
-												0].MobilePhoneNumber);
-									}
+								});
 
-								},
-								this),
-							error: function () {
-								console.log("Error");
-							}
-						});
+							}, this)
 
-						oBusinessModelOnSubmit.read("/A_BusinessPartner", {
-							urlParameters: {
-								"$filter": "BusinessPartner eq '" + dealerCode + "' "
-							},
-							success: $.proxy(function (bpdata) {
-
-								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", bpdata.results[0].FirstName);
-								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", bpdata.results[0].LastName);
-								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
-								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
-								if (bpdata.results[0].BusinessPartnerCategory === "1") {
-									// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
-									// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
-
-									this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].FirstName + " " +
-										bpdata.results[
-											0].LastName);
-									this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle()
-										.getText("Individual")); // added translation
-
-								} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
-									this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].OrganizationBPName1);
-									this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle()
-										.getText("Organization"));
-								}
-
-							}, this),
-							error: function () {
-								console.log("Error");
-							}
 						});
 
 						dialog.close();
