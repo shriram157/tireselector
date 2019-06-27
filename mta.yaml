@@ -20,7 +20,7 @@ modules:
       NODE_TLS_REJECT_UNAUTHORIZED: 0
       OPTIMIZE_MEMORY: true
       UPS_NAME: TIRE_SELECTOR_APIM_CUPS
-      XS_APP_LOG_LEVEL: info
+      XS_APP_LOG_LEVEL: error
       XS_LOG_CONNECTION_DATA: true
       XS_LOG_REFERER: true
       XS_LOG_USER: true
@@ -41,12 +41,14 @@ modules:
       memory: 256M
    properties:
       OPTIMIZE_MEMORY: true
+      XS_APP_LOG_LEVEL: error
    provides:
     - name: tireSelector_XSJS_api
       properties:
          url: ${default-url}
    requires:
     - name: tireSelector_hdb
+    - name: application-logs_tireSelector
     - name: hdi_tireSelector_hdb
     - name: uaa_tireSelector
 
@@ -71,7 +73,7 @@ modules:
          ]
       OPTIMIZE_MEMORY: true
       SESSION_TIMEOUT: 60
-      XS_APP_LOG_LEVEL: info
+      XS_APP_LOG_LEVEL: error
    build-parameters:
       builder: grunt
       build-result: dist
