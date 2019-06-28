@@ -2090,6 +2090,7 @@ sap.ui.define([
 
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 				var objSave = this._fnObject("SAVE", "PENDING");
+				console.log(objSave);
 				var oBundle = this.getView().getModel("i18n").getResourceBundle();
 				var oEcpModel = this.getModel("EcpSalesModel");
 				this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
