@@ -1913,7 +1913,7 @@ sap.ui.define([
 				Dedctble: "",
 				VehSurchLst: "",
 				BccDtSrchrgFlg: "",
-				BccDefSrchrgAmt: this.oECPData.ZecpDefSurchrg,
+				BccDefSrchrgAmt: this.oECPData.ZecpDefSurchrg || "0.00",
 				BccAgrmntYrCd: "",
 				BccAgrmntSerNo: "0.00",
 				BccVehSrchrgFlg: "",
