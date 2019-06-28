@@ -1865,7 +1865,7 @@ sap.ui.define([
 				ZecpEmail: this.oECPData.ZecpEmail,
 				ZecpSubDate: this._fnDateFormat02(currentDate),
 				ZecpAutocode: this.oECPData.ZecpAutocode,
-				ZecpVehPrice: this.oECPData.ZecpVehPrice,
+				ZecpVehPrice: this.oECPData.ZecpVehPrice || "0.00",
 				ZecpAmtFin: this.oECPData.ZecpAmtFin || "0.00",
 				ZecpLienholder: this.oECPData.ZecpLienholder || "",
 				ZecpLienterms: this.oECPData.ZecpLienterms || "00",
@@ -1873,8 +1873,8 @@ sap.ui.define([
 				ZecpRetPrice: this.oECPData.ZecpRetPrice || "0.00",
 				ZecpDefSurchrg: this.oECPData.ZecpDefSurchrg || "0.00",
 				ZecpVehSurchrgAmt: this.oECPData.ZecpVehSurchrgAmt || "0.00",
-				ZecpListpurprice: this.oECPData.ZecpListpurprice,
-				ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt,
+				ZecpListpurprice: this.oECPData.ZecpListpurprice || "0.00",
+				ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt || "0.00",
 				ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
 				ZecpBenefitsFlg: this.getView().getModel("EcpFieldData").getProperty("/ZbenefitFlag"),
 				BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
@@ -1909,7 +1909,7 @@ sap.ui.define([
 				BccAgrmntDlrNum: this.getModel("LocalDataModel").getProperty("/currentIssueDealer"),
 				BccEcpAutoCd: this.oECPData.ZecpAutocode,
 				BccAgrmntExtcntr: "0.00",
-				BccAgrmntPrcAmt: this.oECPData.ZecpPlanpurchprice,
+				BccAgrmntPrcAmt: this.oECPData.ZecpPlanpurchprice || "0.00",
 				Dedctble: "",
 				VehSurchLst: "",
 				BccDtSrchrgFlg: "",
@@ -1917,7 +1917,7 @@ sap.ui.define([
 				BccAgrmntYrCd: "",
 				BccAgrmntSerNo: "0.00",
 				BccVehSrchrgFlg: "",
-				BccVehSrchrgAmt: this.oECPData.ZecpVehSurchrgAmt,
+				BccVehSrchrgAmt: this.oECPData.ZecpVehSurchrgAmt || "0.00",
 				BccDlrCommsnAmt: "0.00",
 				BccCdbCustNum: this.oECPData.ZecpCustNum,
 				BccAgrmntThruKm: "0.00",
@@ -1967,7 +1967,7 @@ sap.ui.define([
 				ZamtFincd: "0.00",
 				ZretailPrice: "0.00",
 				ZbenefitFlag: "",
-				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice
+				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice || "0.00"
 			};
 			return crudObj;
 		},
