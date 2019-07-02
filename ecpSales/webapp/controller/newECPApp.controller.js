@@ -447,10 +447,10 @@ sap.ui.define([
 					BccLstUpdUserid: "",
 					BccLstUpdTmstmp: "",
 					ZamtFincd: " ",
-					ZretailPrice: " ",
-					ZecpBenefitsFlg: "",
-					ZecpRoadhazard: "", //Added new entity for translation
-					ZbenefitFlag1: "", //Added new entity for translation
+					ZretailPrice: "",
+
+					// 	ZecpRoadhazard: "", //Added new entity for translation
+					// 	ZbenefitFlag1: "", //Added new entity for translation
 					ZecpPlanpurchprice: ""
 
 				});
