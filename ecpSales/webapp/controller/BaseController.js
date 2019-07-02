@@ -206,11 +206,11 @@ sap.ui.define([
 
 					case "TCI_Admin":
 
-						that.getModel("LocalDataModel").setProperty("/newAppLink", false);
+						that.getModel("LocalDataModel").setProperty("/newAppLink", true);
 						that.getModel("LocalDataModel").setProperty("/viewUpdateLink", true);
-						that.getModel("LocalDataModel").setProperty("/editableField", false);
-						that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
-						that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
+						that.getModel("LocalDataModel").setProperty("/editableField", true);
+						// 		that.getView().getModel("oSetProperty").setProperty("/oSecondaryState", false);
+						// 		that.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", false);
 						break;
 					case "TCI_User":
 
