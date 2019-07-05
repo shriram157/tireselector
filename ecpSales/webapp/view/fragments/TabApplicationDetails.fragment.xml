@@ -203,10 +203,10 @@
 							value="{path:'EcpFieldData>/ZecpOdometer', type : 'sap.ui.model.type.Number', constraints : { minLength : 1, maxLength : 7 }}"
 							liveChange="onChangeOdometer" id="idOdo" required="true" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>RoadHazard}"/>
-						<Text text="{EcpFieldData>/ZecpRoadhazard}"/>
+						<Text text="{EcpFieldData>/ZecpRoadhazard1}"/>
 						<!--changed the entity name from ZecpRoadhazard to ZecpRoadhazard1-->
 						<Label text="{i18n>BenefitsFlag}"/>
-						<Text text="{EcpFieldData>/ZecpBenefitsFlg}"/>
+						<Text text="{EcpFieldData>/ZbenefitFlag1}"/>
 						<!--changed the entity name from ZbenefitFlag to ZecpRoadhazard1-->
 					</f:content>
 				</f:SimpleForm>

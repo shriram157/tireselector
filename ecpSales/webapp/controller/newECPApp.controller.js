@@ -448,9 +448,9 @@ sap.ui.define([
 					BccLstUpdTmstmp: "",
 					ZamtFincd: " ",
 					ZretailPrice: "",
-
+					ZecpRoadhazard1: "",
 					// 	ZecpRoadhazard: "", //Added new entity for translation
-					// 	ZbenefitFlag1: "", //Added new entity for translation
+					ZbenefitFlag1: "", //Added new entity for translation
 					ZecpPlanpurchprice: ""
 
 				});
@@ -489,10 +489,10 @@ sap.ui.define([
 				var oOdoVal = oECPData.ZecpOdometer;
 
 				if (DifferTime <= 94670778000 && oOdoVal <= 50000) {
-					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", oBundle.getText("Yes"));
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("Yes"));
 				} else if (DifferTime > 94670778000 || oOdoVal > 50000) {
-					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", oBundle.getText("No"));
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("No"));
 				}
 
@@ -500,14 +500,14 @@ sap.ui.define([
 				var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
 				if (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT")) {
 					if (DifferTime < oDayMili) {
-						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", oBundle.getText("Yes"));
+						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", oBundle.getText("Yes"));
 					} else if (DifferTime > oDayMili) {
-						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", oBundle.getText("No"));
+						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", oBundle.getText("No"));
 					}
 				} else {
-					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", oBundle.getText("No"));
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", oBundle.getText("No"));
 				}
 
@@ -1078,14 +1078,14 @@ sap.ui.define([
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
 				if (this.DifferTime < oDayMili) {
-					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", this.oBundle.getText("Yes"));
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("Yes"));
 				} else if (this.DifferTime > oDayMili) {
-					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", this.oBundle.getText("No"));
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 				}
 			} else {
-				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", this.oBundle.getText("No"));
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
@@ -1308,8 +1308,7 @@ sap.ui.define([
 						this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
 						this.getView().byId("idNewECPMsgStrip").setType("Error");
 						oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-
-						return
+						return;
 					} else {
 						this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 						this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
@@ -1452,7 +1451,7 @@ sap.ui.define([
 				}
 
 				//In Case of used vechical benefit flag will always No
-				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", this.oBundle.getText("No"));
+				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			} else {
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);

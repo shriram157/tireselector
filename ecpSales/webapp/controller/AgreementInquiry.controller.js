@@ -75,7 +75,7 @@ sap.ui.define([
 						data.results[0].CancelFee));
 
 					//Fixing translation for RoadHazard Yes/No
-					var TireHazard = this.getModel("LocalDataModel").getProperty("/AgreementInfo/RoadHazard")
+					var TireHazard = this.getModel("LocalDataModel").getProperty("/AgreementInfo/RoadHazard");
 					if (TireHazard.toUpperCase() == "YES") {
 
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/RoadHazardTranslates", this.getView().getModel("i18n").getResourceBundle()
@@ -85,12 +85,12 @@ sap.ui.define([
 							.getText("No"));
 					}
 
-					var BenefitsFlag = this.getModel("LocalDataModel").getProperty("/AgreementInfo/BenefitsFlag")
+					var BenefitsFlag = this.getModel("LocalDataModel").getProperty("/AgreementInfo/BenefitsFlag");
 					if (BenefitsFlag.toUpperCase() == "YES" || BenefitsFlag.toUpperCase() == "Y") {
 
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("Yes"));
-					} else if (BenefitsFlag.toUpperCase() == "No" || BenefitsFlag.toUpperCase() == "N") {
+					} else if (BenefitsFlag.toUpperCase() == "NO" || BenefitsFlag.toUpperCase() == "N") {
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("No"));
 					} else {
