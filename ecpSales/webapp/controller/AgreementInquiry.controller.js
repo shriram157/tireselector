@@ -180,7 +180,7 @@ sap.ui.define([
 							this.getModel("LocalDataModel").setProperty("/PricingModelData", vedata.results[0]);
 
 							if (vedata.results[0].MAKE.toUpperCase() === "LEXUS") {
-								this.getModel("LocalDataModel").setProperty("/printBtnState", false);
+								this.getModel("LocalDataModel").setProperty("/printBtnState", true);
 
 							} else {
 								this.getModel("LocalDataModel").setProperty("/printBtnState", true);
