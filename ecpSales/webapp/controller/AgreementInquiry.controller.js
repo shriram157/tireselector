@@ -76,7 +76,7 @@ sap.ui.define([
 
 					//Fixing translation for RoadHazard Yes/No
 					var TireHazard = this.getModel("LocalDataModel").getProperty("/AgreementInfo/RoadHazard");
-					if (TireHazard.toUpperCase() == "YES") {
+					if (TireHazard.toUpperCase() == "YES" || TireHazard.toUpperCase() == "Y") {
 
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/RoadHazardTranslates", this.getView().getModel("i18n").getResourceBundle()
 							.getText("Yes"));
