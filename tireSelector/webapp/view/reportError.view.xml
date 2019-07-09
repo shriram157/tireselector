@@ -6,7 +6,7 @@
 				<customHeader>
 					<Bar class="sapUiSmallPaddingBeginEnd clCustomHeaderBg">
 						<contentLeft>
-							<Image id="idLexusLogo" src="images/LexusNew.png" width="100px"/>
+							<Image id="idLexusLogo" src="images/LexusNew.png" width="100px" densityAware="false"/>
 							<Text text="|" class="sapUiTinyMarginBeginEnd"/>
 							<Text class="clCustomFont" text="{i18n>PageTitle}"/>
 						</contentLeft>
