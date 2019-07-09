@@ -901,7 +901,7 @@ sap.ui.define([
 			var _oLinkPressed = oLink;
 			var _oSelectedScreen = _oLinkPressed.getSource().getProperty("text");
 			if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("PageTitle")) {
-				_that.getRouter().navTo("");
+				_that.getRouter().navTo("master");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ProductMarkups")) {
 				_that.getRouter().navTo("productMarkups");
 			} else if (_oSelectedScreen == _that.oI18nModel.getResourceBundle().getText("ReportError")) {
