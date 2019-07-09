@@ -1,4 +1,3 @@
-var _that;
 sap.ui.define([
 	"sap/ui/core/mvc/Controller",
 	"sap/ui/core/routing/History",
@@ -7,11 +6,11 @@ sap.ui.define([
 	"use strict";
 
 	return Controller.extend("tireSelector.controller.BaseController", {
-		
+
 		getRouter: function () {
 			return this.getOwnerComponent().getRouter();
 		},
-		
+
 		getModel: function (sName) {
 			return this.getOwnerComponent().getModel(sName);
 		},
@@ -24,20 +23,22 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 
+		// This code makes no sense. Why would you want to send an email to yourself to report the error?
 		onShareEmailPress: function () {
+			var email, logonName;
 			$.ajax({
 				dataType: "json",
 				url: "/appdata/whoAmI",
 				type: "GET",
 				success: function (userData) {
-					_that.email = userData.userInfo.email;
-					_that.logonName = userData.userInfo.logonName;
+					email = userData.userContext.userInfo.email;
+					logonName = userData.userContext.userInfo.logonName;
 				},
 				error: function (oError) {}
 			});
 			var dealer = {
-				name: _that.logonName,
-				email: _that.email
+				name: logonName,
+				email: email
 			};
 			sap.m.URLHelper.triggerEmail(dealer.email);
 		}
