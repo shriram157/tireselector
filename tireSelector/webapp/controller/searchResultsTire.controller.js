@@ -325,10 +325,10 @@ sap.ui.define([
 							sap.ushell.components.oTable.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 							sap.ushell.components.FacetFilters.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 							that.oTireFitmentJSONModel.updateBindings(true);
+							that.oBundle = that.getView().getModel("i18n").getResourceBundle();
 							if (oData.results.length > 0) {
 								that.tempModel.setData(oData);
 								that.tempModel.updateBindings(true);
-								that.oBundle = that.getView().getModel("i18n").getResourceBundle(); //that.oBundle.getText("ErrNOData")
 								if (that.tempModel.getData().results.length <= 0) {
 									sap.ui.core.BusyIndicator.hide();
 									sap.m.MessageBox.error(
@@ -631,7 +631,6 @@ sap.ui.define([
 									}
 								});
 							}
-
 						},
 						that),
 					error: function (oError) {
