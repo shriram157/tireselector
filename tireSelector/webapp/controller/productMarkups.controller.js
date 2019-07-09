@@ -256,7 +256,7 @@ sap.ui.define([
 
 			if (postSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					_localScope.oBundle.getText("Successfull"), {
+					_localScope.oBundle.getText("Successful"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							_localScope.callUpdatedProdMarkupTab();
@@ -265,7 +265,7 @@ sap.ui.define([
 				);
 			} else if (updateSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					_localScope.oBundle.getText("Successfull"), {
+					_localScope.oBundle.getText("Successful"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							ChngedMarkupValsArr = [];
@@ -352,7 +352,7 @@ sap.ui.define([
 			}
 			if (postSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					_localScope.oBundle.getText("Successfull"), {
+					_localScope.oBundle.getText("Successful"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							_localScope.callUpdatedProdMarkupTab();
@@ -361,7 +361,7 @@ sap.ui.define([
 				);
 			} else if (updateSuccessFlag == true) {
 				sap.m.MessageBox.success(
-					_localScope.oBundle.getText("Successfull"), {
+					_localScope.oBundle.getText("Successful"), {
 						actions: [sap.m.MessageBox.Action.CLOSE],
 						onClose: function (oAction) {
 							_localScope.callUpdatedProdMarkupTab();
