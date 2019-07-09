@@ -20,7 +20,6 @@ sap.ui.define([
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
-				this.sPrefix = "/tireSelector-dest"; //ecpSales_node_secured
 				_that.DealerData = {
 					"Attribute": "01",
 					"BusinessPartner": "2400042120",
@@ -48,11 +47,8 @@ sap.ui.define([
 				_that._oDealerModel.updateBindings(true);
 				_that.getView().setModel(_that._oDealerModel, "DealerModel");
 				sap.ui.getCore().setModel(_that._oDealerModel, "DealerModel");
-			} else {
-				this.sPrefix = "";
 			}
-			// this.sPrefix = "";
-			_that.nodeJsUrl = this.sPrefix + "/node";
+			_that.nodeJsUrl = "/node";
 
 			_that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,

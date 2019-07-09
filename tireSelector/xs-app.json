@@ -38,15 +38,7 @@
 			"$XSAPPNAME.View_Tire_Quotes"
 		]
 	}, {
-		"source": "/xsodata(.*)",
-		"destination": "tireSelector-xsjs-backend",
-		"csrfProtection": false,
-		"scope": [
-			"$XSAPPNAME.Manage_Product_Markups",
-			"$XSAPPNAME.View_Tire_Quotes"
-		]
-	}, {
-		"source": "(.*)(.xsodata)",
+		"source": "/tireSelector/xsodata(.*)",
 		"destination": "tireSelector-xsjs-backend",
 		"csrfProtection": false,
 		"scope": [

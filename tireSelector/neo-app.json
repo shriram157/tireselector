@@ -19,34 +19,26 @@
 		},
 		"description": "SAPUI5 Test Resources"
 	}, {
+		"path": "/appdata",
+		"target": {
+			"type": "destination",
+			"name": "tireselector-node",
+			"entryPath": "/appdata"
+		}
+	}, {
 		"path": "/node",
 		"target": {
 			"type": "destination",
-			"name": "tireSelector-dest"
-		},
-		"description": "tireSelector-dest"
+			"name": "tireselector-node",
+			"entryPath": "/node"
+		}
 	}, {
-		"path": "/tireSelector-dest",
+		"path": "/tireSelector/xsodata",
 		"target": {
 			"type": "destination",
-			"name": "tireSelector-dest"
-		},
-		"description": "tireSelector-dest"
-	}, {
-		"path": "/TireSelector_Xsodata",
-		"target": {
-			"type": "destination",
-			"name": "TireSelector_Xsodata"
-		},
-		"description": "TireSelector_Xsodata"
-	}, {
-		"path": "/sap/opu/odata",
-		"target": {
-			"type": "destination",
-			"name": "S4HANA_GW",
-			"entryPath": "/sap/opu/odata"
-		},
-		"description": "DG2 200"
+			"name": "tireselector-xsjs",
+			"entryPath": "/tireSelector/xsodata"
+		}
 	}],
 	"sendWelcomeFileRedirect": true
 }

@@ -22,13 +22,9 @@ sap.ui.define([
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 			if (sLocation_conf == 0) {
-				this.sPrefix = "/tireSelector-dest"; 
 				that.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
-			} else {
-				this.sPrefix = "";
 			}
-			// this.sPrefix = "";
-			that.nodeJsUrl = this.sPrefix + "/node";
+			that.nodeJsUrl = "/node";
 
 			that.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
