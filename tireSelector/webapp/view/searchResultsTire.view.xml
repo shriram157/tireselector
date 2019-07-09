@@ -62,11 +62,11 @@
 								<t:Column id="ID_TireFitment" sortProperty="{i18n>TireFitment}" filterProperty="{i18n>TireFitment}" width="7rem">
 									<Label text="{i18n>TireFitment}"/>
 									<t:template>
-										<Text text="{path:'TireFitmentJSONModel>Tire Fitment'}" app:colorClass="{TireFitmentJSONModel>colorCell}" wrapping="false" id="cell_Fitment">
+										<Text text="{path:'TireFitmentJSONModel>Tire Fitment'}" wrapping="false" id="cell_Fitment">
 											<customData>
 												<core:CustomData key="colorClass"
-													value="{=${TireFitmentJSONModel>localLang}==='E' ? ${TireFitmentJSONModel>Tire Fitment}:${TireFitmentJSONModel>Utilisation de pneu}}"
-													writeToDom="true"/>
+													value="{=${TireFitmentJSONModel>localLang} === 'E' ? ${TireFitmentJSONModel>Tire Fitment} : ${TireFitmentJSONModel>localLang} === 'F' ? ${TireFitmentJSONModel>Utilisation de pneu} : ''}"
+													writeToDom="{=!!${TireFitmentJSONModel>localLang}}"/>
 											</customData>
 										</Text>
 									</t:template>
