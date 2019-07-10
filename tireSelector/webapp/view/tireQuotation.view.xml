@@ -40,9 +40,10 @@
 							<Label text=""/>
 							<Text text="{DealerModel>/DealerData/BusinessPartnerName}"/>
 							<Label text=""/>
-							<Text text="{DealerModel>/DealerData/BusinessPartnerAddress1}{DealerModel>/DealerData/BusinessPartnerAddress2} - {DealerModel>/DealerData/Region}"/>
+							<Text
+								text="{DealerModel>/DealerData/BusinessPartnerAddress1}{DealerModel>/DealerData/BusinessPartnerAddress2} - {DealerModel>/DealerData/Region}"/>
 							<Label text="{i18n>DealerTel}"/>
-							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone"  liveChange="onUserDealerPhoneChange"/>
+							<Input type="Text" value="{TireQuoteModel>/PhoneNumber}" id="DealerPhone" liveChange="onUserDealerPhoneChange"/>
 							<Label text="{i18n>QuoteDate}" required="true"/>
 							<DatePicker id="id_QuoteDate" value="{TireQuoteModel>/CurrentDate}" valueFormat="MM-dd-yyyy" displayFormat="MM-dd-yyyy"
 								change="handleQuoteDateChange" class="sapUiSmallMarginBottom"/>
@@ -54,21 +55,16 @@
 							<Input type="Text" value="{TireQuotationModel>/ModelDesc}" id="ID_SeriesYear"/>
 							<Label text="{i18n>VIN}"/>
 							<Input type="Text" value="{TireQuotationModel>/VIN}" id="ID_VINQuote"/>
-							
 							<Label text="{i18n>Name}" labelFor="nameMandat"/>
 							<Input type="Text" value="{TireQuotationModel>/CustName}" id="nameMandat" required="false"/>
-							
 							<Label text="{i18n>Address}" labelFor="addressMandat"/>
 							<Input type="Text" value="{TireQuotationModel>/CustAddress}" id="addressMandat" required="false"/>
-							
 							<Label text="{i18n>PostalCode}" labelFor="postalCodeMandat"/>
 							<Input type="Text" value="{TireQuotationModel>/CustPostalCode}" id="postalCodeMandat" required="false"/>
-							
 							<Label text="{i18n>Phone}" labelFor="phoneMandat"/>
-							<Input type="Text" value="{path:'TireQuotationModel>/CustPhone', formatter: '.userInputFormatPhoneNumber'}" id="phoneMandat" required="false" liveChange="onUserInputChange"/>
-							
+							<Input type="Text" value="{path:'TireQuotationModel>/CustPhone', formatter: '.userInputFormatPhoneNumber'}" id="phoneMandat"
+								required="false" liveChange="onUserInputChange"/>
 							<Label text="{i18n>CreditApp}"/>
-							
 							<Input type="Text" value="" liveChange="ChangeLabelMandatory"/>
 						</f:content>
 					</f:SimpleForm>
@@ -96,7 +92,8 @@
 										<Text id="TireTxt2" text="{TireQuotationModel>/TireSize} - {TireQuotationModel>/TireLoad} - {TireQuotationModel>/TireSpeed}"/>
 										<Text id="TireTxt3" text="{TireQuotationModel>/Material}"/>
 									</VBox>
-									<Input value="{path:'TireQuotationModel>/Retails', formatter: '.addDollarSign'}" id="id_tireUnitPrice" submit="getUnitPrice" change ="changeUnitPrice"/>
+									<Input value="{path:'TireQuotationModel>/Retails', formatter: '.addDollarSign'}" id="id_tireUnitPrice" submit="getUnitPrice"
+										change="changeUnitPrice"/>
 									<Input value="" id="id_tireQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/TiresPrice', formatter: '.addDollarSign'}" id="id_tirePrice" editable="false"/>
 								</cells>
@@ -217,12 +214,8 @@
 									<Label text=""/>
 									<VBox>
 										<!--<Label text="{i18n>EnvoFee} (${TireQuotationModel>/EHFPRice} {i18n>FeeDescription})" id="id_EHFDescp"/>-->
-										
 										<Label text="{i18n>EnvoFee} ({i18n>FeeDescription})" id="id_EHFDescp"/>
-										
-										<Input value="{path:'TireQuotationModel>/EHFPRice'}" required="true" id="id_EhfPrice" liveChange="calculateEnvFee"/>
-										                
-										
+										<Input value="{path:'TireQuotationModel>/EHFPRice'}" required="true" id="id_EhfPrice" liveChange="calculateEnvFee" width="50%"/>
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/EHFPriceSum', formatter: '.addDollarSign'}" id="id_freeDescp" editable="false"/>
 								</cells>
@@ -261,7 +254,8 @@
 								<cells>
 									<VBox>
 										<Label text="{i18n>DealerMessage}"/>
-										<TextArea id="dealerTxt" placeholder="{i18n>EnterText}" value="{TireQuotationModel>/dealerMessage}"  maxLength="350" showExceededText="false" width="100%" liveChange="textCount"/>
+										<TextArea id="dealerTxt" placeholder="{i18n>EnterText}" value="{TireQuotationModel>/dealerMessage}" maxLength="350" showExceededText="false"
+											width="100%" liveChange="textCount"/>
 										<Text id="textCount" text="" class="sapUiTinyMarginTop"/>
 									</VBox>
 									<Input value="" visible="{TireQuoteModel>/enableInput}"/>
@@ -278,7 +272,7 @@
 					</OverflowToolbar>
 				</content>
 				<footer>
-					<Toolbar> </Toolbar>
+					<Toolbar></Toolbar>
 				</footer>
 			</Page>
 		</pages>

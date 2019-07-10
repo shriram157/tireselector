@@ -7,9 +7,9 @@ sap.ui.define([
 	"sap/m/PDFViewer",
 ], function (Controller, JSONModel, History, BaseController, MessageToast, PDFViewer) {
 	"use strict";
-	
+
 	var _this, sSelectedLocale, sDivision, DivUser, localLang, oSuggestedBpData;
-	
+
 	return BaseController.extend("tireSelector.controller.tireQuotation", {
 		onInit: function () {
 			_this = this;
@@ -418,7 +418,7 @@ sap.ui.define([
 								});
 							}
 						});
-						_this.oBundle = _this.getView().getModel("i18n").getResourceBundle(); 
+						_this.oBundle = _this.getView().getModel("i18n").getResourceBundle();
 						_this.oProductCategoryModel = new JSONModel();
 						_this.getView().setModel(_this.oProductCategoryModel, "ProductCategoryModel");
 						_this.oProductCategoryModel.setData(_this.matData);
@@ -1143,19 +1143,21 @@ sap.ui.define([
 			_this.oTirePriceModel.updateBindings(true);
 			_this.oTireQuotationModel.updateBindings(true);
 		},
-		
-		calculateEnvFee:function (oEvt){
-		var currentQty = _this.getView().byId("id_RHPsQty").getValue();	
-				var dataRes = _this.oTireQuotationModel.getData();
 
-			
-				dataRes.EHFPriceSum = _this.decimalFormatter(Number(currentQty * dataRes.EHFPRice));
-						_this._oViewModel.setProperty("/enableFee", true);
-						_this._oViewModel.updateBindings(true);	
-										
+		calculateEnvFee: function (oEvt) {
+			var currentQty = this.getView().byId("id_tireQty").getValue();
+			var dataRes = _this.oTireQuotationModel.getData();
 
+			dataRes.EHFPRice = this.getView().byId("id_EhfPrice").getValue();
+
+			dataRes.EHFPriceSum = _this.decimalFormatter(Number(currentQty * dataRes.EHFPRice));
+
+			_this._oViewModel.setProperty("/enableFee", true);
+			_this._oViewModel.updateBindings(true);
+
+			_this.oTireQuotationModel.updateBindings(true);
+			_this.oTirePriceModel.updateBindings(true);
 		},
-		
 
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
