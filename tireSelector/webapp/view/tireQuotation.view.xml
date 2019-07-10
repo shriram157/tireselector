@@ -216,7 +216,13 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>EnvoFee} (${TireQuotationModel>/EHFPRice} {i18n>FeeDescription})" id="id_EHFDescp"/>
+										<!--<Label text="{i18n>EnvoFee} (${TireQuotationModel>/EHFPRice} {i18n>FeeDescription})" id="id_EHFDescp"/>-->
+										
+										<Label text="{i18n>EnvoFee} ({i18n>FeeDescription})" id="id_EHFDescp"/>
+										
+										<Input value="{path:'TireQuotationModel>/EHFPRice'}" required="true" id="id_EhfPrice" liveChange="calculateEnvFee"/>
+										                
+										
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/EHFPriceSum', formatter: '.addDollarSign'}" id="id_freeDescp" editable="false"/>
 								</cells>

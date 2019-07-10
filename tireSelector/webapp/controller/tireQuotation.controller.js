@@ -1143,6 +1143,19 @@ sap.ui.define([
 			_this.oTirePriceModel.updateBindings(true);
 			_this.oTireQuotationModel.updateBindings(true);
 		},
+		
+		calculateEnvFee:function (oEvt){
+		var currentQty = _this.getView().byId("id_RHPsQty").getValue();	
+				var dataRes = _this.oTireQuotationModel.getData();
+
+			
+				dataRes.EHFPriceSum = _this.decimalFormatter(Number(currentQty * dataRes.EHFPRice));
+						_this._oViewModel.setProperty("/enableFee", true);
+						_this._oViewModel.updateBindings(true);	
+										
+
+		},
+		
 
 		onMenuLinkPress: function (oLink) {
 			var _oLinkPressed = oLink;
