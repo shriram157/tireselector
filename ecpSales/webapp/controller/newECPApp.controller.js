@@ -1970,6 +1970,9 @@ sap.ui.define([
 			return crudObj;
 		},
 		onSaveApp: function (isFromSubmit) {
+			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_RET_PRICE");
+			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
+
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oOdometer = this.getView().byId("idOdoVal");
 			var oOdoVal = oOdometer.getValue();
@@ -1993,10 +1996,13 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterMandatoryFields"));
-			} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice") > 9999) {
+			} else if (parseInt(planPrice) > parseInt(retPrice)) {
+
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ExceedPlanPrice"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
+
 			} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpLienholder") == "" && this.getView().getModel("EcpFieldData").getProperty(
 					"/ZecpLienterms") == "" && this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") != "") {
 				this.getModel("LocalDataModel").setProperty("/AmtFinReq", false);
@@ -2117,16 +2123,20 @@ sap.ui.define([
 		},
 
 		onEnterPlanPurchasePrice: function (oEvent) {
+			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oval = oEvent.getParameters().value;
-			if (oval > 9999) {
+			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_RET_PRICE");
+			console.log(retPrice);
+			if (parseInt(oval) <= parseInt(retPrice)) {
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStrip").setText("");
+			} else {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ExceedPlanPrice"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
-			} else {
-				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-				this.getView().byId("idNewECPMsgStrip").setText("");
+
 			}
 		},
 
@@ -2157,19 +2167,31 @@ sap.ui.define([
 				"ZecpBenefitsFlg": oECPData.ZecpBenefitsFlg
 			};
 
-			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
-					"/ApplicationOwnerData/VIN") +
-				"')", obj, {
-					method: "PUT",
-					success: $.proxy(function (response) {
-						oEcpModel.refresh();
-						this.getRouter().navTo("ApplicationList");
-						MessageToast.show(oBundle.getText("UpdatedDataHasbeenSavedSuccessFully"));
-					}, this),
-					error: function () {
-						MessageToast.show(oBundle.getText("PleaseTryAgainToSave"));
-					}
-				});
+			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_RET_PRICE");
+			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
+			if (parseInt(planPrice) > parseInt(retPrice)) {
+
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(oBundle.getText("ExceedPlanPrice"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
+
+			} else {
+				oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
+						"/ApplicationOwnerData/VIN") +
+					"')", obj, {
+						method: "PUT",
+						success: $.proxy(function (response) {
+							oEcpModel.refresh();
+							this.getRouter().navTo("ApplicationList");
+							MessageToast.show(oBundle.getText("UpdatedDataHasbeenSavedSuccessFully"));
+						}, this),
+						error: function () {
+							MessageToast.show(oBundle.getText("PleaseTryAgainToSave"));
+						}
+					});
+			}
+
 		},
 		//Auth: Vinay
 		//Check and Validate DMS data with Vechical owner to Verify Address Defect_ID: 9618
