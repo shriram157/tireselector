@@ -24,7 +24,6 @@
 												<Text text="{LocalDataModel>/AgrOwnrSectonAddress_Name}"/>
 												<!--<Text text="{path: 'LocalDataModel>/AgrOwnrSectonAddress/Name', formatter:'zecp.utils.formatter.bPNameA'}"/>-->
 												<!--<Text text="{LocalDataModel>/AgrOwnrSectonAddress/FirstName} {LocalDataModel>/AgrOwnrSectonAddress/LastName}" visible="{path: 'LocalDataModel>/AgrOwnrSectonAddress/BusinessPartnerCategory', formatter:'zecp.utils.formatter.bPIndvType'}"/>-->
-
 												<Label text="{i18n>Address}"/>
 												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/StreetName}"/>
 												<Label text="{i18n>City}"/>
@@ -56,7 +55,6 @@
 												<Label text="{i18n>Name}"/>
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress_Name}"/>
 												<!--<Text text="{path: 'LocalDataModel>/VechOwnrSectonAddress/Name', formatter:'zecp.utils.formatter.bPName'}"/>-->
-												
 												<Label text="{i18n>Address}"/>
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/StreetName}"/>
 												<Label text="{i18n>City}"/>
@@ -116,6 +114,8 @@
 											<f:content>
 												<Label text="{i18n>PlanCode}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/PlanType}"/>
+												<Label text="{i18n>PlanPrice}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/Agreementprice}"/>
 												<Label text="{i18n>TransferFee}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/Deductible}"/>
 												<Label text="{i18n>Deductible}"/>
@@ -123,8 +123,6 @@
 												<Label text="{i18n>CancelFee}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/CancelFee}"/>
 												<!--<Text text="{ parts: [ 'LocalDataModel>/AgreementInfo/PlanType' , 'LocalDataModel>/AgreementInfo/CancelFee'], formatter : 'zecp.utils.formatter.enquiryPageCnclFee'}"/>-->
-												
-												
 												<Label text="{i18n>DeferredSurcharge}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/SurchargeAmount}"/>
 												<Label text="{i18n>VehicleSurcharge}"/>
@@ -181,11 +179,11 @@
 												<Label text="{i18n>Dealership}"/>
 												<!--<Text text="{LocalDataModel>/DealerData/BusinessPartnerName}"/>-->
 												<Text text="{LocalDataModel>/DealerData/OrganizationBPName1}"/>
-												
 												<Label text="{i18n>PreOwnedCert}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/PROWNDCERT}"/>
 												<Label text="{i18n>TransferDate}"/>
-												<Text text="{path:'LocalDataModel>/AgreementInfo/TrfnrDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+												<Text
+													text="{path:'LocalDataModel>/AgreementInfo/TrfnrDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<Label text="{i18n>TransferOdometer}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/TrfnrOdometer}"/>
 											</f:content>
@@ -197,7 +195,7 @@
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<uxap:ObjectPageSection  title="{i18n>BenefitCoverages}">
+			<uxap:ObjectPageSection title="{i18n>BenefitCoverages}">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="{i18n>BenefitCoverages}">
 						<uxap:blocks>
@@ -232,7 +230,8 @@
 							<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
 								<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
 								<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>
-								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf" enabled="{LocalDataModel>/printBtnState}"/>
+								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
+									enabled="{LocalDataModel>/printBtnState}"/>
 							</HBox>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
