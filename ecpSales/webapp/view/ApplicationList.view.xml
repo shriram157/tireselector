@@ -18,7 +18,7 @@
 												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
 											<Label text="{i18n>DealerCode}" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
 											<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer"
-												items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'LocalDataModel>BusinessPartner' }, length:750 }">
+												items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'BusinessPartner' }, length:750 }">
 												<core:ListItem key="{LocalDataModel>BusinessPartnerKey}" text="{path:'LocalDataModel>BusinessPartner'}"
 													additionalText="{LocalDataModel>BusinessPartnerName}"/>
 											</Select>
