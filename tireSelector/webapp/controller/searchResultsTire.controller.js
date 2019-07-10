@@ -834,9 +834,10 @@ sap.ui.define([
 			var oPath = {};
 			var Data = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.getParameters().rowBindingContext.sPath);
 
+			// TODO: look into a better way to escape chars e.g. using encodeURIComponent()
 			oPath.TireFitment = Data.TireFitment;
-			oPath.TireSpeed = Data.TireSpeed.replace("/", "%2F");
-			oPath.TireLoad = Data.TireLoad.replace("/", "%2F");
+			oPath.TireSpeed = Data.TireSpeed.replace(/\//gi, "%2F");
+			oPath.TireLoad = Data.TireLoad.replace(/\//gi, "%2F");
 			oPath.TireBrand = Data.TireBrand;
 			oPath.TireCategory = Data.TireCategory;
 			oPath.TireBrandID = Data.TireBrandID;
@@ -846,8 +847,8 @@ sap.ui.define([
 			oPath.DealerNet = Data.DealerNet;
 			oPath.Retails = Data.Retails;
 			oPath.Profit = Data.Profit;
-			oPath.TireSize = Data.TireSize.replace("/", "%2F");
-			oPath.MatDesc = Data.MatDesc.replace("/", "%2F");
+			oPath.TireSize = Data.TireSize.replace(/\//gi, "%2F");
+			oPath.MatDesc = Data.MatDesc.replace(/\//gi, "%2F");
 			oPath.Model = Data.Model;
 			oPath.Preview_Markup_Percentage = Data.Preview_Markup_Percentage;
 			oPath.Live_Markup_Percentage = Data.Live_Markup_Percentage;

@@ -315,10 +315,10 @@ sap.ui.define([
 				_this.rowData.VehicleSeries = _this.rowData.VehicleSeries;
 				_this.rowData.VehicleSeriesDescp = _this.rowData.VehicleSeriesDescp;
 				_this.rowData.ModelDesc = _this.rowData.ModelDesc;
-				_this.rowData.TireSize = _this.rowData.TireSize.replace("%2F", "/");
-				_this.rowData.MatDesc = _this.rowData.MatDesc.replace("%2F", "/");
-				_this.rowData.TireLoad = _this.rowData.TireLoad.replace("%2F", "/");
-				_this.rowData.TireSpeed = _this.rowData.TireSpeed.replace("%2F", "/");
+				_this.rowData.TireSize = _this.rowData.TireSize.replace(/%2F/gi, "/");
+				_this.rowData.MatDesc = _this.rowData.MatDesc.replace(/%2F/gi, "/");
+				_this.rowData.TireLoad = _this.rowData.TireLoad.replace(/%2F/gi, "/");
+				_this.rowData.TireSpeed = _this.rowData.TireSpeed.replace(/%2F/gi, "/");
 				_this.rowData.ProvincialTax = "";
 				_this.rowData.FederalTax = "";
 				_this.rowData.ProvincialTaxSum = "";
@@ -807,7 +807,7 @@ sap.ui.define([
 				headers: {
 					"X-Csrf-Token": "Fetch"
 				},
-				url: that.url,
+				url: that.url + "?$format=json",
 				success: function (data, textStatus, request) {
 					that.csrfToken = request.getResponseHeader('X-Csrf-Token');
 					$.ajax({
