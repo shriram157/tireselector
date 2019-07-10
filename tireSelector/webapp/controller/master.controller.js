@@ -874,6 +874,11 @@ sap.ui.define([
 		},
 
 		navToSelectTire: function (oEvtModel) {
+			// Do nothing on empty row
+			if (!oEvtModel.getParameter("rowBindingContext")) {
+				return;
+			}
+
 			var oBj = {};
 			oBj.SearchOptionVehicle = _that.SearchOptionVehicle.getSelectedKey();
 			if (_that.SearchOptionVehicle.getSelectedItem() != null) {

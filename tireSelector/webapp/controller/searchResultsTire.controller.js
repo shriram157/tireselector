@@ -825,6 +825,11 @@ sap.ui.define([
 		//Facet Filter logic ends here
 
 		onRowPress: function (oRowEvt) {
+			// Do nothing on empty row
+			if (!oRowEvt.getParameter("rowBindingContext")) {
+				return;
+			}
+
 			var oPath = {};
 			var Data = oRowEvt.getSource().getModel("TireFitmentJSONModel").getProperty(oRowEvt.getParameters().rowBindingContext.sPath);
 
