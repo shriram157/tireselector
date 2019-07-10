@@ -200,8 +200,9 @@ sap.ui.define([
 			jQuery.sap.delayedCall(5000, that, function () {
 				that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
 					success: $.proxy(function (oDealerContactData) {
-						sap.ushell.components.dealerPhoneNumber = oDealerContactData.results[0].PhoneNumber;
-						sap.ui.getCore().getModel("DealerModel").getData().DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
+						var dealerPhoneNumber = oDealerContactData.results.length > 0 ? oDealerContactData.results[0].PhoneNumber : null;
+						sap.ushell.components.dealerPhoneNumber = dealerPhoneNumber;
+						sap.ui.getCore().getModel("DealerModel").getData().DealerData.PhoneNumber = dealerPhoneNumber;
 						sap.ui.getCore().getModel("DealerModel").updateBindings(true);
 					}, that),
 					error: function (oError) {

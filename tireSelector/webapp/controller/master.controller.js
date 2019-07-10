@@ -307,7 +307,7 @@ sap.ui.define([
 			var queryString1 = "(BusinessPartner='" + dealer + "',AddressID='" + addressID + "')/to_PhoneNumber";
 			_that.oBusinessPartnerModel.read("/A_BusinessPartnerAddress" + queryString1, {
 				success: $.proxy(function (oDealerContactData) {
-					_that.DealerData.PhoneNumber = oDealerContactData.results[0].PhoneNumber;
+					_that.DealerData.PhoneNumber = oDealerContactData.results.length > 0 ? oDealerContactData.results[0].PhoneNumber : null;
 				}, _that),
 				error: function (oError) {
 					// sap.m.MessageBox.error(
