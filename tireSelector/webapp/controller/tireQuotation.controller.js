@@ -807,7 +807,7 @@ sap.ui.define([
 				headers: {
 					"X-Csrf-Token": "Fetch"
 				},
-				url: that.url,
+				url: that.url + "?$format=json",
 				success: function (data, textStatus, request) {
 					that.csrfToken = request.getResponseHeader('X-Csrf-Token');
 					$.ajax({
