@@ -1038,7 +1038,7 @@ sap.ui.define([
 				_this._oViewModelTax.updateBindings(true);
 			}
 			if (dataRes.ProvincialTax != "") {
-				dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+				dataRes.ProvincialTaxSum = _this.decimalFormatter((dataRes.subTotal / 100) * Number(dataRes.ProvincialTax));
 				_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
 				_this._oViewModelTax.setProperty("/enablePTC", true);
 				_this.oTireQuotationModel.updateBindings(true);
@@ -1180,7 +1180,7 @@ sap.ui.define([
 				_this._oViewModelTax.updateBindings(true);
 			}
 			if (dataRes.ProvincialTax != "") {
-				dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+				dataRes.ProvincialTaxSum = _this.decimalFormatter((	dataRes.subTotal / 100) * Number(dataRes.ProvincialTax));
 				_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
 				_this._oViewModelTax.setProperty("/enablePTC", true);
 				_this.oTireQuotationModel.updateBindings(true);
@@ -1215,8 +1215,10 @@ sap.ui.define([
 					_this._oViewModelTax.setProperty("/enableFee", true);
 					_this._oViewModelTax.updateBindings(true);
 				} else {
-					_this._oViewModelTax.setProperty("/enableFee", false);
+					_this._oViewModelTax.setProperty("/enableFee", true);
 					_this._oViewModelTax.updateBindings(true);
+					// _this._oViewModelTax.setProperty("/enableFee", false);
+					// _this._oViewModelTax.updateBindings(true);
 				}
 			}
 
