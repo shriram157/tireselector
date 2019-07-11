@@ -1157,6 +1157,77 @@ sap.ui.define([
 
 			_this.oTireQuotationModel.updateBindings(true);
 			_this.oTirePriceModel.updateBindings(true);
+// ===============totals calculation 			
+		   var arrPrices = _this.oTirePriceModel.getData();
+			var summed = 0;
+			for (var key in arrPrices) {
+				summed += Number(arrPrices[key]);
+			}
+			dataRes.subTotal = _this.decimalFormatter(summed);
+			_this.oTireQuotationModel.updateBindings(true);
+			_this.sub = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
+
+			if (dataRes.FederalTax != "") {
+				dataRes.FederalTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.FederalTax));
+				_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.FederalTax);
+				_this._oViewModelTax.setProperty("/enableFTC", true);
+				_this.oTireQuotationModel.updateBindings(true);
+				_this._oViewModelTax.updateBindings(true);
+			} else {
+				dataRes.FederalTaxSum = "";
+				_this._oViewModelTax.setProperty("/enableFTC", false);
+				_this.oTireQuotationModel.updateBindings(true);
+				_this._oViewModelTax.updateBindings(true);
+			}
+			if (dataRes.ProvincialTax != "") {
+				dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+				_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
+				_this._oViewModelTax.setProperty("/enablePTC", true);
+				_this.oTireQuotationModel.updateBindings(true);
+				_this._oViewModelTax.updateBindings(true);
+			} else {
+				dataRes.ProvincialTaxSum = "";
+				_this._oViewModelTax.setProperty("/enablePTC", false);
+				_this.oTireQuotationModel.updateBindings(true);
+				_this._oViewModelTax.updateBindings(true);
+			}
+			_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
+			dataRes.Total = _this.decimalFormatter(_this.sub);
+		
+			_this.oTireQuotationModel.updateBindings(true);
+
+			if (dataRes != undefined) {
+				if (dataRes.FederalTax != "") {
+					_this._oViewModelTax.setProperty("/enableFTC", true);
+					_this._oViewModelTax.updateBindings(true);
+				} else {
+					_this._oViewModelTax.setProperty("/enableFTC", false);
+					_this._oViewModelTax.updateBindings(true);
+				}
+				if (dataRes.ProvincialTax != "") {
+					_this._oViewModelTax.setProperty("/enablePTC", true);
+					_this._oViewModelTax.updateBindings(true);
+				} else {
+					_this._oViewModelTax.setProperty("/enablePTC", false);
+					_this._oViewModelTax.updateBindings(true);
+				}
+				if (dataRes.EHFPRice != "") {
+					_this._oViewModelTax.setProperty("/enableFee", true);
+					_this._oViewModelTax.updateBindings(true);
+				} else {
+					_this._oViewModelTax.setProperty("/enableFee", false);
+					_this._oViewModelTax.updateBindings(true);
+				}
+			}
+
+			_this._oViewModel.updateBindings(true);
+			_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
+			_this.oTireQuotationModel.updateBindings(true);
+			_this.oTirePriceModel.updateBindings(true);
+			
+			
+			
+			
 		},
 
 		onMenuLinkPress: function (oLink) {
