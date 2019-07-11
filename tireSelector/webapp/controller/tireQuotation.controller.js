@@ -523,8 +523,12 @@ sap.ui.define([
 											_this._oViewModelTax.updateBindings(true);
 										}
 										if (dataRes.ProvincialTax != "") {
-											dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
-											_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
+											// dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+											// _this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
+											var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
+											dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
+											_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+
 											_this._oViewModelTax.setProperty("/enablePTC", true);
 											_this.oTireQuotationModel.updateBindings(true);
 											_this._oViewModelTax.updateBindings(true);
@@ -586,8 +590,12 @@ sap.ui.define([
 					_this._oViewModelTax.updateBindings(true);
 				}
 				if (dataRes.ProvincialTax != "") {
-					dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
-					_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
+
+					var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
+					dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
+					_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+					// dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+					// _this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
 					_this._oViewModelTax.setProperty("/enablePTC", true);
 					_this.oTireQuotationModel.updateBindings(true);
 					_this._oViewModelTax.updateBindings(true);
@@ -948,8 +956,13 @@ sap.ui.define([
 				_this._oViewModelTax.updateBindings(true);
 			}
 			if (dataRes.ProvincialTax != "") {
-				dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
-				_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
+
+				var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
+				dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
+				_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+
+				// dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+				// _this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
 				_this._oViewModelTax.setProperty("/enablePTC", true);
 				_this.oTireQuotationModel.updateBindings(true);
 				_this._oViewModelTax.updateBindings(true);
@@ -1040,7 +1053,7 @@ sap.ui.define([
 			if (dataRes.ProvincialTax != "") {
 				var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 				dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
-				_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum);   //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+				_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
 				_this._oViewModelTax.setProperty("/enablePTC", true);
 				_this.oTireQuotationModel.updateBindings(true);
 				_this._oViewModelTax.updateBindings(true);
@@ -1128,8 +1141,13 @@ sap.ui.define([
 				_this._oViewModelTax.updateBindings(true);
 			}
 			if (dataRes.ProvincialTax != "") {
-				dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
-				_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
+
+				var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
+				dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
+				_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+
+				// dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+				// _this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
 				_this._oViewModelTax.setProperty("/enablePTC", true);
 				_this.oTireQuotationModel.updateBindings(true);
 				_this._oViewModelTax.updateBindings(true);
@@ -1158,8 +1176,8 @@ sap.ui.define([
 
 			_this.oTireQuotationModel.updateBindings(true);
 			_this.oTirePriceModel.updateBindings(true);
-// ===============totals calculation 			
-		   var arrPrices = _this.oTirePriceModel.getData();
+			// ===============totals calculation 			
+			var arrPrices = _this.oTirePriceModel.getData();
 			var summed = 0;
 			for (var key in arrPrices) {
 				summed += Number(arrPrices[key]);
@@ -1181,10 +1199,10 @@ sap.ui.define([
 				_this._oViewModelTax.updateBindings(true);
 			}
 			if (dataRes.ProvincialTax != "") {
-				
+
 				var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 				dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
-				_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum);     //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+				_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
 				_this._oViewModelTax.setProperty("/enablePTC", true);
 				_this.oTireQuotationModel.updateBindings(true);
 				_this._oViewModelTax.updateBindings(true);
@@ -1196,7 +1214,7 @@ sap.ui.define([
 			}
 			_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
 			dataRes.Total = _this.decimalFormatter(_this.sub);
-		
+
 			_this.oTireQuotationModel.updateBindings(true);
 
 			if (dataRes != undefined) {
@@ -1229,10 +1247,7 @@ sap.ui.define([
 			_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
 			_this.oTireQuotationModel.updateBindings(true);
 			_this.oTirePriceModel.updateBindings(true);
-			
-			
-			
-			
+
 		},
 
 		onMenuLinkPress: function (oLink) {
