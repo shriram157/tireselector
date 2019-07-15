@@ -1277,7 +1277,9 @@ sap.ui.define([
 			}
 		},
 		check4PrimUsedVehiclePlan: function (selectedPlan) {
-			var vehiclePlansForPriceDisable = ["ULR1A", "ULR2A", "ULPZY", "ULP1D", "ULP2E", "UTR1A", "UTR1B", "UTUZH", "UTUWC"];
+			var vehiclePlansForPriceDisable = ["ULR1A", "ULR2A", "ULPZY", "ULP1D", "ULP2E", "UTR1A", "UTR1B", "UTUZH", "UTUWC", "UTR3A",
+				"ULR3A"
+			];
 			if (vehiclePlansForPriceDisable.indexOf(selectedPlan) > -1) {
 				//New Plan has been slected
 				return true;
@@ -1970,7 +1972,7 @@ sap.ui.define([
 			return crudObj;
 		},
 		onSaveApp: function (isFromSubmit) {
-			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_RET_PRICE");
+			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -2125,7 +2127,7 @@ sap.ui.define([
 		onEnterPlanPurchasePrice: function (oEvent) {
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oval = oEvent.getParameters().value;
-			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_RET_PRICE");
+			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			console.log(retPrice);
 			if (parseInt(oval) <= parseInt(retPrice)) {
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
@@ -2167,7 +2169,7 @@ sap.ui.define([
 				"ZecpBenefitsFlg": oECPData.ZecpBenefitsFlg
 			};
 
-			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_RET_PRICE");
+			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
 			if (parseInt(planPrice) > parseInt(retPrice)) {
 
