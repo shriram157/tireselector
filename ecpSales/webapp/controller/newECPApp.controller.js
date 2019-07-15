@@ -1998,7 +1998,7 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterMandatoryFields"));
-			} else if (parseInt(planPrice) > parseInt(retPrice)) {
+			} else if (parseFloat(planPrice) > parseFloat(retPrice)) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ExceedPlanPrice"));
@@ -2129,7 +2129,7 @@ sap.ui.define([
 			var oval = oEvent.getParameters().value;
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			console.log(retPrice);
-			if (parseInt(oval) <= parseInt(retPrice)) {
+			if (parseFloat(oval) <= parseFloat(retPrice)) {
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setText("");
@@ -2171,7 +2171,7 @@ sap.ui.define([
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
-			if (parseInt(planPrice) > parseInt(retPrice)) {
+			if (parseFloat(planPrice) > parseFloat(retPrice)) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(oBundle.getText("ExceedPlanPrice"));
