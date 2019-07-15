@@ -370,9 +370,10 @@ sap.ui.define([
 									_this.oTireQuotationModel.getData().FederalTax = Number(oPriceData.results[n].Amount);
 								} else if (CndType == "JRC3" || CndType == "JRC2") {
 									_this.oTireQuotationModel.getData().ProvincialTax = Number(oPriceData.results[n].Amount);
-								} else if (CndType == "ZPOF") { //Freight Cost
-									_this.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
-								}
+								} 
+								// else if (CndType == "ZPOF") { //Freight Cost
+								// 	_this.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
+								// }
 							}
 						},
 						_this),
@@ -1199,7 +1200,6 @@ sap.ui.define([
 				_this._oViewModelTax.updateBindings(true);
 			}
 			if (dataRes.ProvincialTax != "") {
-
 				var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 				dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
 				_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
@@ -1238,8 +1238,6 @@ sap.ui.define([
 				} else {
 					_this._oViewModelTax.setProperty("/enableFee", true);
 					_this._oViewModelTax.updateBindings(true);
-					// _this._oViewModelTax.setProperty("/enableFee", false);
-					// _this._oViewModelTax.updateBindings(true);
 				}
 			}
 

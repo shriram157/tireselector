@@ -15,7 +15,6 @@ sap.ui.define([
 		/* Function for Initialization of model and variables for view */
 
 		onInit: function () {
-
 			_that = this;
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
@@ -889,7 +888,7 @@ sap.ui.define([
 			
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
-			oBj.ModelDesc = oPath.ModelYear +" "+oPath.ModelDesc_EN +" "+oPath.SuffixDesc;
+			oBj.ModelDesc = oPath.ModelYear +" "+oPath.SuffixDesc; //removing +" "+oPath.ModelDesc_EN as discussed
 			
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)
