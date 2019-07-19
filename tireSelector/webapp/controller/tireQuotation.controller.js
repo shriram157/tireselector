@@ -748,6 +748,7 @@ sap.ui.define([
 					"DlrTel": ModelData3.PhoneNumber,
 					"VehicleDes": ModelData.ModelDesc,
 					"VinNum": ModelData.VIN,
+					"MATNR":ModelData.Material,
 					"QuoteDate": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
 					"OfferExpDt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
 					"RhpPlnDesc": this.getView().byId("id_RHP")._getSelectedItemText(),
