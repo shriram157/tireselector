@@ -1,5 +1,6 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.AgreementInquiryList"
-	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:table="sap.ui.table">
+	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt"
+	xmlns:table="sap.ui.table">
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
 	<uxap:ObjectPageLayout id="ObjectAgreementList" enableLazyLoading="true">
 		<uxap:sections>
@@ -31,46 +32,54 @@
 								<VBox class="sapUiLargeMarginBottom">
 									<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single"
 										rows="{ path: '/zc_ecp_agreement', filters : [ { path : 'AgreementElectricVehicletype', operator : 'NE', value1 : 'AGEN'}]}"
-										rowSelectionChange="onNavigate" visibleRowCount="{LocalDataModel>/rowCount}" selectionBehavior="Row" noData="{i18n>NoData}" showNoData="true"
-										threshold="{LocalDataModel>/rowCount}">
+										rowSelectionChange="onNavigate" visibleRowCount="{LocalDataModel>/rowCount}" selectionBehavior="Row" noData="{i18n>NoData}"
+										showNoData="true" threshold="{LocalDataModel>/rowCount}">
 										<table:columns>
-											<table:Column  >
+											<table:Column >
 												<Label text="{i18n>EcpAgreement}" textAlign="Center" width="100%"/>
 												<table:template>
 													<Text text="{path:'AgreementNumber'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
-											<table:Column  >
+											<table:Column >
 												<Label text="{i18n>PlanCode}" textAlign="Center" width="100%"/>
 												<table:template>
 													<Text text="{path:'PlanType'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
-											<table:Column  >
+											<table:Column >
 												<Label text="{i18n>Status}" textAlign="Center" width="100%"/>
 												<table:template>
 													<Text text="{path:'AgreementStatus'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
-											<table:Column  >
+											<table:Column >
 												<Label text="{i18n>StatusDate}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text width="100%" text="{path:'StatusDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}" textAlign="Center"/>
+													<Text width="100%" text="{path:'StatusDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"
+														textAlign="Center"/>
 												</table:template>
 											</table:Column>
-											<table:Column  >
+											<table:Column >
 												<Label text="{i18n>ExpiryDate}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text width="100%" text="{path:'AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}" textAlign="Center"/>
+													<Text width="100%" text="{path:'AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"
+														textAlign="Center"/>
 												</table:template>
 											</table:Column>
-											<table:Column  >
+											<table:Column >
 												<Label text="{i18n>ExpiryKm}" textAlign="Center" width="100%"/>
 												<table:template>
 													<Text text="{AgreementthruKMreading}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
-											<table:Column  >
+											<table:Column >
+												<Label text="{i18n>LienholderName}" textAlign="Center" width="100%"/>
+												<table:template>
+													<Text text="{path:'LienHolder'}" textAlign="Center" width="100%"/>
+												</table:template>
+											</table:Column>
+											<table:Column >
 												<Label text="{i18n>StatusReason}" textAlign="Center" width="100%"/>
 												<table:template>
 													<Text text="{path:'Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}" textAlign="Center" width="100%"/>

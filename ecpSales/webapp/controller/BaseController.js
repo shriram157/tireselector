@@ -57,18 +57,13 @@ sap.ui.define([
 
 			if (oGetText === oBundle.getText("NewApplication")) {
 				this.getOwnerComponent().getRouter().navTo("newECPApp", {
-					vin: oval,
-					plan: oval,
 					appId: oval,
-					appType: oval,
-					Odometer: oval,
 					ODealer: this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
 
 				});
 			} else if (oGetText === oBundle.getText("ViewUpdateApp")) {
 				this._resetView();
 				this.getOwnerComponent().getRouter().navTo("ApplicationList");
-
 			} else if (oGetText === oBundle.getText("AgreementInquiry")) {
 				this._resetView();
 				this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
@@ -253,7 +248,7 @@ sap.ui.define([
 					var userAttributes = [];
 
 					$.each(oData.attributes, function (i, item) {
-						var BpLength = item.BusinessPartner.length;
+						//var BpLength = item.BusinessPartner.length;
 
 						BpDealer.push({
 							"BusinessPartnerKey": item.BusinessPartnerKey,
@@ -266,22 +261,6 @@ sap.ui.define([
 
 					});
 					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
-					// //that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-					// // read the saml attachments the same way 
-					// $.each(oData.samlAttributes, function (i, item) {
-					// 	if (item != "") {
-					// 		userAttributes.push({
-					// 			"UserType": item.UserType[0],
-					// 			"DealerCode": item.DealerCode[0],
-					// 			"Language": item.Language[0]
-					// 				// "Zone": item.Zone[0]   ---    Not yet available
-					// 		});
-					// 	}
-					// });
-
-					// that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");
-
-					//	that._getTheUserAttributes();
 
 				}.bind(this),
 				error: function (response) {
@@ -289,25 +268,7 @@ sap.ui.define([
 				}
 			}).done(function (data, textStatus, jqXHR) {
 				that.getModel("LocalDataModel").setProperty("/currentIssueDealer", data.attributes[0].BusinessPartnerKey);
-				// var oEcpModel = that.getOwnerComponent().getModel("EcpSalesModel");
-				// var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
-				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
-				// });
-				// var oPriorDate = oDateFormat.format(that.priordate);
-				// var oCurrentDate = oDateFormat.format(that.beforedate);
 
-				// oEcpModel.read("/zc_ecp_application", {
-				// 	urlParameters: {
-				// 		"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-				// 			"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
-				// 	},
-				// 	success: function (edata) {
-				// 		that.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
-				// 	}
-				// });
-				// var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
-				// oRouter.attachRouteMatched(that._onObjectMatched, that);
 			});
 		},
 

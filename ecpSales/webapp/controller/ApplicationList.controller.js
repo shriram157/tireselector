@@ -130,22 +130,6 @@ sap.ui.define([
 
 					});
 					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
-					//that.getView().setModel(new sap.ui.model.json.JSONModel(BpDealer), "BpDealerModel");
-					// read the saml attachments the same way 
-					// $.each(oData.samlAttributes, function (i, item) {
-					// 	if(item != ""){
-					// 	userAttributes.push({
-					// 		"UserType": item.UserType[0],
-					// 		"DealerCode": item.DealerCode[0],
-					// 		"Language": item.Language[0]
-					// 			// "Zone": item.Zone[0]   ---    Not yet available
-					// 	});
-					// 	}
-					// });
-
-					// that.getView().setModel(new sap.ui.model.json.JSONModel(userAttributes), "userAttributesModel");
-
-					//	that._getTheUserAttributes();
 
 				}.bind(this),
 				error: function (response) {
@@ -173,28 +157,6 @@ sap.ui.define([
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
 				oRouter.attachRouteMatched(that._onObjectMatched, that);
 			});
-
-			// scopes to be used as below. // TODO: Minakshi to continue the below integration
-
-			//if you see scopes   Manage_ECP_Application,  then treat the user as Dealer Sales USer,  this is the only user with manage application
-			// TODO:  in the ui for this user,  everything is available and default landing page need to be set view/update application page
-
-			// if you see scopes view ECP Claim & view ECP Agreement & inquiry with  user attribute dealer code then this is a Dealer Service user. 
-			// TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
-
-			//if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and no zone then this is a Internal TCIUser Admin[ECP Dept]
-			// TODO: Make view/update application as the landing page,  suppress new applicaiton creation button  ( Internal user cannot create an application but view/update is allowed)
-
-			//if you see scopes view ecp application, view ecp claim, view ecp agreement, view inquiry with no dealer code and  zone then this is a  ECP ZONE USER
-			// TODO: For ECP Zone user restrict the Drop down of dealers only from that zone you received from the attribute. 
-			//suppress new application creation button and make landing page as view/update application
-
-			// if you see scopes View ECP Claim, view ECP Agreement, Inqyiry with no delaer code no zone then this is a Internal TCI User
-			// TODO: Suppress the tabs new application and View/update application.  only enable Agreement inquiry and make this a landing page. 
-
-			//======================================================================================================================//			
-			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - End
-			//======================================================================================================================//				
 
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -275,8 +237,24 @@ sap.ui.define([
 			var oval = 404;
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
 				appId: oval,
-				ODealer: this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
+				ODealer: this.getView().byId("idDealerCode").getSelectedKey()
 			});
+		},
+		handleLinkPress: function (oEvent) {
+
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			var oGetText = oEvent.getSource().getText();
+			var oval = 404;
+			this.getDealer();
+
+			if (oGetText === oBundle.getText("NewApplication")) {
+				this.getOwnerComponent().getRouter().navTo("newECPApp", {
+					appId: oval,
+					ODealer: this.getView().byId("idDealerCode").getSelectedKey()
+
+				});
+			}
+
 		},
 		handleValueHelp: function (oController) {
 
@@ -444,7 +422,7 @@ sap.ui.define([
 
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
 				appId: obj.InternalApplicationID,
-				ODealer: this.getModel("LocalDataModel").getProperty("/currentIssueDealer")
+				ODealer: this.getView().byId("idDealerCode").getSelectedKey()
 			});
 			this.getView().byId("idApplicationTable").removeSelections("true");
 			this.getModel("EcpSalesModel").refresh();
