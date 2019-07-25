@@ -116,7 +116,7 @@
 											class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column id="ID_DealerNet" sortProperty="{i18n>DealerNet}" filterProperty="{i18n>DealerNet}" visible="{FitmentPageModel>/enableDealerNet}"
+								<t:Column id="ID_DealerNet" sortProperty="DealerNet" filterProperty="DealerNet" visible="{FitmentPageModel>/enableDealerNet}"
 									width="6rem">
 									<Label text="{i18n>DealerNet}" wrapping="false"/>
 									<t:template>
@@ -129,7 +129,7 @@
 										<Text text="{path:'TireFitmentJSONModel>Profit', formatter: '.decimalFormatter'}" class="TextPaddig" wrapping="false"/>
 									</t:template>
 								</t:Column>
-								<t:Column sortProperty="{i18n>Retail}" filterProperty="{i18n>Retail}" width="6rem">
+								<t:Column sortProperty="Retails" filterProperty="Retails" width="6rem">
 									<Label text="{i18n>Retail}" wrapping="false"/>
 									<t:template>
 										<Text text="{path:'TireFitmentJSONModel>Retails', formatter: '.decimalFormatter'}" class="TextPaddig" wrapping="false"/>
