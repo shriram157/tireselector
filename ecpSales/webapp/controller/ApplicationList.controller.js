@@ -253,6 +253,13 @@ sap.ui.define([
 					ODealer: this.getView().byId("idDealerCode").getSelectedKey()
 
 				});
+			} else if (oGetText === oBundle.getText("ViewUpdateApp")) {
+				this._resetView();
+				this.getOwnerComponent().getRouter().navTo("ApplicationList");
+			} else if (oGetText === oBundle.getText("AgreementInquiry")) {
+				this._resetView();
+				this.getOwnerComponent().getRouter().navTo("AgreementInquiryList");
+
 			}
 
 		},

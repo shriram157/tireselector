@@ -102,29 +102,12 @@ sap.ui.define([
 		},
 
 		_resetView: function () {
-			// var oSetProperty = new sap.ui.model.json.JSONModel();
-			// oSetProperty.setData({
-			// 	oPrimeryState: true,
-			// 	oSecondaryState: true,
-			// 	oPrimeryState01: false,
-			// 	oSecondaryState01: false,
-			// 	oSurcharge: false,
-			// 	oTab1visible: true,
-			// 	oTab2visible: false,
-			// 	oTab3visble: false,
-			// 	oTab4visble: false,
-			// 	oTab5visble: false,
-			// 	oTab6visble: false
-			// });
 			this._getPropetyData();
-			//this.getView().setModel(oSetProperty, "oSetProperty");
 			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab5visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab6visible", false);
-			//sap.ui.getCore().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-			//	this.getModel("LocalDataModel").setProperty("/");
 		},
 
 		/**

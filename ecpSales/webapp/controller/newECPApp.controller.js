@@ -28,9 +28,7 @@ sap.ui.define([
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			var oVehicleMaster = this.getOwnerComponent().getModel("ZVehicleMasterModel");
 			this.getView().setModel(oVehicleMaster, "VinModel");
-
 			this._getPropetyData();
-
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._oRouteNewECP, this);
 			// var oEventBus = sap.ui.getCore().getEventBus();
 			// oEventBus.publish("newECPApp", "Binded", this.onSelectiDealer, this);
@@ -96,8 +94,10 @@ sap.ui.define([
 			this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 
 			this.oAppId = oEvent.getParameters().arguments.appId;
+
+			// 			this.getDealer();
+
 			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
-			this.getDealer();
 			//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
 			if (this.oAppId != 404 && this.oAppId != undefined) {
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
