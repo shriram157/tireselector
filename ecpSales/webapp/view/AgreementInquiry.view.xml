@@ -213,7 +213,7 @@
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="{i18n>Comments}">
 						<uxap:blocks>
-							<Text width="100%" text="{i18n>None}"/>
+							<Text width="100%" text="{LocalDataModel>/AgreementInfo/Adjustercoments}"/>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
