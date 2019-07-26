@@ -97,7 +97,7 @@ sap.ui.define([
 
 			// 			this.getDealer();
 
-			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oEvent.getParameters().arguments.ODealer);
+			this.getModel("LocalDataModel").setProperty("/sCurrentDealer", oEvent.getParameters().arguments.ODealer);
 			//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
 			if (this.oAppId != 404 && this.oAppId != undefined) {
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
@@ -738,7 +738,7 @@ sap.ui.define([
 									urlParameters: {
 										"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel(
 											"LocalDataModel").getProperty(
-											"/currentIssueDealer") + "' "
+											"/sCurrentDealer") + "' "
 									},
 									success: $.proxy(function (odata) {
 										this.oAppdata = odata.results.length;
@@ -1847,7 +1847,7 @@ sap.ui.define([
 				ZecpAppNum: "",
 				ZecpVin: this.oECPData.ZecpVin,
 				ZecpAgrNum: "",
-				ZecpDealcode: this.getModel("LocalDataModel").getProperty("/currentIssueDealer"),
+				ZecpDealcode: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
 				ZecpAppStat: stat,
 				ZecpSaleDate: this._fnDateFormat(this.oECPData.ZecpSaleDate),
 				ZecpOdometer: this.oECPData.ZecpOdometer,
@@ -1901,12 +1901,12 @@ sap.ui.define([
 				BccEcpAgrmntNum: "",
 				BccVin: this.oECPData.ZecpVin,
 				BccPlanCd: this.oECPData.ZecpPlancode,
-				BccAplDlrshpNum: this.getModel("LocalDataModel").getProperty("/currentIssueDealer"),
+				BccAplDlrshpNum: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
 				BccAgrStCd: "A",
 				AgrStDt: this._fnDateFormat02(currentDate),
 				BccAgrEvTypCd: "NEW",
 				BccVoasPartNum: "",
-				BccAgrmntDlrNum: this.getModel("LocalDataModel").getProperty("/currentIssueDealer"),
+				BccAgrmntDlrNum: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
 				BccEcpAutoCd: this.oECPData.ZecpAutocode,
 				BccAgrmntExtcntr: "0.00",
 				BccAgrmntPrcAmt: this.oECPData.ZecpPlanpurchprice || "0.00",
