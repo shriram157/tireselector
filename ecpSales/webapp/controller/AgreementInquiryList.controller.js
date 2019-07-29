@@ -19,17 +19,16 @@ sap.ui.define([
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			this.getDealer();
 			this.getModel("LocalDataModel").setProperty("/rowCount", 0);
-			
-			
+
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});
 			this.getView().setModel(this.oI18nModel, "i18n");
-			 var winUrl = window.location.search;
-		
+			var winUrl = window.location.search;
+
 			var userLang = navigator.language || navigator.userLanguage;
-			if ((winUrl.indexOf("=fr")>-1) || (userLang =="fr") ) {
-			// if (winUrl.indexOf("=fr")>-1) {
+			if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+				// if (winUrl.indexOf("=fr")>-1) {
 				this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 					bundleUrl: "i18n/i18n.properties",
 					bundleLocale: ("fr")
@@ -61,23 +60,45 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oBindItems = "";
 			this.getView().byId("idAgrInqMsgStrp").setProperty("visible", false);
-					
+
+			var sSelectedLocale;
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "en"; // default is english
+			}
+
+			var zEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
+
 			if (oIndex === 0) {
 				if (!$.isEmptyObject(sQuery)) {
 
-					andFilter = new sap.ui.model.Filter({
-						filters: [
-							new sap.ui.model.Filter("AgreementNumber", sap.ui.model.FilterOperator.Contains, sQuery)
-						],
-						and: false
+					zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
+						urlParameters: {
+							"$filter": "AgreementNumber eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
+								"'and AgreementElectricVehicletype ne 'AGEN'"
+
+						},
+						success: $.proxy(function (data) {
+							this.getModel("LocalDataModel").setProperty("/ZcEcpAgr", data.results);
+						}, this)
+
 					});
 
+					// 	andFilter = new sap.ui.model.Filter({
+					// 		filters: [
+					// 			new sap.ui.model.Filter("AgreementNumber", sap.ui.model.FilterOperator.Contains, sQuery)
+					// 		],
+					// 		and: false
+					// 	});
+
 				} else {
-						this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
-						this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0006E"));
-						this.getView().byId("idAgrInqMsgStrp").setType("Error");
-						return;
-					
+					this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
+					this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0006E"));
+					this.getView().byId("idAgrInqMsgStrp").setType("Error");
+					return;
+
 					// andFilter = [];
 				}
 
@@ -88,17 +109,29 @@ sap.ui.define([
 			} else if (oIndex === 1) {
 				if (!$.isEmptyObject(sQuery)) {
 
-					andFilter = new sap.ui.model.Filter({
-						filters: [
-							new sap.ui.model.Filter("VIN", sap.ui.model.FilterOperator.Contains, sQuery)
-						],
-						and: false
+					zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
+						urlParameters: {
+							"$filter": "VIN eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
+								"'and AgreementElectricVehicletype ne 'AGEN'"
+
+						},
+						success: $.proxy(function (data) {
+							this.getModel("LocalDataModel").setProperty("/ZcEcpAgr", data.results);
+						}, this)
+
 					});
+
+					// 	andFilter = new sap.ui.model.Filter({
+					// 		filters: [
+					// 			new sap.ui.model.Filter("VIN", sap.ui.model.FilterOperator.Contains, sQuery)
+					// 		],
+					// 		and: false
+					// 	});
 				} else {
-						this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
-						this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0001E"));
-						this.getView().byId("idAgrInqMsgStrp").setType("Error");
-						return;
+					this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
+					this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0001E"));
+					this.getView().byId("idAgrInqMsgStrp").setType("Error");
+					return;
 					// andFilter = [];
 				}
 
@@ -109,6 +142,7 @@ sap.ui.define([
 		},
 
 		onPressResetSearch: function () {
+
 			this.getOwnerComponent().getModel("EcpSalesModel").refresh();
 			this.getView().byId("idVal").setValue("");
 			var oBindItems = this.oTable.getBinding("rows");
@@ -118,7 +152,7 @@ sap.ui.define([
 		},
 		onNavigate: function (oEvent) {
 			var obj = oEvent.getSource().getModel().getProperty(oEvent.getParameters().rowContext.sPath);
-		
+
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiry", {
 				AgrNum: obj.AgreementNumber
 			});

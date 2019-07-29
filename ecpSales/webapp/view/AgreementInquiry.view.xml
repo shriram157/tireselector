@@ -114,6 +114,8 @@
 											<f:content>
 												<Label text="{i18n>PlanCode}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/PlanType}"/>
+												<Label text="{i18n>PlanDescription}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/PlanDescription}"/>
 												<Label text="{i18n>PlanPrice}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/Agreementprice}"/>
 												<Label text="{i18n>TransferFee}"/>

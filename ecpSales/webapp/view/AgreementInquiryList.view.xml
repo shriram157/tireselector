@@ -30,59 +30,61 @@
 									</f:content>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
-									<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single"
-										rows="{ path: '/zc_ecp_agreement', filters : [ { path : 'AgreementElectricVehicletype', operator : 'NE', value1 : 'AGEN'}]}"
+									<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single" rows="{ path: 'LocalDataModel>/ZcEcpAgr'}"
 										rowSelectionChange="onNavigate" visibleRowCount="{LocalDataModel>/rowCount}" selectionBehavior="Row" noData="{i18n>NoData}"
 										showNoData="true" threshold="{LocalDataModel>/rowCount}">
 										<table:columns>
 											<table:Column >
 												<Label text="{i18n>EcpAgreement}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text text="{path:'AgreementNumber'}" textAlign="Center" width="100%"/>
+													<Text text="{path:'LocalDataModel>AgreementNumber'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
 												<Label text="{i18n>PlanCode}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text text="{path:'PlanType'}" textAlign="Center" width="100%"/>
+													<Text text="{path:'LocalDataModel>PlanType'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
 												<Label text="{i18n>Status}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text text="{path:'AgreementStatus'}" textAlign="Center" width="100%"/>
+													<Text text="{path:'LocalDataModel>AgreementStatus'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
 												<Label text="{i18n>StatusDate}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text width="100%" text="{path:'StatusDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"
+													<Text width="100%"
+														text="{path:'LocalDataModel>StatusDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"
 														textAlign="Center"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
 												<Label text="{i18n>ExpiryDate}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text width="100%" text="{path:'AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"
+													<Text width="100%"
+														text="{path:'LocalDataModel>AgreementthruDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"
 														textAlign="Center"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
 												<Label text="{i18n>ExpiryKm}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text text="{AgreementthruKMreading}" textAlign="Center" width="100%"/>
+													<Text text="{LocalDataModel>AgreementthruKMreading}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
 												<Label text="{i18n>LienholderName}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text text="{path:'LienHolder'}" textAlign="Center" width="100%"/>
+													<Text text="{path:'LocalDataModel>LienHolder'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
 												<Label text="{i18n>StatusReason}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text text="{path:'Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}" textAlign="Center" width="100%"/>
+													<Text text="{path:'LocalDataModel>Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}" textAlign="Center"
+														width="100%"/>
 												</table:template>
 											</table:Column>
 										</table:columns>

@@ -63,9 +63,18 @@ sap.ui.define([
 			var zEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 
-			zEcpModel.read("/zc_ecp_agreement", {
+			var sSelectedLocale;
+			var isLocaleSent = window.location.search.match(/language=([^&]*)/i);
+			if (isLocaleSent) {
+				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
+			} else {
+				sSelectedLocale = "en"; // default is english
+			}
+
+			zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
 				urlParameters: {
-					"$filter": "AgreementNumber eq '" + oAgrNum + "'"
+					"$filter": "AgreementNumber eq '" + oAgrNum + "'and LanguageKey eq '" + sSelectedLocale + "'"
+
 				},
 				success: $.proxy(function (data) {
 
