@@ -48,7 +48,7 @@
 											<table:Column >
 												<Label text="{i18n>Status}" textAlign="Center" width="100%"/>
 												<table:template>
-													<Text text="{path:'LocalDataModel>AgreementStatus'}" textAlign="Center" width="100%"/>
+													<Text text="{path:'LocalDataModel>AgreementStatusDescription'}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>
 											<table:Column >
