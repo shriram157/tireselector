@@ -79,7 +79,7 @@ sap.ui.define([
 					zEcpModel.read("/zc_ecp_agreement_dataSet", {
 						urlParameters: {
 							"$filter": "AgreementNumber eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
-								"'and AgreementElectricVehicletype ne 'AGEN'"
+								"'and AgreementElectricVehicletype eq 'AGEN'"
 
 						},
 						success: $.proxy(function (data) {
@@ -117,7 +117,7 @@ sap.ui.define([
 					zEcpModel.read("/zc_ecp_agreement_dataSet", {
 						urlParameters: {
 							"$filter": "VIN eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
-								"'and AgreementElectricVehicletype ne 'AGEN'"
+								"'and AgreementElectricVehicletype eq 'AGEN'"
 
 						},
 						success: $.proxy(function (data) {
