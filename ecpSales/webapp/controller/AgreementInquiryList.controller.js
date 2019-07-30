@@ -76,7 +76,7 @@ sap.ui.define([
 			if (oIndex === 0) {
 				if (!$.isEmptyObject(sQuery)) {
 					this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", true);
-					zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
+					zEcpModel.read("/zc_ecp_agreement_dataSet", {
 						urlParameters: {
 							"$filter": "AgreementNumber eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
 								"'and AgreementElectricVehicletype ne 'AGEN'"
@@ -114,7 +114,7 @@ sap.ui.define([
 			} else if (oIndex === 1) {
 				if (!$.isEmptyObject(sQuery)) {
 					this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", true);
-					zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
+					zEcpModel.read("/zc_ecp_agreement_dataSet", {
 						urlParameters: {
 							"$filter": "VIN eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
 								"'and AgreementElectricVehicletype ne 'AGEN'"
