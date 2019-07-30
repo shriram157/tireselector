@@ -43,6 +43,8 @@ sap.ui.define([
 				this.getView().setModel(this.oI18nModel, "i18n");
 				this.sCurrentLocale = 'EN';
 			}
+
+			this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", false);
 		},
 		onSelectSearchBy: function (oEvent) {
 			var oSelectedIndex = oEvent.getSource().getSelectedIndex();
@@ -73,7 +75,7 @@ sap.ui.define([
 
 			if (oIndex === 0) {
 				if (!$.isEmptyObject(sQuery)) {
-
+					this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", true);
 					zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
 						urlParameters: {
 							"$filter": "AgreementNumber eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
@@ -81,9 +83,12 @@ sap.ui.define([
 
 						},
 						success: $.proxy(function (data) {
+							this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", false);
 							this.getModel("LocalDataModel").setProperty("/ZcEcpAgr", data.results);
+						}, this),
+						error: $.proxy(function (data) {
+							this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", false);
 						}, this)
-
 					});
 
 					// 	andFilter = new sap.ui.model.Filter({
@@ -108,7 +113,7 @@ sap.ui.define([
 
 			} else if (oIndex === 1) {
 				if (!$.isEmptyObject(sQuery)) {
-
+					this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", true);
 					zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
 						urlParameters: {
 							"$filter": "VIN eq '" + sQuery + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() +
@@ -117,6 +122,10 @@ sap.ui.define([
 						},
 						success: $.proxy(function (data) {
 							this.getModel("LocalDataModel").setProperty("/ZcEcpAgr", data.results);
+							this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", false);
+						}, this),
+						error: $.proxy(function (data) {
+							this.getModel("LocalDataModel").setProperty("/busyIndAgrTable", false);
 						}, this)
 
 					});
@@ -151,7 +160,7 @@ sap.ui.define([
 
 		},
 		onNavigate: function (oEvent) {
-			var obj = oEvent.getSource().getModel().getProperty(oEvent.getParameters().rowContext.sPath);
+			var obj = this.getModel("LocalDataModel").getProperty(oEvent.getParameters().rowContext.sPath);
 
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiry", {
 				AgrNum: obj.AgreementNumber

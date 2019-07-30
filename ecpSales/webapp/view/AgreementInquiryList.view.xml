@@ -30,9 +30,8 @@
 									</f:content>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
-									<table:Table id="idAgreementTable" class="classRCPTable" selectionMode="Single" rows="{ path: 'LocalDataModel>/ZcEcpAgr'}"
-										rowSelectionChange="onNavigate" visibleRowCount="{LocalDataModel>/rowCount}" selectionBehavior="Row" noData="{i18n>NoData}"
-										showNoData="true" threshold="{LocalDataModel>/rowCount}">
+									<table:Table id="idAgreementTable" busy="{LocalDataModel>/busyIndAgrTable}" class="classRCPTable" selectionMode="Single"
+										rows="{ path: 'LocalDataModel>/ZcEcpAgr'}" rowSelectionChange="onNavigate" selectionBehavior="Row" noData="{i18n>NoData}" showNoData="true">
 										<table:columns>
 											<table:Column >
 												<Label text="{i18n>EcpAgreement}" textAlign="Center" width="100%"/>
