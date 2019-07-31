@@ -73,7 +73,7 @@ sap.ui.define([
 
 			zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
 				urlParameters: {
-					"$filter": "AgreementNumber eq '" + oAgrNum + "'and LanguageKey eq '" + sSelectedLocale + "'"
+					"$filter": "AgreementNumber eq '" + oAgrNum + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() + "'"
 
 				},
 				success: $.proxy(function (data) {
