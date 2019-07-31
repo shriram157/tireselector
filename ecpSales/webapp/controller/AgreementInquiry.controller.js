@@ -70,11 +70,11 @@ sap.ui.define([
 			} else {
 				sSelectedLocale = "en"; // default is english
 			}
+			var oLang = sSelectedLocale.toUpperCase().charAt(0);
 
-			zEcpModel.read("/ZC_ECP_AGREEMENT_V2", {
+			zEcpModel.read("/ZC_ECP_AGREEMENT_V2(p_language='" + oLang + "')/Set", {
 				urlParameters: {
-					"$filter": "AgreementNumber eq '" + oAgrNum + "'and LanguageKey eq '" + sSelectedLocale.toUpperCase() + "'"
-
+					"$filter": "AgreementNumber eq '" + oAgrNum + "'"
 				},
 				success: $.proxy(function (data) {
 
