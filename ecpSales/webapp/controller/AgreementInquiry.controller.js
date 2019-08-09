@@ -361,6 +361,7 @@ sap.ui.define([
 				lanKey = 'FR';
 			}
 			var oZECPModel = this.getModel("EcpSalesModel");
+			var EcpModelV2 = this.getModel("ZecpV2Model");
 			this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
 			$.ajaxSetup({
 				headers: {
@@ -385,6 +386,24 @@ sap.ui.define([
 					console.log("Error");
 				}
 			});
+
+			EcpModelV2.read("/zc_ecp_valid_plansSet", {
+				urlParameters: {
+					"$filter": "LANGUAGE eq '" + lanKey + "' and BCC_ECP_AGRMNT_NUM eq '" + oAgrNum + "'",
+					"$expand": "ZC_ECP_BENEFITSET"
+				},
+				success: $.proxy(function (data) {
+					this.getModel("LocalDataModel").setProperty("/benefitList02", data.results[0].ZC_ECP_BENEFITSET.results);
+					// 	oBenefitDataModel.setData({
+					// 		benefitList02: data.results[0].ZC_ECP_BENEFITSET.results
+					// 	});
+
+				}, this),
+				error: function () {
+					console.log("Error");
+				}
+			});
+
 			//	LANGUAGE eq 'EN' and BCC_ECP_AGRMNT_NUM eq 'G50000104NTC04000'&$expand=ZC_ECP_BENEFITSET
 
 		},

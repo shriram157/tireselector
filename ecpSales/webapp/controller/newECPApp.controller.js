@@ -80,6 +80,10 @@ sap.ui.define([
 				var selectedKeyTab = Event.key;
 			}
 		},
+		onEnterVinInput: function (oEvent) {
+			var oVal = oEvent.getParameters().value.toUpperCase();
+			this.getView().getModel("EcpFieldData").setProperty("/ZecpVin", oVal);
+		},
 		_oRouteNewECP: function (oEvent) {
 
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");

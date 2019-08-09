@@ -33,19 +33,17 @@ sap.ui.define([
 
 			this._initSessionDialogs();
 
-
 			this.setModel(models.createLocalDataModel(), "LocalDataModel");
 			this.setModel(models.createPropertyData(), "oSetProperty");
-			
 
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
 
 			var mConfig = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZECP_SALES_ODATA_SERVICE_SRV");
-				if (sLocation_conf == 0) {
-				mConfig.uri = "/ecpSales_node_secured" + mConfig.uri;  //ecpSales_node_secured
-			} else  {
-					mConfig.uri = mConfig.uri;
+			if (sLocation_conf == 0) {
+				mConfig.uri = "/ecpSales_node_secured" + mConfig.uri; //ecpSales_node_secured
+			} else {
+				mConfig.uri = mConfig.uri;
 			}
 			var oDataModel = new ODataModel(mConfig.uri, {
 				useBatch: false,
@@ -57,7 +55,6 @@ sap.ui.define([
 				}
 			});
 
-		
 			this.setModel(oDataModel, "EcpSalesModel");
 
 			var mConfig01 = this.getMetadata().getManifestEntry("/sap.app/dataSources/Z_VEHICLE_MASTER_SRV");
@@ -74,8 +71,6 @@ sap.ui.define([
 				}
 			});
 
-			
-
 			this.setModel(oDataModel01, "ZVehicleMasterModel");
 
 			var mConfig02 = this.getMetadata().getManifestEntry("/sap.app/dataSources/API_BUSINESS_PARTNER");
@@ -91,12 +86,9 @@ sap.ui.define([
 					"X-Requested-With": "XMLHttpRequest"
 				}
 			});
-		
+
 			this.setModel(oDataModel02, "ApiBusinessModel");
-			
-			
-			
-			
+
 			//Adding Claim Model
 			var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
 			if (sLocation_conf == 0) {
@@ -111,9 +103,25 @@ sap.ui.define([
 					"X-Requested-With": "XMLHttpRequest"
 				}
 			});
-		
+
 			this.setModel(oDataModel03, "ClaimServiceModel");
 
+			//Adding ECP Sales V2 Model
+			var mConfig04 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZECP_SALES_ODATA_SERVICE_V2_SRV");
+			if (sLocation_conf == 0) {
+				mConfig04.uri = "/ecpSales_node_secured" + mConfig04.uri;
+			}
+			var oDataModel04 = new ODataModel(mConfig04.uri, {
+				useBatch: false,
+				// disableHeadRequestForToken: true,
+				defaultUpdateMethod: 'PUT',
+				json: true,
+				headers: {
+					"X-Requested-With": "XMLHttpRequest"
+				}
+			});
+
+			this.setModel(oDataModel04, "ZecpV2Model");
 
 			// var mConfig03 = this.getMetadata().getManifestEntry("/sap.app/dataSources/ZDLR_CLAIM_SRV");
 			// if (sLocation_conf == 0) {
@@ -126,7 +134,6 @@ sap.ui.define([
 			// 	json: true
 			// });
 
-			
 			// this.setModel(oDataModel03, "ZdrClaimModel");
 
 		},

@@ -201,12 +201,20 @@
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="{i18n>BenefitCoverages}">
 						<uxap:blocks>
-							<List headerText="{i18n>BenefitList}" items="{path: 'oBenefitDataModel>/benefitList'}">
-								<items>
-									<ObjectListItem title="{oBenefitDataModel>ZBENEFIT_DESC}" type="Active"></ObjectListItem>
-									<!--<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>-->
-								</items>
-							</List>
+							<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
+								<List headerText="{i18n>BenefitList}" items="{path: 'oBenefitDataModel>/benefitList'}">
+									<items>
+										<ObjectListItem title="{oBenefitDataModel>ZBENEFIT_DESC}" type="Active"></ObjectListItem>
+										<!--<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>-->
+									</items>
+								</List>
+								<List headerText="{i18n>BenefitList}" items="{path: 'LocalDataModel>/benefitList02'}">
+									<items>
+										<ObjectListItem title="{LocalDataModel>ZBENEFIT_DESC}" type="Active"></ObjectListItem>
+										<!--<ObjectListItem title="{i18n>RENTAL-RentalR1}" type="Active"></ObjectListItem>-->
+									</items>
+								</List>
+							</HBox>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>

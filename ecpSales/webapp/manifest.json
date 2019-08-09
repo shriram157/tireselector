@@ -45,6 +45,14 @@
 					"odataVersion": "2.0",
 					"localUri": "localService/ZDLR_CLAIM_SRV/metadata.xml"
 				}
+			},
+			"ZECP_SALES_ODATA_SERVICE_V2_SRV": {
+				"uri": "/node/ZECP_SALES_ODATA_SERVICE_V2_SRV/",
+				"type": "OData",
+				"settings": {
+				    "odataVersion": "2.0",
+					"localUri": "localService/ZECP_SALES_ODATA_SERVICE_V2_SRV/metadata.xml"
+				}
 			}
 		}
 	
@@ -158,6 +166,17 @@
 				},
 				"dataSource": "ZDLR_CLAIM_SRV",
 				"preload": false
+			},
+			"ZECP_SALES_ODATA_SERVICE_V2_SRV": {
+			    "uri": "/node/ZECP_SALES_ODATA_SERVICE_V2_SRV/",
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request"
+				},
+				"dataSource": "ZECP_SALES_ODATA_SERVICE_V2_SRV",
+				"preload": true
 			}
 		},
 		"resources": {

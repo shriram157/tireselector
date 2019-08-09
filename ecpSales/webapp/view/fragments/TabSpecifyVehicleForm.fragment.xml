@@ -4,7 +4,7 @@
 		singleContainerFullSize="false">
 		<f:content>
 			<Label text="{i18n>VIN}"/>
-			<Input value="{EcpFieldData>/ZecpVin}" id="idVinNum"/>
+			<Input value="{EcpFieldData>/ZecpVin}" liveChange="onEnterVinInput" id="idVinNum"/>
 			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep2"/>
 			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
 		</f:content>
