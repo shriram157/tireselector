@@ -120,7 +120,7 @@ sap.ui.define([
 					//2400599999
 					if (_that.userData.userContext.userAttributes.DealerCode !== undefined) {
 						_that.dealerCode = _that.userData.userContext.userAttributes.DealerCode[0];
-					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National"|| _that.userData.userContext.userAttributes.UserType[0] == "Zone") {
 						_that.dealerCode = "2400599999";
 					} else {
 						_that.dealerCode = "";
@@ -152,7 +152,7 @@ sap.ui.define([
 					_that.DealerData = {};
 					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 					var queryString1;
-					if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+					if (_that.userData.userContext.userAttributes.UserType[0] == "National"|| _that.userData.userContext.userAttributes.UserType[0] == "Zone") {
 						queryString1 = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
 					} else {
 						queryString1 = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
@@ -173,7 +173,7 @@ sap.ui.define([
 								_that._oDealerModel.getData().DealerData = _that.DealerData;
 								_that._oDealerModel.updateBindings(true);
 								var queryString;
-								if (_that.userData.userContext.userAttributes.UserType[0] == "National") {
+								if (_that.userData.userContext.userAttributes.UserType[0] == "National"|| _that.userData.userContext.userAttributes.UserType[0] == "Zone") {
 									queryString = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_Customer";
 								} else {
 									queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_Customer";
