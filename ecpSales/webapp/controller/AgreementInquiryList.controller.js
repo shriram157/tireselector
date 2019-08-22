@@ -168,6 +168,10 @@ sap.ui.define([
 
 			//this.getView().byId("idAgreementTable").removeSelections("true");
 
+		},
+		onEnterVinInput: function (oEvent) {
+			var oVal = oEvent.getParameters().value.toUpperCase();
+			this.getView().getModel("LocalDataModel").setProperty("/VINAGR", oVal);
 		}
 
 		/**

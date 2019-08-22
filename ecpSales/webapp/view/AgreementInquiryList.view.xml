@@ -23,7 +23,7 @@
 											</buttons>
 										</RadioButtonGroup>
 										<Label text="{i18n>Agreement#}" textAlign="Begin" id="idInqLabel" textDirection="LTR"/>
-										<Input value="{LocalDataModel>/VINAGR}" id="idVal"/>
+										<Input value="{LocalDataModel>/VINAGR}" liveChange="onEnterVinInput" id="idVal"/>
 										<core:Title text=""/>
 										<Button text="{i18n>Search}" type="Emphasized" press="onSearchInquiryList"/>
 										<Button text="{i18n>Reset}" press="onPressResetSearch"/>
