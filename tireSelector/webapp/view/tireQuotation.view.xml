@@ -235,7 +235,7 @@
 									<Label text=""/>
 									<Label text=""/>
 									<VBox>
-										<Label text="{i18n>ProvincialTax} ({path:'TireQuotationModel>/ProvincialTax'})" id="id_proTaxCodeDesc"/>
+										<Label text="{i18n>ProvincialTax} ({path:'TireQuotationModel>/ProvincialTax'}%)" id="id_proTaxCodeDesc"/>
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/ProvincialTaxSum', formatter: '.addDollarSign'}" id="id_proTaxCode" editable="false"/>
 								</cells>
