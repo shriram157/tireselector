@@ -910,21 +910,13 @@ sap.ui.define([
 			}
 
 		},
-		OnNextStep3: function (oEvent) {
-			var oOdometer = this.getView().byId("idOdoVal");
-			var oOdoVal = oOdometer.getValue();
-			var oSaleDateId = this.getView().byId("idDate");
-			var oSaleDate = oSaleDateId.getValue();
-			var zEcpModel = this.getModel("EcpSalesModel");
-			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 
-			var oAgrInptElem = this.getView().byId("idAgrType");
-			oAgrInptElem.setValueState(sap.ui.core.ValueState.None);
-			oOdometer.setValueState(sap.ui.core.ValueState.None);
-			oSaleDateId.setValueState(sap.ui.core.ValueState.None);
+		_fnExistAppCheck: function () {
 
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
+			var zEcpModel = this.getModel("EcpSalesModel");
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			zEcpModel.read("/zc_ecp_duplicate_agreementSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oVin + "'"
@@ -963,6 +955,22 @@ sap.ui.define([
 				}, this)
 
 			});
+		},
+
+		OnNextStep3: function (oEvent) {
+			var oOdometer = this.getView().byId("idOdoVal");
+			var oOdoVal = oOdometer.getValue();
+			var oSaleDateId = this.getView().byId("idDate");
+			var oSaleDate = oSaleDateId.getValue();
+			var zEcpModel = this.getModel("EcpSalesModel");
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+
+			this._fnExistAppCheck();
+
+			var oAgrInptElem = this.getView().byId("idAgrType");
+			oAgrInptElem.setValueState(sap.ui.core.ValueState.None);
+			oOdometer.setValueState(sap.ui.core.ValueState.None);
+			oSaleDateId.setValueState(sap.ui.core.ValueState.None);
 
 			if (this.oCustomer) {
 				var oCustomerNum = this.oCustomer.substr(5);
@@ -1974,13 +1982,15 @@ sap.ui.define([
 			};
 			return crudObj;
 		},
-		onSaveApp: function (isFromSubmit) {
+		onSaveApp: async function (isFromSubmit) {
+			await this._fnExistAppCheck();
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oOdometer = this.getView().byId("idOdoVal");
 			var oOdoVal = oOdometer.getValue();
+
 			this.oECPData.ZecpVehPrice = $(".ZecpVehPriceCls input").val();
 			this.oECPData.ZecpPlanpurchprice = $(".ZecpPlanpurchpriceCls input").val();
 			if ($.isEmptyObject(this.oECPData.ZecpVehPrice.toString()) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice.toString())) {
@@ -2148,7 +2158,9 @@ sap.ui.define([
 			}
 		},
 
-		onUpdateSavedApp: function (oEvent) {
+		onUpdateSavedApp: async function (oEvent) {
+
+			await this._fnExistAppCheck();
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			var oEcpModel = this.getModel("EcpSalesModel");
@@ -2368,7 +2380,7 @@ sap.ui.define([
 			//this._Step04MandatoryFn();
 
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
-			//Verify Defect_ID: 8432 	Auth Vinay Chandra
+
 			//ReValidating form
 			this.resetValidationError();
 			if (!this.oECPData) {
@@ -2382,18 +2394,18 @@ sap.ui.define([
 				this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				return;
 			}
-			//Verify Address Defect_ID: 9618 	Auth Vinay Chandra
+
 			if (!this.validateAgrmtOwnrNVechOwnr()) {
 				this.showSubmitValidationError();
 				this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				return;
 			}
-			// Fixing defect #8693 	Auth Vinay Chandra
+
 			if (!this.validateLineFields()) {
 				this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				return;
 			}
-			// Fixing defect #8516 	Auth Vinay Chandra
+
 			var oEcpFieldM = this.getView().getModel("EcpFieldData").getData();
 			var oZECPModel = this.getModel("EcpSalesModel");
 			oZECPModel.read("/zc_ecp_vehicle_detailSet", {
@@ -2426,10 +2438,11 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
-					press: function () {
+					press: async function () {
+						await that._fnExistAppCheck();
 
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
-						var objSub = that._fnObject("SUB", "DELETED");
+						var objSub = await that._fnObject("SUB", "DELETED");
 						var oEcpModel = that.getModel("EcpSalesModel");
 						/*
 						Defect:9937
