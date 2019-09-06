@@ -911,8 +911,7 @@ sap.ui.define([
 
 		},
 
-		_fnExistAppCheck: function () {
-
+		_fnExistAppCheckCreate: function () {
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 			var zEcpModel = this.getModel("EcpSalesModel");
@@ -957,6 +956,54 @@ sap.ui.define([
 			});
 		},
 
+		_fnExistAppCheck: function () {
+
+			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
+			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
+			var zEcpModel = this.getModel("EcpSalesModel");
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			zEcpModel.read("/zc_ecp_duplicate_agreementSet", {
+				urlParameters: {
+					"$filter": "VIN eq '" + oVin + "'"
+				},
+				success: $.proxy(function (data) {
+					var oFlag = data.results[0].ProcessingFlag;
+					if (oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") {
+						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+							width: "30em",
+							my: "center center",
+							at: "center center",
+							onClose: $.proxy(function () {
+								this.getRouter().navTo("ApplicationList");
+							}, this)
+						});
+
+					} else if (oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") {
+						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+							width: "30em",
+							my: "center center",
+							at: "center center",
+							onClose: $.proxy(function () {
+								this.getRouter().navTo("ApplicationList");
+							}, this)
+						});
+
+					} else {
+						$.proxy(this._fnValidateSubmit(), this);
+					}
+
+				}, this),
+				error: $.proxy(function () {
+
+				}, this)
+
+			});
+		},
+
 		OnNextStep3: function (oEvent) {
 			var oOdometer = this.getView().byId("idOdoVal");
 			var oOdoVal = oOdometer.getValue();
@@ -965,7 +1012,7 @@ sap.ui.define([
 			var zEcpModel = this.getModel("EcpSalesModel");
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 
-			this._fnExistAppCheck();
+			this._fnExistAppCheckCreate();
 
 			var oAgrInptElem = this.getView().byId("idAgrType");
 			oAgrInptElem.setValueState(sap.ui.core.ValueState.None);
@@ -1983,7 +2030,7 @@ sap.ui.define([
 			return crudObj;
 		},
 		onSaveApp: async function (isFromSubmit) {
-			await this._fnExistAppCheck();
+
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
 
@@ -2160,7 +2207,6 @@ sap.ui.define([
 
 		onUpdateSavedApp: async function (oEvent) {
 
-			await this._fnExistAppCheck();
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			var oEcpModel = this.getModel("EcpSalesModel");
@@ -2378,11 +2424,17 @@ sap.ui.define([
 
 		onSubmitApp: function () {
 			//this._Step04MandatoryFn();
+			this.resetValidationError();
+			this._fnExistAppCheck();
 
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
 
 			//ReValidating form
-			this.resetValidationError();
+
+		},
+
+		_fnValidateSubmit: function () {
+
 			if (!this.oECPData) {
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 			}
@@ -2438,11 +2490,10 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
-					press: async function () {
-						await that._fnExistAppCheck();
+					press: function () {
 
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
-						var objSub = await that._fnObject("SUB", "DELETED");
+						var objSub = that._fnObject("SUB", "DELETED");
 						var oEcpModel = that.getModel("EcpSalesModel");
 						/*
 						Defect:9937
@@ -2551,9 +2602,9 @@ sap.ui.define([
 					dialog.destroy();
 				}
 			});
-
 			dialog.open();
 		},
+
 		onPrintAgreement: function () {
 
 			var oAgr = this.getView().getModel("LocalDataModel").getProperty("/AgreementData/AgreementNumber");
