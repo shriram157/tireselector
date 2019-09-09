@@ -249,16 +249,16 @@ sap.ui.define([
 				"BPNumber": "2400599987",
 				"BPRegion": "AB"
 			}, {
-				"BPNumber": "2400599988",
+				"BPNumber": "2400599982",
 				"BPRegion": "BC"
 			}, {
-				"BPNumber": "2400599989",
+				"BPNumber": "2400599983",
 				"BPRegion": "MB"
 			}, {
-				"BPNumber": "2400599990",
+				"BPNumber": "2400599984",
 				"BPRegion": "SK"
 			}, {
-				"BPNumber": "2400599991",
+				"BPNumber": "2400599985",
 				"BPRegion": "QC"
 			}, {
 				"BPNumber": "2400599992",
