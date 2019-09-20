@@ -121,6 +121,12 @@ sap.ui.define([
 				this.getView().getModel("oSetProperty").setProperty("/saleDat01Visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/saleDat02Visible", true);
 
+				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+					pattern: "yyyy-MM-ddTHH:mm:ss"
+				});
+
+				var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
+
 				var oZECPModel = this.getModel("EcpSalesModel");
 				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
 				$.ajaxSetup({
@@ -275,7 +281,8 @@ sap.ui.define([
 								"$filter": "MGANR eq '" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/ECPPlanCode") +
 									"'and ODMTR eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Odometer") + "'and VIN eq '" +
 									this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/VIN") +
-									"'and ZECPAGRTYPE eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/AgreementType") + "'"
+									"'and ZECPAGRTYPE eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/AgreementType") +
+									"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
 							},
 							success: $.proxy(function (pdata) {
 								this.getModel("LocalDataModel").setProperty("/oPlanPricingData", pdata.results[0]);
@@ -1242,10 +1249,17 @@ sap.ui.define([
 					'X-CSRF-Token': this._oToken
 				}
 			});
+
+			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				pattern: "yyyy-MM-ddTHH:mm:ss"
+			});
+
+			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
+
 			zEcpModel.read("/zc_ecp_planpricing_dataSet", {
 				urlParameters: {
 					"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
-						"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'"
+						"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
 				},
 				success: $.proxy(function (data) {
 
@@ -1697,13 +1711,19 @@ sap.ui.define([
 		//To Fix Defect Id 8347|| Getting surcharge value on change of odometer
 		updateSurchargeValue: function (odoMeterState) {
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
+			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				pattern: "yyyy-MM-ddTHH:mm:ss"
+			});
+
+			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
+
 			if (odoMeterState === "None") {
 				var oZECPModel = this.getModel("EcpSalesModel");
 				if (this.getModel("LocalDataModel").getProperty("/odometerState") === "None") {
 					oZECPModel.read("/zc_ecp_planpricing_dataSet", {
 						urlParameters: {
 							"$filter": "MGANR eq '" + oECPData.ZecpPlancode + "'and ODMTR eq'" + oECPData.ZecpOdometer + "'and VIN eq '" + oECPData.ZecpVin +
-								"'and ZECPAGRTYPE eq'" + oECPData.ZecpAgrType + "'"
+								"'and ZECPAGRTYPE eq'" + oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
 						},
 						success: $.proxy(function (data) {
 
