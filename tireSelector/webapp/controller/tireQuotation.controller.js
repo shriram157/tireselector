@@ -911,6 +911,7 @@ sap.ui.define([
 		},
 
 		changeUnitPrice: function (oUnitPrice) {
+			_this.oTireQuotationModel.setProperty("/Retails",oUnitPrice.getParameter("newValue"));
 			_this.oTirePriceModel.updateBindings(true);
 		},
 
