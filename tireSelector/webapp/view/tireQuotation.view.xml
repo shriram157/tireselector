@@ -93,7 +93,7 @@
 										<Text id="TireTxt3" text="{TireQuotationModel>/Material}"/>
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/Retails', formatter: '.addDollarSign'}" id="id_tireUnitPrice" submit="getUnitPrice"
-										change="changeUnitPrice"/>
+										change="changeUnitPrice" liveChange="getUnitPrice"/>
 									<Input value="" id="id_tireQty" liveChange="calculatePrice"/>
 									<Input value="{path:'TirePriceModel>/TiresPrice', formatter: '.addDollarSign'}" id="id_tirePrice" editable="false"/>
 								</cells>
