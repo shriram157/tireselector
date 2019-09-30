@@ -920,7 +920,7 @@ sap.ui.define([
 			var data = _this.oTirePriceModel.getData();
 			var dataRes = _this.oTireQuotationModel.getData();
 			if (oUnit.getSource().getId().split("_")[3] == "tireUnitPrice") {
-				_this.oTireQuotationModel.getData().Retails = parseFloat(oUnitPrice).toFixed(2);
+				_this.oTireQuotationModel.getData().Retails = oUnitPrice;
 				if (_this.getView().byId("id_tireQty").getValue() != "") {
 					data.TiresPrice = _this.decimalFormatter(Number(oUnitPrice) * Number(_this.getView().byId("id_tireQty").getValue()));
 				}
