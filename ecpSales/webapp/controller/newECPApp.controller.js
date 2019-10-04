@@ -1240,7 +1240,7 @@ sap.ui.define([
 			this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
 			this.oPlanMonth = parseInt(mnth);
 
-			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
+			this.PlanTime = parseFloat(this.oPlanMonth * 30.4167 * 24 * 60 * 60 * 1000).toFixed(2);
 
 			var zEcpModel = this.getModel("EcpSalesModel");
 			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
@@ -1303,8 +1303,8 @@ sap.ui.define([
 			minute = minute % 60;
 			day = Math.floor(hour / 24);
 			hour = hour % 24;
-			month = Math.floor(day / 30);
-			day = day % 30;
+			month = Math.floor(day / 30.4167);
+			day = day % 30.4167;
 			return {
 				month: month,
 				day: day,
@@ -1463,7 +1463,7 @@ sap.ui.define([
 			}
 
 			var oMonthDef = this.DifferTime;
-			var MaxDays = parseInt(this.mxMonth) * 30 * 1000 * 60 * 60 * 24;
+			var MaxDays = parseInt(this.mxMonth) * 30.4167 * 1000 * 60 * 60 * 24;
 
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 
