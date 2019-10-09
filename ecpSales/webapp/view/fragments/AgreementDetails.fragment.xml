@@ -3,7 +3,7 @@
 	<Dialog class="sapUiSizeCompact" title=" {i18n>ECPAgreementDetails} - {LocalDataModel>/responseData/ZecpAgrNum}" stretch="true">
 		<VBox width="100%" class="gridWrapper">
 			<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
-					<html:div class="exampleDiv">
+				<html:div class="exampleDiv">
 					<f:SimpleForm id="sAgreementEnq" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
 						labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
 						columnsM="1" singleContainerFullSize="false">
@@ -120,6 +120,8 @@
 							<Label text="{i18n>ExpiryDate}"/>
 							<Text
 								text="{path: 'LocalDataModel>/AgreementData/AgreementthruDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+							<Label text="{i18n>statusOdometer}"/>
+							<Text text="{LocalDataModel>/AgreementData/StatusKMReading}"/>
 							<Label text="{i18n>StartOdometer}"/>
 							<Text text="{LocalDataModel>/AgreementData/ODMTR}"/>
 							<Label text="{i18n>ExpiryOdometer}"/>
@@ -132,9 +134,9 @@
 					</f:SimpleForm>
 				</html:div>
 				<html:div class="exampleDiv">
-					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementInformation}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
-						labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
-						singleContainerFullSize="false">
+					<f:SimpleForm editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementInformation}" labelSpanXL="5" labelSpanL="5"
+						labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
+						columnsM="1" singleContainerFullSize="false">
 						<f:content>
 							<Label text="{i18n>Status}"/>
 							<!--<Text text="{LocalDataModel>/AgreementData/AgreementStatus}"/> commented this line and hard coded the status-->
@@ -169,7 +171,7 @@
 		</VBox>
 		<HBox alignContent="Center" justifyContent="Center" class="sapUiSmallMarginBottom">
 			<Button text="{i18n>BacktoList}" press="onPressBackPressAgr" type="Back" class="sapUiTinyMarginBeginEnd"/>
-			<Button text="{i18n>PrintAgreement}"  press="onPrintAgreement" type="Emphasized"  enabled="{LocalDataModel>/printBtnState}"/>
+			<Button text="{i18n>PrintAgreement}" press="onPrintAgreement" type="Emphasized" enabled="{LocalDataModel>/printBtnState}"/>
 		</HBox>
 		<!--<endButton>-->
 		<!--	<Button text="{i18n>PrintAgreement}" press="onPrintAgreement"/>-->

@@ -1240,7 +1240,7 @@ sap.ui.define([
 			this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
 			this.oPlanMonth = parseInt(mnth);
 
-			this.PlanTime = parseFloat(this.oPlanMonth * 30.4167 * 24 * 60 * 60 * 1000).toFixed(2);
+			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 
 			var zEcpModel = this.getModel("EcpSalesModel");
 			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
@@ -1262,13 +1262,11 @@ sap.ui.define([
 						"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
 				},
 				success: $.proxy(function (data) {
-
 					this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
 					this.oECPData.ZecpRetPrice = data.results[0].ZECP_RET_PRICE;
 					this.oECPData.ZecpDefSurchrg = data.results[0].ZECP_DEF_SURCHRG;
 					this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
 					this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
-
 				}, this),
 				error: function (err) {
 					console.log(err);
@@ -1303,8 +1301,8 @@ sap.ui.define([
 			minute = minute % 60;
 			day = Math.floor(hour / 24);
 			hour = hour % 24;
-			month = Math.floor(day / 30.4167);
-			day = day % 30.4167;
+			month = Math.floor(day / 30.42);
+			day = day % 30.42;
 			return {
 				month: month,
 				day: day,
@@ -1463,7 +1461,8 @@ sap.ui.define([
 			}
 
 			var oMonthDef = this.DifferTime;
-			var MaxDays = parseInt(this.mxMonth) * 30.4167 * 1000 * 60 * 60 * 24;
+
+			var MaxDays = parseInt(this.mxMonth) * 2628000000;
 
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 
