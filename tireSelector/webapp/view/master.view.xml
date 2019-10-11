@@ -52,7 +52,7 @@
 							<Link text="load more VIN" press="loadMoreVin" visible="{MasterModel>/enableMore}"/>
 						
 							<Input placeholder="{i18n>Search}" id="searchOptionTireSize" visible="{MasterModel>/enableTireSize}" liveChange="onLiveChangeTireSize" change="onInputEntryTireSize"  showSuggestion="true" suggest="handleTireSizeSuggest"
-								suggestionItems="{ path: 'FitmentDataModel>/results', sorter: { path: 'TIRE_SIZE' } }">
+							 filterSuggests="false"	suggestionItems="{ path: 'FitmentDataModel>/results', sorter: { path: 'TIRE_SIZE' } }">
 								<suggestionItems>
 									<core:ListItem text="{path:'FitmentDataModel>TIRE_SIZE', formatter: '.formatTireSize'}"/>
 								</suggestionItems>

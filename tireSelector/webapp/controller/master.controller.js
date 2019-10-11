@@ -422,14 +422,14 @@ sap.ui.define([
 		handleTireSizeSuggest: function (oEvent) {
 			var sTerm = oEvent.getParameter("suggestValue");
 			var aFilters = [];
-			_that.byId("searchOptionTireSize").setFilterFunction(function (sTerm, oItem) {
-				// A case-insensitive 'string contains' style filter
-				return oItem.getText().match(new RegExp(sTerm, "i"));
-			});
 			if (sTerm) {
-				aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.Contains, sTerm));
+				aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.StartsWith, sTerm));
+				for (var i = 1; i <= sTerm.length; i++) {
+					var newaTerm = sTerm.substr(0, i) + "/" + sTerm.substr(i, sTerm.length);
+					aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.StartsWith, newaTerm));
+				}
 			}
-			oEvent.getSource().getBinding("suggestionItems").filter(aFilters);
+			oEvent.getSource().getBinding("suggestionItems").filter(new Filter({filters:aFilters}));
 			oEvent.getSource().getBinding("suggestionItems").refresh(true);
 		},
 
@@ -520,8 +520,8 @@ sap.ui.define([
 				if (sTerm) {
 					aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.Contains, sTerm));
 				}
-				oEntry.getSource().getBinding("suggestionItems").filter(aFilters);
-				oEntry.getSource().getBinding("suggestionItems").refresh(true);
+			//	oEntry.getSource().getBinding("suggestionItems").filter(aFilters);
+			//	oEntry.getSource().getBinding("suggestionItems").refresh(true);
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
