@@ -1302,7 +1302,7 @@ sap.ui.define([
 			day = Math.floor(hour / 24);
 			hour = hour % 24;
 			month = Math.floor(day / 30.42);
-			day = day % 30.42;
+			day = Math.floor(day % 30.42);
 			return {
 				month: month,
 				day: day,

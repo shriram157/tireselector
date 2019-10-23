@@ -91,20 +91,11 @@ sap.ui.define([
 						}, this)
 					});
 
-					// 	andFilter = new sap.ui.model.Filter({
-					// 		filters: [
-					// 			new sap.ui.model.Filter("AgreementNumber", sap.ui.model.FilterOperator.Contains, sQuery)
-					// 		],
-					// 		and: false
-					// 	});
-
 				} else {
 					this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
 					this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0006E"));
 					this.getView().byId("idAgrInqMsgStrp").setType("Error");
 					return;
-
-					// andFilter = [];
 				}
 
 				oBindItems = this.oTable.getBinding("rows");
@@ -129,13 +120,6 @@ sap.ui.define([
 						}, this)
 
 					});
-
-					// 	andFilter = new sap.ui.model.Filter({
-					// 		filters: [
-					// 			new sap.ui.model.Filter("VIN", sap.ui.model.FilterOperator.Contains, sQuery)
-					// 		],
-					// 		and: false
-					// 	});
 				} else {
 					this.getView().byId("idAgrInqMsgStrp").setProperty("visible", true);
 					this.getView().byId("idAgrInqMsgStrp").setText(oBundle.getText("ECP0001E"));
