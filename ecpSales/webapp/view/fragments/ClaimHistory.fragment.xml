@@ -2,7 +2,8 @@
 	xmlns:u="sap.ui.unified">
 	<Dialog class="sapUiSizeCompact" title=" {i18n>AgreementClaimHistory} - {LocalDataModel>/AgreementNumber}" stretch="true">
 		<content>
-			<Table class="clClaimTable" headerText="" noDataText="{i18n>NoData}" items="{ path:'LocalDataModel>/ClaimModelData'}">
+			<Table class="clClaimTable" headerText="" noDataText="{i18n>NoData}"
+				items="{ path:'LocalDataModel>/ClaimModelData', sorter : [ { path : 'RepairDate', descending : 'false', group : 'true' } ]}">
 				<columns>
 					<Column>
 						<header>
