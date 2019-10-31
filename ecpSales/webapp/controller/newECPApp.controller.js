@@ -98,6 +98,7 @@ sap.ui.define([
 			this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 
 			this.oAppId = oEvent.getParameters().arguments.appId;
+			var oFormatedSaleDate;
 
 			// 			this.getDealer();
 
@@ -125,8 +126,6 @@ sap.ui.define([
 					pattern: "yyyy-MM-ddTHH:mm:ss"
 				});
 
-				var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
-
 				var oZECPModel = this.getModel("EcpSalesModel");
 				this._oToken = oZECPModel.getHeaders()['x-csrf-token'];
 				$.ajaxSetup({
@@ -149,6 +148,9 @@ sap.ui.define([
 							"/ApplicationOwnerData/Odometer"));
 						this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
 							"/ApplicationOwnerData/AgreementType"));
+
+						oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
+							"/ApplicationOwnerData/SaleDate")));
 
 						// ApplicationOwnerData_Name
 
