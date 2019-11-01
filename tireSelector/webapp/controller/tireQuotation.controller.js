@@ -494,10 +494,21 @@ sap.ui.define([
 				_this.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 					success: $.proxy(function (oPriceData) {
 						if (oPriceData.results.length > 0) {
-							for (var n = 0; n < oPriceData.results.length; n++) {
+							var lengthMinOne=oPriceData.results.length-1;
+							for (var n = lengthMinOne; n >=0; n--) {
 								var CndType = oPriceData.results[n].CndType;
-								if (CndType == "ZPG4") { //if (CndType == "ZPEC" || CndType == "ZPEH") {
+								
+								if (CndType == "ZPM3" || CndType == "ZPM2" ) { //if (CndType == "ZPEC" || CndType == "ZPEH") {
+								
+								if(CndType == "ZPM3")
+								{ 
 									_this.oTireQuotationModel.getData().RHPPRice = parseFloat(oPriceData.results[n].Amount).toFixed(2);
+								}
+								else if(_this.oTireQuotationModel.getData().RHPPRice == "" && CndType == "ZPM2" )
+								{
+									_this.oTireQuotationModel.getData().RHPPRice = parseFloat(oPriceData.results[n].Amount).toFixed(2);
+									
+								}
 									if (_this.oTireQuotationModel.getData().RHPPRice != "") {
 										_this.oTirePriceModel.getData().RHPPriceSum = (Number(_this.oTireQuotationModel.getData().RHPPRice) * Number(_this.getView()
 											.byId("id_RHPsQty").getValue())).toString();
