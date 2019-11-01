@@ -494,11 +494,18 @@ sap.ui.define([
 				_this.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 					success: $.proxy(function (oPriceData) {
 						if (oPriceData.results.length > 0) {
-							var lengthMinOne=oPriceData.results.length-1;
-							for (var n = lengthMinOne; n >=0; n--) {
-								var CndType = oPriceData.results[n].CndType;
+							var CndTypeArray=[];
+							
+							for (var n = 0; n < oPriceData.results.length; n++) {
+								var CnType = oPriceData.results[n].CndType;
+								CndTypeArray.push(CnType);
 								
-								if (CndType == "ZPM3" || CndType == "ZPM2" ) { //if (CndType == "ZPEC" || CndType == "ZPEH") {
+							}
+							var n= CndTypeArray.indexOf("ZPM3");
+							if (n == -1)
+							{
+								n= CndTypeArray.indexOf("ZPM2");	
+							}
 								
 							 
 									_this.oTireQuotationModel.getData().RHPPRice = parseFloat(oPriceData.results[n].Amount).toFixed(2);
@@ -550,11 +557,11 @@ sap.ui.define([
 										_this.oTirePriceModel.updateBindings(true);
 										_this.oTireQuotationModel.updateBindings(true);
 									}
-								}
+								
 								_this.oTireQuotationModel.updateBindings(true);
 								_this.oTirePriceModel.updateBindings(true);
 								_this.oGlobalBusyDialog.close();
-							}
+							
 						} else {
 							// sap.m.MessageBox.error(
 							// 	"NO Pricing data found for Material"
