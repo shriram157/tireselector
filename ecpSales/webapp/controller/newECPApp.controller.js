@@ -2094,15 +2094,6 @@ sap.ui.define([
 		},
 		onSaveApp: async function (isFromSubmit) {
 
-			// 			else if (parseFloat(planPrice) > parseFloat(retPrice)) {
-
-			// 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ExceedPlanPrice"));
-			// 				this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
-
-			// 			} 
-
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
 
@@ -2142,6 +2133,13 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
+			} else if (parseFloat(planPrice) > parseFloat(retPrice)) {
+
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ExceedPlanPrice"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
+
 			} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") == "" && this.getView().getModel("EcpFieldData").getProperty(
 					"/ZecpLienholder") == "" && this.getView().getModel("EcpFieldData").getProperty(
 					"/ZecpLienterms") != "") {
@@ -2258,18 +2256,18 @@ sap.ui.define([
 			var oval = oEvent.getParameters().value;
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 
-			// 			if (parseFloat(oval) <= parseFloat(retPrice)) {
-			// 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
-			// 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-			// 				this.getView().byId("idNewECPMsgStrip").setText("");
-			// 			} else {
-			// 				MessageToast.show(this.oBundle.getText("ExceedPlanPrice"));
-			// this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ExceedPlanPrice"));
-			// this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
+			if (parseFloat(oval) <= parseFloat(retPrice)) {
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStrip").setText("");
+			} else {
+				MessageToast.show(this.oBundle.getText("ExceedPlanPrice"));
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ExceedPlanPrice"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 
-			//}
+			}
 		},
 
 		onUpdateSavedApp: async function (oEvent) {
@@ -2302,28 +2300,28 @@ sap.ui.define([
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
-			// 			if (parseFloat(planPrice) > parseFloat(retPrice)) {
+			if (parseFloat(planPrice) > parseFloat(retPrice)) {
 
-			// 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// 				this.getView().byId("idNewECPMsgStrip").setText(oBundle.getText("ExceedPlanPrice"));
-			// 				this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(oBundle.getText("ExceedPlanPrice"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 
-			// 			} else {
-			oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
-					"/ApplicationOwnerData/VIN") +
-				"')", obj, {
-					method: "PUT",
-					success: $.proxy(function (response) {
-						oEcpModel.refresh();
-						this.getRouter().navTo("ApplicationList");
-						MessageToast.show(oBundle.getText("UpdatedDataHasbeenSavedSuccessFully"));
-					}, this),
-					error: function () {
-						MessageToast.show(oBundle.getText("PleaseTryAgainToSave"));
-					}
-				});
-			//}
+			} else {
+				oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
+						"/ApplicationOwnerData/VIN") +
+					"')", obj, {
+						method: "PUT",
+						success: $.proxy(function (response) {
+							oEcpModel.refresh();
+							this.getRouter().navTo("ApplicationList");
+							MessageToast.show(oBundle.getText("UpdatedDataHasbeenSavedSuccessFully"));
+						}, this),
+						error: function () {
+							MessageToast.show(oBundle.getText("PleaseTryAgainToSave"));
+						}
+					});
+			}
 
 		},
 		//Auth: Vinay
