@@ -47,6 +47,7 @@ sap.ui.define([
 		},
 		_onRoutMatched: function (oEvent) {
 			var oAgrNum = oEvent.getParameters().arguments.AgrNum;
+			var oAgrVIN = oEvent.getParameters().arguments.oAgrVin;
 			this.getModel("LocalDataModel").setProperty("/AgreementNum", oAgrNum);
 			// var oVin = oEvent.getParameters().arguments.vin;
 			// var oCustomerNumber = oEvent.getParameters().arguments.customerNumber;
@@ -74,7 +75,7 @@ sap.ui.define([
 
 			zEcpModel.read("/ZC_ECP_AGREEMENT_V2(p_language='" + oLang + "')/Set", {
 				urlParameters: {
-					"$filter": "AgreementNumber eq '" + oAgrNum + "'"
+					"$filter": "AgreementNumber eq '" + oAgrNum + "'and VIN eq '" + oAgrVIN + "'"
 				},
 				success: $.proxy(function (data) {
 

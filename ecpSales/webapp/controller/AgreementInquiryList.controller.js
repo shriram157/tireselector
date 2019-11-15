@@ -147,7 +147,8 @@ sap.ui.define([
 			var obj = this.getModel("LocalDataModel").getProperty(oEvent.getParameters().rowContext.sPath);
 
 			this.getOwnerComponent().getRouter().navTo("AgreementInquiry", {
-				AgrNum: obj.AgreementNumber
+				AgrNum: obj.AgreementNumber,
+				oAgrVin: obj.VIN
 			});
 
 			//this.getView().byId("idAgreementTable").removeSelections("true");

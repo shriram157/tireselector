@@ -232,7 +232,7 @@
 				},
 				{
 					"name": "AgreementInquiry",
-					"pattern": "AgreementInquiry/{AgrNum}",
+					"pattern": "AgreementInquiry/{AgrNum}/{oAgrVin}",
 					"target": [
 						"AgreementInquiry"
 					]
