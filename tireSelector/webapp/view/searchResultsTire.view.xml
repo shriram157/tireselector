@@ -50,7 +50,7 @@
 						</items>
 					</VBox>
 					<HBox class="customStyleBox">
-						<t:Table id="idTireSelectionTable" class="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
+						<t:Table id="idTireSelectionTable" height="100%" class="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
 							rows="{TireFitmentJSONModel>/results}" visibleRowCount="8" showNoData="false">
 							<t:toolbar>
 								<Toolbar>

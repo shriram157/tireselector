@@ -235,7 +235,7 @@ sap.ui.define([
 			} else {
 				that._oViewModel.setProperty("/enableProdMarkup", false);
 			}
-
+		
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
