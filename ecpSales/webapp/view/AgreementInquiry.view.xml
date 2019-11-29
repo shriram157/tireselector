@@ -70,7 +70,7 @@
 												<Label text="{i18n>Business}"/>
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/FaxNumber}"/>
 												<Label text="{i18n>Mobile}"/>
-												<Text text="{LocalDataModel>/VechOwnrSectonAddress/HomePhone}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/Mobile}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>

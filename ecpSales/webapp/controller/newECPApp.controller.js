@@ -1621,22 +1621,22 @@ sap.ui.define([
 					success: $.proxy(function (budata) {
 
 							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
-							if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+							if (budata.results[0].to_EmailAddress.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress.results[
 									0].EmailAddress);
 							}
-							if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+							if (budata.results[0].to_PhoneNumber.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber.results[
 									0].PhoneNumber);
 							}
-							if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+							if (budata.results[0].to_FaxNumber.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber.results[
 										0]
 									.FaxNumber);
 							}
-							if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
+							if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber.results[
-									0].MobilePhoneNumber);
+									0].PhoneNumber);
 							}
 
 						},
@@ -2864,23 +2864,23 @@ sap.ui.define([
 									success: $.proxy(function (budata) {
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
-											if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+											if (budata.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress
 													.results[
 														0].EmailAddress);
 											}
-											if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
 													.results[
 														0].PhoneNumber);
 											}
-											if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+											if (budata.results[0].to_FaxNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber
 													.results[
 														0]
 													.FaxNumber);
 											}
-											if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
+											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber
 													.results[
 														0].MobilePhoneNumber);
