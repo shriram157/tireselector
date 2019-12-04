@@ -48,16 +48,17 @@
 								</lists>
 							</FacetFilter>
 						</items>
-					</VBox>
-					<HBox class="customStyleBox">
-						<t:Table id="idTireSelectionTable" height="100%" class="idTireSelectionTable" cellClick="onRowPress" selectionBehavior="Row" selectionMode="None"
-							rows="{TireFitmentJSONModel>/results}" visibleRowCount="8" showNoData="false">
-							<t:toolbar>
+					</VBox>	
+					<HBox class="customStyleBox" >
+						
+						<t:Table id="idTireSelectionTable"  class="idTireSelectionTable" cellClick="onRowPress" rowHeight="40px" selectionBehavior="Row" selectionMode="None"
+							rows="{TireFitmentJSONModel>/results}" visibleRowCountMode="Auto" showNoData="false">
+							<t:extension>
 								<Toolbar>
 									<CheckBox text="{i18n>ShowDealerNet}" select="onCheckPress" id="checkDealerNet"/>
 									<CheckBox text="{i18n>UsePreviewMarkup}" select="onCheckPreview" id="checkPreview"/>
 								</Toolbar>
-							</t:toolbar>
+							</t:extension>
 							<t:columns>
 								<t:Column id="ID_TireFitment" sortProperty="{i18n>TireFitment}" filterProperty="{i18n>TireFitment}" width="7rem">
 									<Label text="{i18n>TireFitment}"/>
@@ -137,6 +138,7 @@
 								</t:Column>
 							</t:columns>
 						</t:Table>
+					
 					</HBox>
 				</content>
 				<footer>
