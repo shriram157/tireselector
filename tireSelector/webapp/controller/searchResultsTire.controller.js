@@ -588,12 +588,24 @@ sap.ui.define([
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[4]);
 										that.oTireFitmentJSONModel.updateBindings(true);
 
+										if(that.FitmentToCharac.results.length>19)
+										{
+											that.getView().byId("idTireSelectionTable").setVisibleRowCount(20);
+										}
+										else if(that.FitmentToCharac.results.length>8)
+										{
+											that.getView().byId("idTireSelectionTable").setVisibleRowCount(that.FitmentToCharac.results.length);
+										}
+										
+										
 										that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.oTable.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.FacetFilters.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ui.core.BusyIndicator.hide();
 										that.oTireFitmentJSONModel.refresh(true);
 										that.oTireFitmentJSONModel.updateBindings(true);
+									
+										
 									}, 2000);
 
 									if (that.msgFlag == true) {

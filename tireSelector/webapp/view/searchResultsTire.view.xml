@@ -51,8 +51,8 @@
 					</VBox>	
 					<HBox class="customStyleBox" >
 						
-						<t:Table id="idTireSelectionTable"  class="idTireSelectionTable" cellClick="onRowPress" rowHeight="40px" selectionBehavior="Row" selectionMode="None"
-							rows="{TireFitmentJSONModel>/results}" visibleRowCountMode="Auto" showNoData="false">
+						<t:Table id="idTireSelectionTable"  class="idTireSelectionTable" cellClick="onRowPress"  selectionBehavior="Row" selectionMode="None"
+							rows="{TireFitmentJSONModel>/results}" visibleRowCount="8" showNoData="false">
 							<t:extension>
 								<Toolbar>
 									<CheckBox text="{i18n>ShowDealerNet}" select="onCheckPress" id="checkDealerNet"/>
