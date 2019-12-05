@@ -1142,8 +1142,11 @@ sap.ui.define([
 
 			this.DifferTime = (oSaleDateTime - oRegDate);
 
+			var saleDateDifFromCurrentDate = (oCurrentDate - oSaleDateTime);
+
 			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
+			var targetSellTime = 60 * 24 * 60 * 60 * 1000;
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
 				if (this.DifferTime < oDayMili) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
@@ -1157,7 +1160,7 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
-				0) {
+				0 && saleDateDifFromCurrentDate < targetSellTime) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1167,6 +1170,12 @@ sap.ui.define([
 				oAgr.setValueState(sap.ui.core.ValueState.None);
 				oOdometer.setValueState(sap.ui.core.ValueState.None);
 				oSaleDateId.setValueState(sap.ui.core.ValueState.None);
+			} else if (saleDateDifFromCurrentDate > targetSellTime) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+
 			} else if ($.isEmptyObject(oSaleDate)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EDate"));
