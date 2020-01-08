@@ -2094,11 +2094,11 @@ sap.ui.define([
 			};
 			return crudObj;
 		},
-		onSaveApp: async function (isFromSubmit) {
+		onSaveApp: function (isFromSubmit) {
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
-
+			var amtFin = this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin");
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oOdometer = this.getView().byId("idOdoVal");
 			var oOdoVal = oOdometer.getValue();
@@ -2147,6 +2147,11 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("negPriceNotAllowed"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
+			} else if (parseFloat(amtFin) < 0) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("negPriceNotAllowed"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/AmtFinState", "Error");
 			} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") == "" && this.getView().getModel("EcpFieldData").getProperty(
 					"/ZecpLienholder") == "" && this.getView().getModel("EcpFieldData").getProperty(
 					"/ZecpLienterms") != "") {
@@ -2313,6 +2318,7 @@ sap.ui.define([
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
+			var amtFin = this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin");
 			if (parseFloat(planPrice) > parseFloat(retPrice)) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -2325,6 +2331,11 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("negPriceNotAllowed"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
+			} else if (parseFloat(amtFin) < 0) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("negPriceNotAllowed"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/AmtFinState", "Error");
 			} else {
 				oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
 						"/ApplicationOwnerData/VIN") +
