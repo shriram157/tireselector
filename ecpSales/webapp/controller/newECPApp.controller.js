@@ -1142,11 +1142,8 @@ sap.ui.define([
 
 			this.DifferTime = (oSaleDateTime - oRegDate);
 
-			var saleDateDifFromCurrentDate = (oCurrentDate - oSaleDateTime);
-
 			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
-			var targetSellTime = 60 * 24 * 60 * 60 * 1000;
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
 				if (this.DifferTime < oDayMili) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
@@ -1160,7 +1157,7 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
 			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
-				0 && saleDateDifFromCurrentDate < targetSellTime) {
+				0) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1170,12 +1167,6 @@ sap.ui.define([
 				oAgr.setValueState(sap.ui.core.ValueState.None);
 				oOdometer.setValueState(sap.ui.core.ValueState.None);
 				oSaleDateId.setValueState(sap.ui.core.ValueState.None);
-			} else if (saleDateDifFromCurrentDate > targetSellTime) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
-				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-
 			} else if ($.isEmptyObject(oSaleDate)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EDate"));
@@ -1630,22 +1621,22 @@ sap.ui.define([
 					success: $.proxy(function (budata) {
 
 							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
-							if (budata.results[0].to_EmailAddress.results.length > 0) {
+							if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress.results[
 									0].EmailAddress);
 							}
-							if (budata.results[0].to_PhoneNumber.results.length > 0) {
+							if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber.results[
 									0].PhoneNumber);
 							}
-							if (budata.results[0].to_FaxNumber.results.length > 0) {
+							if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber.results[
 										0]
 									.FaxNumber);
 							}
-							if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
+							if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber.results[
-									0].PhoneNumber);
+									0].MobilePhoneNumber);
 							}
 
 						},
@@ -1690,11 +1681,13 @@ sap.ui.define([
 
 		},
 		onChangeAmt: function (oEvent) {
+			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
+
 			var val = oEvent.getParameter('value');
 			var parsedVal = parseFloat(val);
 			if (parsedVal < 0) {
 				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
-				oEvent.getSource().setValueStateText("Must be non-negative value");
+				oEvent.getSource().setValueStateText(this.oBundle.getText("negPriceNotAllowed"));
 				oEvent.getSource().setShowValueStateMessage(true);
 			} else {
 				//Handling -0 case
@@ -2149,6 +2142,11 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 
+			} else if (parseFloat(planPrice) < 0) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("negPriceNotAllowed"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 			} else if (this.getView().getModel("EcpFieldData").getProperty("/ZecpAmtFin") == "" && this.getView().getModel("EcpFieldData").getProperty(
 					"/ZecpLienholder") == "" && this.getView().getModel("EcpFieldData").getProperty(
 					"/ZecpLienterms") != "") {
@@ -2265,10 +2263,16 @@ sap.ui.define([
 			var oval = oEvent.getParameters().value;
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 
-			if (parseFloat(oval) <= parseFloat(retPrice)) {
+			if (parseFloat(oval) <= parseFloat(retPrice) && parseFloat(oval) >= 0) {
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setText("");
+			} else if (parseFloat(oval) < 0) {
+				MessageToast.show(this.oBundle.getText("negPriceNotAllowed"));
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("negPriceNotAllowed"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 			} else {
 				MessageToast.show(this.oBundle.getText("ExceedPlanPrice"));
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -2316,6 +2320,11 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 
+			} else if (parseFloat(planPrice) < 0) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("negPriceNotAllowed"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
 			} else {
 				oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
 						"/ApplicationOwnerData/VIN") +
@@ -2325,6 +2334,7 @@ sap.ui.define([
 							oEcpModel.refresh();
 							this.getRouter().navTo("ApplicationList");
 							MessageToast.show(oBundle.getText("UpdatedDataHasbeenSavedSuccessFully"));
+							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 						}, this),
 						error: function () {
 							MessageToast.show(oBundle.getText("PleaseTryAgainToSave"));
@@ -2873,23 +2883,23 @@ sap.ui.define([
 									success: $.proxy(function (budata) {
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
-											if (budata.results[0].to_EmailAddress.results.length > 0) {
+											if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress
 													.results[
 														0].EmailAddress);
 											}
-											if (budata.results[0].to_PhoneNumber.results.length > 0) {
+											if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
 													.results[
 														0].PhoneNumber);
 											}
-											if (budata.results[0].to_FaxNumber.results.length > 0) {
+											if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber
 													.results[
 														0]
 													.FaxNumber);
 											}
-											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
+											if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber
 													.results[
 														0].MobilePhoneNumber);
