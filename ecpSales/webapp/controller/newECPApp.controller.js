@@ -1211,13 +1211,13 @@ sap.ui.define([
 				var oSaleYear = new Date(oSaleDate).getFullYear();
 				var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
 				var oyearGap = parseInt(oSaleYear - oModelYr);
-				if (oyearGap > 8) {
+				if (oyearGap > 7) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Model year exceeds by " + parseInt(oyearGap - 8) + " years");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-				} else if (oyearGap <= 8 && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate) {
+				} else if (oyearGap <= 7 && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
 					//this.getView().byId("idFilter03").setProperty("enabled", true);
