@@ -1132,17 +1132,24 @@ sap.ui.define([
 				error: function () {}
 			});
 
+			var currenDateMoment = moment(new Date).format("YYYY-MM-DD");
+			var saleDateMoment = moment(oSaleDateId.getDateValue()).format("YYYY-MM-DD");
+			var regDateMoment = moment(this.BccAgrmntPrtDt).format("YYYY-MM-DD");
+
 			var oAgr = this.getView().byId("idAgrType");
 			var oAgrItem = this.getView().byId("idAgrType").getSelectedItem();
-			var SaleDateVar = new Date(oSaleDateId.getDateValue());
+			var SaleDateVar = moment(saleDateMoment, "YYYY-MM-DD");
 			var oSaleDateTime = new Date(oSaleDateId.getDateValue()).getTime();
 
-			var CurrentDateVar = new Date();
+			var CurrentDateVar = moment(currenDateMoment, "YYYY-MM-DD");
 			var oCurrentDate = new Date().getTime();
-			var RegDateVar = new Date(this.BccAgrmntPrtDt);
+			var RegDateVar = moment(regDateMoment, "YYYY-MM-DD");
 			var oRegDate = new Date(this.BccAgrmntPrtDt).getTime();
 
 			this.DifferTime = (oSaleDateTime - oRegDate);
+
+			var diffSaleCurrent = Math.round(moment.duration(SaleDateVar.diff(CurrentDateVar)).asDays());
+			var diffSaleRegDate = Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays());
 
 			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
@@ -1158,7 +1165,7 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
-			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && SaleDateVar <= CurrentDateVar && SaleDateVar >= RegDateVar && oOdoVal >
+			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
 				0) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
@@ -1175,13 +1182,13 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
 				oSaleDateId.setValueStateText(this.oBundle.getText("ECP0007EDate"));
-			} else if (SaleDateVar > CurrentDateVar) {
+			} else if (diffSaleCurrent > 0) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectSaleDate"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
 				oSaleDateId.setValueStateText(this.oBundle.getText("PleaseSelectSaleDate"));
-			} else if (SaleDateVar < RegDateVar) {
+			} else if (diffSaleRegDate < 0) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + new Date(
 					this.BccAgrmntPrtDt).toDateString() + ")");

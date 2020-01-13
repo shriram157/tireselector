@@ -226,7 +226,7 @@ sap.ui.define([
 						},
 						success: $.proxy(function (zcvedata) {
 
-							this.getModel("LocalDataModel").setProperty("/VehicleDetails", zcvedata.results[0]); // TODO: 
+							this.getModel("LocalDataModel").setProperty("/VehicleDetails", zcvedata.results[0]);
 
 							var vehcOwnrSectonCno = zcvedata.results[0].EndCustomer;
 							if (vehcOwnrSectonCno) {
@@ -238,6 +238,7 @@ sap.ui.define([
 
 									},
 									success: $.proxy(function (budata) {
+											console.log(budata + "240");
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
 											if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
@@ -247,6 +248,10 @@ sap.ui.define([
 											if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber
 													.results[0].PhoneNumber);
+
+												console.log(budata.results[0].to_PhoneNumber
+													.results[0].PhoneNumber);
+												console.log(this.getModel("LocalDataModel"));
 											}
 											if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[
