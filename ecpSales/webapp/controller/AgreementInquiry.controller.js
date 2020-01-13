@@ -135,16 +135,16 @@ sap.ui.define([
 							success: $.proxy(function (budata) {
 
 									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress", budata.results[0]);
-									if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+									if (budata.results[0].to_EmailAddress.results.length > 0) {
 										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress.results[
 											0].EmailAddress);
 
 									}
-									if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+									if (budata.results[0].to_PhoneNumber.results.length > 0) {
 										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber.results[
 											0].PhoneNumber);
 									}
-									if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+									if (budata.results[0].to_FaxNumber.results.length > 0) {
 										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[
 												0]
 											.FaxNumber);
@@ -241,11 +241,11 @@ sap.ui.define([
 											console.log(budata + "240");
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
-											if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+											if (budata.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress
 													.results[0].EmailAddress);
 											}
-											if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber
 													.results[0].PhoneNumber);
 
@@ -253,11 +253,11 @@ sap.ui.define([
 													.results[0].PhoneNumber);
 												console.log(this.getModel("LocalDataModel"));
 											}
-											if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+											if (budata.results[0].to_FaxNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[
 													0].FaxNumber);
 											}
-											if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
+											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Mobile", budata.results[0].to_MobilePhoneNumber
 													.results[0].MobilePhoneNumber);
 											}
@@ -312,17 +312,17 @@ sap.ui.define([
 
 								this.getModel("LocalDataModel").setProperty("/BusinessPartnerData", budata.results[0]);
 
-								if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+								if (budata.results[0].to_EmailAddress.results.length > 0) {
 									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/EmailAddress", budata.results[0].to_EmailAddress.results[
 										0].EmailAddress);
 								}
 
-								if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+								if (budata.results[0].to_PhoneNumber.results.length > 0) {
 									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/PhoneNumber", budata.results[0].to_PhoneNumber.results[
 										0].PhoneNumber);
 								}
 
-								if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+								if (budata.results[0].to_FaxNumber.results.length > 0) {
 									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", budata.results[0].to_FaxNumber.results[0]
 										.FaxNumber);
 								}
