@@ -1134,10 +1134,12 @@ sap.ui.define([
 
 			var oAgr = this.getView().byId("idAgrType");
 			var oAgrItem = this.getView().byId("idAgrType").getSelectedItem();
-
+			var SaleDateVar = new Date(oSaleDateId.getDateValue());
 			var oSaleDateTime = new Date(oSaleDateId.getDateValue()).getTime();
 
+			var CurrentDateVar = new Date();
 			var oCurrentDate = new Date().getTime();
+			var RegDateVar = new Date(this.BccAgrmntPrtDt);
 			var oRegDate = new Date(this.BccAgrmntPrtDt).getTime();
 
 			this.DifferTime = (oSaleDateTime - oRegDate);
@@ -1156,7 +1158,7 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
-			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate && oOdoVal >
+			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && SaleDateVar <= CurrentDateVar && SaleDateVar >= RegDateVar && oOdoVal >
 				0) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
@@ -1173,13 +1175,13 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
 				oSaleDateId.setValueStateText(this.oBundle.getText("ECP0007EDate"));
-			} else if (oSaleDateTime > oCurrentDate) {
+			} else if (SaleDateVar > CurrentDateVar) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectSaleDate"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
 				oSaleDateId.setValueStateText(this.oBundle.getText("PleaseSelectSaleDate"));
-			} else if (oSaleDateTime < oRegDate) {
+			} else if (SaleDateVar < RegDateVar) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + new Date(
 					this.BccAgrmntPrtDt).toDateString() + ")");
