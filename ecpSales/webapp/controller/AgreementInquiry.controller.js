@@ -149,6 +149,13 @@ sap.ui.define([
 												0]
 											.FaxNumber);
 									}
+
+									if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
+										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/MobileNumber", budata.results[0].to_MobilePhoneNumber
+											.results[
+												0]
+											.PhoneNumber);
+									}
 								},
 								this),
 							error: function () {
@@ -259,7 +266,7 @@ sap.ui.define([
 											}
 											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Mobile", budata.results[0].to_MobilePhoneNumber
-													.results[0].MobilePhoneNumber);
+													.results[0].PhoneNumber);
 											}
 										},
 										this),

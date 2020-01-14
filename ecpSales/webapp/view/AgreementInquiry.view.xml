@@ -36,8 +36,8 @@
 												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/EmailAddress}"/>
 												<Label text="{i18n>Home}"/>
 												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/PhoneNumber}"/>
-												<Label text="{i18n>Business}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/FaxNumber}"/>
+												<Label text="{i18n>Mobile}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/MobileNumber}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>
@@ -67,8 +67,8 @@
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/EmailAddress}"/>
 												<Label text="{i18n>Home}"/>
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/PhoneNumber}"/>
-												<Label text="{i18n>Business}"/>
-												<Text text="{LocalDataModel>/VechOwnrSectonAddress/FaxNumber}"/>
+												<!--<Label text="{i18n>Business}"/>-->
+												<!--<Text text="{LocalDataModel>/VechOwnrSectonAddress/FaxNumber}"/>-->
 												<Label text="{i18n>Mobile}"/>
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/Mobile}"/>
 											</f:content>

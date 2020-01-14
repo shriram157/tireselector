@@ -1645,7 +1645,7 @@ sap.ui.define([
 							}
 							if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber.results[
-									0].MobilePhoneNumber);
+									0].PhoneNumber);
 							}
 
 						},
@@ -2922,7 +2922,7 @@ sap.ui.define([
 											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber
 													.results[
-														0].MobilePhoneNumber);
+														0].PhoneNumber);
 											}
 
 										},
