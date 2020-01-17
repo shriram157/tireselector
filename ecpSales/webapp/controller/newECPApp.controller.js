@@ -2882,12 +2882,10 @@ sap.ui.define([
 				beginButton: new Button({
 					text: 'Close',
 					press: $.proxy(function () {
-
 						var oVehicleMaster = this.getView().getModel("VinModel");
 						oVehicleMaster.read("/zc_c_vehicle", {
 							urlParameters: {
-								"$filter": "VehicleIdentificationNumber eq '" + this.getModel("LocalDataModel").getProperty(
-										"/ApplicationOwnerData/VIN") +
+								"$filter": "VehicleIdentificationNumber eq '" + this.getView().getModel("EcpFieldData").getProperty("/ZecpVin") +
 									"' "
 							},
 							success: $.proxy(function (vData) {
