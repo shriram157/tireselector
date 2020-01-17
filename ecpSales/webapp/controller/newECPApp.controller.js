@@ -1222,7 +1222,9 @@ sap.ui.define([
 				var oyearGap = parseInt(oSaleYear - oModelYr);
 				if (oyearGap > 7) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-					this.getView().byId("idNewECPMsgStrip").setText("Model year exceeds by " + parseInt(oyearGap - 8) + " years");
+					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Modelyearexceedsby") + " " + parseInt(oyearGap - 7) + " " +
+						this.oBundle
+						.getText("yr"));
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
