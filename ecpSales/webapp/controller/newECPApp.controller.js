@@ -2872,7 +2872,8 @@ sap.ui.define([
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 			}
 			var vinNo = this.oECPData.ZecpVin;
-			var linkAddress = this.getCIClink(dealerCode, vinNo);
+			var linkAddress = this.getCIClink(dealerCode, OVIN);
+			console.log(linkAddress);
 			var iframe = new sap.ui.core.HTML();
 			var dialog = new Dialog({
 				title: 'Perform CIC',
