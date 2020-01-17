@@ -196,8 +196,7 @@
 					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
 					<f:content>
 						<Label text="{i18n>EffectiveDate}"/>
-						<Text
-							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+						<Text text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }}"/>
 						<Label text="{i18n>Odometer}"/>
 						<custom:CustomInput valueState="{LocalDataModel>/odometerState}"
 							value="{path:'EcpFieldData>/ZecpOdometer', type : 'sap.ui.model.type.Number', constraints : { minLength : 1, maxLength : 7 }}"
@@ -221,12 +220,9 @@
 						<!--<Label text="{i18n>SaleDate}" visible="{oSetProperty>/saleDat01Visible}"/>-->
 						<!--<Text visible="{oSetProperty>/saleDat01Visible}" text="{path:'EcpFieldData>/ZecpSaleDate'}"/>-->
 						<Label text="{i18n>SaleDate}"/>
-						<Text
-							text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"/>
+						<Text text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date'}"/>
 						<Label text="{i18n>SubmissionDate}" visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }"/>
-						<Text
-							text="{path:'EcpFieldData>/ZecpSubDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true , UTC: true }}"
-							visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }"/>
+						<Text text="{path:'EcpFieldData>/ZecpSubDate', type: 'sap.ui.model.type.Date'}" visible="{= ${EcpFieldData>/ZecpSubDate} ? true: false }"/>
 						<Label text="{i18n>IssueDealer}" visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>
 						<!--<Text text="{EcpFieldData>/ZecpDealcode}" visible="{= ${EcpFieldData>/ZecpDealcode} ? true: false }"/>-->
 						<Text text="{path:'EcpFieldData>/ZecpDealcode', formatter : 'zecp.utils.formatter.fnFormatDealerCode'}"
