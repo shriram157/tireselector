@@ -18,6 +18,7 @@ sap.ui.define([
 		 * @memberOf zecp.view.newECPApp
 		 */
 		onInit: function () {
+			this.getDealer();
 			var oDateModel = new sap.ui.model.json.JSONModel();
 			oDateModel.setData({
 				dateValueDRS2: new Date(2018, 1, 1),
@@ -1166,8 +1167,14 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
-			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
-				0 && diffCurrentSaleDay < 60) {
+			if (
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
+					0 && (diffCurrentSaleDay < 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
+
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
+					0 && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin")
+
+			) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1189,7 +1196,7 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
 				oSaleDateId.setValueStateText(this.oBundle.getText("PleaseSelectSaleDate"));
-			} else if (diffCurrentSaleDay > 60) {
+			} else if (diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
@@ -1234,7 +1241,18 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-				} else if (oyearGap <= 7 && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate) {
+				} else if (diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
+					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+					this.getView().byId("idNewECPMsgStrip").setType("Error");
+					oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
+				} else if (
+					(oyearGap <= 7 && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && (diffCurrentSaleDay < 60 && this.getModel(
+						"LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
+					(oyearGap <= 7 && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && this.getModel(
+						"LocalDataModel").getProperty("/UserType") == "TCI_Admin")
+
+				) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
 					//this.getView().byId("idFilter03").setProperty("enabled", true);
