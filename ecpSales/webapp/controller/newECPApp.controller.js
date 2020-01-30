@@ -61,20 +61,28 @@ sap.ui.define([
 
 		_fnDateFormat02: function (elm) {
 
-			var oNumTime = elm.getTime();
-
-			var saleTime = "\/Date(" + oNumTime + ")\/";
-
-			return saleTime;
+			if (elm != "" && elm != null && elm != NaN) {
+				// var oNumTime = Date.UTC(elm.getFullYear(), elm.getMonth(), elm.getDate(),
+				// 	elm.getHours(), elm.getMinutes(), elm.getSeconds(), elm.getMilliseconds());
+				var oNumTime = moment.utc(new Date(elm)).valueOf();
+				var oTime = "\/Date(" + oNumTime + ")\/";
+				return oTime;
+			} else {
+				return null;
+			}
 		},
 
 		_fnDateFormat: function (elm) {
 
-			var oNumTime = elm.getTime();
-
-			var saleTime = "\/Date(" + oNumTime + ")\/";
-			//var oTotalTime = saleTime.replace(/\s+/g, '');
-			return saleTime;
+			if (elm != "" && elm != null && elm != NaN) {
+				// var oNumTime = Date.UTC(elm.getFullYear(), elm.getMonth(), elm.getDate(),
+				// 	elm.getHours(), elm.getMinutes(), elm.getSeconds(), elm.getMilliseconds());
+				var oNumTime = moment.utc(new Date(elm)).valueOf();
+				var oTime = "\/Date(" + oNumTime + ")\/";
+				return oTime;
+			} else {
+				return null;
+			}
 		},
 		onAppTabChange: function (oEvent) {
 			if (oEvent.oCustomEvtObj) {
