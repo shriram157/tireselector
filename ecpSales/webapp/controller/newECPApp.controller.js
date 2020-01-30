@@ -1647,12 +1647,11 @@ sap.ui.define([
 			var vehcOwnrSectonCno = this.getModel("LocalDataModel").getProperty("/OwnerData/BusinessPartner");
 			var oBusinessModelOnSubmit = this.getModel("ApiBusinessModel");
 			this._oToken = oBusinessModelOnSubmit.getHeaders()['x-csrf-token'];
-			$
-				.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			if (vehcOwnrSectonCno) {
 
 				oBusinessModelOnSubmit.read("/A_BusinessPartnerAddress", {
