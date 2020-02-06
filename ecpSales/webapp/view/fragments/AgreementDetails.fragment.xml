@@ -149,7 +149,8 @@
 							<Label text="{i18n>Odometer}"/>
 							<Text text="{LocalDataModel>/AgreementData/ODMTR}"/>
 							<Label text="{i18n>SaleDate}"/>
-							<Text text="{path:'LocalDataModel>/AgreementData/AgreementSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }}"/>
+							<Text
+								text="{path:'LocalDataModel>/AgreementData/AgreementSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 							<Label text="{i18n>SubmissionDate}"/>
 							<Text
 								text="{path:'LocalDataModel>/AgreementData/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
