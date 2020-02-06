@@ -532,7 +532,7 @@ sap.ui.define([
 				var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 				var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
 				if (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT")) {
-					if (DifferTime < oDay) {
+					if (DifferTime <= oDay) {
 						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", oBundle.getText("Yes"));
 					} else if (DifferTime > oDay) {
@@ -1175,7 +1175,7 @@ sap.ui.define([
 			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
-				if (diffSaleRegDate < oDay) {
+				if (diffSaleRegDate <= oDay) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("Yes"));
 				} else if (diffSaleRegDate > oDay) {
@@ -1188,7 +1188,7 @@ sap.ui.define([
 			}
 			if (
 				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
-					0 && (diffCurrentSaleDay < 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
+					0 && (diffCurrentSaleDay <= 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
 
 				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
 					0 && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin")
