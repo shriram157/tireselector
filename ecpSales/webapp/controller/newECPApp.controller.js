@@ -1065,8 +1065,13 @@ sap.ui.define([
 					"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
 				},
 				success: $.proxy(function (data) {
-
-					this.getModel("LocalDataModel").setProperty("/PlanValidSet", data.results[0].ZC_ECP_PLANSSET.results);
+					var oPlanData = data.results[0].ZC_ECP_PLANSSET.results;
+					if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+						this.getModel("LocalDataModel").setProperty("/PlanValidSet", oPlanData);
+					} else {
+						var oFilteredPlan = oPlanData.filter(p => !(String(p.MGANR).startsWith('Z')));
+						this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
+					}
 
 				}, this),
 				error: function () {
