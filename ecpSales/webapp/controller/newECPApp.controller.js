@@ -506,11 +506,11 @@ sap.ui.define([
 			if (pricingModelData && oECPData) {
 
 				// var oSDateTime = new Date(oECPData.ZecpSaleDate).getTime();
-				// var oRegDate = new Date(pricingModelData.REG_DATE).getTime();
+				// var oRegDate = new Date(pricingModelData.WARD_DATE).getTime();
 
 				//	var currenDateMoment = moment(new Date).format("YYYY-MM-DD");
 				var saleDateMoment = moment(oECPData.ZecpSaleDate).format("YYYY-MM-DD");
-				var regDateMoment = moment(pricingModelData.REG_DATE).format("YYYY-MM-DD");
+				var regDateMoment = moment(pricingModelData.WARD_DATE).format("YYYY-MM-DD");
 
 				var SaleDateVar = moment(saleDateMoment, "YYYY-MM-DD");
 				var RegDateVar = moment(regDateMoment, "YYYY-MM-DD");
@@ -673,9 +673,9 @@ sap.ui.define([
 
 								this.getModel("LocalDataModel").setProperty("/PricingModelData", data.results[0]);
 
-								if (data.results[0].REG_DATE != "" || data.results[0].REG_DATE != undefined) {
+								if (data.results[0].WARD_DATE != "" || data.results[0].WARD_DATE != undefined) {
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-									this.BccAgrmntPrtDt = data.results[0].REG_DATE;
+									this.BccAgrmntPrtDt = data.results[0].WARD_DATE;
 
 								} else {
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);

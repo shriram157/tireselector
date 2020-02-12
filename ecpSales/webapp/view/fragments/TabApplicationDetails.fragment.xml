@@ -135,7 +135,7 @@
 						<!--<Text text="{EcpFieldData>/ZecpAutocode}"/>-->
 						<Label text="{i18n>RegDate}"/>
 						<Text id="idRegDate"
-							text="{ path: 'LocalDataModel>/PricingModelData/REG_DATE', type: 'sap.ui.model.type.Date', constraints: { displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+							text="{ path: 'LocalDataModel>/PricingModelData/WARD_DATE', type: 'sap.ui.model.type.Date', constraints: { displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 						<Label text="{i18n>DealType}"/>
 						<Text text="{LocalDataModel>/PricingModelData/DEALTYPEDESC}"/>
 						<Label text="{i18n>VehiclePrice}"/>
