@@ -1069,7 +1069,10 @@ sap.ui.define([
 					if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
 						this.getModel("LocalDataModel").setProperty("/PlanValidSet", oPlanData);
 					} else {
-						var oFilteredPlan = oPlanData.filter(p => !(String(p.MGANR).startsWith('Z')));
+						var oFilteredPlan = oPlanData.filter(function (p) {
+							return !(String(p.MGANR).startsWith("Z"));
+						});
+
 						this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
 					}
 
