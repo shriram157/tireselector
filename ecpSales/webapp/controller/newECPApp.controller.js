@@ -1193,16 +1193,12 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
 			if (
-				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && this.BccAgrmntPrtDt !=
-					null &&
-					oOdoVal >
-					0 && (diffCurrentSaleDay <= 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
-
-				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate && this.BccAgrmntPrtDt)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 &&
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 &&
 					this.BccAgrmntPrtDt != null &&
+					oOdoVal > 0 && (diffCurrentSaleDay <= 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
 
-					oOdoVal >
-					0 && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin")
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 &&
+					this.BccAgrmntPrtDt != null && oOdoVal > 0 && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin")
 
 			) {
 
