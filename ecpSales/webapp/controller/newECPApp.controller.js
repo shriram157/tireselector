@@ -1193,10 +1193,15 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
 			if (
-				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && this.BccAgrmntPrtDt !=
+					null &&
+					oOdoVal >
 					0 && (diffCurrentSaleDay <= 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
 
-				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate && this.BccAgrmntPrtDt)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 &&
+					this.BccAgrmntPrtDt != null &&
+
+					oOdoVal >
 					0 && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin")
 
 			) {
@@ -1239,6 +1244,10 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oOdometer.setValueState(sap.ui.core.ValueState.Error);
 				oOdometer.setValueStateText(this.oBundle.getText("ECP0007EOdo"));
+			} else if (this.BccAgrmntPrtDt == null) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("WarDateErrorMessage"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
 			} else if (oOdoVal <= 0) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
