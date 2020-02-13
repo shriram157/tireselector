@@ -31,8 +31,6 @@ sap.ui.define([
 			this.getView().setModel(oVehicleMaster, "VinModel");
 			this._getPropetyData();
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._oRouteNewECP, this);
-			// var oEventBus = sap.ui.getCore().getEventBus();
-			// oEventBus.publish("newECPApp", "Binded", this.onSelectiDealer, this);
 
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
