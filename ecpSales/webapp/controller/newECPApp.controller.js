@@ -529,7 +529,7 @@ sap.ui.define([
 
 				var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 				var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
-				if (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT")) {
+				if (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT") || oECPData.ZecpAgrType === "NEW VEHICLE AGREEMENT") {
 					if (DifferTime <= oDay) {
 						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", oBundle.getText("Yes"));
