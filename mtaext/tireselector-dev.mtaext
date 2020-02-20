@@ -23,3 +23,4 @@ resources:
          oauth2-configuration:
             redirect-uris:
                - https://dev-tireselector.scp.toyota.ca/login/callback
+               - http://localhost:8080/login/callback
