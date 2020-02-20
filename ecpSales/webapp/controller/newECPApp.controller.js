@@ -18,6 +18,7 @@ sap.ui.define([
 		 * @memberOf zecp.view.newECPApp
 		 */
 		onInit: function () {
+			this.getDealer();
 			var oDateModel = new sap.ui.model.json.JSONModel();
 			oDateModel.setData({
 				dateValueDRS2: new Date(2018, 1, 1),
@@ -30,8 +31,6 @@ sap.ui.define([
 			this.getView().setModel(oVehicleMaster, "VinModel");
 			this._getPropetyData();
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._oRouteNewECP, this);
-			// var oEventBus = sap.ui.getCore().getEventBus();
-			// oEventBus.publish("newECPApp", "Binded", this.onSelectiDealer, this);
 
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -60,20 +59,28 @@ sap.ui.define([
 
 		_fnDateFormat02: function (elm) {
 
-			var oNumTime = elm.getTime();
-
-			var saleTime = "\/Date(" + oNumTime + ")\/";
-
-			return saleTime;
+			if (elm != "" && elm != null && elm != NaN) {
+				// var oNumTime = Date.UTC(elm.getFullYear(), elm.getMonth(), elm.getDate(),
+				// 	elm.getHours(), elm.getMinutes(), elm.getSeconds(), elm.getMilliseconds());
+				var oNumTime = moment.utc(new Date(elm)).valueOf();
+				var oTime = "\/Date(" + oNumTime + ")\/";
+				return oTime;
+			} else {
+				return null;
+			}
 		},
 
 		_fnDateFormat: function (elm) {
 
-			var oNumTime = elm.getTime();
-
-			var saleTime = "\/Date(" + oNumTime + ")\/";
-			//var oTotalTime = saleTime.replace(/\s+/g, '');
-			return saleTime;
+			if (elm != "" && elm != null && elm != NaN) {
+				// var oNumTime = Date.UTC(elm.getFullYear(), elm.getMonth(), elm.getDate(),
+				// 	elm.getHours(), elm.getMinutes(), elm.getSeconds(), elm.getMilliseconds());
+				var oNumTime = moment.utc(new Date(elm)).valueOf();
+				var oTime = "\/Date(" + oNumTime + ")\/";
+				return oTime;
+			} else {
+				return null;
+			}
 		},
 		onAppTabChange: function (oEvent) {
 			if (oEvent.oCustomEvtObj) {
@@ -496,26 +503,37 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			if (pricingModelData && oECPData) {
 
-				var oSDateTime = new Date(oECPData.ZecpSaleDate).getTime();
-				var oRegDate = new Date(pricingModelData.REG_DATE).getTime();
-				var DifferTime = (oSDateTime - oRegDate);
+				// var oSDateTime = new Date(oECPData.ZecpSaleDate).getTime();
+				// var oRegDate = new Date(pricingModelData.WARD_DATE).getTime();
+
+				//	var currenDateMoment = moment(new Date).format("YYYY-MM-DD");
+				var saleDateMoment = moment(oECPData.ZecpSaleDate).format("YYYY-MM-DD");
+				var regDateMoment = moment(pricingModelData.WARD_DATE).format("YYYY-MM-DD");
+
+				var SaleDateVar = moment(saleDateMoment, "YYYY-MM-DD");
+				var RegDateVar = moment(regDateMoment, "YYYY-MM-DD");
+				var DifferTime = Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays());
+
+				//var DifferTime = (oSDateTime - oRegDate);
 				var oOdoVal = oECPData.ZecpOdometer;
 
-				if (DifferTime <= 94670778000 && oOdoVal <= 50000) {
+				//3year 1095 in days
+
+				if (DifferTime <= 1095 && oOdoVal <= 50000) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("Yes"));
-				} else if (DifferTime > 94670778000 || oOdoVal > 50000) {
+				} else if (DifferTime > 1095 || oOdoVal > 50000) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("No"));
 				}
 
 				var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 				var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
-				if (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT")) {
-					if (DifferTime < oDayMili) {
+				if (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT") || oECPData.ZecpAgrType === "NEW VEHICLE AGREEMENT") {
+					if (DifferTime <= oDay) {
 						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", oBundle.getText("Yes"));
-					} else if (DifferTime > oDayMili) {
+					} else if (DifferTime > oDay) {
 						this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 						this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", oBundle.getText("No"));
 					}
@@ -653,9 +671,9 @@ sap.ui.define([
 
 								this.getModel("LocalDataModel").setProperty("/PricingModelData", data.results[0]);
 
-								if (data.results[0].REG_DATE != "" || data.results[0].REG_DATE != undefined) {
+								if (data.results[0].WARD_DATE != "" || data.results[0].WARD_DATE != undefined) {
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-									this.BccAgrmntPrtDt = data.results[0].REG_DATE;
+									this.BccAgrmntPrtDt = data.results[0].WARD_DATE;
 
 								} else {
 									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1045,8 +1063,16 @@ sap.ui.define([
 					"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
 				},
 				success: $.proxy(function (data) {
+					var oPlanData = data.results[0].ZC_ECP_PLANSSET.results;
+					if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+						this.getModel("LocalDataModel").setProperty("/PlanValidSet", oPlanData);
+					} else {
+						var oFilteredPlan = oPlanData.filter(function (p) {
+							return !(String(p.MGANR).startsWith("Z"));
+						});
 
-					this.getModel("LocalDataModel").setProperty("/PlanValidSet", data.results[0].ZC_ECP_PLANSSET.results);
+						this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
+					}
 
 				}, this),
 				error: function () {
@@ -1134,7 +1160,7 @@ sap.ui.define([
 
 			var currenDateMoment = moment(new Date).format("YYYY-MM-DD");
 			var saleDateMoment = moment(oSaleDateId.getDateValue()).format("YYYY-MM-DD");
-			var regDateMoment = moment(this.BccAgrmntPrtDt).format("YYYY-MM-DD");
+			var regDateMoment = moment.utc(this.BccAgrmntPrtDt).format("YYYY-MM-DD");
 
 			var oAgr = this.getView().byId("idAgrType");
 			var oAgrItem = this.getView().byId("idAgrType").getSelectedItem();
@@ -1149,15 +1175,16 @@ sap.ui.define([
 			this.DifferTime = (oSaleDateTime - oRegDate);
 
 			var diffSaleCurrent = Math.round(moment.duration(SaleDateVar.diff(CurrentDateVar)).asDays());
+			var diffCurrentSaleDay = Math.round(moment.duration(CurrentDateVar.diff(SaleDateVar)).asDays());
 			var diffSaleRegDate = Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays());
 
 			var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 			var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
-				if (this.DifferTime < oDayMili) {
+				if (diffSaleRegDate <= oDay) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("Yes"));
-				} else if (this.DifferTime > oDayMili) {
+				} else if (diffSaleRegDate > oDay) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 					this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 				}
@@ -1165,8 +1192,15 @@ sap.ui.define([
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
 			}
-			if (!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && oOdoVal >
-				0) {
+			if (
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 &&
+					this.BccAgrmntPrtDt != null &&
+					oOdoVal > 0 && (diffCurrentSaleDay <= 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
+
+				(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 &&
+					this.BccAgrmntPrtDt != null && oOdoVal > 0 && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin")
+
+			) {
 
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1188,20 +1222,28 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
 				oSaleDateId.setValueStateText(this.oBundle.getText("PleaseSelectSaleDate"));
-			} else if (diffSaleRegDate < 0) {
+			} else if (diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + new Date(
-					this.BccAgrmntPrtDt).toDateString() + ")");
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-				oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + new Date(
-					this.BccAgrmntPrtDt).toDateString() + ")");
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
+			} else if (diffSaleRegDate < 0) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" +
+					regDateMoment + ")");
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+				oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + regDateMoment + ")");
 			} else if ($.isEmptyObject(oOdoVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EOdo"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				oOdometer.setValueState(sap.ui.core.ValueState.Error);
 				oOdometer.setValueStateText(this.oBundle.getText("ECP0007EOdo"));
+			} else if (this.BccAgrmntPrtDt == null) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("WarDateErrorMessage"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
 			} else if (oOdoVal <= 0) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
@@ -1228,7 +1270,18 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-				} else if (oyearGap <= 7 && oSaleDateTime <= oCurrentDate && oSaleDateTime >= oRegDate) {
+				} else if (diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
+					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+					this.getView().byId("idNewECPMsgStrip").setType("Error");
+					oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
+				} else if (
+					(oyearGap <= 7 && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && (diffCurrentSaleDay < 60 && this.getModel(
+						"LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
+					(oyearGap <= 7 && diffSaleCurrent <= 0 && diffSaleRegDate >= 0 && this.getModel(
+						"LocalDataModel").getProperty("/UserType") == "TCI_Admin")
+
+				) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
 					//this.getView().byId("idFilter03").setProperty("enabled", true);
@@ -1615,12 +1668,11 @@ sap.ui.define([
 			var vehcOwnrSectonCno = this.getModel("LocalDataModel").getProperty("/OwnerData/BusinessPartner");
 			var oBusinessModelOnSubmit = this.getModel("ApiBusinessModel");
 			this._oToken = oBusinessModelOnSubmit.getHeaders()['x-csrf-token'];
-			$
-				.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-Token': this._oToken
+				}
+			});
 			if (vehcOwnrSectonCno) {
 
 				oBusinessModelOnSubmit.read("/A_BusinessPartnerAddress", {
