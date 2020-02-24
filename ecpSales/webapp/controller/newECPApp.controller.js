@@ -519,10 +519,14 @@ sap.ui.define([
 
 				//3year 1095 in days
 
-				if (DifferTime <= 1095 && oOdoVal <= 50000) {
+				if (DifferTime <= 1095 && oOdoVal <= 50000 && (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT") || oECPData.ZecpAgrType ===
+						"NEW VEHICLE AGREEMENT")) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("Yes"));
 				} else if (DifferTime > 1095 || oOdoVal > 50000) {
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("No"));
+				} else {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("No"));
 				}
