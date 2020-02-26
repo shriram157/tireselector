@@ -1102,13 +1102,21 @@ sap.ui.define([
 
 					this.getModel("LocalDataModel").setProperty("/OwnerData", data.results[0]);
 					if (data.results != "") {
+						
+						if(data.results[0].to_EmailAddress.results.length > 0){
 						this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[
 							0].EmailAddress);
+						}
+						if(data.results[0].to_PhoneNumber.results.length > 0){
 						this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[
 								0]
 							.PhoneNumber);
+						}
+						
+						if(data.results[0].to_FaxNumber.results.length > 0){
 						this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[
 							0].FaxNumber);
+						}
 					}
 
 					this.oECPData = this.getView().getModel("EcpFieldData").getData();
