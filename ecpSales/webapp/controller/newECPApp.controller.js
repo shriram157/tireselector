@@ -1491,8 +1491,8 @@ sap.ui.define([
 						}
 					}
 					if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
-						this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
-						this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
+						// this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+						// this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
 
 						//For Defect 12699
 						this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
@@ -1655,6 +1655,8 @@ sap.ui.define([
 				}
 
 			}
+			
+			this.updateTHazBenFlag();
 
 			//resetting the LienFields Validation
 
