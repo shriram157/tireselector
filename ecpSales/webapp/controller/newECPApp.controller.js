@@ -519,10 +519,14 @@ sap.ui.define([
 
 				//3year 1095 in days
 
-				if (DifferTime <= 1095 && oOdoVal <= 50000) {
+				if (DifferTime <= 1095 && oOdoVal <= 50000 && (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT") || oECPData.ZecpAgrType ===
+						"NEW VEHICLE AGREEMENT")) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("Yes"));
 				} else if (DifferTime > 1095 || oOdoVal > 50000) {
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
+					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("No"));
+				} else {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("No"));
 				}
@@ -1098,13 +1102,21 @@ sap.ui.define([
 
 					this.getModel("LocalDataModel").setProperty("/OwnerData", data.results[0]);
 					if (data.results != "") {
+						
+						if(data.results[0].to_EmailAddress.results.length > 0){
 						this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[
 							0].EmailAddress);
+						}
+						if(data.results[0].to_PhoneNumber.results.length > 0){
 						this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[
 								0]
 							.PhoneNumber);
+						}
+						
+						if(data.results[0].to_FaxNumber.results.length > 0){
 						this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[
 							0].FaxNumber);
+						}
 					}
 
 					this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -1487,8 +1499,8 @@ sap.ui.define([
 						}
 					}
 					if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
-						this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
-						this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
+						// this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
+						// this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
 
 						//For Defect 12699
 						this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
@@ -1651,6 +1663,8 @@ sap.ui.define([
 				}
 
 			}
+			
+			this.updateTHazBenFlag();
 
 			//resetting the LienFields Validation
 
