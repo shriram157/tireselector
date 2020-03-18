@@ -108,6 +108,13 @@
 									<Text text="{SearchResultModel>Zzsuffix}"/>
 								</t:template>
 							</t:Column>
+							<!--Adding of New field Of CR1032-->
+							<t:Column>
+								<Label text="{i18n>FrontRear}"/>
+								<t:template>
+									<Text text="{SearchResultModel>Front_Rear}"/>
+								</t:template>
+							</t:Column>
 							<t:Column>
 								<Label text="{i18n>TireSize}"/>
 								<t:template>
