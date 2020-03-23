@@ -1454,28 +1454,6 @@ sap.ui.define([
 				finalDayDef = Math.round((Date2 - Date1) / (1000 * 3600 * 24));
 			}
 
-			// 			oRegYear = new Date(this.BccAgrmntPrtDt).getUTCFullYear();
-			// 			oSaleDate = this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate");
-			// 			oSaleYear = new Date(oSaleDate).getUTCFullYear();
-
-			// 			yearDef = oSaleYear - oRegYear;
-			// 			yearInMonthDef = yearDef * 12;
-
-			// 			oSaleMonth = new Date(oSaleDate).getUTCMonth();
-			// 			oRegMonth = new Date(this.BccAgrmntPrtDt).getUTCMonth();
-			// 			if (oSaleMonth > oRegMonth) {
-			// 				finalMonthDef = yearInMonthDef + (oSaleMonth - oRegMonth);
-			// 			} else {
-			// 				finalMonthDef = yearInMonthDef;
-			// 			}
-			// 			regDay = new Date(this.BccAgrmntPrtDt).getUTCDate();
-			// 			oSaleDay = new Date(oSaleDate).getUTCDate();
-			// 			if (oSaleDay > regDay) {
-			// 				dayDif = oSaleDay - regDay;
-			// 			} else {
-			// 				dayDif = 0;
-			// 			}
-
 			var oPlanArray = ["NTC34", "NTC94", "NTC45", "NTC46", "NTC47", "NTF34", "NTF94", "NTF45", "NTF46", "NTF47", "CTC40", "CTC50"];
 
 			var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
