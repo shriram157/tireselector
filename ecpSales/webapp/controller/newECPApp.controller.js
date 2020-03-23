@@ -503,10 +503,7 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			if (pricingModelData && oECPData) {
 
-				// var oSDateTime = new Date(oECPData.ZecpSaleDate).getTime();
-				// var oRegDate = new Date(pricingModelData.WARD_DATE).getTime();
-
-				//	var currenDateMoment = moment(new Date).format("YYYY-MM-DD");
+			
 				var saleDateMoment = moment(oECPData.ZecpSaleDate).format("YYYY-MM-DD");
 				var regDateMoment = moment(pricingModelData.WARD_DATE).format("YYYY-MM-DD");
 
@@ -514,7 +511,7 @@ sap.ui.define([
 				var RegDateVar = moment(regDateMoment, "YYYY-MM-DD");
 				var DifferTime = Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays());
 
-				//var DifferTime = (oSDateTime - oRegDate);
+				
 				var oOdoVal = oECPData.ZecpOdometer;
 
 				//3year 1095 in days
