@@ -588,14 +588,9 @@ sap.ui.define([
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[4]);
 										that.oTireFitmentJSONModel.updateBindings(true);
 
-										if(that.FitmentToCharac.results.length>19)
-										{
+										
 											that.getView().byId("idTireSelectionTable").setVisibleRowCount(20);
-										}
-										else if(that.FitmentToCharac.results.length>8)
-										{
-											that.getView().byId("idTireSelectionTable").setVisibleRowCount(that.FitmentToCharac.results.length);
-										}
+										
 										
 										
 										that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
