@@ -2746,7 +2746,8 @@ sap.ui.define([
 								that.printPrevDialogBox.open();
 								that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 							},
-							error: function () {
+							error: function (err) {
+								console.log(err + "Error Message for duplicate vin");
 								MessageToast.show(oBundle.getText("ApplicationIsnotSubmitted"));
 								that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 							}
