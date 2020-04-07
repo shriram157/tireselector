@@ -503,7 +503,6 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			if (pricingModelData && oECPData) {
 
-			
 				var saleDateMoment = moment(oECPData.ZecpSaleDate).format("YYYY-MM-DD");
 				var regDateMoment = moment(pricingModelData.WARD_DATE).format("YYYY-MM-DD");
 
@@ -511,7 +510,6 @@ sap.ui.define([
 				var RegDateVar = moment(regDateMoment, "YYYY-MM-DD");
 				var DifferTime = Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays());
 
-				
 				var oOdoVal = oECPData.ZecpOdometer;
 
 				//3year 1095 in days
@@ -1351,11 +1349,12 @@ sap.ui.define([
 
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 				oidPlanCodeId.setValueStateText("");
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStripPlan").setText("");
 			} else {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("PleaseSelectPlanCode"));
+				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 				oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
 			}
@@ -2163,9 +2162,11 @@ sap.ui.define([
 			var oOdometer = this.getView().byId("idOdoVal");
 			var oOdoVal = oOdometer.getValue();
 
-			var oidPlanCodeId = this.getView().byId("idPlanCode");
+			var oidPlanCode = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
 
-			var oidPlanCode = oidPlanCodeId.getSelectedItem();
+			// var oidPlanCodeId = this.getView().byId("idPlanCode");
+
+			//var oidPlanCode = oidPlanCodeId.getSelectedItem();
 
 			this.oECPData.ZecpVehPrice = $(".ZecpVehPriceCls input").val();
 			this.oECPData.ZecpPlanpurchprice = $(".ZecpPlanpurchpriceCls input").val();
@@ -2175,12 +2176,12 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterMandatoryFields"));
-			} else if ($.isEmptyObject(oidPlanCode)) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
-				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-				oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
+			} else if (this.getView().byId("idNewECPMsgStripPlan").getText() == this.oBundle.getText("PleaseSelectPlanCode")) {
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("PleaseSelectPlanCode"));
+				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
+				// oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+				// oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
 			} else if (!$.isEmptyObject(this.oECPData.ZecpVehPrice.toString()) && $.isEmptyObject(this.oECPData.ZecpPlanpurchprice.toString())) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "Error");
@@ -2285,7 +2286,8 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("FillMendatoryField"));
-			} else if ((this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false) && !(isFromSubmit.isFrmSubmit)) {
+			} else if ((this.getView().byId("idNewECPMsgStrip").getProperty("visible") == false) &&
+				(this.getView().byId("idNewECPMsgStripPlan").getProperty("visible") == false) && !(isFromSubmit.isFrmSubmit)) {
 				this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 				this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
 				this.getView().byId("idNewECPMsgStrip").setText("");
@@ -2298,6 +2300,8 @@ sap.ui.define([
 				this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
 				this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStripPlan").setText("");
 
 				this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 
@@ -2607,7 +2611,8 @@ sap.ui.define([
 			fromSubmitObj.isFrmSubmit = true;
 			$.proxy(this.onSaveApp(fromSubmitObj), this);
 
-			if (this.getView().byId("idNewECPMsgStrip").getProperty("visible")) {
+			if (this.getView().byId("idNewECPMsgStrip").getProperty("visible") || this.getView().byId("idNewECPMsgStripPlan").getProperty(
+					"visible")) {
 				this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				return;
 			}
@@ -2748,17 +2753,17 @@ sap.ui.define([
 							},
 							error: $.proxy(function (err) {
 								//console.log(err + "Error Message for duplicate vin");
-									var errorMsg = JSON.parse(err.responseText);
-											var msg = errorMsg.error.message.value;
-											if(msg == "Duplicate Agreement"){
-												MessageBox.show(oBundle.getText("ActiveAgrexist"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK, null, null);
-											}else{
-												MessageBox.show(oBundle.getText("ApplicationIsnotSubmitted"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK, null, null);
-											}
-											
-								//MessageToast.show(oBundle.getText("ApplicationIsnotSubmitted"));
-								that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
-							},this)
+								// var errorMsg = JSON.parse(err.responseText);
+								// var msg = errorMsg.error.message.value;
+								// if (msg == "Duplicate Agreement") {
+								// 	MessageBox.show(oBundle.getText("ActiveAgrexist"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK, null, null);
+								// } else {
+								// 	MessageBox.show(oBundle.getText("ApplicationIsnotSubmitted"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK,
+								// 		null, null);
+								// }
+
+								// that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
+							}, this)
 						});
 
 						dialog.close();
