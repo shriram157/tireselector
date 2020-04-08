@@ -103,6 +103,11 @@ sap.ui.define([
 			this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
 			this.getModel("LocalDataModel").setProperty("/printBtnState", true);
 			this.getModel("LocalDataModel").setProperty("/odometerState", "None");
+			this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+			this.getView().byId("idNewECPMsgStrip").setText("");
+			this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
+			this.getView().byId("idNewECPMsgStripPlan").setText("");
+			
 
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			var oFormatedSaleDate;
