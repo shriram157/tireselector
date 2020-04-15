@@ -2758,16 +2758,16 @@ sap.ui.define([
 							},
 							error: $.proxy(function (err) {
 								//console.log(err + "Error Message for duplicate vin");
-								// var errorMsg = JSON.parse(err.responseText);
-								// var msg = errorMsg.error.message.value;
-								// if (msg == "Duplicate Agreement") {
-								// 	MessageBox.show(oBundle.getText("ActiveAgrexist"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK, null, null);
-								// } else {
-								// 	MessageBox.show(oBundle.getText("ApplicationIsnotSubmitted"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK,
-								// 		null, null);
-								// }
+								var errorMsg = JSON.parse(err.responseText);
+								var msg = errorMsg.error.message.value;
+								if (msg == "Duplicate Agreement") {
+									MessageBox.show(oBundle.getText("ActiveAgrexist"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK, null, null);
+								} else {
+									MessageBox.show(oBundle.getText("ApplicationIsnotSubmitted"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK,
+										null, null);
+								}
 
-								// that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
+								that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 							}, this)
 						});
 
