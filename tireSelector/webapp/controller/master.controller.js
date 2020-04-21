@@ -149,7 +149,7 @@ sap.ui.define([
 					} else {
 						_that._oViewModel.setProperty("/enableProdMarkup", false);
 					}
-					// Stop: comment for local testing
+					// Stop: comment zfor local testing
 					_that.DealerData = {};
 					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 					var queryString1;
