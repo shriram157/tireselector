@@ -21,7 +21,7 @@
 			</custom:CustomInput>
 			<Label text="{i18n>AgreementType}"/>
 			<ComboBox id="idAgrType" selectionChange="onSelectAgrType" required="true" selectedKey="{EcpFieldData>/ZecpAgrType}"
-				value="{EcpFieldData>/ZecpAgrType}">
+				value="{EcpFieldData>/ZecpAgrType}" editable="{DateModel>/editAgrType}">
 				<core:Item key="{i18n>NEWVEHICLEAGREEMENT}" text="{i18n>NEWVEHICLEAGREEMENT}"/>
 				<core:Item key="{i18n>USEDVEHICLEAGREEMENT}" text="{i18n>USEDVEHICLEAGREEMENT}"/>
 				<core:Item key="{i18n>EXTENSION}" text="{i18n>EXTENSION}" enabled="{oSetProperty>/oFlag}"/>

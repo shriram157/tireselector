@@ -6,8 +6,9 @@ sap.ui.define([
 	'sap/m/Text',
 	'sap/ui/model/Filter',
 	"zecp/controller/BaseController",
-	'sap/m/MessageBox'
-], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox) {
+	'sap/m/MessageBox',
+	"zecp/utils/DataManager"
+], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager) {
 	"use strict";
 
 	return Controller.extend("zecp.controller.newECPApp", {
@@ -18,14 +19,7 @@ sap.ui.define([
 		 * @memberOf zecp.view.newECPApp
 		 */
 		onInit: function () {
-			this.getDealer();
-			var oDateModel = new sap.ui.model.json.JSONModel();
-			oDateModel.setData({
-				dateValueDRS2: new Date(2018, 1, 1),
-				secondDateValueDRS2: new Date(),
-				dateCurrent: new Date()
-			});
-			this.getView().setModel(oDateModel, "DateModel");
+
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			var oVehicleMaster = this.getOwnerComponent().getModel("ZVehicleMasterModel");
 			this.getView().setModel(oVehicleMaster, "VinModel");
@@ -57,24 +51,8 @@ sap.ui.define([
 
 		},
 
-		_fnDateFormat02: function (elm) {
-
-			if (elm != "" && elm != null && elm != NaN) {
-				// var oNumTime = Date.UTC(elm.getFullYear(), elm.getMonth(), elm.getDate(),
-				// 	elm.getHours(), elm.getMinutes(), elm.getSeconds(), elm.getMilliseconds());
-				var oNumTime = moment.utc(new Date(elm)).valueOf();
-				var oTime = "\/Date(" + oNumTime + ")\/";
-				return oTime;
-			} else {
-				return null;
-			}
-		},
-
 		_fnDateFormat: function (elm) {
-
 			if (elm != "" && elm != null && elm != NaN) {
-				// var oNumTime = Date.UTC(elm.getFullYear(), elm.getMonth(), elm.getDate(),
-				// 	elm.getHours(), elm.getMinutes(), elm.getSeconds(), elm.getMilliseconds());
 				var oNumTime = moment.utc(new Date(elm)).valueOf();
 				var oTime = "\/Date(" + oNumTime + ")\/";
 				return oTime;
@@ -92,6 +70,8 @@ sap.ui.define([
 			this.getView().getModel("EcpFieldData").setProperty("/ZecpVin", oVal);
 		},
 		_oRouteNewECP: function (oEvent) {
+			this.getDealer();
+			DataManager.fnDateModel(this);
 
 			this.getModel("LocalDataModel").setProperty("/VehPriceState", "None");
 			this.getModel("LocalDataModel").setProperty("/PlanPurchase", "None");
@@ -107,7 +87,6 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStrip").setText("");
 			this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
 			this.getView().byId("idNewECPMsgStripPlan").setText("");
-			
 
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			var oFormatedSaleDate;
@@ -116,14 +95,18 @@ sap.ui.define([
 
 			this.getModel("LocalDataModel").setProperty("/sCurrentDealer", oEvent.getParameters().arguments.ODealer);
 			//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
+			
+			DataManager.funECPBlankObj(this);
+			
 			if (this.oAppId != 404 && this.oAppId != undefined) {
-				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", true);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
+				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab5visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab6visible", false);
-				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+				//this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oSecondaryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState", false);
@@ -133,6 +116,9 @@ sap.ui.define([
 				this.getView().getModel("oSetProperty").setProperty("/backSecondary", true);
 				this.getView().getModel("oSetProperty").setProperty("/saleDat01Visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/saleDat02Visible", true);
+				this.getView().getModel("DateModel").setProperty("/enableVin", false);
+				this.getView().getModel("DateModel").setProperty("/editPlan", false);
+				this.getView().getModel("DateModel").setProperty("/editAgrType", false);
 
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 					pattern: "yyyy-MM-ddTHH:mm:ss"
@@ -290,21 +276,21 @@ sap.ui.define([
 							}
 						});
 
-						oZECPModel.read("/zc_ecp_planpricing_dataSet", {
-							urlParameters: {
-								"$filter": "MGANR eq '" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/ECPPlanCode") +
-									"'and ODMTR eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Odometer") + "'and VIN eq '" +
-									this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/VIN") +
-									"'and ZECPAGRTYPE eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/AgreementType") +
-									"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
-							},
-							success: $.proxy(function (pdata) {
-								this.getModel("LocalDataModel").setProperty("/oPlanPricingData", pdata.results[0]);
-							}, this),
-							error: function (err) {
-								console.log(err);
-							}
-						});
+						// oZECPModel.read("/zc_ecp_planpricing_dataSet", {
+						// 	urlParameters: {
+						// 		"$filter": "MGANR eq '" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/ECPPlanCode") +
+						// 			"'and ODMTR eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Odometer") + "'and VIN eq '" +
+						// 			this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/VIN") +
+						// 			"'and ZECPAGRTYPE eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/AgreementType") +
+						// 			"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
+						// 	},
+						// 	success: $.proxy(function (pdata) {
+						// 		this.getModel("LocalDataModel").setProperty("/oPlanPricingData", pdata.results[0]);
+						// 	}, this),
+						// 	error: function (err) {
+						// 		console.log(err);
+						// 	}
+						// });
 						var winUrl = window.location.search;
 						var userLang = navigator.language || navigator.userLanguage;
 						var vHsetLanKey = 'EN';
@@ -343,143 +329,6 @@ sap.ui.define([
 				});
 
 			} else {
-
-				this.EcpFieldData = new sap.ui.model.json.JSONModel({
-					DBOperation: "",
-					BPTYPE: "",
-					ZecpIntApp: "",
-					ZecpMake: "",
-					ZecpAppNum: "",
-					ZecpVin: "",
-					ZecpAgrNum: "",
-					ZecpDealcode: "",
-					ZecpAppStat: "",
-					ZecpSaleDate: "",
-					ZecpOdometer: "",
-					ZecpAgrType: "",
-					ZecpEffDate: "",
-					ZecpExpDate: "",
-					ZecpDealName: "",
-					ZecpSurchrgFl: "",
-					ZecpPreowned: "",
-					ZecpCustNum: "",
-					ZecpCustName: "",
-					ZecpMidName: "",
-					ZecpLastName: "",
-					ZecpBusPhone: "",
-					ZecpEmail: "",
-					ZecpSubDate: "",
-					ZecpAutocode: "",
-					ZecpVehPrice: "",
-					ZecpAmtFin: "",
-					ZecpLienholder: "",
-					ZecpLienterms: "",
-					ZecpPlancode: "",
-					ZecpRetPrice: "",
-					ZecpDefSurchrg: "",
-					ZecpVehSurchrgAmt: "",
-					ZecpListpurprice: "",
-					ZecpVehsurchrg: "",
-					ZecpRoadhazard: "",
-					ZecpBenefitsFlg: "",
-					BccAgrmntSaleDt: "",
-					ZecpSource: "",
-					ZecpDatecreated: "",
-					ZecpLastupdate: "",
-					ZecpSaletype: "",
-					ZecpFueltype: "",
-					ZecpCylnum: "",
-					ZecpAdddata1: "",
-					ZecpAdddata2: "",
-					ZecpAdddata3: "",
-					ZecpAdddata4: "",
-					ZecpAdddata5: "",
-					ZecpCompName: "",
-					ZecpAddress: "",
-					ZecpCity: "",
-					ZecpProvince: "",
-					ZecpPostalcode: "",
-					ZecpHomePhone: "",
-					ZecpBusExt: "",
-					ZecpBusOrInd: "",
-					ZecpModelcode: "",
-					BccEcpAgrmntNum: "",
-					BccVin: "",
-					BccPlanCd: "",
-					BccAplDlrshpNum: "",
-					BccAgrStCd: "",
-					AgrStDt: "",
-					BccAgrEvTypCd: "",
-					BccVoasPartNum: "",
-					BccAgrmntDlrNum: "",
-					BccEcpAutoCd: "",
-					BccAgrmntExtcntr: "",
-					BccAgrmntPrcAmt: "",
-					Dedctble: "",
-					VehSurchLst: "",
-					BccDtSrchrgFlg: "",
-					BccDefSrchrgAmt: "",
-					BccAgrmntYrCd: "",
-					BccAgrmntSerNo: "",
-					BccVehSrchrgFlg: "",
-					BccVehSrchrgAmt: " ",
-					BccDlrCommsnAmt: " ",
-					BccCdbCustNum: "",
-					BccAgrmntThruKm: " ",
-					BccLubBnftFlg: "",
-					BccVehStsKm: " ",
-					BccAgrmntDlrPfl: "",
-					BccPlnLienHldr: "",
-					BccPlnLienTrmth: " ",
-					BccPlnLienAmt: " ",
-					BccDlrNetDebamt: " ",
-					BccNetDebAmt: " ",
-					BccNetGwDebAmt: " ",
-					BccNetGwCreAmt: " ",
-					BccNetGwOffCre: " ",
-					BccNetRecvryDeb: " ",
-					BccCncTsfFee: " ",
-					BccCustRfndAmt: " ",
-					BccAdjstdAdmAmt: " ",
-					BccAdjstdFdAmt: " ",
-					BccAdjstdRapAmt: " ",
-					BccAdjstdSurAmt: " ",
-					BccAgrActSrDes: "",
-					BccAdjstrCmnts: "",
-					BccUsrCalAmtflg: "",
-					BccRdHzrd: "",
-					RdHzrdExpDt: "",
-					Odmtr: "",
-					TrnfrOdometer: "",
-					TrnfrDate: "",
-					TrnfrFee: "",
-					PrOwndCert: "",
-					PrVendorFlag: "",
-					BccInscTrnmtFl: "",
-					BccRdsdTrnmtFl: "",
-					BccMktngTrnmtFl: "",
-					BccDlrDebGst: " ",
-					BccDlrDebPst: " ",
-					BccCustRfndGst: " ",
-					BccCustRfndPst: " ",
-					BccFinclAjstrId: "",
-					BccDebitRequest: "",
-					BccCreditRequest: "",
-					BccCrtrUserid: "",
-					BccCrtnTmstmp: "",
-					BccLstUpdPltf: "",
-					BccLstUpdPgmid: "",
-					BccLstUpdUserid: "",
-					BccLstUpdTmstmp: "",
-					ZamtFincd: " ",
-					ZretailPrice: "",
-					ZecpRoadhazard1: "",
-					// 	ZecpRoadhazard: "", //Added new entity for translation
-					ZbenefitFlag1: "", //Added new entity for translation
-					ZecpPlanpurchprice: ""
-
-				});
-
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", true);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
@@ -494,11 +343,11 @@ sap.ui.define([
 				this.getView().getModel("oSetProperty").setProperty("/backToList", true);
 				this.getView().getModel("oSetProperty").setProperty("/backPrimery", true);
 				this.getView().getModel("oSetProperty").setProperty("/backSecondary", false);
-				this.EcpFieldData.setDefaultBindingMode("TwoWay");
+				
 				this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
 			}
 
-			this.getView().setModel(this.EcpFieldData, "EcpFieldData");
+		
 
 		},
 		updateTHazBenFlag: function () {
@@ -786,7 +635,7 @@ sap.ui.define([
 											this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
 										}
 
-										if (this.oAppdata > 0) {
+										if (this.oAppdata > 0 && this.getModel("LocalDataModel").getProperty("/InternalApplicationID") == 404) {
 											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("VinAlreadySaved"));
 											this.getView().byId("idNewECPMsgStrip").setType("Error");
@@ -1310,47 +1159,48 @@ sap.ui.define([
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
 			if (oEvent.getParameters().selectedItem != null) {
 				this.oPlanCode = oEvent.getParameters().selectedItem.getText();
-				var oPlanKey = oEvent.getSource().getSelectedKey();
-				var km = oPlanKey.split("/")[0];
-				var mnth = oPlanKey.split("/")[1];
-				this.mxMillage = oPlanKey.split("/")[2];
-				this.mxMonth = oPlanKey.split("/")[3];
-				this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
-				this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
-				this.oPlanMonth = parseInt(mnth);
+			
+				// var oPlanKey = oEvent.getSource().getSelectedKey();
+				// var km = oPlanKey.split("/")[0];
+				// var mnth = oPlanKey.split("/")[1];
+				// this.mxMillage = oPlanKey.split("/")[2];
+				// this.mxMonth = oPlanKey.split("/")[3];
+				// this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
+				// this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
+				// this.oPlanMonth = parseInt(mnth);
 
-				this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
+				// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 
-				var zEcpModel = this.getModel("EcpSalesModel");
-				this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-				$.ajaxSetup({
-					headers: {
-						'X-CSRF-Token': this._oToken
-					}
-				});
+				// var zEcpModel = this.getModel("EcpSalesModel");
+				// this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+				// $.ajaxSetup({
+				// 	headers: {
+				// 		'X-CSRF-Token': this._oToken
+				// 	}
+				// });
 
-				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-					pattern: "yyyy-MM-ddTHH:mm:ss"
-				});
+				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
+				// });
 
-				var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
+				// var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
 
-				zEcpModel.read("/zc_ecp_planpricing_dataSet", {
-					urlParameters: {
-						"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
-							"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
-					},
-					success: $.proxy(function (data) {
-						this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
-						this.oECPData.ZecpRetPrice = data.results[0].ZECP_RET_PRICE;
-						this.oECPData.ZecpDefSurchrg = data.results[0].ZECP_DEF_SURCHRG;
-						this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
-						this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
-					}, this),
-					error: function (err) {
-						console.log(err);
-					}
-				});
+				// zEcpModel.read("/zc_ecp_planpricing_dataSet", {
+				// 	urlParameters: {
+				// 		"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
+				// 			"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
+				// 	},
+				// 	success: $.proxy(function (data) {
+				// 		this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
+				// 		this.oECPData.ZecpRetPrice = data.results[0].ZECP_RET_PRICE;
+				// 		this.oECPData.ZecpDefSurchrg = data.results[0].ZECP_DEF_SURCHRG;
+				// 		this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
+				// 		this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
+				// 	}, this),
+				// 	error: function (err) {
+				// 		console.log(err);
+				// 	}
+				// });
 
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 				oidPlanCodeId.setValueStateText("");
@@ -1445,6 +1295,7 @@ sap.ui.define([
 			}
 		},
 		OnNextStep4: function (oEvent) {
+			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
 				dayDif, finalDayDef, Date1, Date2;
 			oSaleDate = this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate");
@@ -1460,8 +1311,19 @@ sap.ui.define([
 			var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
 
-			var oidPlanCode = oidPlanCodeId.getSelectedItem();
+			var oidPlanCode = oidPlanCodeId.getSelectedItem() || oidPlanCodeId.getValue();
 			var isGoldPaltPlan = this.check4NewVehiclePlan(oSelectedPlan);
+
+			var AllValidPlanData = this.getModel("LocalDataModel").getProperty("/PlanValidSet");
+
+			var SelectedPlanDetails = AllValidPlanData.filter(function (p) {
+				return p.MGANR == oSelectedPlan;
+			});
+
+			this.oAdditionalVal = parseInt(SelectedPlanDetails[0].KMS.replace(/,/g, ''));
+			this.oPlanMonth = parseInt(SelectedPlanDetails[0].MONTHS);
+
+			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 
 			this._deferVechPlnValidate = jQuery.Deferred();
 			this.getNewVehiclePlnValidated(this.oECPData.ZecpVin, isGoldPaltPlan);
@@ -1813,11 +1675,11 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("None");
 				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
 			}
-			//Fixing Difect Id 8347||Auth: Vinay
+			
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 		},
 
-		//To Fix Defect Id 8347|| Getting surcharge value on change of odometer
+		
 		updateSurchargeValue: function (odoMeterState) {
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
@@ -1975,7 +1837,7 @@ sap.ui.define([
 						text: oBundle.getText("Yes"),
 						press: function () {
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
-							var objSave = that._fnObject("SAVE", "PENDING");
+							var objSave = DataManager._fnObject("SAVE", "PENDING", that);
 							var oEcpModel = that.getModel("EcpSalesModel");
 							this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 							$.ajaxSetup({
@@ -2024,140 +1886,7 @@ sap.ui.define([
 			dialog.open();
 		},
 
-		_fnObject: function (elm, stat) {
-			var currentDate = new Date();
-
-			var crudObj = {
-				DBOperation: elm,
-				BPTYPE: this.getView().getModel("LocalDataModel").getProperty("/PricingModelData/BPTYPE"),
-				ZecpIntApp: "",
-				ZecpMake: this.oECPData.ZecpMake,
-				ZecpAppNum: "",
-				ZecpVin: this.oECPData.ZecpVin,
-				ZecpAgrNum: "",
-				ZecpDealcode: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
-				ZecpAppStat: stat,
-				ZecpSaleDate: this._fnDateFormat(this.oECPData.ZecpSaleDate),
-				ZecpOdometer: this.oECPData.ZecpOdometer,
-				ZecpAgrType: this.oECPData.ZecpAgrType,
-				ZecpEffDate: null,
-				ZecpExpDate: null,
-				ZecpDealName: "",
-				ZecpSurchrgFl: "N",
-				ZecpPreowned: this.oECPData.PrOwndCert,
-				ZecpCustNum: this.oECPData.ZecpCustNum,
-				ZecpCustName: this.oECPData.ZecpCustName,
-				ZecpMidName: "",
-				ZecpLastName: this.oECPData.ZecpLastName,
-				ZecpBusPhone: this.oECPData.ZecpBusPhone,
-				ZecpEmail: this.oECPData.ZecpEmail,
-				ZecpSubDate: this._fnDateFormat02(currentDate),
-				ZecpAutocode: this.oECPData.ZecpAutocode,
-				ZecpVehPrice: this.oECPData.ZecpVehPrice || "0.00",
-				ZecpAmtFin: this.oECPData.ZecpAmtFin || "0.00",
-				ZecpLienholder: this.oECPData.ZecpLienholder || "",
-				ZecpLienterms: this.oECPData.ZecpLienterms || "00",
-				ZecpPlancode: this.oECPData.ZecpPlancode || "",
-				ZecpRetPrice: this.oECPData.ZecpRetPrice || "0.00",
-				ZecpDefSurchrg: this.oECPData.ZecpDefSurchrg || "0.00",
-				ZecpVehSurchrgAmt: this.oECPData.ZecpVehSurchrgAmt || "0.00",
-				ZecpListpurprice: this.oECPData.ZecpListpurprice || "0.00",
-				ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt || "0.00",
-				ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
-				ZecpBenefitsFlg: this.getView().getModel("EcpFieldData").getProperty("/ZecpBenefitsFlg"),
-				BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
-				ZecpSource: "ECP",
-				ZecpDatecreated: this._fnDateFormat02(currentDate),
-				ZecpLastupdate: null,
-				ZecpSaletype: "",
-				ZecpFueltype: "G",
-				ZecpCylnum: "4",
-				ZecpAdddata1: "",
-				ZecpAdddata2: "",
-				ZecpAdddata3: "",
-				ZecpAdddata4: "",
-				ZecpAdddata5: "",
-				ZecpCompName: "",
-				ZecpAddress: this.oECPData.ZecpAddress,
-				ZecpCity: this.oECPData.ZecpCity,
-				ZecpProvince: this.oECPData.ZecpProvince,
-				ZecpPostalcode: this.oECPData.ZecpPostalcode,
-				ZecpHomePhone: this.oECPData.ZecpHomePhone,
-				ZecpBusExt: "",
-				ZecpBusOrInd: "",
-				ZecpModelcode: this.oECPData.ZecpModelcode,
-				BccEcpAgrmntNum: "",
-				BccVin: this.oECPData.ZecpVin,
-				BccPlanCd: this.oECPData.ZecpPlancode,
-				BccAplDlrshpNum: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
-				BccAgrStCd: "A",
-				AgrStDt: this._fnDateFormat02(currentDate),
-				BccAgrEvTypCd: "NEW",
-				BccVoasPartNum: "",
-				BccAgrmntDlrNum: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
-				BccEcpAutoCd: this.oECPData.ZecpAutocode,
-				BccAgrmntExtcntr: "0.00",
-				BccAgrmntPrcAmt: this.oECPData.ZecpPlanpurchprice || "0.00",
-				Dedctble: "",
-				VehSurchLst: "",
-				BccDtSrchrgFlg: "",
-				BccDefSrchrgAmt: this.oECPData.ZecpDefSurchrg || "0.00",
-				BccAgrmntYrCd: "",
-				BccAgrmntSerNo: "0.00",
-				BccVehSrchrgFlg: "",
-				BccVehSrchrgAmt: this.oECPData.ZecpVehSurchrgAmt || "0.00",
-				BccDlrCommsnAmt: "0.00",
-				BccCdbCustNum: this.oECPData.ZecpCustNum,
-				BccAgrmntThruKm: "0.00",
-				BccLubBnftFlg: "",
-				BccVehStsKm: this.oECPData.ZecpOdometer,
-				BccAgrmntDlrPfl: "",
-				BccPlnLienHldr: "",
-				BccPlnLienTrmth: "0.00",
-				BccPlnLienAmt: "0.00",
-				BccDlrNetDebamt: "0.00",
-				BccNetDebAmt: "0.00",
-				BccNetGwDebAmt: "0.00",
-				BccNetGwCreAmt: "0.00",
-				BccNetGwOffCre: "0.00",
-				BccNetRecvryDeb: "0.00",
-				BccCncTsfFee: "0.00",
-				BccCustRfndAmt: "0.00",
-				BccAdjstdAdmAmt: "0.00",
-				BccAdjstdFdAmt: "0.00",
-				BccAdjstdRapAmt: "0.00",
-				BccAdjstdSurAmt: "0.00",
-				BccAgrActSrDes: "",
-				BccAdjstrCmnts: "",
-				BccUsrCalAmtflg: "",
-				BccRdHzrd: "",
-				Odmtr: this.oECPData.ZecpOdometer,
-				TrnfrOdometer: "",
-				TrnfrFee: "",
-				PrOwndCert: this.oECPData.PrOwndCert,
-				PrVendorFlag: "",
-				BccInscTrnmtFl: "",
-				BccRdsdTrnmtFl: "A",
-				BccMktngTrnmtFl: "",
-				BccDlrDebGst: "0.00",
-				BccDlrDebPst: "0.00",
-				BccCustRfndGst: "0.00",
-				BccCustRfndPst: "0.00",
-				BccFinclAjstrId: "",
-				BccDebitRequest: "",
-				BccCreditRequest: "",
-				BccCrtrUserid: "",
-				BccCrtnTmstmp: "",
-				BccLstUpdPltf: "",
-				BccLstUpdPgmid: "",
-				BccLstUpdUserid: "",
-				BccLstUpdTmstmp: "",
-				ZamtFincd: "0.00",
-				ZretailPrice: "0.00",
-				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice || "0.00"
-			};
-			return crudObj;
-		},
+		
 		onSaveApp: function (isFromSubmit) {
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
@@ -2311,7 +2040,7 @@ sap.ui.define([
 				this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
-				var objSave = this._fnObject("SAVE", "PENDING");
+				var objSave = DataManager._fnObject("SAVE", "PENDING", this);
 				console.log(objSave);
 				var oBundle = this.getView().getModel("i18n").getResourceBundle();
 				var oEcpModel = this.getModel("EcpSalesModel");
@@ -2668,7 +2397,7 @@ sap.ui.define([
 					press: function () {
 
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
-						var objSub = that._fnObject("SUB", "DELETED");
+						var objSub = DataManager._fnObject("SUB", "DELETED", that);
 						var oEcpModel = that.getModel("EcpSalesModel");
 						/*
 						Defect:9937

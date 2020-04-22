@@ -101,7 +101,7 @@
 					"bundleName": "zecp.i18n.i18n"
 				}
 			},
-			"": {
+			"EcpSalesModel": {
 				"uri": "/node/ZECP_SALES_ODATA_SERVICE_SRV/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 						"settings": {
@@ -118,7 +118,7 @@
 				"dataSource": "ZECP_SALES_ODATA_SERVICE_SRV",
 			 	"preload": false
 			},
-			"VehicleMaster": {
+			"ZVehicleMasterModel": {
 				"uri": "/node/Z_VEHICLE_MASTER_SRV/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
@@ -135,7 +135,7 @@
 					"preload": false
 		
 			},
-			"ApiBusinessPartner": {
+			"ApiBusinessModel": {
 				"uri": "/node/API_BUSINESS_PARTNER/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
@@ -151,7 +151,7 @@
 				"dataSource": "API_BUSINESS_PARTNER",
 				"preload": false
 			},
-			"ClaimService":{
+			"ClaimServiceModel":{
 				"uri": "/node/ZDLR_CLAIM_SRV/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
@@ -167,7 +167,7 @@
 				"dataSource": "ZDLR_CLAIM_SRV",
 				"preload": false
 			},
-			"ZECP_SALES_ODATA_SERVICE_V2_SRV": {
+			"ZecpV2Model": {
 			    "uri": "/node/ZECP_SALES_ODATA_SERVICE_V2_SRV/",
 				"type": "sap.ui.model.odata.v2.ODataModel",
 				"settings": {
