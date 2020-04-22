@@ -200,7 +200,7 @@ sap.ui.define([
 						}
 					}, 3600000); // 60 minutes
 				}
-			}
+			};
 
 			// Attach XHR event handler to detect or reset timeouts on AJAX calls
 			var origOpen = XMLHttpRequest.prototype.open;
