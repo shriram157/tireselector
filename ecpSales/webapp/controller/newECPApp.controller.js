@@ -1754,7 +1754,7 @@ sap.ui.define([
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 
 			var dialog = new Dialog({
-
+				title: oBundle.getText("DltECPApp"),
 				type: 'Message',
 				content: new Text({
 					text: oBundle.getText("AreUSureLikeDeleteApp")
@@ -2804,6 +2804,9 @@ sap.ui.define([
 				dialog.setBusy(false);
 			};
 
+		},
+		onDeletePress : function(oEvent){
+			console.log("dsfasdfa");
 		}
 
 	});
