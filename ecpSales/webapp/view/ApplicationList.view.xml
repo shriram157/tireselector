@@ -8,156 +8,34 @@
 					<uxap:ObjectPageSubSection title=" ">
 						<uxap:blocks>
 							<MessageStrip id="idAppListMsgStrip" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
-							<!--<VBox class="sapUiLargeMarginBottom clFormTitleGap" wrap="Wrap" alignItems="Center" displayInline="true">-->
-							<!--	<HBox wrap="Wrap" width="100%" class="sapUiSmallMarginTop" alignItems="Center" alignContent="Center" blocked="false">-->
-							<!--	<f:SimpleForm editable="true" width="45rem"  columnsXL="1" columnsL="1" columnsM="1" layout="ResponsiveGridLayout">-->
-							<!--<core:Title text="{i18n>DateRageText}"/>-->
-							<!--	<core:Title text=""/>-->
-							<!--		<Label text="{i18n>DealerCode}"  vAlign="Middle"/>-->
-							<!--			<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer"-->
-							<!--					items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'BusinessPartner' }, length:750 }">-->
-							<!--					<core:ListItem key="{LocalDataModel>BusinessPartnerKey}" text="{path:'LocalDataModel>BusinessPartner'}"-->
-							<!--						additionalText="{LocalDataModel>BusinessPartnerName}"/>-->
-							<!--				</Select>-->
-							<!--		<core:Title text=""/>-->
-							<!--			<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true" select="onSelectDateRadio"/>-->
-							<!--				<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"-->
-							<!--					secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>-->
-							<!--			<core:Title text=""/>		-->
-							<!--			<RadioButton id="idVinRadio" groupName="GroupA" text="{i18n>VIN}" class="sapUiSmallMarginEnd"/>-->
-							<!--			<Input required="true" width="17em" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"-->
-							<!--		valueHelpRequest="handleValueHelp"/>-->
-							<!--<Input id="idVin" value=""/>-->
-							<!--		<Input required="true" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"-->
-							<!--			valueHelpRequest="handleValueHelp"/>-->
-							<!--<VBox wrap="Wrap" width="auto">-->
-							<!--	<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop">-->
-							<!--	<Label text="{i18n>DealerCode}" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>-->
-							<!--	<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer"-->
-							<!--			items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'BusinessPartner' }, length:750 }">-->
-							<!--			<core:ListItem key="{LocalDataModel>BusinessPartnerKey}" text="{path:'LocalDataModel>BusinessPartner'}"-->
-							<!--				additionalText="{LocalDataModel>BusinessPartnerName}"/>-->
-							<!--		</Select>-->
-							<!--	</HBox>-->
-							<!--	<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop" alignItems="Center" alignContent="Center">-->
-							<!--		<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true" select="onSelectDateRadio"/>-->
-							<!--		<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"-->
-							<!--			secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>-->
-							<!--	</HBox>-->
-							<!--	<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop">-->
-							<!--		<RadioButton id="idVinRadio" groupName="GroupA" text="{i18n>VIN}" class="sapUiSmallMarginEnd"/>-->
-							<!--<Input id="idVin" value=""/>-->
-							<!--		<Input required="true" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"-->
-							<!--			valueHelpRequest="handleValueHelp"/>-->
-							<!--	</HBox>-->
-							<!--</VBox>-->
-							<!--	</f:SimpleForm>-->
-							<!--	<f:SimpleForm editable="true" width="25rem" layout="ResponsiveGridLayout" columnsXL="1" columnsL="1" columnsM="1" >-->
-							<!--		<core:Title/>-->
-							<!--		<Button text="{i18n>Search}" type="Emphasized" press="OnSearchApplication"/>-->
-							<!--		<Button text="{i18n>CreateNewApp}" press="OnCreateApp" enabled="{oDateModel>/oCreateButton}"/>-->
-							<!--	</f:SimpleForm>-->
-							<!--	</HBox>-->
-							<!--	<VBox class="sapUiLargeMarginBottom">-->
-							<!--		<Table id="idApplicationTable" enableBusyIndicator="true" mode="None"  noDataText="{i18n>NoData}"-->
-							<!--			 alternateRowColors="true" items="{ path: 'LocalDataModel>/EcpApplication' }" growing="true"-->
-							<!--			growingThreshold="15" growingScrollToLoad="false">-->
-							<!--			<columns >-->
-							<!--				<Column minScreenWidth="Tablet" demandPopin="true">-->
-							<!--					<Text text="{i18n>ApplicationDate}"/>-->
-							<!--				</Column>-->
-							<!--				<Column minScreenWidth="Tablet" demandPopin="true">-->
-							<!--					<Text text="{i18n>VIN}"/>-->
-							<!--				</Column>-->
-							<!--				<Column minScreenWidth="Tablet" demandPopin="true">-->
-							<!--					<Text text="{i18n>Name}"/>-->
-							<!--				</Column>-->
-							<!--				<Column minScreenWidth="Tablet" demandPopin="true">-->
-							<!--					<Text text="{i18n>Status}"/>-->
-							<!--				</Column>-->
-							<!--				<Column minScreenWidth="Tablet" demandPopin="true">-->
-							<!--					<Text text="{i18n>SaleDate}"/>-->
-							<!--				</Column>-->
-							<!--				<Column hAlign="End">-->
-							<!--					<Text text="{i18n>Source}"/>-->
-							<!--				</Column>-->
-							<!--				<Column hAlign="End">-->
-							<!--				</Column>-->
-							<!--			</columns>-->
-							<!--			<items >-->
-							<!--				<ColumnListItem >-->
-							<!--					<cells>-->
-							<!--						<Text text="{path:'LocalDataModel>SubmissionDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>-->
-							<!--						<Link text="{LocalDataModel>VIN}" press="onSelectionChange"/>-->
-							<!--<Text text="{LocalDataModel>CustomerName} {LocalDataModel>CustomerLastName}"/>-->
-							<!--						<Text-->
-							<!--							text="{ parts: [ 'LocalDataModel>CustomerName', 'LocalDataModel>CustomerLastName', 'LocalDataModel>BusinessIndividual', 'LocalDataModel>CompanyName' ], formatter : 'zecp.utils.formatter.appListName' }"/>-->
-							<!--						<Text text="{LocalDataModel>ApplicationStatus}"/>-->
-							<!--						<Text text="{path:'LocalDataModel>SaleDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>-->
-							<!--						<Text text="{LocalDataModel>Source}"/>-->
-							<!--						<core:Icon src="sap-icon://delete" press="onDeletePress" color="#f00"/>-->
-							<!--					</cells>-->
-							<!--				</ColumnListItem>-->
-							<!--			</items>-->
-							<!--		</Table>-->
-							<!--	</VBox>-->
-							<!--</VBox>-->
-							<l:VerticalLayout width="100%" class="gridWrapper">
-								<l:Grid containerQuery="true" defaultSpan="XL5 L7 M6 S12">
-									<html:div class="exampleDiv ">
-										<f:SimpleForm editable="true" columnsXL="1" labelSpanXL="6" labelSpanL="6" labelSpanM="6" labelSpanS="12" columnsL="1" columnsM="1"
-											layout="ResponsiveGridLayout">
-											<!--<core:Title text="{i18n>DateRageText}"/>-->
-											<core:Title text=""/>
-											<Label text="{i18n>DealerCode}" vAlign="Middle" textAlign="Left" wrapping="true"/>
-											<Select width="17em" showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer"
+							<VBox class="sapUiLargeMarginBottom" wrap="Wrap">
+								<f:SimpleForm editable="true" layout="ResponsiveLayout">
+									<core:Title text="{i18n>DateRageText}"/>
+									<VBox wrap="Wrap" width="auto">
+										<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true" select="onSelectDateRadio"/>
+										<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop" alignItems="Center" alignContent="Center">
+											<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"
+												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
+											<Label text="{i18n>DealerCode}" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>
+											<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer"
 												items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'BusinessPartner' }, length:750 }">
 												<core:ListItem key="{LocalDataModel>BusinessPartnerKey}" text="{path:'LocalDataModel>BusinessPartner'}"
 													additionalText="{LocalDataModel>BusinessPartnerName}"/>
 											</Select>
-											<core:Title text=""/>
-											<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true" select="onSelectDateRadio"/>
-											<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"
-												secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>
-											<core:Title text=""/>
+										</HBox>
+										<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop">
 											<RadioButton id="idVinRadio" groupName="GroupA" text="{i18n>VIN}" class="sapUiSmallMarginEnd"/>
-											<Input required="true" width="17em" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true"
-												valueHelpOnly="true" valueHelpRequest="handleValueHelp"/>
 											<!--<Input id="idVin" value=""/>-->
-											<!--		<Input required="true" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"-->
-											<!--			valueHelpRequest="handleValueHelp"/>-->
-											<!--<VBox wrap="Wrap" width="auto">-->
-											<!--	<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop">-->
-											<!--	<Label text="{i18n>DealerCode}" class="sapUiMediumMarginBegin sapUiTinyMarginEnd" vAlign="Middle"/>-->
-											<!--	<Select showSecondaryValues="true" id="idDealerCode" change="onSelectiDealer"-->
-											<!--			items="{path: 'LocalDataModel>/BpDealerModel', sorter: { path: 'BusinessPartner' }, length:750 }">-->
-											<!--			<core:ListItem key="{LocalDataModel>BusinessPartnerKey}" text="{path:'LocalDataModel>BusinessPartner'}"-->
-											<!--				additionalText="{LocalDataModel>BusinessPartnerName}"/>-->
-											<!--		</Select>-->
-											<!--	</HBox>-->
-											<!--	<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop" alignItems="Center" alignContent="Center">-->
-											<!--		<RadioButton id="idDateRadio" groupName="GroupA" text="{i18n>ApplicationDate}" selected="true" select="onSelectDateRadio"/>-->
-											<!--		<DateRangeSelection width="17em" id="idSubmissionDate" dateValue="{path:'oDateModel>/dateValueDRS2'}"-->
-											<!--			secondDateValue="{path:'oDateModel>/secondDateValueDRS2'}" minDate="" maxDate="" change="onChangeDepDate"></DateRangeSelection>-->
-											<!--	</HBox>-->
-											<!--	<HBox wrap="Wrap" width="auto" class="sapUiSmallMarginTop">-->
-											<!--		<RadioButton id="idVinRadio" groupName="GroupA" text="{i18n>VIN}" class="sapUiSmallMarginEnd"/>-->
-											<!--<Input id="idVin" value=""/>-->
-											<!--		<Input required="true" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"-->
-											<!--			valueHelpRequest="handleValueHelp"/>-->
-											<!--	</HBox>-->
-											<!--</VBox>-->
-										</f:SimpleForm>
-									</html:div>
-									<html:div class="exampleDiv">
-										<f:SimpleForm editable="true" layout="ResponsiveGridLayout" columnsXL="1" columnsL="1" columnsM="1">
-											<core:Title/>
-											<Button text="{i18n>Search}" type="Emphasized" press="OnSearchApplication"/>
+											<Input required="true" id="idVin" value="{EcpFieldData>/ZecpVin}" enabled="true" editable="true" showValueHelp="true" valueHelpOnly="true"
+												valueHelpRequest="handleValueHelp"/>
+											<Button text="{i18n>Search}" type="Emphasized" press="OnSearchApplication" class="sapUiTinyMarginBegin sapUiSmallMarginEnd"/>
 											<Button text="{i18n>CreateNewApp}" press="OnCreateApp" enabled="{oDateModel>/oCreateButton}"/>
-										</f:SimpleForm>
-									</html:div>
-								</l:Grid>
-								<Table width="100%" id="idApplicationTable" enableBusyIndicator="true" mode="None" noDataText="{i18n>NoData}" alternateRowColors="true"
+										</HBox>
+									</VBox>
+								</f:SimpleForm>
+								<VBox class="sapUiLargeMarginBottom">
+							
+							<Table width="100%" headerText="{i18n>SearchResults}" id="idApplicationTable" enableBusyIndicator="true" mode="None" noDataText="{i18n>NoData}" alternateRowColors="true"
 									items="{ path: 'LocalDataModel>/EcpApplication' }" growing="true" growingThreshold="15" growingScrollToLoad="false">
 									<columns >
 										<Column minScreenWidth="Tablet" demandPopin="true">
@@ -196,7 +74,8 @@
 										</ColumnListItem>
 									</items>
 								</Table>
-							</l:VerticalLayout>
+							</VBox>
+							</VBox>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
