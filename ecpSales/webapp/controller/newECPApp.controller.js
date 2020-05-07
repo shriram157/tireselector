@@ -87,6 +87,7 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStrip").setText("");
 			this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
 			this.getView().byId("idNewECPMsgStripPlan").setText("");
+			this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
 
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			var oFormatedSaleDate;
