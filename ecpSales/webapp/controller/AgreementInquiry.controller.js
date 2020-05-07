@@ -135,19 +135,26 @@ sap.ui.define([
 							success: $.proxy(function (budata) {
 
 									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress", budata.results[0]);
-									if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+									if (budata.results[0].to_EmailAddress.results.length > 0) {
 										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress.results[
 											0].EmailAddress);
 
 									}
-									if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+									if (budata.results[0].to_PhoneNumber.results.length > 0) {
 										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber.results[
 											0].PhoneNumber);
 									}
-									if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+									if (budata.results[0].to_FaxNumber.results.length > 0) {
 										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[
 												0]
 											.FaxNumber);
+									}
+
+									if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
+										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/MobileNumber", budata.results[0].to_MobilePhoneNumber
+											.results[
+												0]
+											.PhoneNumber);
 									}
 								},
 								this),
@@ -226,7 +233,7 @@ sap.ui.define([
 						},
 						success: $.proxy(function (zcvedata) {
 
-							this.getModel("LocalDataModel").setProperty("/VehicleDetails", zcvedata.results[0]); // TODO: 
+							this.getModel("LocalDataModel").setProperty("/VehicleDetails", zcvedata.results[0]);
 
 							var vehcOwnrSectonCno = zcvedata.results[0].EndCustomer;
 							if (vehcOwnrSectonCno) {
@@ -238,23 +245,28 @@ sap.ui.define([
 
 									},
 									success: $.proxy(function (budata) {
+											console.log(budata + "240");
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
-											if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+											if (budata.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress
 													.results[0].EmailAddress);
 											}
-											if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber
 													.results[0].PhoneNumber);
+
+												console.log(budata.results[0].to_PhoneNumber
+													.results[0].PhoneNumber);
+												console.log(this.getModel("LocalDataModel"));
 											}
-											if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+											if (budata.results[0].to_FaxNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[
 													0].FaxNumber);
 											}
-											if (budata.results[0].to_MobilePhoneNumber.results.lentgh > 0) {
+											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Mobile", budata.results[0].to_MobilePhoneNumber
-													.results[0].MobilePhoneNumber);
+													.results[0].PhoneNumber);
 											}
 										},
 										this),
@@ -307,17 +319,17 @@ sap.ui.define([
 
 								this.getModel("LocalDataModel").setProperty("/BusinessPartnerData", budata.results[0]);
 
-								if (budata.results[0].to_EmailAddress.results.lentgh > 0) {
+								if (budata.results[0].to_EmailAddress.results.length > 0) {
 									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/EmailAddress", budata.results[0].to_EmailAddress.results[
 										0].EmailAddress);
 								}
 
-								if (budata.results[0].to_PhoneNumber.results.lentgh > 0) {
+								if (budata.results[0].to_PhoneNumber.results.length > 0) {
 									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/PhoneNumber", budata.results[0].to_PhoneNumber.results[
 										0].PhoneNumber);
 								}
 
-								if (budata.results[0].to_FaxNumber.results.lentgh > 0) {
+								if (budata.results[0].to_FaxNumber.results.length > 0) {
 									this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", budata.results[0].to_FaxNumber.results[0]
 										.FaxNumber);
 								}
@@ -369,24 +381,24 @@ sap.ui.define([
 					'X-CSRF-Token': this._oToken
 				}
 			});
-			oZECPModel.read("/zc_ecp_valid_plansSet", {
-				urlParameters: {
-					"$filter": "LANGUAGE eq '" + lanKey + "' and BCC_ECP_AGRMNT_NUM eq '" + oAgrNum + "'",
-					"$expand": "ZC_ECP_BENEFITSET"
-				},
-				success: $.proxy(function (data) {
-					console.log(data)
+			// 			oZECPModel.read("/zc_ecp_valid_plansSet", {
+			// 				urlParameters: {
+			// 					"$filter": "LANGUAGE eq '" + lanKey + "' and BCC_ECP_AGRMNT_NUM eq '" + oAgrNum + "'",
+			// 					"$expand": "ZC_ECP_BENEFITSET"
+			// 				},
+			// 				success: $.proxy(function (data) {
+			// 					console.log(data)
 
-					oBenefitDataModel.setData({
-						benefitList: data.results[0].ZC_ECP_BENEFITSET.results
+			// 					oBenefitDataModel.setData({
+			// 						benefitList: data.results[0].ZC_ECP_BENEFITSET.results
 
-					});
+			// 					});
 
-				}, this),
-				error: function () {
-					console.log("Error");
-				}
-			});
+			// 				}, this),
+			// 				error: function () {
+			// 					console.log("Error");
+			// 				}
+			// 			});
 
 			EcpModelV2.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {

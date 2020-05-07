@@ -5,7 +5,7 @@
 		<f:content>
 			<Label text="{i18n>PlanCode}"/>
 			<ComboBox id="idPlanCode" items="{LocalDataModel>/PlanValidSet}" showSecondaryValues="true" required="true"
-				value="{EcpFieldData>/ZecpPlancode}" selectionChange="onSelectPlanCode">
+				value="{EcpFieldData>/ZecpPlancode}" selectionChange="onSelectPlanCode" editable="{DateModel>/editPlan}">
 				<core:ListItem key="{LocalDataModel>KMS}/{LocalDataModel>MONTHS}/{LocalDataModel>MAX_MILEAGE}/{LocalDataModel>MAX_MONTH}" text="{LocalDataModel>MGANR}" additionalText="{LocalDataModel>GAKTX}"/>
 			</ComboBox>
 			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep4"/>

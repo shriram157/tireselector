@@ -161,8 +161,9 @@ sap.ui.define([
 				success: function (oData) {
 					// var userScopes = oData;
 					// userScopes.forEach(function (data) {
-
 					var userType = oData.loggedUserType[0];
+					//var userType = "TCI_Admin";
+					that.getModel("LocalDataModel").setProperty("/UserType", userType);
 					//userType = "TCI_User";
 					switch (userType) {
 					case "Dealer_Sales_User":

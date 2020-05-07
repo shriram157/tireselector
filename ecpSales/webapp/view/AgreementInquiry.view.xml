@@ -36,8 +36,8 @@
 												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/EmailAddress}"/>
 												<Label text="{i18n>Home}"/>
 												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/PhoneNumber}"/>
-												<Label text="{i18n>Business}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/FaxNumber}"/>
+												<Label text="{i18n>Mobile}"/>
+												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/MobileNumber}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>
@@ -67,10 +67,10 @@
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/EmailAddress}"/>
 												<Label text="{i18n>Home}"/>
 												<Text text="{LocalDataModel>/VechOwnrSectonAddress/PhoneNumber}"/>
-												<Label text="{i18n>Business}"/>
-												<Text text="{LocalDataModel>/VechOwnrSectonAddress/FaxNumber}"/>
+												<!--<Label text="{i18n>Business}"/>-->
+												<!--<Text text="{LocalDataModel>/VechOwnrSectonAddress/FaxNumber}"/>-->
 												<Label text="{i18n>Mobile}"/>
-												<Text text="{LocalDataModel>/VechOwnrSectonAddress/HomePhone}"/>
+												<Text text="{LocalDataModel>/VechOwnrSectonAddress/Mobile}"/>
 											</f:content>
 										</f:SimpleForm>
 									</html:div>
@@ -90,7 +90,7 @@
 												<!--<Text text="{LocalDataModel>/PricingModelData/ZECP_DEALCODE}"/>-->
 												<Label text="{i18n>RegDate}"/>
 												<Text
-													text="{path:'LocalDataModel>/PricingModelData/REG_DATE', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
+													text="{path:'LocalDataModel>/PricingModelData/WARD_DATE', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
 												<!--<Label text="{i18n>SaleType}"/>-->
 												<!--<Text text="{LocalDataModel>/PricingModelData/ZECP_SALETYPE}"/>-->
 											</f:content>

@@ -109,3 +109,12 @@ html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
 .clClaimTable .sapMListTblHeader>.sapMTableTH .sapMText {
     color: #fff;
 }
+.clFormTitleGap  .sapUiFormContainerTitle>.sapUiFormTitle {
+    height: 0;
+}
+.clFormTitleGap .sapUiFormResGridCont {padding-bottom:0;}
+
+.clFormTitleGap .sapUiRespGridMedia-Std-Tablet.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanM12)>.sapMLabel {
+	padding-left:3rem;
+	text-align: left!important;
+}
