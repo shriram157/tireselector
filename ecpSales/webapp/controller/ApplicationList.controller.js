@@ -4,6 +4,9 @@ sap.ui.define([
 	'sap/ui/model/json/JSONModel'
 ], function (BaseController, Fragment, JSONModel) {
 	"use strict";
+	var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				pattern: "yyyy-MM-ddTHH:mm:ss"
+	});
 
 	return BaseController.extend("zecp.controller.ApplicationList", {
 
@@ -24,6 +27,8 @@ sap.ui.define([
 				oCreateButton: true
 			});
 			this.getView().setModel(oModelDate, "oDateModel");
+			
+			
 
 			var sLocation = window.location.host;
 			var sLocation_conf = sLocation.search("webide");
@@ -53,8 +58,7 @@ sap.ui.define([
 				type: "GET",
 				dataType: "json",
 				success: function (oData) {
-					// var userScopes = oData;
-					// userScopes.forEach(function (data) {
+					
 
 					var userType = oData.loggedUserType[0];
 					//	userType = "TCI_User";
@@ -135,28 +139,30 @@ sap.ui.define([
 				error: function (response) {
 					sap.ui.core.BusyIndicator.hide();
 				}
-			}).done(function (data, textStatus, jqXHR) {
+			}).done($.proxy(function (data, textStatus, jqXHR) {
 				that.getModel("LocalDataModel").setProperty("/currentIssueDealer", data.attributes[0].BusinessPartnerKey);
 
-				var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
-				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-					pattern: "yyyy-MM-ddTHH:mm:ss"
-				});
-				var oPriorDate = oDateFormat.format(that.priordate);
-				var oCurrentDate = oDateFormat.format(that.beforedate);
+				//var issueDealer = that.getModel("LocalDataModel").getProperty("/currentIssueDealer");
+				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
+				// });
+				// var oPriorDate = oDateFormat.format(that.priordate);
+				// var oCurrentDate = oDateFormat.format(that.beforedate);
 
-				oEcpModel.read("/zc_ecp_application", {
-					urlParameters: {
-						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-							"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
-					},
-					success: function (edata) {
-						that.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
-					}
-				});
+				// oEcpModel.read("/zc_ecp_application", {
+				// 	urlParameters: {
+				// 		"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
+				// 			"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
+				// 	},
+				// 	success: function (edata) {
+				// 		that.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
+				// 	}
+				// });
+				
+				this._fnReadList();
 				var oRouter = sap.ui.core.UIComponent.getRouterFor(that);
 				oRouter.attachRouteMatched(that._onObjectMatched, that);
-			});
+			},this));
 
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
@@ -196,31 +202,27 @@ sap.ui.define([
 			this.getDealer();
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			var issueDealer = this.getModel("LocalDataModel").getProperty("/currentIssueDealer");
-			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-				pattern: "yyyy-MM-ddTHH:mm:ss"
-			});
+			
 			var oPriorDate = oDateFormat.format(this.priordate);
 			var oCurrentDate = oDateFormat.format(this.beforedate);
 			if (oEvent.getParameters().name === "ApplicationList") {
 				this.getOwnerComponent().getModel("EcpSalesModel").refresh();
-				oEcpModel.read("/zc_ecp_application", {
-					urlParameters: {
-						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-							"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
-					},
-					success: $.proxy(function (data) {
-						this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
-					}, this)
-				});
+				// oEcpModel.read("/zc_ecp_application", {
+				// 	urlParameters: {
+				// 		"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
+				// 			"'and DealerCode eq '" + issueDealer + "'and ApplicationStatus eq 'PENDING' "
+				// 	},
+				// 	success: $.proxy(function (data) {
+				// 		this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
+				// 	}, this)
+				// });
+				
+				this._fnReadList();
 
 			}
 
 			var productInput = this.getView().byId("idVin");
 			productInput.setValue("");
-
-		},
-
-		onAfterRendering: function () {
 
 		},
 
@@ -360,35 +362,36 @@ sap.ui.define([
 
 			if (oDateRadioSelected && !oVinRadioSelected) {
 
-				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-					pattern: "yyyy-MM-ddTHH:mm:ss"
-				});
+				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
+				// });
 
 				var sQuery = this.getView().byId("idSubmissionDate").getValue();
 
-				var odateFrom = sQuery.split("-")[0];
-				var odateTo = sQuery.split("-")[1];
-				var odateToRe = odateTo.toString().split(" ");
-				odateToRe.splice(4, 1, "23:59:60");
-				var oDateToFinal = odateToRe.join(" ");
+				// var odateFrom = sQuery.split("-")[0];
+				// var odateTo = sQuery.split("-")[1];
+				// var odateToRe = odateTo.toString().split(" ");
+				// odateToRe.splice(4, 1, "23:59:60");
+				// var oDateToFinal = odateToRe.join(" ");
 				//console.log(odateFrom, oDateToFinal);
-				var RangeDateFrom = oDateFormat.format(new Date(odateFrom));
-				var RangeDateTo = oDateFormat.format(new Date(oDateToFinal));
+				// var RangeDateFrom = oDateFormat.format(new Date(odateFrom));
+				// var RangeDateTo = oDateFormat.format(new Date(oDateToFinal));
 
 				if (!$.isEmptyObject(sQuery)) {
+					this._fnReadList();
 
-					oEcpModel.read("/zc_ecp_application", {
-						urlParameters: {
-							"$filter": "SubmissionDate ge datetime'" + RangeDateFrom +
-								"'and SubmissionDate le datetime'" + RangeDateTo +
-								"'and DealerCode eq '" + oDealerCode + "'and ApplicationStatus eq 'PENDING' "
+					// oEcpModel.read("/zc_ecp_application", {
+					// 	urlParameters: {
+					// 		"$filter": "SubmissionDate ge datetime'" + RangeDateFrom +
+					// 			"'and SubmissionDate le datetime'" + RangeDateTo +
+					// 			"'and DealerCode eq '" + oDealerCode + "'and ApplicationStatus eq 'PENDING' "
 
-						},
-						success: $.proxy(function (data) {
+					// 	},
+					// 	success: $.proxy(function (data) {
 
-							this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
-						}, this)
-					});
+					// 		this.getModel("LocalDataModel").setProperty("/EcpApplication", data.results);
+					// 	}, this)
+					// });
 				}
 
 			} else if (!oDateRadioSelected && oVinRadioSelected) {
@@ -415,17 +418,33 @@ sap.ui.define([
 				}
 			}
 		},
+		
+		_fnReadList : function(){
+			var oPriorDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/dateValueDRS2"));
+			var oCurrentDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/secondDateValueDRS2"));
+			
+			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
+			oEcpModel.read("/zc_ecp_application", {
+					urlParameters: {
+						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
+							"'and DealerCode eq '" + this.getModel("LocalDataModel").getProperty("/currentIssueDealer") + "'and ApplicationStatus eq 'PENDING' "
+					},
+					success: $.proxy(function (edata) {
+						this.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
+					},this)
+				});
+		},
 
 		onSelectionChange: function (oEvent) {
 			var oProp = this.getModel("LocalDataModel").getProperty("/newAppLink");
-
+			
 			//remove before delpoyment
 			// oProp = true;
 			//end removal of code
 
 			// if (oProp == true) {
 
-			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().getSelectedContextPaths()[0]);
+			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().oPropagatedProperties.oBindingContexts.LocalDataModel.sPath);
 
 			this.getOwnerComponent().getRouter().navTo("newECPApp", {
 				appId: obj.InternalApplicationID,
@@ -434,6 +453,58 @@ sap.ui.define([
 			this.getView().byId("idApplicationTable").removeSelections("true");
 			this.getModel("EcpSalesModel").refresh();
 			//}
+		},
+		
+		onDeletePress : function(oEvent){
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			var that = this;
+			var obj = oEvent.getSource().getModel("LocalDataModel").getProperty(oEvent.getSource().oPropagatedProperties.oBindingContexts.LocalDataModel.sPath);
+
+			var dialog = new sap.m.Dialog({
+				title: oBundle.getText("DltECPApp"),
+				type: 'Message',
+				content: new sap.m.Text({
+					text: oBundle.getText("AreUSureLikeDeleteApp")
+				}),
+				beginButton: new sap.m.Button({
+					text: oBundle.getText("Yes"),
+					press: function () {
+						var oModel = that.getView().getModel("EcpSalesModel");
+						this._oToken = oModel.getHeaders()['x-csrf-token'];
+						$.ajaxSetup({
+							headers: {
+								'X-CSRF-Token': this._oToken
+							}
+						});
+
+						oModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + obj.InternalApplicationID + "',ZecpVin='" + obj.VIN + "')", {
+							method: "DELETE",
+							success: $.proxy(function (data) {
+								oModel.refresh();
+								sap.m.MessageToast.show(oBundle.getText("AppDeleted") + obj.VIN);
+								that._fnReadList();
+							},this),
+							error: function (e) {
+								console.log(e);
+							}
+						});
+
+						
+						dialog.close();
+					}
+				}),
+				endButton: new sap.m.Button({
+					text: oBundle.getText("No"),
+					press: function () {
+						dialog.close();
+					}
+				}),
+				afterClose: function () {
+					dialog.destroy();
+				}
+			});
+
+			dialog.open();
 		},
 
 		onExit: function () {
