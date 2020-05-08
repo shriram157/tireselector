@@ -100,14 +100,14 @@ sap.ui.define([
 			DataManager.funECPBlankObj(this);
 			
 			if (this.oAppId != 404 && this.oAppId != undefined) {
-				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", true);
+				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
 				this.getView().getModel("oSetProperty").setProperty("/oTab5visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab6visible", false);
-				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-				//this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+				//this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oSecondaryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState", false);
