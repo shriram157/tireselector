@@ -482,6 +482,12 @@ sap.ui.define([
 			var oVin = this.getView().byId("idVinNum");
 			var oVal = oVin.getValue();
 			oVin.setValueState(sap.ui.core.ValueState.None);
+			var AgrTypes = [ 
+				{typeNames : this.oBundle.getText("NEWVEHICLEAGREEMENT"), typeKey : "NEWAGR"},
+				{typeNames : this.oBundle.getText("USEDVEHICLEAGREEMENT"), typeKey : "USEDAGR"},
+				{typeNames : this.oBundle.getText("EXTENSION"), typeKey : "EXTENSION"}
+			];
+			
 			var oZECPModel = this.getModel("EcpSalesModel");
 
 			oZECPModel.read("/zc_ecp_valid_vinsSet", {
@@ -499,10 +505,11 @@ sap.ui.define([
 							success: $.proxy(function (data) {
 								this.oFlag = data.results[0].ZZEXT_FLG;
 								if (this.oFlag === "YES") {
-									this.getView().getModel("oSetProperty").setProperty("/oFlag", true);
+									this.getModel("LocalDataModel").setProperty("/AgreementData", AgrTypes);
 
 								} else {
-									this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
+										var oFilterdVal = AgrTypes.filter((item)=> item.typeKey != "EXTENSION");
+									this.getModel("LocalDataModel").setProperty("/AgreementData", oFilterdVal);
 								}
 							}, this),
 							error: function () {
@@ -1025,7 +1032,7 @@ sap.ui.define([
 			var regDateMoment = moment.utc(this.BccAgrmntPrtDt).format("YYYY-MM-DD");
 
 			var oAgr = this.getView().byId("idAgrType");
-			var oAgrItem = this.getView().byId("idAgrType").getSelectedItem();
+			var oAgrItem = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 			var SaleDateVar = moment(saleDateMoment, "YYYY-MM-DD");
 			var oSaleDateTime = new Date(oSaleDateId.getDateValue()).getTime();
 
