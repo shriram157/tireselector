@@ -480,6 +480,9 @@ sap.ui.define([
 			var oVin = this.getView().byId("idVinNum");
 			var oVal = oVin.getValue();
 			oVin.setValueState(sap.ui.core.ValueState.None);
+			
+			var VinNum = this.oECPData.ZecpVin.trim();
+			
 			var AgrTypes = [{
 				typeNames: this.oBundle.getText("NEWVEHICLEAGREEMENT"),
 				typeKey: "NEWAGR"
@@ -495,7 +498,7 @@ sap.ui.define([
 
 			oZECPModel.read("/zc_ecp_valid_vinsSet", {
 				urlParameters: {
-					"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
+					"$filter": "VIN eq '" + VinNum + "'"
 				},
 				success: $.proxy(function (vinData) {
 					var oVinLength = vinData.results.length;
@@ -503,7 +506,7 @@ sap.ui.define([
 						//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
 						oZECPModel.read("/zc_ecp_valid_plansSet", {
 							urlParameters: {
-								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'"
+								"$filter": "VIN eq '" + VinNum + "'"
 							},
 							success: $.proxy(function (data) {
 								this.oFlag = data.results[0].ZZEXT_FLG;
@@ -575,7 +578,7 @@ sap.ui.define([
 
 						oZECPModel.read("/zc_ecp_application", {
 							urlParameters: {
-								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "' "
+								"$filter": "VIN eq '" + VinNum + "' "
 							},
 							success: $.proxy(function (data) {
 
@@ -592,7 +595,7 @@ sap.ui.define([
 
 						oZECPModel.read("/zc_ecp_agreement", {
 							urlParameters: {
-								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and AgreementElectricVehicletype ne 'AGEN' "
+								"$filter": "VIN eq '" + VinNum + "'and AgreementElectricVehicletype ne 'AGEN' "
 							},
 							success: $.proxy(function (data) {
 
@@ -623,7 +626,7 @@ sap.ui.define([
 						oGetModel.read("/zc_c_vehicle", {
 
 							urlParameters: {
-								"$filter": "VehicleIdentificationNumber eq '" + this.oECPData.ZecpVin + "' "
+								"$filter": "VehicleIdentificationNumber eq '" + VinNum + "' "
 							},
 							success: $.proxy(function (data) {
 
@@ -631,7 +634,7 @@ sap.ui.define([
 
 								oZECPModel.read("/zc_ecp_application", {
 									urlParameters: {
-										"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel(
+										"$filter": "VIN eq '" + VinNum + "'and ApplicationStatus eq 'PENDING'and DealerCode eq '" + this.getModel(
 											"LocalDataModel").getProperty(
 											"/sCurrentDealer") + "' "
 									},
@@ -2086,7 +2089,7 @@ sap.ui.define([
 				this.getModel("LocalDataModel").setProperty("/ZecpLienHolderState", "None");
 				this.getModel("LocalDataModel").setProperty("/ZecpTermsState", "None");
 				this.getModel("LocalDataModel").setProperty("/ZecpTermsReq", false);
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				//this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStripPlan").setText("");
 
@@ -2105,8 +2108,7 @@ sap.ui.define([
 				});
 				oEcpModel.create("/zc_ecp_crud_operationsSet", objSave, {
 					success: $.proxy(function () {
-						this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-						this.getView().byId("idNewECPMsgStrip").setType("None");
+						
 						MessageToast.show(oBundle.getText("DraftCreated") + this.oECPData.ZecpVin);
 						oEcpModel.refresh();
 						this.getRouter().navTo("ApplicationList");
@@ -2198,6 +2200,7 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/AmtFinState", "Error");
 			} else {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				oEcpModel.update("/zc_ecp_crud_operationsSet(ZecpIntApp='" + this.oAppId + "',ZecpVin='" + this.getModel("LocalDataModel").getProperty(
 						"/ApplicationOwnerData/VIN") +
 					"')", obj, {
@@ -2206,7 +2209,7 @@ sap.ui.define([
 							oEcpModel.refresh();
 							this.getRouter().navTo("ApplicationList");
 							MessageToast.show(oBundle.getText("UpdatedDataHasbeenSavedSuccessFully"));
-							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+							
 						}, this),
 						error: function () {
 							MessageToast.show(oBundle.getText("PleaseTryAgainToSave"));
