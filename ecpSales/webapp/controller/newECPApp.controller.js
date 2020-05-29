@@ -600,6 +600,36 @@ sap.ui.define([
 							success: $.proxy(function (data) {
 
 								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
+								
+								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
+						this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
+							"/ApplicationOwnerData/ECPPlanCode"));
+						this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.getModel("LocalDataModel").getProperty(
+							"/ApplicationOwnerData/Odometer"));
+						this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
+							"/ApplicationOwnerData/AgreementType"));
+
+						oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
+							"/ApplicationOwnerData/SaleDate")));
+
+						// ApplicationOwnerData_Name
+
+						if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
+
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+									"i18n").getResourceBundle()
+								.getText("Organization"));
+
+						} else {
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
+								" " + data.results[0].CustomerLastName);
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+									"i18n").getResourceBundle()
+								.getText("Individual")); // added translation
+						}
+						
+						
 
 								this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
