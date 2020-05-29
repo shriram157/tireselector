@@ -423,6 +423,8 @@ sap.ui.define([
 			var oPriorDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/dateValueDRS2"));
 			var oCurrentDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/secondDateValueDRS2"));
 			
+			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", this.getView().byId("idDealerCode").getSelectedKey());
+			
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			oEcpModel.read("/zc_ecp_application", {
 					urlParameters: {

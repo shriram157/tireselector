@@ -609,8 +609,8 @@ sap.ui.define([
 						this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
 							"/ApplicationOwnerData/AgreementType"));
 
-						oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
-							"/ApplicationOwnerData/SaleDate")));
+						// oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
+						// 	"/ApplicationOwnerData/SaleDate")));
 
 						// ApplicationOwnerData_Name
 
