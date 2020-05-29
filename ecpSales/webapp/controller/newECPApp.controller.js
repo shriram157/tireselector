@@ -229,7 +229,11 @@ sap.ui.define([
 
 										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", businessB.results[0]);
 
+										AgrOwnerSectAddOnAppSub_Name
 										
+										this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", businessB.results[0].FirstName +
+												" " + businessB.results[
+													0].LastName);
 
 										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", businessB.results[0].FirstName || "");
 										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", businessB.results[0].LastName || "");
@@ -784,6 +788,9 @@ sap.ui.define([
 					success: $.proxy(function (data) {
 						console.log(data);
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", data.results[0]);
+							this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
+												" " + data.results[
+													0].LastName);
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName || "");
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", data.results[0].LastName || "");
 
@@ -1204,6 +1211,9 @@ sap.ui.define([
 						this.oECPData.ZecpCustName = data.results[0].FirstName;
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName);
 					}
+					this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
+												" " + data.results[
+													0].LastName);
 				}, this),
 				error: function () {}
 			});

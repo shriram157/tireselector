@@ -39,7 +39,8 @@
 						<Label text="{i18n>Language}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/Language}"/>
 						<Label text="{i18n>Name}" textAlign="Begin"/>
-						<Text text="{LocalDataModel>/AgreementOwnerName/LastName} {LocalDataModel>/AgreementOwnerName/FirstName}"/>
+						<!--<Text text="{LocalDataModel>/AgreementOwnerName/LastName} {LocalDataModel>/AgreementOwnerName/FirstName}"/>-->
+						<Text text="{LocalDataModel>/AgrOwnerSectAddOnAppSub_Name}"/>
 						<Label text="{i18n>Address}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
 						<Label text="{i18n>City}" textAlign="Begin"/>
