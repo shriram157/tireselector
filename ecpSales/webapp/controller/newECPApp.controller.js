@@ -229,7 +229,7 @@ sap.ui.define([
 
 										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", businessB.results[0]);
 
-										AgrOwnerSectAddOnAppSub_Name
+										
 										
 										this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", businessB.results[0].FirstName +
 												" " + businessB.results[
