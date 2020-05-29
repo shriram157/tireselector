@@ -3,7 +3,7 @@
 	<VBox class="sapUiSmallMargin" visible="{oSetProperty>/oAgrTopDetails}">
 		<f:SimpleForm id="idAgreementDetailsFormTop" editable="true" layout="ResponsiveGridLayout"
 			title="{i18n>OriginalAgrDetails} - {LocalDataModel>/AgreementObj/AgreementNumber}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
-			labelSpanS="4" columnsM="2" columnsL="3" columnsXL="3" singleContainerFullSize="false">
+			labelSpanS="4" columnsM="2" columnsL="3" columnsXL="3"  >
 			<f:content >
 				<core:Title text=""/>
 				<Label text="{i18n>EffectiveDate}" id="idEfDate"/>
@@ -30,7 +30,7 @@
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="AgrOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
-					columnsM="1" singleContainerFullSize="false" visible="{oSetProperty>/oAgrOwner}">
+					columnsM="1"  visible="{oSetProperty>/oAgrOwner}">
 					<f:content >
 						<Label text="{i18n>Customer}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/BusinessPartner}"/>
@@ -58,7 +58,7 @@
 				</f:SimpleForm>
 				<f:SimpleForm id="AgrOwnerDMS" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementOwner}" labelSpanXL="5" labelSpanL="5"
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
-					columnsM="1" singleContainerFullSize="false" visible="{oSetProperty>/oAgrOwnerDMS}">
+					columnsM="1"  visible="{oSetProperty>/oAgrOwnerDMS}">
 					<f:content>
 						<Label text="{i18n>Customer}"/>
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Customer}"/>
@@ -90,7 +90,7 @@
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="VeOwnerFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleOwner}" labelSpanXL="5" labelSpanL="5"
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
-					columnsM="1" singleContainerFullSize="false">
+					columnsM="1" >
 					<f:content>
 						<Label text="{i18n>Customer}"/>
 						<Text text="{LocalDataModel>/OwnerData/BusinessPartner}"/>
@@ -122,7 +122,7 @@
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="VeDetailsFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>VehicleDetails}" labelSpanXL="5" labelSpanL="5"
 					labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
-					columnsM="1" singleContainerFullSize="false">
+					columnsM="1">
 					<f:content>
 						<core:Title text="VIN : {EcpFieldData>/ZecpVin}"/>
 						<Label text="{i18n>Make}"/>
@@ -139,17 +139,18 @@
 						<Label text="{i18n>DealType}"/>
 						<Text text="{LocalDataModel>/PricingModelData/DEALTYPEDESC}"/>
 						<Label text="{i18n>VehiclePrice}"/>
-						<Input liveChange="onChangeAmt" type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" value="{EcpFieldData>/ZecpVehPrice}"
-							required="true" valueState="{LocalDataModel>/VehPriceState}" class="ZecpVehPriceCls"/>
+						<Input liveChange="onChangeAmt" type="Number" id="idVPrice" editable="{LocalDataModel>/editableField}" 
+						value="{path:'EcpFieldData>/ZecpVehPrice', type : 'sap.ui.model.type.String', constraints : { minLength : 1, maxLength : 14 } }"
+							required="true"  class="ZecpVehPriceCls"/>
 						<Label text="{i18n>AmtFinanced}"/>
-						<Input liveChange="onChangeAmt" required="{LocalDataModel>/AmtFinReq}" valueState="{LocalDataModel>/AmtFinState}" type="Number"
-							value="{EcpFieldData>/ZecpAmtFin}" editable="{LocalDataModel>/editableField}"/>
+						<Input liveChange="onChangeAmt" id="idAmtFin" required="{LocalDataModel>/AmtFinReq}"  type="Number"
+							value="{path:'EcpFieldData>/ZecpAmtFin',type : 'sap.ui.model.type.String', constraints : { minLength : 1, maxLength : 14 } }" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>LienholderName}"/>
-						<Input required="{LocalDataModel>/ZecpLienHolderReq}" valueState="{LocalDataModel>/ZecpLienHolderState}"
-							value="{EcpFieldData>/ZecpLienholder}" editable="{LocalDataModel>/editableField}"/>
+						<Input liveChange="onChangeLien" id="idLienHolder" required="{LocalDataModel>/ZecpLienHolderReq}" 
+							value="{path:'EcpFieldData>/ZecpLienholder', type : 'sap.ui.model.type.String', constraints : { minLength : 1, maxLength : 40 }}" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>LienTerms}"/>
-						<custom:CustomInput liveChange="onChangeAmt" required="{LocalDataModel>/ZecpTermsReq}" valueState="{LocalDataModel>/ZecpTermsState}"
-							value="{EcpFieldData>/ZecpLienterms}" editable="{LocalDataModel>/editableField}"/>
+						<custom:CustomInput liveChange="onChangeAmt" id="idLienTerms" required="{LocalDataModel>/ZecpTermsReq}" 
+							value="{path:'EcpFieldData>/ZecpLienterms', type : 'sap.ui.model.type.String', constraints : { minLength : 1, maxLength : 14 }}" editable="{LocalDataModel>/editableField}"/>
 					</f:content>
 				</f:SimpleForm>
 			</html:div>
@@ -160,13 +161,13 @@
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="PlanDetailsFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>EcpAgreementPrice}" labelSpanXL="5"
 					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
-					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+					columnsXL="1" columnsL="1" columnsM="1"  >
 					<f:content>
 						<Label text="{i18n>PlanCode}"/>
 						<Text text="{EcpFieldData>/ZecpPlancode}" id="idPlanCodeText"/>
 						<Label text="{i18n>PlanPurchasePrice}"/>
-						<Input type="Number" value="{EcpFieldData>/ZecpPlanpurchprice}" id="idPlanPurchase" required="true" class="ZecpPlanpurchpriceCls"
-							valueState="{LocalDataModel>/PlanPurchase}" editable="{LocalDataModel>/editableField}" liveChange="onEnterPlanPurchasePrice"
+						<Input type="Number" value="{path:'EcpFieldData>/ZecpPlanpurchprice', type : 'sap.ui.model.type.String', constraints : { minLength : 1, maxLength : 14 }}" id="idPlanPurchase" required="true" class="ZecpPlanpurchpriceCls"
+						 editable="{LocalDataModel>/editableField}" liveChange="onEnterPlanPurchasePrice"
 							enabled="{oSetProperty>/notUsedPrimPlan}"/>
 						<Label text="{i18n>RetailPrice}"/>
 						<Text text="{LocalDataModel>/oPlanPricingData/ZECP_RET_PRICE}"/>
@@ -193,13 +194,13 @@
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="AppInfoFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>ApplicationInformation}" labelSpanXL="5"
 					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
-					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+					columnsXL="1" columnsL="1" columnsM="1"  >
 					<f:content>
 						<Label text="{i18n>EffectiveDate}"/>
 						<Text text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }}"/>
 						<Label text="{i18n>Odometer}"/>
-						<custom:CustomInput valueState="{LocalDataModel>/odometerState}"
-							value="{path:'EcpFieldData>/ZecpOdometer', type : 'sap.ui.model.type.Number', constraints : { minLength : 1, maxLength : 7 }}"
+						<custom:CustomInput 
+							value="{path:'EcpFieldData>/ZecpOdometer', type : 'sap.ui.model.type.String', constraints : { minLength : 1, maxLength : 7 }}"
 							liveChange="onChangeOdometer" id="idOdo" required="true" editable="{LocalDataModel>/editableField}"/>
 						<Label text="{i18n>RoadHazard}"/>
 						<Text text="{EcpFieldData>/ZecpRoadhazard1}"/>
@@ -213,7 +214,7 @@
 			<html:div class="exampleDiv">
 				<f:SimpleForm id="AgrInfoFm" editable="true" layout="ResponsiveGridLayout" title="{i18n>AgreementInformation}" labelSpanXL="5"
 					labelSpanL="5" labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0"
-					columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+					columnsXL="1" columnsL="1" columnsM="1"  >
 					<f:content>
 						<Label text="{i18n>Status}"/>
 						<Text text="{= ${EcpFieldData>/ZecpAppStat} ? ${EcpFieldData>/ZecpAppStat} : ${i18n>InProgress} }"/>
@@ -230,7 +231,7 @@
 						<Label text="{i18n>PreOwnedCert}"/>
 						<Input id="idPrOwndCert" editable="{LocalDataModel>/editableField}" liveChange="onChangePreownedCert"
 							value="{path : 'EcpFieldData>/PrOwndCert', type : 'sap.ui.model.type.String', constraints : { minLength : 2, maxLength : 10 }}"
-							valueState="{LocalDataModel>/PreownedState}"/>
+							/>
 						<!--<Label text="{i18n>SalesTIN}"/>-->
 						<!--<Input value="{EcpFieldData>/ZecpSalesTin}"/>-->
 					</f:content>
