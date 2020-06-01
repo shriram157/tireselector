@@ -2850,11 +2850,11 @@ sap.ui.define([
 			if (locationHref.search("dev-ecpsales") > -1 || locationHref.search("webide") > -1) {
 				linkAddress = "https://b2b.sit.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			} else if (locationHref.search("qas-ecpsales") > -1) {
-				linkAddress = "https://b2b.qa.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
+				linkAddress = "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			} else if (locationHref.search("uat-ecpsales") > -1) {
 				// linkAddress = "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 				//Changed ling to QA in UAT/ Based on Defect Id:13822,10002
-				linkAddress = "https://b2b.qa.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
+				linkAddress = "https://b2b.acpt.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			} else if (locationHref.search("ecpsales.scp") > -1) {
 				linkAddress = "https://b2b.toyota.ca/CICWeb/customerInfo.htm?.lang=en";
 			}
