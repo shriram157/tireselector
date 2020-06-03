@@ -5,6 +5,7 @@
 			title="{i18n>OriginalAgrDetails} - {LocalDataModel>/AgreementObj/AgreementNumber}" labelSpanXL="5" labelSpanL="5" labelSpanM="5"
 			labelSpanS="4" columnsM="2" columnsL="3" columnsXL="3"  >
 			<f:content >
+				
 				<core:Title text=""/>
 				<Label text="{i18n>EffectiveDate}" id="idEfDate"/>
 				<Text

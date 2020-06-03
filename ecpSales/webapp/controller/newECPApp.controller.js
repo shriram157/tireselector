@@ -1295,7 +1295,6 @@ sap.ui.define([
 				// 		console.log(err);
 				// 	}
 				// });
-
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 				oidPlanCodeId.setValueStateText("");
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);

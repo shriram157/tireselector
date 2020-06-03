@@ -34,7 +34,6 @@
 									</VBox>
 								</f:SimpleForm>
 								<VBox class="sapUiLargeMarginBottom">
-							
 							<Table width="100%" headerText="{i18n>SearchResults}" id="idApplicationTable" enableBusyIndicator="true" mode="None" noDataText="{i18n>NoData}" alternateRowColors="true"
 									items="{ path: 'LocalDataModel>/EcpApplication' }" growing="true" growingThreshold="15" growingScrollToLoad="false">
 									<columns >

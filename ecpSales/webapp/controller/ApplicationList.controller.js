@@ -102,7 +102,6 @@ sap.ui.define([
 
 					}
 				}
-
 				// if (data === "ecpSales!t1188.Manage_ECP_Application") {
 				// 	that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
 				// 	that.getModel("LocalDataModel").setProperty("/newAppLink", true);

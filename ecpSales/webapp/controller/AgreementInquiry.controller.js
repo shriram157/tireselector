@@ -246,7 +246,6 @@ sap.ui.define([
 									},
 									success: $.proxy(function (budata) {
 											console.log(budata + "240");
-
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
 											if (budata.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress
