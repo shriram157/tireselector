@@ -70,6 +70,7 @@
 											<table:Column >
 												<Label text="{i18n>ExpiryKm}" textAlign="Center" width="100%"/>
 												<table:template>
+													
 													<Text text="{LocalDataModel>AgreementthruKMreading}" textAlign="Center" width="100%"/>
 												</table:template>
 											</table:Column>

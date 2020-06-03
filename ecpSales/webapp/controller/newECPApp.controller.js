@@ -1302,10 +1302,34 @@ sap.ui.define([
 				return false;
 			}
 		},
+			_fnDifSaleDRegD: function () {
+			var currenDateMoment = moment(new Date).format("YYYY-MM-DD");
+			var oSaleDate = this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate");
+			if (oSaleDate != "" && this.BccAgrmntPrtDt != "") {
+				var saleDateMoment = moment(oSaleDate).format("YYYY-MM-DD");
+				var regDateMoment = moment.utc(this.BccAgrmntPrtDt).format("YYYY-MM-DD");
+				var SaleDateVar = moment(saleDateMoment, "YYYY-MM-DD");
+				var oSaleDateTime = new Date(oSaleDate).getTime();
+
+				var CurrentDateVar = moment(currenDateMoment, "YYYY-MM-DD");
+				var oCurrentDate = new Date().getTime();
+				var RegDateVar = moment(regDateMoment, "YYYY-MM-DD");
+				var oRegDate = new Date(this.BccAgrmntPrtDt).getTime();
+
+				//this.DifferTime = (oSaleDateTime - oRegDate);
+
+				return {
+					DifferTime: (oSaleDateTime - oRegDate),
+					diffSaleCurrent: Math.round(moment.duration(SaleDateVar.diff(CurrentDateVar)).asDays()),
+					diffCurrentSaleDay: Math.round(moment.duration(CurrentDateVar.diff(SaleDateVar)).asDays()),
+					diffSaleRegDate: Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays())
+				}
+			}
+		},
 		OnNextStep4: function (oEvent) {
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
-				dayDif, finalDayDef, Date1, Date2;
+				dayDif, finalDayDef, Date1, Date2, oMonthMiliSecond, TotaldayMonDif;
 			oSaleDate = this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate");
 			var Date1 = new Date(this.BccAgrmntPrtDt).getTime();
 			var Date2 = new Date(oSaleDate).getTime();
@@ -1331,9 +1355,9 @@ sap.ui.define([
 			this.oAdditionalVal = parseInt(SelectedPlanDetails[0].KMS.replace(/,/g, ''));
 			this.oPlanMonth = parseInt(SelectedPlanDetails[0].MONTHS);
 
-			this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
+			this.PlanTime = parseFloat(this.oPlanMonth * 30.42).toFixed(2);
 
-			this._deferVechPlnValidate = jQuery.Deferred();
+				this._deferVechPlnValidate = jQuery.Deferred();
 			this.getNewVehiclePlnValidated(this.oECPData.ZecpVin, isGoldPaltPlan);
 			this._deferVechPlnValidate
 				.always($.proxy(function (oData) {
@@ -1362,7 +1386,8 @@ sap.ui.define([
 						//For Defect 12699
 						this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
 
-						if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal && this.DifferTime <= this.PlanTime) {
+						if (!($.isEmptyObject(oidPlanCode)) && this.oECPData.ZecpOdometer <= this.oAdditionalVal && this._fnDifSaleDRegD().diffSaleRegDate <=
+							this.PlanTime) {
 
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 							this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1385,9 +1410,9 @@ sap.ui.define([
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 							oidPlanCodeId.setValueStateText("");
 
-						} else if (this.DifferTime > this.PlanTime) {
+						} else if (this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime) {
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-							var oTimeDiffer = this.DifferTime - this.PlanTime;
+							var oTimeDiffer = this.DifferTime - this.PlanTime * 24 * 60 * 60 * 1000;
 
 							var TotalTimeDiffer = this._fnDayHrSecond(oTimeDiffer);
 
@@ -1429,9 +1454,11 @@ sap.ui.define([
 
 			var oMonthDef = this.DifferTime;
 
-			var MaxDays = parseInt(this.mxMonth) * 2628000000;
+			var MaxDays = parseInt(this.oPlanMonth) * 2628000000;
 
-			var PlanMonthInDay = Math.round(this.mxMonth * 30.42);
+			// var PlanMonthInDay = Math.round(this.mxMonth * 30.42);
+
+			//this.DifferTime <= this.PlanTime
 
 			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 
@@ -1449,42 +1476,46 @@ sap.ui.define([
 
 				//Fixing Defect #11008 Hiding Surcharge boxes
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
-				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.mxMillage) && finalDayDef <= PlanMonthInDay && !($.isEmptyObject(
+				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.oAdditionalVal) && this._fnDifSaleDRegD().diffSaleRegDate <= this.PlanTime &&
+					!($.isEmptyObject(
 						oidPlanCode))) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+
 				} else if ($.isEmptyObject(oidPlanCode)) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
-				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.mxMillage) && finalDayDef > PlanMonthInDay) {
-					var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
-					var TotaldayMonDif = this._fnDayHrSecond(oMonthDef - MaxDays);
+				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.oAdditionalVal) && this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime) {
+					//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
+					oMonthMiliSecond = this.DifferTime - this.PlanTime * 24 * 60 * 60 * 1000;
+					TotaldayMonDif = this._fnDayHrSecond(oMonthMiliSecond);
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + ((parseInt(this.oECPData.ZecpOdometer) -
-						parseInt(this.mxMillage))) + " KM and" + " Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + Math.round(
+						parseInt(this.oAdditionalVal))) + " KM and" + " Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + Math.round(
 						TotaldayMonDif.day) + " Days ");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
-				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.mxMillage)) {
+				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.oAdditionalVal)) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + ((parseInt(this.oECPData.ZecpOdometer) -
 						parseInt(
-							this.mxMillage))) + " KM");
+							this.oAdditionalVal))) + " KM");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
-				} else if (oMonthDef > MaxDays) {
+				} else if (this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime) {
 
-					var TotaldayMonDif = this._fnDayHrSecond(oMonthDef - MaxDays);
+					oMonthMiliSecond = this.DifferTime - this.PlanTime * 24 * 60 * 60 * 1000;
+					TotaldayMonDif = this._fnDayHrSecond(oMonthMiliSecond);
 
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Month Exceeds by " +

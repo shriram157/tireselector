@@ -29,6 +29,7 @@
 							<Label text="{i18n>Home}"/>
 							<Text text="{LocalDataModel>/responseData/ZecpBusPhone}"/>
 							<Label text="{i18n>Business}"/>
+							
 							<Text text="{LocalDataModel>/responseData/ZecpBusPhone}"/>
 						</f:content>
 					</f:SimpleForm>
