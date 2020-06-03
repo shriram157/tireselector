@@ -9,7 +9,9 @@
 			<DatePicker id="idDate" placeholder="{i18n>EnterDate}"
 				value="{path : 'EcpFieldData>/ZecpSaleDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', strictParsing: true}}"
 				required="true">
-			
+				<!--<layoutData>-->
+				<!--	<l:GridData span="XL3 L3 M3 "/>-->
+				<!--</layoutData>-->
 			</DatePicker>
 			<Label text="{i18n>Odometer}"/>
 			<custom:CustomInput id="idOdoVal" value="{EcpFieldData>/ZecpOdometer}" required="true">

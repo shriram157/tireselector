@@ -102,6 +102,7 @@ sap.ui.define([
 
 					}
 				}
+
 				// if (data === "ecpSales!t1188.Manage_ECP_Application") {
 				// 	that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
 				// 	that.getModel("LocalDataModel").setProperty("/newAppLink", true);
@@ -421,8 +422,6 @@ sap.ui.define([
 		_fnReadList : function(){
 			var oPriorDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/dateValueDRS2"));
 			var oCurrentDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/secondDateValueDRS2"));
-			
-			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", this.getView().byId("idDealerCode").getSelectedKey());
 			
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			oEcpModel.read("/zc_ecp_application", {

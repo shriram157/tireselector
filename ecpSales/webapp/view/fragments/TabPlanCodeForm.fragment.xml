@@ -12,5 +12,4 @@
 			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
 		</f:content>
 	</f:SimpleForm>
-	
 </core:FragmentDefinition>

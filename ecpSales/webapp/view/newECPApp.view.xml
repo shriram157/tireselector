@@ -27,7 +27,7 @@
 									<IconTabSeparator icon="sap-icon://open-command-field"/>
 									<IconTabFilter icon="sap-icon://detail-view" enabled="{oSetProperty>/oTab4visible}" text="{i18n>EnterApplicationDetails}" id="idFilter04"
 										key="Tab4">
-										<core:Fragment  fragmentName="zecp.view.fragments.TabApplicationDetails" type="XML"/>
+										<core:Fragment id="idStep04Version01" fragmentName="zecp.view.fragments.TabApplicationDetails" type="XML"/>
 									</IconTabFilter>
 									<IconTabSeparator icon="sap-icon://open-command-field"/>
 									<IconTabFilter icon="sap-icon://customer-briefing" enabled="{oSetProperty>/oTab5visible}" text="{i18n>PerformCIC}" id="idFilter05"
