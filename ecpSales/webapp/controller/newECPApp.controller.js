@@ -104,9 +104,7 @@ sap.ui.define([
 
 			this.getModel("LocalDataModel").setProperty("/sCurrentDealer", oEvent.getParameters().arguments.ODealer);
 			//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
-
 			DataManager.funECPBlankObj(this);
-
 			if (this.oAppId != 404 && this.oAppId != undefined) {
 				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);

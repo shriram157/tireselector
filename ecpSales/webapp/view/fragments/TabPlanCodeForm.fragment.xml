@@ -3,7 +3,6 @@
 		labelSpanS="12" adjustLabelSpan="false" emptySpanXL="3" emptySpanL="3" emptySpanM="3" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
 		singleContainerFullSize="false">
 		<f:content>
-			
 			<Label text="{i18n>PlanCode}"/>
 			<ComboBox id="idPlanCode" items="{LocalDataModel>/PlanValidSet}" showSecondaryValues="true" required="true"
 				value="{EcpFieldData>/ZecpPlancode}" selectionChange="onSelectPlanCode" editable="{DateModel>/editPlan}">

@@ -38,7 +38,6 @@
 									<IconTabFilter icon="sap-icon://complete" enabled="{oSetProperty>/oTab6visible}" text="{i18n>Submit}" id="idFilter06" key="Tab6">
 										<Text text="People content goes here ..."/>
 									</IconTabFilter>
-									
 								</items>
 							</IconTabBar>
 						</uxap:blocks>
