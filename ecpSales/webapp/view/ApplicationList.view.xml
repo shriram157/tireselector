@@ -6,7 +6,6 @@
 			<uxap:ObjectPageSection title="{i18n>NewApplicationList}">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title=" ">
-						
 						<uxap:blocks>
 							<MessageStrip id="idAppListMsgStrip" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
 							<VBox class="sapUiLargeMarginBottom" wrap="Wrap">
