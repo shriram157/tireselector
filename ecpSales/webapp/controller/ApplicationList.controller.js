@@ -18,7 +18,6 @@ sap.ui.define([
 		onInit: function () {
 			var oModelDate = new JSONModel();
 			this.beforedate = new Date();
-
 			this.priordate = new Date(new Date().setDate(this.beforedate.getDate() - 30));
 			oModelDate.setData({
 				dateFormatDRS1: "yyyy/MM/dd",
@@ -422,6 +421,8 @@ sap.ui.define([
 		_fnReadList : function(){
 			var oPriorDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/dateValueDRS2"));
 			var oCurrentDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/secondDateValueDRS2"));
+			
+			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", this.getView().byId("idDealerCode").getSelectedKey());
 			
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			oEcpModel.read("/zc_ecp_application", {

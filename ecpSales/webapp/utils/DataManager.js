@@ -1,6 +1,25 @@
 sap.ui.define([], function () {
 	"use strict";
 	return {
+		_validateInput: function (oInput) {
+			var oBinding = oInput.getBinding("value");
+			var sValueState = "None";
+			var bValidationError = false;
+
+			try {
+				oBinding.getType().validateValue(oInput.getValue());
+			} catch (oException) {
+				sValueState = "Error";
+				bValidationError = true;
+			}
+			if (oInput.getValue() == "" && oInput.mProperties.required == true) {
+				sValueState = "Error";
+				bValidationError = true;
+			}
+			oInput.setValueState(sValueState);
+
+			return bValidationError;
+		},
 		fnDateModel: function (elm) {
 			var oDateModel = new sap.ui.model.json.JSONModel();
 			oDateModel.setData({
@@ -22,7 +41,7 @@ sap.ui.define([], function () {
 				ZecpIntApp: "",
 				ZecpMake: prnt.oECPData.ZecpMake,
 				ZecpAppNum: "",
-				ZecpVin: prnt.oECPData.ZecpVin,
+				ZecpVin: prnt.oECPData.ZecpVin.trim(),
 				ZecpAgrNum: "",
 				ZecpDealcode: prnt.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
 				ZecpAppStat: stat,
