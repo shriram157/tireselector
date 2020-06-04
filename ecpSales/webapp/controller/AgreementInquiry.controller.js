@@ -20,7 +20,6 @@ sap.ui.define([
 			this.getView().setModel(oVehicleMaster, "VinModel");
 
 			this.getOwnerComponent().getRouter().attachRoutePatternMatched(this._onRoutMatched, this);
-
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});

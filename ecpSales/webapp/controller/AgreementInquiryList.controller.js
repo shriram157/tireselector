@@ -19,7 +19,6 @@ sap.ui.define([
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			this.getDealer();
 			this.getModel("LocalDataModel").setProperty("/rowCount", 0);
-
 			this.oI18nModel = new sap.ui.model.resource.ResourceModel({
 				bundleUrl: "i18n/i18n.properties"
 			});

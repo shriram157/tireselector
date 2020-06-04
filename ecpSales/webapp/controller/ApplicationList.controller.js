@@ -18,7 +18,6 @@ sap.ui.define([
 		onInit: function () {
 			var oModelDate = new JSONModel();
 			this.beforedate = new Date();
-
 			this.priordate = new Date(new Date().setDate(this.beforedate.getDate() - 30));
 			oModelDate.setData({
 				dateFormatDRS1: "yyyy/MM/dd",
