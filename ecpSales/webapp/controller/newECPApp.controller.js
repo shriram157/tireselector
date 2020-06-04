@@ -104,17 +104,18 @@ sap.ui.define([
 
 			this.getModel("LocalDataModel").setProperty("/sCurrentDealer", oEvent.getParameters().arguments.ODealer);
 			//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
+
 			DataManager.funECPBlankObj(this);
 
 			if (this.oAppId != 404 && this.oAppId != undefined) {
-				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", true);
+				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
 				this.getView().getModel("oSetProperty").setProperty("/oTab5visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab6visible", false);
-				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-				//this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+				//this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oSecondaryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState", false);
@@ -228,13 +229,12 @@ sap.ui.define([
 
 										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", businessB.results[0]);
 
-										
-										
 										this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", businessB.results[0].FirstName +
-												" " + businessB.results[
-													0].LastName);
+											" " + businessB.results[
+												0].LastName);
 
-										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", businessB.results[0].FirstName || "");
+										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", businessB.results[0].FirstName ||
+											"");
 										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", businessB.results[0].LastName || "");
 
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", businessB.results[0].FirstName);
@@ -599,36 +599,34 @@ sap.ui.define([
 							success: $.proxy(function (data) {
 
 								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
-								
+
 								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
-						this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
-							"/ApplicationOwnerData/ECPPlanCode"));
-						this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.getModel("LocalDataModel").getProperty(
-							"/ApplicationOwnerData/Odometer"));
-						this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
-							"/ApplicationOwnerData/AgreementType"));
+								this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
+									"/ApplicationOwnerData/ECPPlanCode"));
+								this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.getModel("LocalDataModel").getProperty(
+									"/ApplicationOwnerData/Odometer"));
+								this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
+									"/ApplicationOwnerData/AgreementType"));
 
-						// oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
-						// 	"/ApplicationOwnerData/SaleDate")));
+								// oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
+								// 	"/ApplicationOwnerData/SaleDate")));
 
-						// ApplicationOwnerData_Name
+								// ApplicationOwnerData_Name
 
-						if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
+								if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
 
-							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
-							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-									"i18n").getResourceBundle()
-								.getText("Organization"));
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+											"i18n").getResourceBundle()
+										.getText("Organization"));
 
-						} else {
-							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
-								" " + data.results[0].CustomerLastName);
-							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-									"i18n").getResourceBundle()
-								.getText("Individual")); // added translation
-						}
-						
-						
+								} else {
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
+										" " + data.results[0].CustomerLastName);
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+											"i18n").getResourceBundle()
+										.getText("Individual")); // added translation
+								}
 
 								this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
@@ -817,9 +815,9 @@ sap.ui.define([
 					success: $.proxy(function (data) {
 						console.log(data);
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", data.results[0]);
-							this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
-												" " + data.results[
-													0].LastName);
+						this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
+							" " + data.results[
+								0].LastName);
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName || "");
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", data.results[0].LastName || "");
 
@@ -1241,8 +1239,8 @@ sap.ui.define([
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName);
 					}
 					this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
-												" " + data.results[
-													0].LastName);
+						" " + data.results[
+							0].LastName);
 				}, this),
 				error: function () {}
 			});
@@ -1341,6 +1339,16 @@ sap.ui.define([
 				seconds: seconds
 			};
 		},
+		_fnDayMonth: function (val) {
+			var day, hour, minute, seconds, month;
+			
+			month = parseInt(val / 30.42);
+			day = parseInt(val % 30.42);
+			return {
+				month: month,
+				day: day
+			};
+		},
 		getNewVehiclePlnValidated: function (Vin, isGoldPaltPlan) {
 			if (!isGoldPaltPlan) {
 				this._deferVechPlnValidate.resolve();
@@ -1389,6 +1397,17 @@ sap.ui.define([
 		},
 		OnNextStep4: function (oEvent) {
 
+			// var oPlanKey = oEvent.getSource().getSelectedKey();
+			// var km = oPlanKey.split("/")[0];
+			// var mnth = oPlanKey.split("/")[1];
+			// this.mxMillage = oPlanKey.split("/")[2];
+			// this.mxMonth = oPlanKey.split("/")[3];
+			// this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
+			// this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
+			// this.oPlanMonth = parseInt(mnth);
+
+			// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
+
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
 				dayDif, finalDayDef, Date1, Date2, oMonthMiliSecond, TotaldayMonDif;
@@ -1418,6 +1437,10 @@ sap.ui.define([
 			this.oPlanMonth = parseInt(SelectedPlanDetails[0].MONTHS);
 
 			this.PlanTime = parseFloat(this.oPlanMonth * 30.42).toFixed(2);
+
+			this.mxMonth = parseInt(SelectedPlanDetails[0].MAX_MONTH);
+
+			this.mxMillage = parseInt(SelectedPlanDetails[0].MAX_MILEAGE);
 
 			this._deferVechPlnValidate = jQuery.Deferred();
 			this.getNewVehiclePlnValidated(this.oECPData.ZecpVin, isGoldPaltPlan);
@@ -1516,7 +1539,8 @@ sap.ui.define([
 
 			var oMonthDef = this.DifferTime;
 
-			var MaxDays = parseInt(this.oPlanMonth) * 2628000000;
+			var MaxMonthDays = parseInt(this.mxMonth * 30.42);
+			var difDayMonth;
 
 			// var PlanMonthInDay = Math.round(this.mxMonth * 30.42);
 
@@ -1538,7 +1562,7 @@ sap.ui.define([
 
 				//Fixing Defect #11008 Hiding Surcharge boxes
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
-				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.oAdditionalVal) && this._fnDifSaleDRegD().diffSaleRegDate <= this.PlanTime &&
+				if (parseInt(this.oECPData.ZecpOdometer) <= parseInt(this.mxMillage) && this._fnDifSaleDRegD().diffSaleRegDate <= MaxMonthDays &&
 					!($.isEmptyObject(
 						oidPlanCode))) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
@@ -1553,31 +1577,31 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
-				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.oAdditionalVal) && this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime) {
+				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.mxMillage) && this._fnDifSaleDRegD().diffSaleRegDate >
+					MaxMonthDays) {
 					//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
-					oMonthMiliSecond = this.DifferTime - this.PlanTime * 24 * 60 * 60 * 1000;
-					TotaldayMonDif = this._fnDayHrSecond(oMonthMiliSecond);
+					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
+					TotaldayMonDif = this._fnDayMonth(difDayMonth);
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + ((parseInt(this.oECPData.ZecpOdometer) -
-						parseInt(this.oAdditionalVal))) + " KM and" + " Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + Math.round(
+						parseInt(this.mxMillage))) + " KM and" + " Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + Math.round(
 						TotaldayMonDif.day) + " Days ");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
-				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.oAdditionalVal)) {
+				} else if (parseInt(this.oECPData.ZecpOdometer) > parseInt(this.mxMillage)) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + ((parseInt(this.oECPData.ZecpOdometer) -
-						parseInt(
-							this.oAdditionalVal))) + " KM");
+						parseInt(this.mxMillage))) + " KM");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
-				} else if (this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime) {
+				} else if (this._fnDifSaleDRegD().diffSaleRegDate > MaxMonthDays) {
 
-					oMonthMiliSecond = this.DifferTime - this.PlanTime * 24 * 60 * 60 * 1000;
-					TotaldayMonDif = this._fnDayHrSecond(oMonthMiliSecond);
+					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
+					TotaldayMonDif = this._fnDayMonth(difDayMonth);
 
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Month Exceeds by " +

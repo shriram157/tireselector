@@ -70,7 +70,7 @@
 													<Text text="{LocalDataModel>ApplicationStatus}"/>
 													<Text text="{path:'LocalDataModel>SaleDate', type: 'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true }}"/>
 													<Text text="{LocalDataModel>Source}"/>
-												<core:Icon src="sap-icon://delete" press="onDeletePress" color="#f00"/>
+												<!--<core:Icon src="sap-icon://delete" press="onDeletePress" color="#f00"/>-->
 											</cells>
 										</ColumnListItem>
 									</items>
