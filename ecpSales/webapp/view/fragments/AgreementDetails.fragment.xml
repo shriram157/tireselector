@@ -8,6 +8,7 @@
 						labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
 						columnsM="1" singleContainerFullSize="false">
 						<f:content>
+							
 							<Label text="{i18n>Customer}"/>
 							<Text text="{path: 'LocalDataModel>/responseData/ZecpCustNum'}"/>
 							<Label text="{i18n>Type}"/>

@@ -15,9 +15,7 @@
 			</DatePicker>
 			<Label text="{i18n>Odometer}"/>
 			<custom:CustomInput id="idOdoVal" value="{EcpFieldData>/ZecpOdometer}" required="true">
-				<!--<layoutData>-->
-				<!--	<l:GridData span="XL3 L3 M3 "/>-->
-				<!--</layoutData>-->
+		
 			</custom:CustomInput>
 			<Label text="{i18n>AgreementType}"/>
 			<ComboBox id="idAgrType" items="{LocalDataModel>/AgreementData}"  selectionChange="onSelectAgrType" required="true" selectedKey="{EcpFieldData>/typeKey}"

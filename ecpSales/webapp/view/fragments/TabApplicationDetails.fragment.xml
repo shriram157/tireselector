@@ -24,6 +24,7 @@
 				<Text id="idPreOwn" text="{LocalDataModel>/AgreementObj/PROWNDCERT}"/>
 			</f:content>
 		</f:SimpleForm>
+		
 	</VBox>
 	<l:VerticalLayout width="100%" class="gridWrapper">
 		<l:Grid containerQuery="true" defaultSpan="XL4 L4 M6 S12">
