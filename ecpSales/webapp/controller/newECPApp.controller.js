@@ -291,21 +291,21 @@ sap.ui.define([
 							}
 						});
 
-						// oZECPModel.read("/zc_ecp_planpricing_dataSet", {
-						// 	urlParameters: {
-						// 		"$filter": "MGANR eq '" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/ECPPlanCode") +
-						// 			"'and ODMTR eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Odometer") + "'and VIN eq '" +
-						// 			this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/VIN") +
-						// 			"'and ZECPAGRTYPE eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/AgreementType") +
-						// 			"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
-						// 	},
-						// 	success: $.proxy(function (pdata) {
-						// 		this.getModel("LocalDataModel").setProperty("/oPlanPricingData", pdata.results[0]);
-						// 	}, this),
-						// 	error: function (err) {
-						// 		console.log(err);
-						// 	}
-						// });
+						oZECPModel.read("/zc_ecp_planpricing_dataSet", {
+							urlParameters: {
+								"$filter": "MGANR eq '" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/ECPPlanCode") +
+									"'and ODMTR eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/Odometer") + "'and VIN eq '" +
+									this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/VIN") +
+									"'and ZECPAGRTYPE eq'" + this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData/AgreementType") +
+									"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
+							},
+							success: $.proxy(function (pdata) {
+								this.getModel("LocalDataModel").setProperty("/oPlanPricingData", pdata.results[0]);
+							}, this),
+							error: function (err) {
+								console.log(err);
+							}
+						});
 						var winUrl = window.location.search;
 						var userLang = navigator.language || navigator.userLanguage;
 						var vHsetLanKey = 'EN';
@@ -963,6 +963,7 @@ sap.ui.define([
 
 				return {
 					DifferTime: (oSaleDateTime - oRegDate),
+					regDateMoment : regDateMoment,
 					diffSaleCurrent: Math.round(moment.duration(SaleDateVar.diff(CurrentDateVar)).asDays()),
 					diffCurrentSaleDay: Math.round(moment.duration(CurrentDateVar.diff(SaleDateVar)).asDays()),
 					diffSaleRegDate: Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays())
@@ -1077,10 +1078,10 @@ sap.ui.define([
 					} else if (this._fnDifSaleDRegD().diffSaleRegDate < 0) {
 						this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 						this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" +
-							regDateMoment + ")");
+							this._fnDifSaleDRegD().regDateMoment + ")");
 						this.getView().byId("idNewECPMsgStrip").setType("Error");
 						oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-						oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + regDateMoment +
+						oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + this._fnDifSaleDRegD().regDateMoment +
 							")");
 					} else if ($.isEmptyObject(oOdoVal)) {
 						this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
