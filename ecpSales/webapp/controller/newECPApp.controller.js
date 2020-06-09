@@ -838,19 +838,19 @@ sap.ui.define([
 		//Auth: Vinay
 		//this method is to fix the key tranlation issue while calling the zc_ecp_valid_plansSet with Plane type New/used/Ext
 		// Becoz this key are getting translated due to language and Service is not able to identified/incorporate the translated key in Service
-		getTypeOfAggreementKey: function (planTypeStr) {
-			var oBundle = this.getView().getModel("i18n").getResourceBundle();
-			if (planTypeStr === oBundle.getText("NEWVEHICLEAGREEMENT")) {
-				return "NEW VEHICLE AGREEMENT";
-			}
-			if (planTypeStr === oBundle.getText("USEDVEHICLEAGREEMENT")) {
-				return "USED VEHICLE AGREEMENT";
-			}
-			if (planTypeStr === oBundle.getText("EXTENSION")) {
-				return "EXTENSION";
-			}
+		// getTypeOfAggreementKey: function (planTypeStr) {
+		// 	var oBundle = this.getView().getModel("i18n").getResourceBundle();
+		// 	if (planTypeStr === oBundle.getText("NEWVEHICLEAGREEMENT")) {
+		// 		return "NEW VEHICLE AGREEMENT";
+		// 	}
+		// 	if (planTypeStr === oBundle.getText("USEDVEHICLEAGREEMENT")) {
+		// 		return "USED VEHICLE AGREEMENT";
+		// 	}
+		// 	if (planTypeStr === oBundle.getText("EXTENSION")) {
+		// 		return "EXTENSION";
+		// 	}
 
-		},
+		// },
 
 		_fnExistAppCheckCreate: function () {
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
@@ -1000,7 +1000,7 @@ sap.ui.define([
 			});
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
-			var agreeTypeKey = this.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);
+			var agreeTypeKey = DataManager.getTypeOfAggreementKey(this.oECPData.ZecpAgrType, this);
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
@@ -2847,7 +2847,7 @@ sap.ui.define([
 				pattern: "yyyy-MM-ddTHH:mm:ss"
 			});
 			var oFormatedSaleDate = oDateFormat.format(new Date(oECPData.ZecpSaleDate));
-			var agreeTypeKey = this.getTypeOfAggreementKey(oECPData.ZecpAgrType);
+			var agreeTypeKey = DataManager.getTypeOfAggreementKey(oECPData.ZecpAgrType, this);
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +

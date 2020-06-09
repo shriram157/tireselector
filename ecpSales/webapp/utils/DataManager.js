@@ -32,6 +32,19 @@ sap.ui.define([], function () {
 			});
 			return elm.getView().setModel(oDateModel, "DateModel");
 		},
+			getTypeOfAggreementKey: function (planTypeStr, self) {
+			var oBundle = self.getView().getModel("i18n").getResourceBundle();
+			if (planTypeStr === oBundle.getText("NEWVEHICLEAGREEMENT")) {
+				return "NEW VEHICLE AGREEMENT";
+			}
+			if (planTypeStr === oBundle.getText("USEDVEHICLEAGREEMENT")) {
+				return "USED VEHICLE AGREEMENT";
+			}
+			if (planTypeStr === oBundle.getText("EXTENSION")) {
+				return "EXTENSION";
+			}
+
+		},
 		_fnObject: function (elm, stat, prnt) {
 			var currentDate = new Date();
 
@@ -47,7 +60,7 @@ sap.ui.define([], function () {
 				ZecpAppStat: stat,
 				ZecpSaleDate: prnt._fnDateFormat(prnt.oECPData.ZecpSaleDate),
 				ZecpOdometer: prnt.oECPData.ZecpOdometer,
-				ZecpAgrType: prnt.oECPData.ZecpAgrType,
+				ZecpAgrType: this.getTypeOfAggreementKey(prnt.oECPData.ZecpAgrType, prnt),
 				ZecpEffDate: null,
 				ZecpExpDate: null,
 				ZecpDealName: "",
