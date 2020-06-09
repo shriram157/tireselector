@@ -838,19 +838,19 @@ sap.ui.define([
 		//Auth: Vinay
 		//this method is to fix the key tranlation issue while calling the zc_ecp_valid_plansSet with Plane type New/used/Ext
 		// Becoz this key are getting translated due to language and Service is not able to identified/incorporate the translated key in Service
-		// getTypeOfAggreementKey: function (planTypeStr) {
-		// 	var oBundle = this.getView().getModel("i18n").getResourceBundle();
-		// 	if (planTypeStr === oBundle.getText("NEWVEHICLEAGREEMENT")) {
-		// 		return "NEW VEHICLE AGREEMENT";
-		// 	}
-		// 	if (planTypeStr === oBundle.getText("USEDVEHICLEAGREEMENT")) {
-		// 		return "USED VEHICLE AGREEMENT";
-		// 	}
-		// 	if (planTypeStr === oBundle.getText("EXTENSION")) {
-		// 		return "EXTENSION";
-		// 	}
+		getTypeOfAggreementKey: function (planTypeStr) {
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			if (planTypeStr === oBundle.getText("NEWVEHICLEAGREEMENT")) {
+				return "NEW VEHICLE AGREEMENT";
+			}
+			if (planTypeStr === oBundle.getText("USEDVEHICLEAGREEMENT")) {
+				return "USED VEHICLE AGREEMENT";
+			}
+			if (planTypeStr === oBundle.getText("EXTENSION")) {
+				return "EXTENSION";
+			}
 
-		// },
+		},
 
 		_fnExistAppCheckCreate: function () {
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
@@ -1000,7 +1000,7 @@ sap.ui.define([
 			});
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
-			var agreeTypeKey = DataManager.getTypeOfAggreementKey(this.oECPData.ZecpAgrType, this);
+			var agreeTypeKey = this.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
@@ -1977,6 +1977,7 @@ sap.ui.define([
 						press: function () {
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
 							var objSave = DataManager._fnObject("SAVE", "PENDING", that);
+							objSave.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);         
 							var oEcpModel = that.getModel("EcpSalesModel");
 							this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 							$.ajaxSetup({
@@ -2243,6 +2244,7 @@ sap.ui.define([
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 				var objSave = DataManager._fnObject("SAVE", "PENDING", this);
 				console.log(objSave);
+				objSave.ZecpAgrType =  that.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);  
 				var oBundle = this.getView().getModel("i18n").getResourceBundle();
 				var oEcpModel = this.getModel("EcpSalesModel");
 				this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
@@ -2514,6 +2516,7 @@ sap.ui.define([
 			objSub.ZecpEmail = oOwnerData.EmailAddress;
 			objSub.ZecpBusPhone = oOwnerData.ZecpBusPhone;
 			objSub.ZecpHomePhone = oOwnerData.FaxNumber;
+			objSub.ZecpAgrType = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 
 		},
 		/* end of Defect 9937 Auth Vinay Chandra*/
@@ -2612,6 +2615,7 @@ sap.ui.define([
 
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = DataManager._fnObject("SUB", "DELETED", that);
+						objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
 						var oEcpModel = that.getModel("EcpSalesModel");
 						/*
 						Defect:9937
@@ -2847,7 +2851,7 @@ sap.ui.define([
 				pattern: "yyyy-MM-ddTHH:mm:ss"
 			});
 			var oFormatedSaleDate = oDateFormat.format(new Date(oECPData.ZecpSaleDate));
-			var agreeTypeKey = DataManager.getTypeOfAggreementKey(oECPData.ZecpAgrType, this);
+			var agreeTypeKey = this.getTypeOfAggreementKey(oECPData.ZecpAgrType);
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
