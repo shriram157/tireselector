@@ -2071,7 +2071,6 @@ sap.ui.define([
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oOdometer = this.getView().byId("idOdoVal");
 			var oOdoVal = oOdometer.getValue();
-
 			var oidPlanCode = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
 
 			// var oidPlanCodeId = this.getView().byId("idPlanCode");
@@ -2245,7 +2244,7 @@ sap.ui.define([
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 				var objSave = DataManager._fnObject("SAVE", "PENDING", this);
 				console.log(objSave);
-				objSave.ZecpAgrType =  that.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);  
+				objSave.ZecpAgrType =  this.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);  
 				var oBundle = this.getView().getModel("i18n").getResourceBundle();
 				var oEcpModel = this.getModel("EcpSalesModel");
 				this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
