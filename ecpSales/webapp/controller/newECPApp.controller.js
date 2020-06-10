@@ -840,17 +840,32 @@ sap.ui.define([
 		// Becoz this key are getting translated due to language and Service is not able to identified/incorporate the translated key in Service
 		getTypeOfAggreementKey: function (planTypeStr) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
-			var oagr;
+			//var oagr;
 			if (planTypeStr === oBundle.getText("NEWVEHICLEAGREEMENT")) {
-				oagr = "NEW VEHICLE AGREEMENT";
+				return "NEW VEHICLE AGREEMENT";
 			}
 			if (planTypeStr === oBundle.getText("USEDVEHICLEAGREEMENT")) {
-				oagr =  "USED VEHICLE AGREEMENT";
+				return "USED VEHICLE AGREEMENT";
 			}
 			if (planTypeStr === oBundle.getText("EXTENSION")) {
-				oagr = "EXTENSION";
+				return "EXTENSION";
 			}
-			return oagr;
+
+		},
+
+		agreementTypeChange: function (planTypeStr) {
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			//var oagr;
+			if (planTypeStr === "ENTENTE POUR VÉHICULE NEUF" || planTypeStr === "NEW VEHICLE AGREEMENT") {
+				return "NEW VEHICLE AGREEMENT";
+			}
+			if (planTypeStr === "ENTENTE DE VÉHICULE USAGÉ" || planTypeStr === "USED VEHICLE AGREEMENT") {
+				return "USED VEHICLE AGREEMENT";
+			}
+			if (planTypeStr === "EXTENSION" || planTypeStr === "PROLONGATION") {
+				return "EXTENSION";
+			}
+
 		},
 
 		_fnExistAppCheckCreate: function () {
@@ -964,7 +979,7 @@ sap.ui.define([
 
 				return {
 					DifferTime: (oSaleDateTime - oRegDate),
-					regDateMoment : regDateMoment,
+					regDateMoment: regDateMoment,
 					diffSaleCurrent: Math.round(moment.duration(SaleDateVar.diff(CurrentDateVar)).asDays()),
 					diffCurrentSaleDay: Math.round(moment.duration(CurrentDateVar.diff(SaleDateVar)).asDays()),
 					diffSaleRegDate: Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays())
@@ -1082,7 +1097,8 @@ sap.ui.define([
 							this._fnDifSaleDRegD().regDateMoment + ")");
 						this.getView().byId("idNewECPMsgStrip").setType("Error");
 						oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-						oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + this._fnDifSaleDRegD().regDateMoment +
+						oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + this._fnDifSaleDRegD()
+							.regDateMoment +
 							")");
 					} else if ($.isEmptyObject(oOdoVal)) {
 						this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1341,7 +1357,7 @@ sap.ui.define([
 		},
 		_fnDayMonth: function (val) {
 			var day, hour, minute, seconds, month;
-			
+
 			month = parseInt(val / 30.42);
 			day = parseInt(val % 30.42);
 			return {
@@ -1450,7 +1466,7 @@ sap.ui.define([
 					if (isGoldPaltPlan) {
 						var factWarrentyEdate = this.getModel("LocalDataModel").getProperty("/claimData").EndDate;
 						var saleDate = this.oECPData.ZecpSaleDate;
-					
+
 						if (odMerVal >= 60000 || factWarrentyEdate.getTime() < saleDate.getTime()) {
 
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1584,8 +1600,9 @@ sap.ui.define([
 					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
 					TotaldayMonDif = this._fnDayMonth(difDayMonth);
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + (odMerVal  - parseInt(this.mxMillage)) + " KM and" + " Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + Math.round(
-						TotaldayMonDif.day) + " Days ");
+					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + (odMerVal - parseInt(this.mxMillage)) + " KM and" +
+						" Maximum Month Exceeds by " + TotaldayMonDif.month + " Months : " + Math.round(
+							TotaldayMonDif.day) + " Days ");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
@@ -1977,8 +1994,8 @@ sap.ui.define([
 						text: oBundle.getText("Yes"),
 						press: function () {
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
-							var objSave = DataManager._fnObject("SAVE", "PENDING", that);
-							objSave.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);         
+							var objSave = this._fnObject("SAVE", "PENDING");
+							//objSave.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);         
 							var oEcpModel = that.getModel("EcpSalesModel");
 							this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 							$.ajaxSetup({
@@ -2242,9 +2259,9 @@ sap.ui.define([
 				this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
-				var objSave = DataManager._fnObject("SAVE", "PENDING", this);
+				var objSave = this._fnObject("SAVE", "PENDING");
 				console.log(objSave);
-				objSave.ZecpAgrType =  this.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);  
+				//objSave.ZecpAgrType =  this.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);  
 				var oBundle = this.getView().getModel("i18n").getResourceBundle();
 				var oEcpModel = this.getModel("EcpSalesModel");
 				this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
@@ -2516,7 +2533,6 @@ sap.ui.define([
 			objSub.ZecpEmail = oOwnerData.EmailAddress;
 			objSub.ZecpBusPhone = oOwnerData.ZecpBusPhone;
 			objSub.ZecpHomePhone = oOwnerData.FaxNumber;
-			
 
 		},
 		/* end of Defect 9937 Auth Vinay Chandra*/
@@ -2546,11 +2562,143 @@ sap.ui.define([
 			//this._Step04MandatoryFn();
 			this.resetValidationError();
 			this._fnExistAppCheck();
-
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
-
 			//ReValidating form
 
+		},
+		_fnObject: function (elm, stat) {
+			var currentDate = new Date();
+			var zagr = this.agreementTypeChange(this.oECPData.ZecpAgrType);
+			var crudObj = {
+				DBOperation: elm,
+				BPTYPE: this.getView().getModel("LocalDataModel").getProperty("/PricingModelData/BPTYPE"),
+				ZecpIntApp: "",
+				ZecpMake: this.oECPData.ZecpMake,
+				ZecpAppNum: "",
+				ZecpVin: this.oECPData.ZecpVin.trim(),
+				ZecpAgrNum: "",
+				ZecpDealcode: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
+				ZecpAppStat: stat,
+				ZecpSaleDate: this._fnDateFormat(this.oECPData.ZecpSaleDate),
+				ZecpOdometer: this.oECPData.ZecpOdometer,
+				ZecpAgrType: zagr,
+				ZecpEffDate: null,
+				ZecpExpDate: null,
+				ZecpDealName: "",
+				ZecpSurchrgFl: "N",
+				ZecpPreowned: this.oECPData.PrOwndCert,
+				ZecpCustNum: this.oECPData.ZecpCustNum,
+				ZecpCustName: this.oECPData.ZecpCustName,
+				ZecpMidName: "",
+				ZecpLastName: this.oECPData.ZecpLastName,
+				ZecpBusPhone: this.oECPData.ZecpBusPhone,
+				ZecpEmail: this.oECPData.ZecpEmail,
+				ZecpSubDate: this._fnDateFormat(currentDate),
+				ZecpAutocode: this.oECPData.ZecpAutocode,
+				ZecpVehPrice: this.oECPData.ZecpVehPrice || "0.00",
+				ZecpAmtFin: this.oECPData.ZecpAmtFin || "0.00",
+				ZecpLienholder: this.oECPData.ZecpLienholder || "",
+				ZecpLienterms: this.oECPData.ZecpLienterms || "00",
+				ZecpPlancode: this.oECPData.ZecpPlancode || "",
+				ZecpRetPrice: this.oECPData.ZecpRetPrice || "0.00",
+				ZecpDefSurchrg: this.oECPData.ZecpDefSurchrg || "0.00",
+				ZecpVehSurchrgAmt: this.oECPData.ZecpVehSurchrgAmt || "0.00",
+				ZecpListpurprice: this.oECPData.ZecpListpurprice || "0.00",
+				ZecpVehsurchrg: this.oECPData.ZecpVehSurchrgAmt || "0.00",
+				ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
+				ZecpBenefitsFlg: this.getView().getModel("EcpFieldData").getProperty("/ZecpBenefitsFlg"),
+				BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
+				ZecpSource: "ECP",
+				ZecpDatecreated: this._fnDateFormat(currentDate),
+				ZecpLastupdate: null,
+				ZecpSaletype: "",
+				ZecpFueltype: "G",
+				ZecpCylnum: "4",
+				ZecpAdddata1: "",
+				ZecpAdddata2: "",
+				ZecpAdddata3: "",
+				ZecpAdddata4: "",
+				ZecpAdddata5: "",
+				ZecpCompName: "",
+				ZecpAddress: this.oECPData.ZecpAddress,
+				ZecpCity: this.oECPData.ZecpCity,
+				ZecpProvince: this.oECPData.ZecpProvince,
+				ZecpPostalcode: this.oECPData.ZecpPostalcode,
+				ZecpHomePhone: this.oECPData.ZecpHomePhone,
+				ZecpBusExt: "",
+				ZecpBusOrInd: "",
+				ZecpModelcode: this.oECPData.ZecpModelcode,
+				BccEcpAgrmntNum: "",
+				BccVin: this.oECPData.ZecpVin,
+				BccPlanCd: this.oECPData.ZecpPlancode,
+				BccAplDlrshpNum: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
+				BccAgrStCd: "A",
+				AgrStDt: this._fnDateFormat(currentDate),
+				BccAgrEvTypCd: "NEW",
+				BccVoasPartNum: "",
+				BccAgrmntDlrNum: this.getModel("LocalDataModel").getProperty("/sCurrentDealer"),
+				BccEcpAutoCd: this.oECPData.ZecpAutocode,
+				BccAgrmntExtcntr: "0.00",
+				BccAgrmntPrcAmt: this.oECPData.ZecpPlanpurchprice || "0.00",
+				Dedctble: "",
+				VehSurchLst: "",
+				BccDtSrchrgFlg: "",
+				BccDefSrchrgAmt: this.oECPData.ZecpDefSurchrg || "0.00",
+				BccAgrmntYrCd: "",
+				BccAgrmntSerNo: "0.00",
+				BccVehSrchrgFlg: "",
+				BccVehSrchrgAmt: this.oECPData.ZecpVehSurchrgAmt || "0.00",
+				BccDlrCommsnAmt: "0.00",
+				BccCdbCustNum: this.oECPData.ZecpCustNum,
+				BccAgrmntThruKm: "0.00",
+				BccLubBnftFlg: "",
+				BccVehStsKm: this.oECPData.ZecpOdometer,
+				BccAgrmntDlrPfl: "",
+				BccPlnLienHldr: "",
+				BccPlnLienTrmth: "0.00",
+				BccPlnLienAmt: "0.00",
+				BccDlrNetDebamt: "0.00",
+				BccNetDebAmt: "0.00",
+				BccNetGwDebAmt: "0.00",
+				BccNetGwCreAmt: "0.00",
+				BccNetGwOffCre: "0.00",
+				BccNetRecvryDeb: "0.00",
+				BccCncTsfFee: "0.00",
+				BccCustRfndAmt: "0.00",
+				BccAdjstdAdmAmt: "0.00",
+				BccAdjstdFdAmt: "0.00",
+				BccAdjstdRapAmt: "0.00",
+				BccAdjstdSurAmt: "0.00",
+				BccAgrActSrDes: "",
+				BccAdjstrCmnts: "",
+				BccUsrCalAmtflg: "",
+				BccRdHzrd: "",
+				Odmtr: this.oECPData.ZecpOdometer,
+				TrnfrOdometer: "",
+				TrnfrFee: "",
+				PrOwndCert: this.oECPData.PrOwndCert,
+				PrVendorFlag: "",
+				BccInscTrnmtFl: "",
+				BccRdsdTrnmtFl: "A",
+				BccMktngTrnmtFl: "",
+				BccDlrDebGst: "0.00",
+				BccDlrDebPst: "0.00",
+				BccCustRfndGst: "0.00",
+				BccCustRfndPst: "0.00",
+				BccFinclAjstrId: "",
+				BccDebitRequest: "",
+				BccCreditRequest: "",
+				BccCrtrUserid: "",
+				BccCrtnTmstmp: "",
+				BccLstUpdPltf: "",
+				BccLstUpdPgmid: "",
+				BccLstUpdUserid: "",
+				BccLstUpdTmstmp: "",
+				ZamtFincd: "0.00",
+				ZretailPrice: "0.00",
+				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice || "0.00"
+			};
+			return crudObj;
 		},
 
 		_fnValidateSubmit: function () {
@@ -2614,8 +2762,8 @@ sap.ui.define([
 					press: function () {
 
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
-						var objSub = DataManager._fnObject("SUB", "DELETED", that);
-						objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
+						var objSub = that._fnObject("SUB", "DELETED");
+						//objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
 						var oEcpModel = that.getModel("EcpSalesModel");
 						/*
 						Defect:9937
