@@ -840,16 +840,17 @@ sap.ui.define([
 		// Becoz this key are getting translated due to language and Service is not able to identified/incorporate the translated key in Service
 		getTypeOfAggreementKey: function (planTypeStr) {
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			var oagr;
 			if (planTypeStr === oBundle.getText("NEWVEHICLEAGREEMENT")) {
-				return "NEW VEHICLE AGREEMENT";
+				oagr = "NEW VEHICLE AGREEMENT";
 			}
 			if (planTypeStr === oBundle.getText("USEDVEHICLEAGREEMENT")) {
-				return "USED VEHICLE AGREEMENT";
+				oagr =  "USED VEHICLE AGREEMENT";
 			}
 			if (planTypeStr === oBundle.getText("EXTENSION")) {
-				return "EXTENSION";
+				oagr = "EXTENSION";
 			}
-
+			return oagr;
 		},
 
 		_fnExistAppCheckCreate: function () {
@@ -2516,7 +2517,7 @@ sap.ui.define([
 			objSub.ZecpEmail = oOwnerData.EmailAddress;
 			objSub.ZecpBusPhone = oOwnerData.ZecpBusPhone;
 			objSub.ZecpHomePhone = oOwnerData.FaxNumber;
-			objSub.ZecpAgrType = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
+			
 
 		},
 		/* end of Defect 9937 Auth Vinay Chandra*/
