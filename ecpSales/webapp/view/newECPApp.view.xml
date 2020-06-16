@@ -9,7 +9,7 @@
 					<uxap:ObjectPageSubSection title=" ">
 						<uxap:blocks>
 							<MessageStrip id="idNewECPMsgStrip" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
-							<MessageStrip id="idNewECPMsgStripPlan" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
+							<MessageStrip id="idNewECPMsgStripPlan" text="" showIcon="true" showCloseButton="false" visible="false"></MessageStrip>
 							<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding sapUiLargeMarginBottom" select = "onAppTabChange">
 								<items>
 									<IconTabFilter icon="sap-icon://car-rental" enabled="{oSetProperty>/oTab1visible}" text="{i18n>SpecifyVehicle}" key="Tab1" id="idFilter01">
