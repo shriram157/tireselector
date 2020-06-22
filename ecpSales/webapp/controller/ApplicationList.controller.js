@@ -57,10 +57,9 @@ sap.ui.define([
 				type: "GET",
 				dataType: "json",
 				success: function (oData) {
-					
-
 					var userType = oData.loggedUserType[0];
-					//	userType = "TCI_User";
+					//var	userType = "TCI_Admin";
+					that.getModel("LocalDataModel").setProperty("/UserType", userType);
 					switch (userType) {
 					case "Dealer_Sales_User":
 						that.getView().getModel("oDateModel").setProperty("/oCreateButton", true);
@@ -421,14 +420,17 @@ sap.ui.define([
 		_fnReadList : function(){
 			var oPriorDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/dateValueDRS2"));
 			var oCurrentDate = oDateFormat.format(this.getView().getModel("oDateModel").getProperty("/secondDateValueDRS2"));
+			var oSelectedDealer = this.getView().byId("idDealerCode").getSelectedKey();
 			
-			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", this.getView().byId("idDealerCode").getSelectedKey());
+			this.getModel("LocalDataModel").setProperty("/currentIssueDealer", oSelectedDealer);
+			
+			
 			
 			var oEcpModel = this.getOwnerComponent().getModel("EcpSalesModel");
 			oEcpModel.read("/zc_ecp_application", {
 					urlParameters: {
 						"$filter": "SubmissionDate ge datetime'" + oPriorDate + "'and SubmissionDate le datetime'" + oCurrentDate +
-							"'and DealerCode eq '" + this.getModel("LocalDataModel").getProperty("/currentIssueDealer") + "'and ApplicationStatus eq 'PENDING' "
+							"'and DealerCode eq '" + oSelectedDealer + "'and ApplicationStatus eq 'PENDING' "
 					},
 					success: $.proxy(function (edata) {
 						this.getModel("LocalDataModel").setProperty("/EcpApplication", edata.results);
