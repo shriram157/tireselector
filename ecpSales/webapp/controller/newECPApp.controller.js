@@ -8,8 +8,9 @@ sap.ui.define([
 	"zecp/controller/BaseController",
 	'sap/m/MessageBox',
 	"zecp/utils/DataManager",
-	"sap/ui/core/ValueState"
-], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager, ValueState) {
+	"sap/ui/core/ValueState",
+	"sap/ui/core/BusyIndicator"
+], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager, ValueState, BusyIndicator) {
 	"use strict";
 
 	return Controller.extend("zecp.controller.newECPApp", {
@@ -105,14 +106,14 @@ sap.ui.define([
 			//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
 			DataManager.funECPBlankObj(this);
 			if (this.oAppId != 404 && this.oAppId != undefined) {
-				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+				this.getView().getModel("oSetProperty").setProperty("/oTab1visible", true);
 				this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
+				this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab5visible", false);
 				this.getView().getModel("oSetProperty").setProperty("/oTab6visible", false);
-				//this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
-				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab1");
+				//this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oSecondaryState01", true);
 				this.getView().getModel("oSetProperty").setProperty("/oPrimeryState", false);
@@ -664,6 +665,8 @@ sap.ui.define([
 							}
 						});
 
+						sap.ui.core.BusyIndicator.show();
+
 						oGetModel.read("/zc_c_vehicle", {
 
 							urlParameters: {
@@ -680,6 +683,7 @@ sap.ui.define([
 											"/sCurrentDealer") + "' "
 									},
 									success: $.proxy(function (odata) {
+										sap.ui.core.BusyIndicator.hide();
 										this.oAppdata = odata.results.length;
 										if (data.results.length <= 0) {
 
@@ -722,7 +726,10 @@ sap.ui.define([
 												this.getView().byId("idNewECPMsgStrip").setType("Error");
 											}, this));
 										}
-									}, this)
+									}, this),
+									error: function () {
+										sap.ui.core.BusyIndicator.hide();
+									}
 
 								});
 
