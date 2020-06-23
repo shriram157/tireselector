@@ -2321,7 +2321,7 @@ sap.ui.define([
 			}
 		},
 
-		onUpdateSavedApp: async function (oEvent) {
+		onUpdateSavedApp: function (oEvent) {
 
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -2346,8 +2346,11 @@ sap.ui.define([
 				"ZamtFincd": oECPData.ZamtFincd,
 				"BccPlnLienHldr": oECPData.BccPlnLienHldr,
 				"ZecpLienterms": oECPData.ZecpLienterms,
-				"ZecpBenefitsFlg": oECPData.ZecpBenefitsFlg
+				"ZecpBenefitsFlg": oECPData.ZecpBenefitsFlg,
+				"ZecpSaleDate" : this._fnDateFormat(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate"))
 			};
+			
+			
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
