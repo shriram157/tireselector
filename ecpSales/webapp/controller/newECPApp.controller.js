@@ -100,6 +100,8 @@ sap.ui.define([
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			var oFormatedSaleDate;
 
+			this.getModel("LocalDataModel").setProperty("/InternalApplicationID", this.oAppId);
+
 			// 			this.getDealer();
 
 			this.getModel("LocalDataModel").setProperty("/sCurrentDealer", oEvent.getParameters().arguments.ODealer);
@@ -487,6 +489,7 @@ sap.ui.define([
 			});
 
 		},
+
 		OnNextStep2: function () {
 
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -525,11 +528,11 @@ sap.ui.define([
 							success: $.proxy(function (data) {
 								this.oFlag = data.results[0].ZZEXT_FLG;
 								if (this.oFlag === "YES") {
-									this.getModel("LocalDataModel").setProperty("/AgreementData", AgrTypes);
+									this.getModel("LocalDataModel").setProperty("/AgrSet", AgrTypes);
 
 								} else {
-									var oFilterdVal = AgrTypes.filter((item) => item.typeKey != "EXTENSION");
-									this.getModel("LocalDataModel").setProperty("/AgreementData", oFilterdVal);
+									var oFilterdVal = AgrTypes.filter((item) => item.typeNames != "EXTENSION" && item.typeNames != "PROLONGATION");
+									this.getModel("LocalDataModel").setProperty("/AgrSet", oFilterdVal);
 								}
 							}, this),
 							error: function () {
@@ -874,6 +877,20 @@ sap.ui.define([
 
 		},
 
+		fnLanguageCheck: function (planTypeStr) {
+			var retVal;
+			var oBundle = this.getView().getModel("i18n").getResourceBundle();
+			if (planTypeStr === "ENTENTE POUR VÉHICULE NEUF" || planTypeStr === "NEW VEHICLE AGREEMENT") {
+				return retVal = oBundle.getText("NEWVEHICLEAGREEMENT", planTypeStr);
+			}
+			if (planTypeStr === "ENTENTE DE VÉHICULE USAGÉ" || planTypeStr === "USED VEHICLE AGREEMENT") {
+				return retVal = oBundle.getText("USEDVEHICLEAGREEMENT", planTypeStr);
+			}
+			if (planTypeStr === "EXTENSION" || planTypeStr === "PROLONGATION") {
+				return retVal = oBundle.getText("EXTENSION", planTypeStr);
+			}
+		},
+
 		_fnExistAppCheckCreate: function () {
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
@@ -1022,7 +1039,7 @@ sap.ui.define([
 			});
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
-			var agreeTypeKey = this.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);
+			var agreeTypeKey = this.agreementTypeChange(this.oECPData.ZecpAgrType);
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
@@ -1487,7 +1504,8 @@ sap.ui.define([
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 						}
 					}
-					if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
+
+					if (this.oECPData.ZecpAgrType === "ENTENTE POUR VÉHICULE NEUF" || this.oECPData.ZecpAgrType === "NEW VEHICLE AGREEMENT") {
 						// this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 						// this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
 
@@ -1569,7 +1587,7 @@ sap.ui.define([
 
 			//this.DifferTime <= this.PlanTime
 
-			if (this.oECPData.ZecpAgrType === this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+			if (this.oECPData.ZecpAgrType === "ENTENTE DE VÉHICULE USAGÉ" || this.oECPData.ZecpAgrType == "USED VEHICLE AGREEMENT") {
 
 				//to Fix Defect #12699
 				var isUsedPrimPlan = this.check4PrimUsedVehiclePlan(oSelectedPlan);
@@ -1643,7 +1661,7 @@ sap.ui.define([
 			}
 
 			//defect id 10908
-			if (this.oECPData.ZecpAgrType === this.oBundle.getText("EXTENSIONVEHICLEAGREEMENT")) {
+			if (this.oECPData.ZecpAgrType === "EXTENSION" || this.oECPData.ZecpAgrType == "PROLONGATION") {
 				if (!($.isEmptyObject(oidPlanCode))) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -2347,10 +2365,8 @@ sap.ui.define([
 				"BccPlnLienHldr": oECPData.BccPlnLienHldr,
 				"ZecpLienterms": oECPData.ZecpLienterms,
 				"ZecpBenefitsFlg": oECPData.ZecpBenefitsFlg,
-				"ZecpSaleDate" : this._fnDateFormat(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate"))
+				"ZecpSaleDate": this._fnDateFormat(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate"))
 			};
-			
-			
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");

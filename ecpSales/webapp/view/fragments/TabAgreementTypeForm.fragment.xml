@@ -7,7 +7,7 @@
 			<core:Title text=""/>
 			<Label text="{i18n>SaleDate}"/>
 			<DatePicker id="idDate" placeholder="{i18n>EnterDate}"
-				value="{path : 'EcpFieldData>/ZecpSaleDate', type:'sap.ui.model.type.Date', formatOptions: { pattern: 'yyyy-MM-dd', UTC: true, strictParsing: true}}"
+				value="{path : 'EcpFieldData>/ZecpSaleDate', type:'sap.ui.model.type.Date', formatOptions: { style: 'medium', UTC: true, strictParsing: true}}"
 				required="true">
 				<!--<layoutData>-->
 				<!--	<l:GridData span="XL3 L3 M3 "/>-->
@@ -18,9 +18,9 @@
 		
 			</custom:CustomInput>
 			<Label text="{i18n>AgreementType}"/>
-			<ComboBox id="idAgrType" items="{LocalDataModel>/AgreementData}"  selectionChange="onSelectAgrType" required="true" selectedKey="{EcpFieldData>/typeKey}"
-				value="{EcpFieldData>/ZecpAgrType}" editable="{DateModel>/editAgrType}">
-				<core:Item key="{LocalDataModel>typeKey}" text="{LocalDataModel>typeNames}"/>
+			<ComboBox id="idAgrType" items="{LocalDataModel>/AgrSet}"  selectionChange="onSelectAgrType"  required="true"  selectedKey="{EcpFieldData>/ZecpAgrType}"
+				value="{path:'EcpFieldData>/ZecpAgrType', formatter:'.fnLanguageCheck'}" editable="{DateModel>/editAgrType}">
+				<core:Item key="{LocalDataModel>typeNames}" text="{LocalDataModel>typeNames}"/>
 			</ComboBox>
 			<core:Title text=""/>
 			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep3" enabled="{oSetProperty>/ostep3}"/>
