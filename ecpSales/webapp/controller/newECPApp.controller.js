@@ -68,11 +68,7 @@ sap.ui.define([
 				return null;
 			}
 		},
-		onAppTabChange: function (oEvent) {
-			if (oEvent.oCustomEvtObj) {
-				var selectedKeyTab = Event.key;
-			}
-		},
+
 		onEnterVinInput: function (oEvent) {
 			var oVal = oEvent.getParameters().value.toUpperCase();
 			this.getView().getModel("EcpFieldData").setProperty("/ZecpVin", oVal.trim());
@@ -490,6 +486,18 @@ sap.ui.define([
 
 		},
 
+		// onSelectTab: function (oSelectedKey) {
+		// 	// debugger;
+
+		// 	if (oSelectedKey.getParameters().selectedKey == "Tab2") {
+		// 		this.OnNextStep2();
+		// 	}else if (oSelectedKey.getParameters().selectedKey == "Tab3") {
+		// 		this.OnNextStep3();
+		// 	} else if (oSelectedKey.getParameters().selectedKey == "Tab4") {
+		// 		this.OnNextStep4();
+		// 	} 
+		// },
+
 		OnNextStep2: function () {
 
 			this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -719,6 +727,11 @@ sap.ui.define([
 											this._deferVINDealer.done($.proxy(function (oData) {
 												this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
 												this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+
+												this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+												this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+												this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+
 												//this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 												this.getView().byId("idNewECPMsgStrip").setType("None");
 												oVin.setValueState(sap.ui.core.ValueState.None);
@@ -1093,6 +1106,11 @@ sap.ui.define([
 
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+
+						this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+						this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+						this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+
 						oAgr.setValueState(sap.ui.core.ValueState.None);
 						oOdometer.setValueState(sap.ui.core.ValueState.None);
 						oSaleDateId.setValueState(sap.ui.core.ValueState.None);
@@ -1179,6 +1197,9 @@ sap.ui.define([
 							//this.getView().byId("idFilter03").setProperty("enabled", true);
 							this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 							this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+							this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+							this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+							this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 							oAgr.setValueState(sap.ui.core.ValueState.None);
 							oOdometer.setValueState(sap.ui.core.ValueState.None);
 							oSaleDateId.setValueState(sap.ui.core.ValueState.None);
@@ -1520,6 +1541,10 @@ sap.ui.define([
 							this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 							this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
+
+							this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+							this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+							this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 
 						} else if ($.isEmptyObject(oidPlanCode)) {
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1980,6 +2005,10 @@ sap.ui.define([
 			dialog.open();
 		},
 		OnBack: function () {
+			this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+			this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 			this.ogetSelectedKey = this.getView().byId("idIconTabBarNoIcons").getSelectedKey();
 			var ogetKey = this.ogetSelectedKey.split("Tab")[1];
 
