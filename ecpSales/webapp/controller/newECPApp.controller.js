@@ -1835,6 +1835,7 @@ sap.ui.define([
 
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oOdoVal = oEvent.getSource().getValue();
+			var oAgrType = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 			if ($.isEmptyObject(oOdoVal)) {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterOdometer"));
@@ -1847,6 +1848,26 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
 				this.getView().byId("idNewECPMsgStrip").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
+			} else if (oOdoVal > this.oAdditionalVal &&
+				(oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType == "ENTENTE POUR VÉHICULE NEUF")) {
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
+					(oOdoVal - this.oAdditionalVal) + this.oBundle
+					.getText("KMagainstplanmilagevalue"));
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+				oidPlanCodeId.setValueStateText("");
+				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
+
+			} else if (oOdoVal > parseInt(this.mxMillage) &&
+				(oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ")) {
+				//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
+
+				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + (oOdoVal - parseInt(this.mxMillage)) + " KM");
+				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+
 			} else {
 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 				this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1884,6 +1905,7 @@ sap.ui.define([
 			}
 
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
+
 		},
 
 		updateSurchargeValue: function (odoMeterState) {
