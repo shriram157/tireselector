@@ -1597,6 +1597,7 @@ sap.ui.define([
 						this.getView().byId("idNewECPMsgStrip").setType("Error");
 						oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 						this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
 
 					}
@@ -1656,6 +1657,7 @@ sap.ui.define([
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 				} else if (odMerVal > parseInt(this.mxMillage)) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + (odMerVal -
@@ -1664,6 +1666,7 @@ sap.ui.define([
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 				} else if (this._fnDifSaleDRegD().diffSaleRegDate > MaxMonthDays) {
 
 					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
@@ -1676,6 +1679,7 @@ sap.ui.define([
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 				}
 
 				//In Case of used vechical benefit flag will always No
@@ -1700,6 +1704,8 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
+					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+					this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 				}
 
 			}
@@ -1837,24 +1843,24 @@ sap.ui.define([
 			var oOdoVal = oEvent.getSource().getValue();
 			var oAgrType = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 			if ($.isEmptyObject(oOdoVal)) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseEnterOdometer"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("PleaseEnterOdometer"));
+				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 
 				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
 
 			} else if (oOdoVal <= 0) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("OdometerGreaterThan0"));
+				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
 			} else if (oOdoVal > this.oAdditionalVal &&
 				(oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType == "ENTENTE POUR VÉHICULE NEUF")) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
 					(oOdoVal - this.oAdditionalVal) + this.oBundle
 					.getText("KMagainstplanmilagevalue"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 				oidPlanCodeId.setValueStateText("");
 				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
@@ -1863,14 +1869,14 @@ sap.ui.define([
 				(oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ")) {
 				//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
 
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText("Maximum Mileage Exceeds by " + (oOdoVal - parseInt(this.mxMillage)) + " KM");
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setText("Maximum Mileage Exceeds by " + (oOdoVal - parseInt(this.mxMillage)) + " KM");
+				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 
 			} else {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-				this.getView().byId("idNewECPMsgStrip").setType("None");
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStripPlan").setType("None");
 				this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 			}
 			if (oOdoVal <= 50000) {
@@ -1888,19 +1894,19 @@ sap.ui.define([
 			oECPData.ZecpOdometer = oOdoVal;
 
 			if (parseInt(oOdoVal) <= parseInt(this.oAdditionalVal)) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-				this.getView().byId("idNewECPMsgStrip").setType("None");
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStripPlan").setType("None");
 				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
 			} else if (parseInt(oOdoVal) > parseInt(this.oAdditionalVal)) {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
 					(parseInt(oOdoVal) - parseInt(this.oAdditionalVal)) + this.oBundle.getText("KMagainstplanmilagevalue"));
-				this.getView().byId("idNewECPMsgStrip").setType("Error");
+				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
 
 			} else {
-				this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-				this.getView().byId("idNewECPMsgStrip").setType("None");
+				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
+				this.getView().byId("idNewECPMsgStripPlan").setType("None");
 				oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
 			}
 
