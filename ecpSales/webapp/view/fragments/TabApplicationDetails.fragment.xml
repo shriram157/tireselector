@@ -199,7 +199,7 @@
 					columnsXL="1" columnsL="1" columnsM="1"  >
 					<f:content>
 						<Label text="{i18n>EffectiveDate}"/>
-						<Text text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }}"/>
+						<Text text="{path:'EcpFieldData>/ZecpSaleDate', type: 'sap.ui.model.type.Date', formatOptions: { style: 'medium', UTC: true, strictParsing: true}}"/>
 						<Label text="{i18n>Odometer}"/>
 						<custom:CustomInput 
 							value="{path:'EcpFieldData>/ZecpOdometer', type : 'sap.ui.model.type.String', constraints : { minLength : 1, maxLength : 7 }}"
