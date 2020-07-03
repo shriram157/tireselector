@@ -944,8 +944,8 @@ sap.ui.define([
 					if (
 						(oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
 						(oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
-						
-						) {
+
+					) {
 						sap.ui.core.BusyIndicator.hide();
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
@@ -960,7 +960,7 @@ sap.ui.define([
 						});
 
 					} else {
-						
+
 						zEcpModel.read("/zc_ecp_valid_plansSet", {
 							urlParameters: {
 								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
@@ -970,7 +970,7 @@ sap.ui.define([
 							},
 							success: $.proxy(function (data) {
 								sap.ui.core.BusyIndicator.hide();
-								
+
 								var oPlanData = data.results[0].ZC_ECP_PLANSSET.results;
 								if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
 									this.getModel("LocalDataModel").setProperty("/PlanValidSet", oPlanData);
@@ -1473,6 +1473,10 @@ sap.ui.define([
 			// this.oPlanMonth = parseInt(mnth);
 
 			// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
+
+			this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+			this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
 
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
