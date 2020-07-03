@@ -931,6 +931,14 @@ sap.ui.define([
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "yyyy-MM-ddTHH:mm:ss"
 			});
+			
+			
+			
+		
+			
+			
+			
+			
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
 			var agreeTypeKey = this.agreementTypeChange(this.oECPData.ZecpAgrType);
@@ -942,8 +950,8 @@ sap.ui.define([
 				success: $.proxy(function (data) {
 					var oFlag = data.results[0].ProcessingFlag;
 					if (
-						(oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
-						(oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
+						(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
+						(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
 
 					) {
 						sap.ui.core.BusyIndicator.hide();
@@ -985,7 +993,7 @@ sap.ui.define([
 								var oAgrItem = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 								var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
 								var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
-								if (this.oECPData.ZecpAgrType === this.oBundle.getText("NEWVEHICLEAGREEMENT")) {
+								if (this.oECPData.ZecpAgrType === "NEW VEHICLE AGREEMENT" || this.oECPData.ZecpAgrType == "ENTENTE POUR VÉHICULE NEUF") {
 									if (this._fnDifSaleDRegD().diffSaleRegDate <= oDay) {
 										this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 										this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("Yes"));
@@ -1079,7 +1087,7 @@ sap.ui.define([
 									oAgr.setValueStateText(this.oBundle.getText("PleaseSelectAgreementType"));
 								}
 
-								if (this.oSelectedAgrTypeKey == this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+								if (this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
 									var oSaleYear = new Date(oSaleDate).getFullYear();
 									var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
 									var oyearGap = parseInt(oSaleYear - oModelYr);
