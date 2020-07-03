@@ -1160,7 +1160,7 @@ sap.ui.define([
 				},
 				success: $.proxy(function (data) {
 					var oFlag = data.results[0].ProcessingFlag;
-					if (oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") {
+					if (this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") {
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
 						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
@@ -1172,7 +1172,7 @@ sap.ui.define([
 							}, this)
 						});
 
-					} else if (oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") {
+					} else if (this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") {
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
 						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
