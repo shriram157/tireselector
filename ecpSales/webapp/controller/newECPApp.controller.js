@@ -1470,9 +1470,9 @@ sap.ui.define([
 			}
 		},
 		_fnValidateTab4: function () {
-			return  this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
-			return this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
-			return this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+			  this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
+			 this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+			 this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
 
 		},
 		OnNextStep4: function (oEvent) {
