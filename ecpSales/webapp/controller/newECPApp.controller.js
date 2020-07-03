@@ -944,8 +944,8 @@ sap.ui.define([
 					if (
 						(oAgrTyp == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
 						(oAgrTyp == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
-						
-						) {
+
+					) {
 						sap.ui.core.BusyIndicator.hide();
 						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
@@ -960,7 +960,7 @@ sap.ui.define([
 						});
 
 					} else {
-						
+
 						zEcpModel.read("/zc_ecp_valid_plansSet", {
 							urlParameters: {
 								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
@@ -970,7 +970,7 @@ sap.ui.define([
 							},
 							success: $.proxy(function (data) {
 								sap.ui.core.BusyIndicator.hide();
-								
+
 								var oPlanData = data.results[0].ZC_ECP_PLANSSET.results;
 								if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
 									this.getModel("LocalDataModel").setProperty("/PlanValidSet", oPlanData);
@@ -1461,11 +1461,11 @@ sap.ui.define([
 				return false;
 			}
 		},
-		_fnValidateTab4 : function(){
+		_fnValidateTab4: function () {
 			return this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
 			return this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
 			return this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
-			
+
 		},
 		OnNextStep4: function (oEvent) {
 
@@ -1479,8 +1479,6 @@ sap.ui.define([
 			// this.oPlanMonth = parseInt(mnth);
 
 			// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
-			
-			
 
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
@@ -1567,7 +1565,7 @@ sap.ui.define([
 							this.getView().byId("idNewECPMsgStrip").setType("Error");
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 							oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
-							
+
 						} else if (odMerVal > this.oAdditionalVal) {
 							this._fnValidateTab4();
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
@@ -1599,24 +1597,16 @@ sap.ui.define([
 
 				}, this));
 
-			var difDay = parseInt(this.DifferTime / (24 * 60 * 60 * 1000));
+			//var difDay = this._fnDifSaleDRegD().diffSaleRegDate;
 
 			for (var i = 0; i < oPlanArray.length; i++) {
 				if (oPlanArray[i] == oSelectedPlan) {
-					if (difDay <= 31) {
-						this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-						this.getView().byId("idNewECPMsgStrip").setType("None");
-						this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
-						oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
-						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
-					} else {
+					if (this._fnDifSaleDRegD().diffSaleRegDate > 31) {
 						this._fnValidateTab4();
 						this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 						this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("RDR31Days"));
 						this.getView().byId("idNewECPMsgStrip").setType("Error");
 						oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-						
-
 					}
 				}
 			}
@@ -1664,7 +1654,7 @@ sap.ui.define([
 					oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
 				} else if (odMerVal > parseInt(this.mxMillage) && this._fnDifSaleDRegD().diffSaleRegDate >
 					MaxMonthDays) {
-						this._fnValidateTab4();
+					this._fnValidateTab4();
 					//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
 					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
 					TotaldayMonDif = this._fnDayMonth(difDayMonth);
@@ -1675,17 +1665,17 @@ sap.ui.define([
 							TotaldayMonDif.day) + " Days ");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-				
+
 				} else if (odMerVal > parseInt(this.mxMillage)) {
-						this._fnValidateTab4();
+					this._fnValidateTab4();
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("maxMillageExby") + " " + (odMerVal -
 						parseInt(this.mxMillage)) + " KM");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-					
+
 				} else if (this._fnDifSaleDRegD().diffSaleRegDate > MaxMonthDays) {
-						this._fnValidateTab4();
+					this._fnValidateTab4();
 
 					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
 					TotaldayMonDif = this._fnDayMonth(difDayMonth);
@@ -1695,7 +1685,7 @@ sap.ui.define([
 						TotaldayMonDif.month + " Months : " + TotaldayMonDif.day + " Days");
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-					
+
 				}
 
 				//In Case of used vechical benefit flag will always No
@@ -1715,13 +1705,13 @@ sap.ui.define([
 					this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab4");
 
 				} else if ($.isEmptyObject(oidPlanCode)) {
-						this._fnValidateTab4();
+					this._fnValidateTab4();
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectPlanCode"));
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
-				
+
 				}
 
 			}
