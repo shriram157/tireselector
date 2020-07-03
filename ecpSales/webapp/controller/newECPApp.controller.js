@@ -368,8 +368,8 @@ sap.ui.define([
 			var oBundle = this.getView().getModel("i18n").getResourceBundle();
 			if (pricingModelData && oECPData) {
 
-				var saleDateMoment = moment(oECPData.ZecpSaleDate).format("YYYY-MM-DD");
-				var regDateMoment = moment(pricingModelData.WARD_DATE).format("YYYY-MM-DD");
+				var saleDateMoment = moment.utc(oECPData.ZecpSaleDate).format("YYYY-MM-DD");
+				var regDateMoment = moment.utc(pricingModelData.WARD_DATE).format("YYYY-MM-DD");
 
 				var SaleDateVar = moment(saleDateMoment, "YYYY-MM-DD");
 				var RegDateVar = moment(regDateMoment, "YYYY-MM-DD");
@@ -1848,6 +1848,7 @@ sap.ui.define([
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
 			var oOdoVal = oEvent.getSource().getValue();
 			var oAgrType = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
+			this.getView().getModel("EcpFieldData").setProperty("/ZecpOdometer", oOdoVal);
 			if ($.isEmptyObject(oOdoVal)) {
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("PleaseEnterOdometer"));
