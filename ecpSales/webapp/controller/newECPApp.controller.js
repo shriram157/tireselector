@@ -905,6 +905,14 @@ sap.ui.define([
 		},
 
 		_fnExistAppCheckCreate: function () {
+			
+			
+			this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
+			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+			this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+			this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);				
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
 			var zEcpModel = this.getModel("EcpSalesModel");
@@ -934,11 +942,6 @@ sap.ui.define([
 			
 			
 			
-		
-			
-			
-			
-			
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
 			var agreeTypeKey = this.agreementTypeChange(this.oECPData.ZecpAgrType);
@@ -955,8 +958,7 @@ sap.ui.define([
 
 					) {
 						sap.ui.core.BusyIndicator.hide();
-						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+						
 						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
 							width: "30em",
 							my: "center center",
@@ -1099,8 +1101,7 @@ sap.ui.define([
 											this.oBundle
 											.getText("yr"));
 										this.getView().byId("idNewECPMsgStrip").setType("Error");
-										this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-										this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+									
 									} else if (this._fnDifSaleDRegD().diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") !=
 										"TCI_Admin") {
 										this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
