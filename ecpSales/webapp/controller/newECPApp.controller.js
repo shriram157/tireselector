@@ -537,10 +537,10 @@ sap.ui.define([
 								this.oFlag = data.results[0].ZZEXT_FLG;
 								if (this.oFlag === "YES") {
 									this.getModel("LocalDataModel").setProperty("/AgrSet", AgrTypes);
-
 								} else {
 									var oFilterdVal = AgrTypes.filter((item) => item.typeNames != "EXTENSION" && item.typeNames != "PROLONGATION");
 									this.getModel("LocalDataModel").setProperty("/AgrSet", oFilterdVal);
+									
 								}
 							}, this),
 							error: function () {
@@ -911,7 +911,6 @@ sap.ui.define([
 			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", true);
 			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
-			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);				
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
@@ -1130,6 +1129,13 @@ sap.ui.define([
 										oOdometer.setValueState(sap.ui.core.ValueState.None);
 										oSaleDateId.setValueState(sap.ui.core.ValueState.None);
 									}
+								}
+								
+								if(this.oFlag == "" && this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("EXTENSION")){
+									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NoActiveArgreement"));
+									this.getView().byId("idNewECPMsgStrip").setType("Error");
+									
 								}
 
 							}, this),
