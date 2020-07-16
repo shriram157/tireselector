@@ -2001,6 +2001,16 @@ sap.ui.define([
 				}
 			}
 			
+			if (DataManager.fnReturnDivision() == "10") {
+				var findPlanArray3Y = DataManager.oPlanArray3Y.findIndex((item) => item == oSelectedPlan);
+				if (oOdoVal > 60000 && findPlanArray3Y > -1) {
+					this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
+					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRule"));
+					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
+					
+				}
+			}
+			
 			
 			if (oOdoVal <= 50000) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
