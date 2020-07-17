@@ -1568,11 +1568,6 @@ sap.ui.define([
 							this.getView().byId("idNewECPMsgStrip").setType("Error");
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 							return;
-						} else {
-							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
-							this.getView().byId("idNewECPMsgStrip").setType("None");
-							oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 						}
 					}
 
