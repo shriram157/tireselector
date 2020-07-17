@@ -1568,6 +1568,11 @@ sap.ui.define([
 							this.getView().byId("idNewECPMsgStrip").setType("Error");
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 							return;
+						} else {
+							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
+							this.getView().byId("idNewECPMsgStrip").setType("None");
+							oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 						}
 					}
 
@@ -1628,43 +1633,42 @@ sap.ui.define([
 
 					}
 
+					if (DataManager.fnReturnDivision() == "10") {
+						var findPlanArray = DataManager.oPlanArray.findIndex((item) => item == oSelectedPlan);
+						var findPlanArray3Y = DataManager.oPlanArray3Y.findIndex((item) => item == oSelectedPlan);
+
+						if (this._fnDifSaleDRegD().diffSaleRegDate > 31 && findPlanArray > -1) {
+							this._fnValidateTab4();
+							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("RDR31Days"));
+							this.getView().byId("idNewECPMsgStrip").setType("Error");
+							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+						}
+
+						if (this._fnDifSaleDRegD().diffSaleRegDate > 1095 && findPlanArray3Y > -1) {
+							this._fnValidateTab4();
+							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
+							this.getView().byId("idNewECPMsgStrip").setType("Error");
+							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+						}
+
+					}
+
+					if (DataManager.fnReturnDivision() == "20") {
+						var findPlanArray4Y = DataManager.oPlanArray4Y.findIndex((item) => item == oSelectedPlan);
+						if ((this._fnDifSaleDRegD().diffSaleRegDate > 1460 && findPlanArray4Y > -1) || (odMerVal > 80000 && findPlanArray4Y > -1)) {
+							this._fnValidateTab4();
+							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRuleLexus"));
+							this.getView().byId("idNewECPMsgStrip").setType("Error");
+							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
+						}
+					}
+
 				}, this));
 
 			//var difDay = this._fnDifSaleDRegD().diffSaleRegDate;
-			if (DataManager.fnReturnDivision() == "10") {
-				var findPlanArray = DataManager.oPlanArray.findIndex((item) => item == oSelectedPlan);
-				var findPlanArray3Y = DataManager.oPlanArray3Y.findIndex((item) => item == oSelectedPlan);
-			
-				if (this._fnDifSaleDRegD().diffSaleRegDate > 31 && findPlanArray > -1) {
-					this._fnValidateTab4();
-					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("RDR31Days"));
-					this.getView().byId("idNewECPMsgStrip").setType("Error");
-					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-				}
-
-				if (this._fnDifSaleDRegD().diffSaleRegDate > 1095 && findPlanArray3Y > -1) {
-					this._fnValidateTab4();
-					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
-					this.getView().byId("idNewECPMsgStrip").setType("Error");
-					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-				}
-
-				
-
-			}
-			
-			if (DataManager.fnReturnDivision() == "20") {
-				var findPlanArray4Y = DataManager.oPlanArray4Y.findIndex((item) => item == oSelectedPlan);
-				if ((this._fnDifSaleDRegD().diffSaleRegDate > 1460 && findPlanArray4Y > -1) || ( odMerVal > 80000 && findPlanArray4Y > -1)) {
-					this._fnValidateTab4();
-					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRuleLexus"));
-					this.getView().byId("idNewECPMsgStrip").setType("Error");
-					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-				}
-			}
 
 			// for (var i = 0; i < DataManager.oPlanArray.length; i++) {
 			// 	if (oPlanArray[i] == oSelectedPlan) {
@@ -1983,30 +1987,29 @@ sap.ui.define([
 				this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 				idOdo.setValueState(sap.ui.core.ValueState.None);
 			}
-			
+
 			var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
 			if (DataManager.fnReturnDivision() == "20") {
 				var findPlanArray4Y = DataManager.oPlanArray4Y.findIndex((item) => item == oSelectedPlan);
 				if (oOdoVal > 80000 && findPlanArray4Y > -1) {
-					
+
 					this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRuleLexus"));
 					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
-					
+
 				}
 			}
-			
+
 			if (DataManager.fnReturnDivision() == "10") {
 				var findPlanArray60 = DataManager.oPlanArray.findIndex((item) => item == oSelectedPlan);
 				if (oOdoVal > 60000 && findPlanArray60 > -1) {
 					this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRule"));
 					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
-					
+
 				}
 			}
-			
-			
+
 			if (oOdoVal <= 50000) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
