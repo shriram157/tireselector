@@ -1561,7 +1561,7 @@ sap.ui.define([
 						var factWarrentyEdate = this.getModel("LocalDataModel").getProperty("/claimData").EndDate;
 						var saleDate = this.oECPData.ZecpSaleDate;
 
-						if (odMerVal >= 60000 || factWarrentyEdate.getTime() < saleDate.getTime()) {
+						if (odMerVal > 60000 || factWarrentyEdate.getTime() < saleDate.getTime()) {
 
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
