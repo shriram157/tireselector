@@ -2001,8 +2001,8 @@ sap.ui.define([
 			}
 
 			if (DataManager.fnReturnDivision() == "10") {
-				var findPlanArray60 = DataManager.oPlanArray.findIndex((item) => item == oSelectedPlan);
-				if (oOdoVal > 60000 && findPlanArray60 > -1) {
+				var findPlanArray6000 = DataManager.oPlanArray6000.findIndex((item) => item == oSelectedPlan);
+				if (oOdoVal > 60000 && findPlanArray6000 > -1) {
 					this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRule"));
 					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
