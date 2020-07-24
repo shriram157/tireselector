@@ -10,18 +10,17 @@
 						<uxap:blocks>
 							<MessageStrip id="idNewECPMsgStrip" text="" showIcon="true" showCloseButton="true" visible="false"></MessageStrip>
 							<MessageStrip id="idNewECPMsgStripPlan" text="" showIcon="true" showCloseButton="false" visible="false"></MessageStrip>
-							<IconTabBar id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding sapUiLargeMarginBottom" select = "onAppTabChange">
+							<IconTabBar select="onSelectTab" id="idIconTabBarNoIcons" expanded="{device>/isNoPhone}" class="sapUiResponsiveContentPadding sapUiLargeMarginBottom" >
 								<items>
 									<IconTabFilter icon="sap-icon://car-rental" enabled="{oSetProperty>/oTab1visible}" text="{i18n>SpecifyVehicle}" key="Tab1" id="idFilter01">
 										<core:Fragment fragmentName="zecp.view.fragments.TabSpecifyVehicleForm" type="XML"/>
 									</IconTabFilter>
 									<IconTabSeparator icon="sap-icon://open-command-field"/>
-									<IconTabFilter enabled="{oSetProperty>/oTab2visible}" icon="sap-icon://decision" text="{i18n>SelectAgreementType}" id="idFilter02"
-										key="Tab2">
+									<IconTabFilter   enabled="{oSetProperty>/oTab2visible}" key="Tab2" icon="sap-icon://decision" text="{i18n>SelectAgreementType}" id="idFilter02">
 										<core:Fragment fragmentName="zecp.view.fragments.TabAgreementTypeForm" type="XML"/>
 									</IconTabFilter>
 									<IconTabSeparator icon="sap-icon://open-command-field"/>
-									<IconTabFilter icon="sap-icon://paper-plane" enabled="{oSetProperty>/oTab3visible}" text="{i18n>SelectPlanCode}" id="idFilter03" key="Tab3">
+									<IconTabFilter icon="sap-icon://paper-plane"  enabled="{oSetProperty>/oTab3visible}" text="{i18n>SelectPlanCode}" id="idFilter03" key="Tab3">
 										<core:Fragment fragmentName="zecp.view.fragments.TabPlanCodeForm" type="XML"/>
 									</IconTabFilter>
 									<IconTabSeparator icon="sap-icon://open-command-field"/>
