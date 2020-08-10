@@ -2013,7 +2013,7 @@ sap.ui.define([
 			if (oOdoVal <= 50000 && this._fnDifSaleDRegD().diffSaleRegDate < 1095 && (oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType == "ENTENTE POUR VÉHICULE NEUF")) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
-			} else if (oOdoVal > 50000 && this._fnDifSaleDRegD().diffSaleRegDate > 1095) {
+			} else if (oOdoVal > 50000 || this._fnDifSaleDRegD().diffSaleRegDate > 1095) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("No"));
 			}
