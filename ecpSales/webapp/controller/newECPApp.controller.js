@@ -2010,33 +2010,13 @@ sap.ui.define([
 				}
 			}
 
-			if (oOdoVal <= 50000) {
+			if (oOdoVal <= 50000 && this._fnDifSaleDRegD().diffSaleRegDate < 1095 && (oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType == "ENTENTE POUR VÉHICULE NEUF")) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
-			} else if (oOdoVal > 50000) {
+			} else if (oOdoVal > 50000 && this._fnDifSaleDRegD().diffSaleRegDate > 1095) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "No");
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("No"));
 			}
-
-			// if (!this.oAdditionalVal) {
-			// 	this.oAdditionalVal = this.planKmval(this.getView().getModel("EcpFieldData").getData().ZecpPlancode);
-			// }
-			// var oECPData = this.getView().getModel("EcpFieldData").getData();
-			// oECPData.ZecpOdometer = oOdoVal;
-
-			// if (parseInt(oOdoVal) > parseInt(this.oAdditionalVal)) {
-			// 	this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
-			// 	this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
-			// 		(parseInt(oOdoVal) - parseInt(this.oAdditionalVal)) + this.oBundle.getText("KMagainstplanmilagevalue"));
-			// 	this.getView().byId("idNewECPMsgStripPlan").setType("Error");
-			// 	oEvent.getSource().setValueState(sap.ui.core.ValueState.Error);
-			// 	idOdo.setValueState(sap.ui.core.ValueState.Error);
-			// } else {
-			// 	this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
-			// 	this.getView().byId("idNewECPMsgStripPlan").setType("None");
-			// 	oEvent.getSource().setValueState(sap.ui.core.ValueState.None);
-			// 	idOdo.setValueState(sap.ui.core.ValueState.None);
-			// }
 
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 
