@@ -2798,7 +2798,7 @@ sap.ui.define([
 				ZecpRoadhazard: this.oECPData.ZecpRoadhazard,
 				ZecpBenefitsFlg: this.getView().getModel("EcpFieldData").getProperty("/ZecpBenefitsFlg"),
 				BccAgrmntSaleDt: this._fnDateFormat(this.oECPData.ZecpSaleDate),
-				ZecpSource: "ECP",
+				ZecpSource: this.oECPData.ZecpSource || "ECP",
 				ZecpDatecreated: this._fnDateFormat(currentDate),
 				ZecpLastupdate: null,
 				ZecpSaletype: "",
