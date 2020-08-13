@@ -948,216 +948,233 @@ sap.ui.define([
 					"$filter": "VIN eq '" + oVin + "'"
 				},
 				success: $.proxy(function (data) {
-					var oFlag = data.results[0].ProcessingFlag;
-					if (
-						(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
-						(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
+						var oFlag = data.results[0].ProcessingFlag;
+						if (
+							(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
+							(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
 
-					) {
-						sap.ui.core.BusyIndicator.hide();
-						this._fnValidateTab2();
-						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
-							width: "30em",
-							my: "center center",
-							at: "center center",
-							duration: 500,
-							onClose: $.proxy(function () {
-								this.getRouter().navTo("ApplicationList");
-							}, this)
-						});
+						) {
+							sap.ui.core.BusyIndicator.hide();
+							this._fnValidateTab2();
+							MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+								width: "30em",
+								my: "center center",
+								at: "center center",
+								duration: 500,
+								onClose: $.proxy(function () {
+									this.getRouter().navTo("ApplicationList");
+								}, this)
+							});
 
-					} else {
+						} else {
 
-						zEcpModel.read("/zc_ecp_valid_plansSet", {
-							urlParameters: {
-								"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
-									agreeTypeKey +
-									"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
-								"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
-							},
-							success: $.proxy(function (data) {
-								sap.ui.core.BusyIndicator.hide();
+							zEcpModel.read("/zc_ecp_valid_plansSet", {
+								urlParameters: {
+									"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
+										agreeTypeKey +
+										"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
+									"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
+								},
+								success: $.proxy(function (data) {
+										sap.ui.core.BusyIndicator.hide();
 
-								var oPlanData = data.results[0].ZC_ECP_PLANSSET.results;
-								if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
-									this.getModel("LocalDataModel").setProperty("/PlanValidSet", oPlanData);
-								} else {
-									var oFilteredPlan = oPlanData.filter(function (p) {
-										return !(String(p.MGANR).startsWith("Z"));
-									});
+										var oPlanData = data.results[0].ZC_ECP_PLANSSET.results;
+										if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+											this.getModel("LocalDataModel").setProperty("/PlanValidSet", oPlanData);
+										} else {
+											var oFilteredPlan = oPlanData.filter(function (p) {
+												return !(String(p.MGANR).startsWith("Z"));
+											});
 
-									this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
+											this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
+										}
+
+										var oAgrItem = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
+										var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
+										var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
+										if (this.oECPData.ZecpAgrType === "NEW VEHICLE AGREEMENT" || this.oECPData.ZecpAgrType == "ENTENTE POUR VÉHICULE NEUF") {
+											if (this._fnDifSaleDRegD().diffSaleRegDate <= oDay) {
+												this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
+												this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("Yes"));
+											} else if (this._fnDifSaleDRegD().diffSaleRegDate > oDay) {
+												this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
+												this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
+											}
+										} else {
+											this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
+											this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
+										}
+										if (
+											(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD()
+												.diffSaleRegDate >=
+												0 &&
+												this.BccAgrmntPrtDt != null &&
+												oOdoVal > 0 && (this._fnDifSaleDRegD().diffCurrentSaleDay <= 60 && this.getModel("LocalDataModel").getProperty(
+														"/UserType") !=
+													"TCI_Admin")) ||
+
+											(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD()
+												.diffSaleRegDate >=
+												0 &&
+												this.BccAgrmntPrtDt != null && oOdoVal > 0 && this.getModel("LocalDataModel").getProperty("/UserType") ==
+												"TCI_Admin")
+
+											||
+
+											(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && this._fnDifSaleDRegD().diffSaleCurrent > 0 &&
+												this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") ||
+											(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && this._fnDifSaleDRegD().diffSaleRegDate < 0 &&
+												this.BccAgrmntPrtDt != null && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") ||
+
+											(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) &&
+												(this._fnDifSaleDRegD().diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") ==
+													"TCI_Admin"))
+
+										) {
+
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+											this.getView().byId("idNewECPMsgStrip").setType("None");
+
+											this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
+											this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+
+											this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+											this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+											this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+
+											oAgr.setValueState(sap.ui.core.ValueState.None);
+											oOdometer.setValueState(sap.ui.core.ValueState.None);
+											oSaleDateId.setValueState(sap.ui.core.ValueState.None);
+										} else if ($.isEmptyObject(oSaleDate)) {
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EDate"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+											oSaleDateId.setValueStateText(this.oBundle.getText("ECP0007EDate"));
+											this._fnValidateTab2();
+										} else if (this._fnDifSaleDRegD().diffSaleCurrent > 0) {
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectSaleDate"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+											oSaleDateId.setValueStateText(this.oBundle.getText("PleaseSelectSaleDate"));
+											this._fnValidateTab2();
+										} else if (this._fnDifSaleDRegD().diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") !=
+											"TCI_Admin") {
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
+											this._fnValidateTab2();
+										} else if (this._fnDifSaleDRegD().diffSaleRegDate < 0 && this.getModel("LocalDataModel").getProperty("/UserType") !=
+											"TCI_Admin") {
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") +
+												"(" +
+												this._fnDifSaleDRegD().regDateMoment + ")");
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+											oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + this._fnDifSaleDRegD()
+												.regDateMoment +
+												")");
+											this._fnValidateTab2();
+										} else if ($.isEmptyObject(oOdoVal)) {
+											this._fnValidateTab2();
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EOdo"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											oOdometer.setValueState(sap.ui.core.ValueState.Error);
+											oOdometer.setValueStateText(this.oBundle.getText("ECP0007EOdo"));
+
+										} else if (this.BccAgrmntPrtDt == null) {
+											this._fnValidateTab2();
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("WarDateErrorMessage"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+										} else if (oOdoVal <= 0) {
+											this._fnValidateTab2();
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											oOdometer.setValueState(sap.ui.core.ValueState.Error);
+											oOdometer.setValueStateText(this.oBundle.getText("OdometerGreaterThan0"));
+										} else if ($.isEmptyObject(oAgrItem)) {
+											this._fnValidateTab2();
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectAgreementType"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											oAgr.setValueState(sap.ui.core.ValueState.Error);
+											oAgr.setValueStateText(this.oBundle.getText("PleaseSelectAgreementType"));
+										}
+
+										if (this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+											var oSaleYear = new Date(oSaleDate).getFullYear();
+											var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
+											var oyearGap = parseInt(oSaleYear - oModelYr);
+											if (oyearGap > 7) {
+												this._fnValidateTab2();
+												this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+												this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Modelyearexceedsby") + " " + parseInt(oyearGap -
+														7) +
+													" " +
+													this.oBundle
+													.getText("yr"));
+												this.getView().byId("idNewECPMsgStrip").setType("Error");
+
+											} else if (this._fnDifSaleDRegD().diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") !=
+												"TCI_Admin") {
+												this._fnValidateTab2();
+												this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+												this.getView().byId("idNewECPMsgStrip").setType("Error");
+												oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
+												this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
+
+											} else if (
+												(oyearGap <= 7 && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD().diffSaleRegDate >= 0 && (
+													this._fnDifSaleDRegD().diffCurrentSaleDay < 60 && this.getModel("LocalDataModel").getProperty("/UserType") !=
+													"TCI_Admin")) ||
+												(oyearGap <= 7 && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD().diffSaleRegDate >= 0 &&
+													this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") ||
+												(oyearGap > 7 && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") ||
+												(this._fnDifSaleDRegD().diffSaleCurrent > 0 && this.getModel("LocalDataModel").getProperty("/UserType") ==
+													"TCI_Admin") ||
+												(this._fnDifSaleDRegD().diffSaleRegDate < 0 && this.getModel("LocalDataModel").getProperty("/UserType") ==
+													"TCI_Admin")
+
+											) {
+												this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
+												this.getView().byId("idNewECPMsgStrip").setType("None");
+												//this.getView().byId("idFilter03").setProperty("enabled", true);
+												this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
+												this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
+												this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
+												this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
+												this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
+												oAgr.setValueState(sap.ui.core.ValueState.None);
+												oOdometer.setValueState(sap.ui.core.ValueState.None);
+												oSaleDateId.setValueState(sap.ui.core.ValueState.None);
+											}
+										}
+
+										if (this.oFlag == "" && this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("EXTENSION")) {
+											this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
+											this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NoActiveArgreement"));
+											this.getView().byId("idNewECPMsgStrip").setType("Error");
+											this._fnValidateTab2();
+										}
+
+									},
+									this),
+								error: function () {
+									console.log("Error");
+									sap.ui.core.BusyIndicator.hide();
 								}
+							});
 
-								var oAgrItem = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
-								var oDay = this.getModel("LocalDataModel").getProperty("/PricingModelData/B_DAYS");
-								var oDayMili = parseInt(oDay) * 1000 * 60 * 60 * 24;
-								if (this.oECPData.ZecpAgrType === "NEW VEHICLE AGREEMENT" || this.oECPData.ZecpAgrType == "ENTENTE POUR VÉHICULE NEUF") {
-									if (this._fnDifSaleDRegD().diffSaleRegDate <= oDay) {
-										this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
-										this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("Yes"));
-									} else if (this._fnDifSaleDRegD().diffSaleRegDate > oDay) {
-										this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
-										this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
-									}
-								} else {
-									this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "No");
-									this.getView().getModel("EcpFieldData").setProperty("/ZbenefitFlag1", this.oBundle.getText("No"));
-								}
-								if (
-									(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD()
-										.diffSaleRegDate >=
-										0 &&
-										this.BccAgrmntPrtDt != null &&
-										oOdoVal > 0 && (this._fnDifSaleDRegD().diffCurrentSaleDay <= 60 && this.getModel("LocalDataModel").getProperty(
-												"/UserType") !=
-											"TCI_Admin")) ||
+						}
 
-									(!($.isEmptyObject(oOdoVal && oAgrItem && oSaleDate)) && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD()
-										.diffSaleRegDate >=
-										0 &&
-										this.BccAgrmntPrtDt != null && oOdoVal > 0 && this.getModel("LocalDataModel").getProperty("/UserType") ==
-										"TCI_Admin")
-
-								) {
-
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-									this.getView().byId("idNewECPMsgStrip").setType("None");
-
-									this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
-									this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
-
-									this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
-									this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
-									this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
-
-									oAgr.setValueState(sap.ui.core.ValueState.None);
-									oOdometer.setValueState(sap.ui.core.ValueState.None);
-									oSaleDateId.setValueState(sap.ui.core.ValueState.None);
-								} else if ($.isEmptyObject(oSaleDate)) {
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EDate"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-									oSaleDateId.setValueStateText(this.oBundle.getText("ECP0007EDate"));
-									this._fnValidateTab2();
-								} else if (this._fnDifSaleDRegD().diffSaleCurrent > 0) {
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectSaleDate"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-									oSaleDateId.setValueStateText(this.oBundle.getText("PleaseSelectSaleDate"));
-									this._fnValidateTab2();
-								} else if (this._fnDifSaleDRegD().diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") !=
-									"TCI_Admin") {
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
-									this._fnValidateTab2();
-								} else if (this._fnDifSaleDRegD().diffSaleRegDate < 0) {
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") +
-										"(" +
-										this._fnDifSaleDRegD().regDateMoment + ")");
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-									oSaleDateId.setValueStateText(this.oBundle.getText("Agreementdateislessthanvehicleregistrationdate") + "(" + this._fnDifSaleDRegD()
-										.regDateMoment +
-										")");
-									this._fnValidateTab2();
-								} else if ($.isEmptyObject(oOdoVal)) {
-									this._fnValidateTab2();
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EOdo"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									oOdometer.setValueState(sap.ui.core.ValueState.Error);
-									oOdometer.setValueStateText(this.oBundle.getText("ECP0007EOdo"));
-
-								} else if (this.BccAgrmntPrtDt == null) {
-									this._fnValidateTab2();
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("WarDateErrorMessage"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-								} else if (oOdoVal <= 0) {
-									this._fnValidateTab2();
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("OdometerGreaterThan0"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									oOdometer.setValueState(sap.ui.core.ValueState.Error);
-									oOdometer.setValueStateText(this.oBundle.getText("OdometerGreaterThan0"));
-								} else if ($.isEmptyObject(oAgrItem)) {
-									this._fnValidateTab2();
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("PleaseSelectAgreementType"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									oAgr.setValueState(sap.ui.core.ValueState.Error);
-									oAgr.setValueStateText(this.oBundle.getText("PleaseSelectAgreementType"));
-								}
-
-								if (this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
-									var oSaleYear = new Date(oSaleDate).getFullYear();
-									var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
-									var oyearGap = parseInt(oSaleYear - oModelYr);
-									if (oyearGap > 7) {
-										this._fnValidateTab2();
-										this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-										this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Modelyearexceedsby") + " " + parseInt(oyearGap -
-												7) +
-											" " +
-											this.oBundle
-											.getText("yr"));
-										this.getView().byId("idNewECPMsgStrip").setType("Error");
-
-									} else if (this._fnDifSaleDRegD().diffCurrentSaleDay > 60 && this.getModel("LocalDataModel").getProperty("/UserType") !=
-										"TCI_Admin") {
-										this._fnValidateTab2();
-										this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-										this.getView().byId("idNewECPMsgStrip").setType("Error");
-										oSaleDateId.setValueState(sap.ui.core.ValueState.Error);
-										this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("SaleDateWithin60days"));
-
-									} else if (
-										(oyearGap <= 7 && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD().diffSaleRegDate >= 0 && (
-											this._fnDifSaleDRegD()
-											.diffCurrentSaleDay < 60 && this.getModel(
-												"LocalDataModel").getProperty("/UserType") != "TCI_Admin")) ||
-										(oyearGap <= 7 && this._fnDifSaleDRegD().diffSaleCurrent <= 0 && this._fnDifSaleDRegD().diffSaleRegDate >= 0 && this
-											.getModel(
-												"LocalDataModel").getProperty("/UserType") == "TCI_Admin")
-
-									) {
-										this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
-										this.getView().byId("idNewECPMsgStrip").setType("None");
-										//this.getView().byId("idFilter03").setProperty("enabled", true);
-										this.getView().getModel("oSetProperty").setProperty("/oTab3visible", true);
-										this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab3");
-										this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
-										this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
-										this.getView().getModel("oSetProperty").setProperty("/oTab4visible", false);
-										oAgr.setValueState(sap.ui.core.ValueState.None);
-										oOdometer.setValueState(sap.ui.core.ValueState.None);
-										oSaleDateId.setValueState(sap.ui.core.ValueState.None);
-									}
-								}
-
-								if (this.oFlag == "" && this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("EXTENSION")) {
-									this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-									this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NoActiveArgreement"));
-									this.getView().byId("idNewECPMsgStrip").setType("Error");
-									this._fnValidateTab2();
-								}
-
-							}, this),
-							error: function () {
-								console.log("Error");
-								sap.ui.core.BusyIndicator.hide();
-							}
-						});
-
-					}
-
-				}, this),
+					},
+					this),
 				error: $.proxy(function () {
 					sap.ui.core.BusyIndicator.hide();
 				}, this)
@@ -1561,7 +1578,8 @@ sap.ui.define([
 						var factWarrentyEdate = this.getModel("LocalDataModel").getProperty("/claimData").EndDate;
 						var saleDate = this.oECPData.ZecpSaleDate;
 
-						if (odMerVal > 60000 || factWarrentyEdate.getTime() < saleDate.getTime()) {
+						if ((odMerVal > 60000 || factWarrentyEdate.getTime() < saleDate.getTime()) && this.getModel("LocalDataModel").getProperty(
+								"/UserType") != "TCI_Admin") {
 
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("NewVehiclePlanRule"));
@@ -1583,8 +1601,18 @@ sap.ui.define([
 						//For Defect 12699
 						this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", true);
 
-						if (!($.isEmptyObject(oidPlanCode)) && odMerVal <= this.oAdditionalVal && this._fnDifSaleDRegD().diffSaleRegDate <=
-							this.PlanTime) {
+						if (
+							(!($.isEmptyObject(oidPlanCode)) && odMerVal <= this.oAdditionalVal && this._fnDifSaleDRegD().diffSaleRegDate <=
+								this.PlanTime && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") ||
+							(!($.isEmptyObject(oidPlanCode)) && odMerVal <= this.oAdditionalVal && this._fnDifSaleDRegD().diffSaleRegDate <=
+								this.PlanTime && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") ||
+							(!($.isEmptyObject(oidPlanCode)) && odMerVal > this.oAdditionalVal && this.getModel("LocalDataModel").getProperty("/UserType") ==
+								"TCI_Admin") ||
+							(!($.isEmptyObject(oidPlanCode)) && this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime && this.getModel("LocalDataModel")
+								.getProperty(
+									"/UserType") == "TCI_Admin")
+
+						) {
 
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 							this.getView().byId("idNewECPMsgStrip").setType("None");
@@ -1604,7 +1632,7 @@ sap.ui.define([
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 							oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
 
-						} else if (odMerVal > this.oAdditionalVal) {
+						} else if (odMerVal > this.oAdditionalVal && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 							this._fnValidateTab4();
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 							this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
@@ -1614,7 +1642,8 @@ sap.ui.define([
 							oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 							oidPlanCodeId.setValueStateText("");
 
-						} else if (this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime) {
+						} else if (this._fnDifSaleDRegD().diffSaleRegDate > this.PlanTime && this.getModel("LocalDataModel").getProperty("/UserType") !=
+							"TCI_Admin") {
 							this._fnValidateTab4();
 							this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 							var oTimeDiffer = this.DifferTime - this.PlanTime * 24 * 60 * 60 * 1000;
@@ -1633,7 +1662,7 @@ sap.ui.define([
 
 					}
 
-					if (DataManager.fnReturnDivision() == "10") {
+					if (DataManager.fnReturnDivision() == "10" && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 						var findPlanArray = DataManager.oPlanArray.findIndex((item) => item == oSelectedPlan);
 						var findPlanArray3Y = DataManager.oPlanArray3Y.findIndex((item) => item == oSelectedPlan);
 
@@ -1655,7 +1684,7 @@ sap.ui.define([
 
 					}
 
-					if (DataManager.fnReturnDivision() == "20") {
+					if (DataManager.fnReturnDivision() == "20" && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 						var findPlanArray4Y = DataManager.oPlanArray4Y.findIndex((item) => item == oSelectedPlan);
 						if ((this._fnDifSaleDRegD().diffSaleRegDate > 1460 && findPlanArray4Y > -1) || (odMerVal > 80000 && findPlanArray4Y > -1)) {
 							this._fnValidateTab4();
@@ -1731,9 +1760,17 @@ sap.ui.define([
 
 				//Fixing Defect #11008 Hiding Surcharge boxes
 				this.getView().getModel("oSetProperty").setProperty("/oSurcharge", false);
-				if (odMerVal <= parseInt(this.mxMillage) && this._fnDifSaleDRegD().diffSaleRegDate <= MaxMonthDays &&
-					!($.isEmptyObject(
-						oidPlanCode))) {
+				if (
+					(odMerVal <= parseInt(this.mxMillage) && this._fnDifSaleDRegD().diffSaleRegDate <= MaxMonthDays &&
+						!($.isEmptyObject(oidPlanCode)) && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") ||
+					(odMerVal <= parseInt(this.mxMillage) && this._fnDifSaleDRegD().diffSaleRegDate <= MaxMonthDays &&
+						!($.isEmptyObject(oidPlanCode)) && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") ||
+					(this._fnDifSaleDRegD().diffSaleRegDate > MaxMonthDays &&
+						!($.isEmptyObject(oidPlanCode)) && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") ||
+					(odMerVal > parseInt(this.mxMillage) &&
+						!($.isEmptyObject(oidPlanCode)) && this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin")
+
+				) {
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", false);
 					this.getView().byId("idNewECPMsgStrip").setType("None");
 					this.getView().getModel("oSetProperty").setProperty("/oTab4visible", true);
@@ -1748,7 +1785,7 @@ sap.ui.define([
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 					oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
 				} else if (odMerVal > parseInt(this.mxMillage) && this._fnDifSaleDRegD().diffSaleRegDate >
-					MaxMonthDays) {
+					MaxMonthDays && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 					this._fnValidateTab4();
 					//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
 					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
@@ -1761,7 +1798,7 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 
-				} else if (odMerVal > parseInt(this.mxMillage)) {
+				} else if (odMerVal > parseInt(this.mxMillage) && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 					this._fnValidateTab4();
 					this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("maxMillageExby") + " " + (odMerVal -
@@ -1769,7 +1806,8 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStrip").setType("Error");
 					oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 
-				} else if (this._fnDifSaleDRegD().diffSaleRegDate > MaxMonthDays) {
+				} else if (this._fnDifSaleDRegD().diffSaleRegDate > MaxMonthDays && this.getModel("LocalDataModel").getProperty("/UserType") !=
+					"TCI_Admin") {
 					this._fnValidateTab4();
 
 					difDayMonth = this._fnDifSaleDRegD().diffSaleRegDate - MaxMonthDays;
@@ -1957,7 +1995,8 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				this.getModel("LocalDataModel").setProperty("/odometerState", "Error");
 			} else if (oOdoVal > parseInt(this.oAdditionalVal) &&
-				(oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType == "ENTENTE POUR VÉHICULE NEUF")) {
+				(oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType == "ENTENTE POUR VÉHICULE NEUF") && this.getModel("LocalDataModel").getProperty(
+					"/UserType") != "TCI_Admin") {
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
 				this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("Odometervalueexceeds") + " " +
 					(oOdoVal - this.oAdditionalVal) + this.oBundle
@@ -1971,7 +2010,8 @@ sap.ui.define([
 					.getText("KMagainstplanmilagevalue"));
 
 			} else if (oOdoVal > parseInt(this.mxMillage) &&
-				(oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ")) {
+				(oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ") && this.getModel("LocalDataModel").getProperty(
+					"/UserType") != "TCI_Admin") {
 				//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
 
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
@@ -1989,7 +2029,7 @@ sap.ui.define([
 			}
 
 			var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
-			if (DataManager.fnReturnDivision() == "20") {
+			if (DataManager.fnReturnDivision() == "20" && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 				var findPlanArray4Y = DataManager.oPlanArray4Y.findIndex((item) => item == oSelectedPlan);
 				if (oOdoVal > 80000 && findPlanArray4Y > -1) {
 
@@ -2000,7 +2040,7 @@ sap.ui.define([
 				}
 			}
 
-			if (DataManager.fnReturnDivision() == "10") {
+			if (DataManager.fnReturnDivision() == "10" && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 				var findPlanArray6000 = DataManager.oPlanArray6000.findIndex((item) => item == oSelectedPlan);
 				if (oOdoVal > 60000 && findPlanArray6000 > -1) {
 					this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
@@ -2010,7 +2050,8 @@ sap.ui.define([
 				}
 			}
 
-			if (oOdoVal <= 50000 && this._fnDifSaleDRegD().diffSaleRegDate < 1095 && (oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType == "ENTENTE POUR VÉHICULE NEUF")) {
+			if (oOdoVal <= 50000 && this._fnDifSaleDRegD().diffSaleRegDate < 1095 && (oAgrType == "NEW VEHICLE AGREEMENT" || oAgrType ==
+					"ENTENTE POUR VÉHICULE NEUF")) {
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 				this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", this.oBundle.getText("Yes"));
 			} else if (oOdoVal > 50000 || this._fnDifSaleDRegD().diffSaleRegDate > 1095) {
@@ -2756,9 +2797,17 @@ sap.ui.define([
 			//ReValidating form
 
 		},
+		_fnBusIndConv: function (type) {
+			if (type == "Organization" || type == "Organisation") {
+				return "Organization";
+			} else {
+				return "Individual";
+			}
+		},
 		_fnObject: function (elm, stat) {
 			var currentDate = new Date();
 			var zagr = this.agreementTypeChange(this.oECPData.ZecpAgrType);
+			var IndBU = this.getModel("LocalDataModel").getProperty("/VechOwnrSectAddOnAppSub_BpType");
 			var crudObj = {
 				DBOperation: elm,
 				BPTYPE: this.getView().getModel("LocalDataModel").getProperty("/PricingModelData/BPTYPE"),
@@ -2816,7 +2865,7 @@ sap.ui.define([
 				ZecpPostalcode: this.oECPData.ZecpPostalcode,
 				ZecpHomePhone: this.oECPData.ZecpHomePhone,
 				ZecpBusExt: "",
-				ZecpBusOrInd: "",
+				ZecpBusOrInd: this._fnBusIndConv(IndBU),
 				ZecpModelcode: this.oECPData.ZecpModelcode,
 				BccEcpAgrmntNum: "",
 				BccVin: this.oECPData.ZecpVin,
@@ -3324,10 +3373,8 @@ sap.ui.define([
 
 										} else if (bpdata.results[0].BusinessPartnerCategory === "2") {
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].OrganizationBPName1);
-											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel(
-													"i18n")
-												.getResourceBundle()
-												.getText("Organization"));
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType",
+												this.getView().getModel("i18n").getResourceBundle().getText("Organization"));
 										}
 
 									}, this),
