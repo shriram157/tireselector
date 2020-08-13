@@ -2799,7 +2799,7 @@ sap.ui.define([
 		},
 		_fnBusIndConv: function (type) {
 			if (type == "Organization" || type == "Organisation") {
-				return "Organization";
+				return "Business";
 			} else {
 				return "Individual";
 			}
