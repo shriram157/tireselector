@@ -1111,7 +1111,7 @@ sap.ui.define([
 											var oSaleYear = new Date(oSaleDate).getFullYear();
 											var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
 											var oyearGap = parseInt(oSaleYear - oModelYr);
-											if (oyearGap > 7) {
+											if (oyearGap > 7 && this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") {
 												this._fnValidateTab2();
 												this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
 												this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("Modelyearexceedsby") + " " + parseInt(oyearGap -
@@ -1697,43 +1697,7 @@ sap.ui.define([
 
 				}, this));
 
-			//var difDay = this._fnDifSaleDRegD().diffSaleRegDate;
-
-			// for (var i = 0; i < DataManager.oPlanArray.length; i++) {
-			// 	if (oPlanArray[i] == oSelectedPlan) {
-			// 		if (this._fnDifSaleDRegD().diffSaleRegDate > 31) {
-			// 			this._fnValidateTab4();
-			// 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// 			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("RDR31Days"));
-			// 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// 			oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-			// 		}
-			// 	}
-			// }
-
-			// for (var i = 0; i < DataManager.oPlanArray3Y.length; i++) {
-			// 	if (oPlanArray[i] == oSelectedPlan) {
-			// 		if (this._fnDifSaleDRegD().diffSaleRegDate > 1095) {
-			// 			this._fnValidateTab4();
-			// 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// 			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("RDR31Days"));
-			// 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// 			oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-			// 		}
-			// 	}
-			// }
-
-			// for (var i = 0; i < DataManager.oPlanArray4Y.length; i++) {
-			// 	if (oPlanArray[i] == oSelectedPlan) {
-			// 		if (this._fnDifSaleDRegD().diffSaleRegDate > 1460) {
-			// 			this._fnValidateTab4();
-			// 			this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// 			this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("RDR31Days"));
-			// 			this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// 			oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
-			// 		}
-			// 	}
-			// }
+			
 
 			var oMonthDef = this.DifferTime;
 
