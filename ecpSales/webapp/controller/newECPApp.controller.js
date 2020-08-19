@@ -126,7 +126,8 @@ sap.ui.define([
 				this.getView().getModel("DateModel").setProperty("/editAgrType", false);
 
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-					pattern: "yyyy-MM-ddTHH:mm:ss"
+					pattern: "yyyy-MM-ddTHH:mm:ss",
+					 UTC : true
 				});
 
 				var oZECPModel = this.getModel("EcpSalesModel");
@@ -937,7 +938,8 @@ sap.ui.define([
 			}
 
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-				pattern: "yyyy-MM-ddTHH:mm:ss"
+				pattern: "yyyy-MM-ddTHH:mm:ss",
+				 UTC : true
 			});
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
@@ -2030,7 +2032,8 @@ sap.ui.define([
 		updateSurchargeValue: function (odoMeterState) {
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-				pattern: "yyyy-MM-ddTHH:mm:ss"
+				pattern: "yyyy-MM-ddTHH:mm:ss",
+				 UTC : true
 			});
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
@@ -3199,7 +3202,8 @@ sap.ui.define([
 			}
 
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-				pattern: "yyyy-MM-ddTHH:mm:ss"
+				pattern: "yyyy-MM-ddTHH:mm:ss",
+				 UTC : true
 			});
 			var oFormatedSaleDate = oDateFormat.format(new Date(oECPData.ZecpSaleDate));
 			var agreeTypeKey = this.getTypeOfAggreementKey(oECPData.ZecpAgrType);
