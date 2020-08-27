@@ -135,9 +135,9 @@ sap.ui.define([
 
 									this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress", budata.results[0]);
 									if (budata.results[0].to_EmailAddress.results.length > 0) {
-										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress.results[
-											0].EmailAddress);
-
+										var oEmailAdd = budata.results[0].to_EmailAddress.results;
+										var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true);
+										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/EmailAddress", sEmail[0].EmailAddress);
 									}
 									if (budata.results[0].to_PhoneNumber.results.length > 0) {
 										this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber.results[
@@ -248,8 +248,9 @@ sap.ui.define([
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
 											if (budata.results[0].to_EmailAddress.results.length > 0) {
-												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/EmailAddress", budata.results[0].to_EmailAddress
-													.results[0].EmailAddress);
+												var oEmailAdd = budata.results[0].to_EmailAddress.results;
+												var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true);
+												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/EmailAddress", sEmail[0].EmailAddress);
 											}
 											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", budata.results[0].to_PhoneNumber
