@@ -241,14 +241,10 @@ sap.ui.define([
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", businessB.results[
 											0].BusinessPartnerCategory);
 										if (businessB.results[0].BusinessPartnerCategory === "1") {
-											// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
-											// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
+											
 
-											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName +
-												" " + businessB.results[
-													0].LastName);
-											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle()
-												.getText("Individual")); // added translation
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName + " " + businessB.results[0].LastName);
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle().getText("Individual")); // added translation
 
 										} else if (businessB.results[0].BusinessPartnerCategory === "2") {
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].OrganizationBPName1);
@@ -655,11 +651,10 @@ sap.ui.define([
 
 								var oDataRes = data.results;
 
-								var oResults = oDataRes.filter(function (v, i) {
-									return ((v["PlanType"] == "NTC34" || v["PlanType"] == "NLC46") || v["PlanType"] == "NTC94" || v["PlanType"] ==
-										"NTC45" ||
-										v["PlanType"] == "NTC46" || v["PlanType"] == "NTC47");
-								});
+								var oResults = oDataRes.filter(v=> 
+									v["PlanType"].startsWith("NTC34") || v["PlanType"].startsWith("NLC46") || v["PlanType"].startsWith("NTC94") || 
+									v["PlanType"].startsWith("NTC45") || v["PlanType"].startsWith("NTC46") || v["PlanType"].startsWith("NTC47")
+								);
 
 								this.getModel("LocalDataModel").setProperty("/AgreementDataActive", oResults);
 
