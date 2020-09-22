@@ -191,7 +191,7 @@ sap.ui.define([
 										if (businessA.results != "") {
 											if (businessA.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", businessA.results[0].to_EmailAddress.results[
-													0].EmailAddress);
+													0].EmailAddress.toUpperCase());
 											} else {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", "");
 											}
@@ -226,16 +226,16 @@ sap.ui.define([
 
 										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", businessB.results[0]);
 
-										this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", businessB.results[0].FirstName +
+										this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", businessB.results[0].FirstName.toUpperCase() +
 											" " + businessB.results[
-												0].LastName);
+												0].LastName.toUpperCase());
 
-										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", businessB.results[0].FirstName ||
+										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", businessB.results[0].FirstName.toUpperCase() ||
 											"");
-										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", businessB.results[0].LastName || "");
+										this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", businessB.results[0].LastName.toUpperCase() || "");
 
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", businessB.results[0].FirstName);
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", businessB.results[0].LastName);
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", businessB.results[0].FirstName.toUpperCase());
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", businessB.results[0].LastName.toUpperCase());
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", businessB.results[
 											0].BusinessPartnerCategory);
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", businessB.results[
@@ -243,7 +243,7 @@ sap.ui.define([
 										if (businessB.results[0].BusinessPartnerCategory === "1") {
 											
 
-											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName + " " + businessB.results[0].LastName);
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName.toUpperCase() + " " + businessB.results[0].LastName.toUpperCase());
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle().getText("Individual")); // added translation
 
 										} else if (businessB.results[0].BusinessPartnerCategory === "2") {
@@ -762,18 +762,6 @@ sap.ui.define([
 					//this.getModel("LocalDataModel").setProperty("/enabledNext01", false);
 				}, this)
 			});
-
-			// 			if (!($.isEmptyObject(oVal)) && oVal.length === 17) {
-
-			// 			} else if ($.isEmptyObject(oVal)) {
-			// 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EVIN"));
-			// 				this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// 				oVin.setValueStateText(this.oBundle.getText("ECP0007EVIN"));
-			// 				oVin.setValueState(sap.ui.core.ValueState.Error);
-			// 			} else if (oVal.length < 17) {
-
-			// 			}
 		},
 
 		onSelectAgrType: function (oEvent) {
@@ -814,7 +802,7 @@ sap.ui.define([
 
 						this.getModel("LocalDataModel").setProperty("/OwnerData", data.results[0]);
 						if (data.results != "") {
-							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress);
+							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress.toUpperCase());
 							this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber);
 							this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber);
 						}
@@ -831,11 +819,11 @@ sap.ui.define([
 					success: $.proxy(function (data) {
 						console.log(data);
 						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName", data.results[0]);
-						this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
+						this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName.toUpperCase() +
 							" " + data.results[
-								0].LastName);
-						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName || "");
-						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", data.results[0].LastName || "");
+								0].LastName.toUpperCase());
+						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName.toUpperCase() || "");
+						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/LastName", data.results[0].LastName.toUpperCase() || "");
 
 					}, this),
 					error: function () {
@@ -1278,7 +1266,7 @@ sap.ui.define([
 
 						if (data.results[0].to_EmailAddress.results.length > 0) {
 							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[
-								0].EmailAddress);
+								0].EmailAddress.toUpperCase());
 						}
 						if (data.results[0].to_PhoneNumber.results.length > 0) {
 							this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[
@@ -1304,7 +1292,7 @@ sap.ui.define([
 						this.oECPData.ZecpAddress = data.results[0].StreetName;
 					}
 					if (data.results[0].to_EmailAddress.results.length > 0) {
-						this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress;
+						this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress.toUpperCase();
 					} else {
 						this.oECPData.ZecpEmail = "";
 					}
@@ -1341,11 +1329,11 @@ sap.ui.define([
 					}
 					if (data.results[0].FirstName != undefined || data.results[0].FirstName != "") {
 						this.oECPData.ZecpCustName = data.results[0].FirstName;
-						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName);
+						this.getModel("LocalDataModel").setProperty("/AgreementOwnerName/FirstName", data.results[0].FirstName.toUpperCase());
 					}
-					this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
+					this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName.toUpperCase() +
 						" " + data.results[
-							0].LastName);
+							0].LastName.toUpperCase());
 				}, this),
 				error: function () {}
 			});
@@ -1846,7 +1834,7 @@ sap.ui.define([
 							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
 							if (budata.results[0].to_EmailAddress.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress.results[
-									0].EmailAddress);
+									0].EmailAddress.toUpperCase());
 							}
 							if (budata.results[0].to_PhoneNumber.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber.results[
@@ -1875,16 +1863,16 @@ sap.ui.define([
 					},
 					success: $.proxy(function (bpdata) {
 
-						this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", bpdata.results[0].FirstName);
-						this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", bpdata.results[0].LastName);
+						this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", bpdata.results[0].FirstName.toUpperCase());
+						this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", bpdata.results[0].LastName.toUpperCase());
 						this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
 						this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[0].BusinessPartnerCategory);
 						if (bpdata.results[0].BusinessPartnerCategory === "1") {
 							// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
 							// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
 
-							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].FirstName + " " + bpdata.results[
-								0].LastName);
+							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].FirstName.toUpperCase() + " " + bpdata.results[
+								0].LastName.toUpperCase());
 							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle()
 								.getText("Individual")); // added translation
 
@@ -2717,13 +2705,13 @@ sap.ui.define([
 			objSub.ZecpCustNum = oOwnerData.BusinessPartner;
 			objSub.BPTYPE = oPricingModelData.BPTYPE;
 
-			objSub.ZecpLastName = oAgreementOwnerName.LastName;
-			objSub.ZecpCustName = oAgreementOwnerName.FirstName;
+			objSub.ZecpLastName = oAgreementOwnerName.LastName.toUpperCase();
+			objSub.ZecpCustName = oAgreementOwnerName.FirstName.toUpperCase();
 			objSub.ZecpAddress = oOwnerData.StreetName;
 			objSub.ZecpCity = oOwnerData.CityName;
 			objSub.ZecpProvince = oOwnerData.Region;
 			objSub.ZecpPostalcode = oOwnerData.PostalCode;
-			objSub.ZecpEmail = oOwnerData.EmailAddress;
+			objSub.ZecpEmail = oOwnerData.EmailAddress.toUpperCase();
 			objSub.ZecpBusPhone = oOwnerData.ZecpBusPhone;
 			objSub.ZecpHomePhone = oOwnerData.FaxNumber;
 
@@ -3282,7 +3270,7 @@ sap.ui.define([
 											if (budata.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress
 													.results[
-														0].EmailAddress);
+														0].EmailAddress.toUpperCase());
 											}
 											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
@@ -3315,8 +3303,8 @@ sap.ui.define([
 									},
 									success: $.proxy(function (bpdata) {
 
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", bpdata.results[0].FirstName);
-										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", bpdata.results[0].LastName);
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FirstName", bpdata.results[0].FirstName.toUpperCase());
+										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/LastName", bpdata.results[0].LastName.toUpperCase());
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[
 											0].BusinessPartnerCategory);
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", bpdata.results[
@@ -3325,10 +3313,10 @@ sap.ui.define([
 											// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Name", bpdata.results[0].FirstName+" "+ bpdata.results[0].LastName);
 											// this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/BpType", "Individual");
 
-											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].FirstName +
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", bpdata.results[0].FirstName.toUpperCase() +
 												" " +
 												bpdata.results[
-													0].LastName);
+													0].LastName.toUpperCase());
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel(
 													"i18n")
 												.getResourceBundle()
