@@ -241,8 +241,6 @@ sap.ui.define([
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", businessB.results[
 											0].BusinessPartnerCategory);
 										if (businessB.results[0].BusinessPartnerCategory === "1") {
-											
-
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName + " " + businessB.results[0].LastName);
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle().getText("Individual")); // added translation
 
@@ -258,6 +256,7 @@ sap.ui.define([
 								});
 							}, this)
 						});
+						
 
 						oZECPModel.read("/zc_ecp_crud_operationsSet", {
 							urlParameters: {
