@@ -191,21 +191,21 @@ sap.ui.define([
 										if (businessA.results != "") {
 											if (businessA.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", businessA.results[0].to_EmailAddress.results[
-													0].EmailAddress);
+													0].EmailAddress || "");
 											} else {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", "");
 											}
 
 											if (businessA.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", businessA.results[0].to_PhoneNumber.results[
-													0].PhoneNumber);
+													0].PhoneNumber || "");
 											} else {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", "");
 
 											}
 											if (businessA.results[0].to_FaxNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", businessA.results[0].to_FaxNumber.results[
-													0].FaxNumber);
+													0].FaxNumber || "");
 											} else {
 												this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", "");
 
@@ -241,8 +241,6 @@ sap.ui.define([
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", businessB.results[
 											0].BusinessPartnerCategory);
 										if (businessB.results[0].BusinessPartnerCategory === "1") {
-											
-
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName + " " + businessB.results[0].LastName);
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle().getText("Individual")); // added translation
 
@@ -258,6 +256,7 @@ sap.ui.define([
 								});
 							}, this)
 						});
+						
 
 						oZECPModel.read("/zc_ecp_crud_operationsSet", {
 							urlParameters: {
@@ -514,7 +513,12 @@ sap.ui.define([
 			}, {
 				typeNames: this.oBundle.getText("EXTENSION"),
 				typeKey: "EXTENSION"
-			}];
+			},
+			{
+				typeNames: this.oBundle.getText("CERTIFIED"),
+				typeKey: "CERTIFIED"
+			}
+			];
 
 			var oZECPModel = this.getModel("EcpSalesModel");
 
@@ -603,6 +607,8 @@ sap.ui.define([
 								"$filter": "VIN eq '" + VinNum + "' "
 							},
 							success: $.proxy(function (data) {
+								
+								if(data.results.length > 0){
 
 								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
@@ -635,7 +641,7 @@ sap.ui.define([
 								}
 
 								this.oECPData = this.getView().getModel("EcpFieldData").getData();
-
+								}
 							}, this),
 							error: function (err) {
 								console.log(err);
@@ -763,17 +769,6 @@ sap.ui.define([
 				}, this)
 			});
 
-			// 			if (!($.isEmptyObject(oVal)) && oVal.length === 17) {
-
-			// 			} else if ($.isEmptyObject(oVal)) {
-			// 				this.getView().byId("idNewECPMsgStrip").setProperty("visible", true);
-			// 				this.getView().byId("idNewECPMsgStrip").setText(this.oBundle.getText("ECP0007EVIN"));
-			// 				this.getView().byId("idNewECPMsgStrip").setType("Error");
-			// 				oVin.setValueStateText(this.oBundle.getText("ECP0007EVIN"));
-			// 				oVin.setValueState(sap.ui.core.ValueState.Error);
-			// 			} else if (oVal.length < 17) {
-
-			// 			}
 		},
 
 		onSelectAgrType: function (oEvent) {
@@ -814,9 +809,15 @@ sap.ui.define([
 
 						this.getModel("LocalDataModel").setProperty("/OwnerData", data.results[0]);
 						if (data.results != "") {
-							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress);
-							this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber);
-							this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber);
+							if(data.results[0].to_EmailAddress.results.length > 0){
+							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress || "");
+							}
+							if(data.results[0].to_PhoneNumber.results.length > 0){
+							this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber || "");
+							}
+							if(data.results[0].to_FaxNumber.results.length > 0){
+							this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber || "");
+							}
 						}
 					}, this),
 					error: function () {
@@ -868,6 +869,9 @@ sap.ui.define([
 			if (planTypeStr === oBundle.getText("EXTENSION")) {
 				return "EXTENSION";
 			}
+			if (planTypeStr === oBundle.getText("CERTIFIED")) {
+				return "CERTIFIED";
+			}
 
 		},
 
@@ -883,6 +887,9 @@ sap.ui.define([
 			if (planTypeStr === "EXTENSION" || planTypeStr === "PROLONGATION") {
 				return "EXTENSION";
 			}
+			if (planTypeStr === "CERTIFIED" || planTypeStr === "AGRÉÉ") {
+				return "CERTIFIED";
+			}
 
 		},
 
@@ -897,6 +904,9 @@ sap.ui.define([
 			}
 			if (planTypeStr === "EXTENSION" || planTypeStr === "PROLONGATION") {
 				return retVal = oBundle.getText("EXTENSION", planTypeStr);
+			}
+			if (planTypeStr === "CERTIFIED" || planTypeStr === "AGRÉÉ") {
+				return retVal = oBundle.getText("CERTIFIED", planTypeStr);
 			}
 		},
 		_fnValidateTab2: function () {
@@ -1278,12 +1288,12 @@ sap.ui.define([
 
 						if (data.results[0].to_EmailAddress.results.length > 0) {
 							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[
-								0].EmailAddress);
+								0].EmailAddress || "");
 						}
 						if (data.results[0].to_PhoneNumber.results.length > 0) {
 							this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[
 									0]
-								.PhoneNumber);
+								.PhoneNumber || "");
 						}
 
 						if (data.results[0].to_FaxNumber.results.length > 0) {
@@ -3281,8 +3291,7 @@ sap.ui.define([
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
 											if (budata.results[0].to_EmailAddress.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress
-													.results[
-														0].EmailAddress);
+													.results[0].EmailAddress || "");
 											}
 											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
