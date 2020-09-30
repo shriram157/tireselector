@@ -127,7 +127,7 @@ sap.ui.define([
 
 				var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 					pattern: "yyyy-MM-ddTHH:mm:ss",
-					 UTC : true
+					UTC: true
 				});
 
 				var oZECPModel = this.getModel("EcpSalesModel");
@@ -241,8 +241,10 @@ sap.ui.define([
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/BusinessPartnerCategory", businessB.results[
 											0].BusinessPartnerCategory);
 										if (businessB.results[0].BusinessPartnerCategory === "1") {
-											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName + " " + businessB.results[0].LastName);
-											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle().getText("Individual")); // added translation
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName +
+												" " + businessB.results[0].LastName);
+											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n").getResourceBundle()
+												.getText("Individual")); // added translation
 
 										} else if (businessB.results[0].BusinessPartnerCategory === "2") {
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].OrganizationBPName1);
@@ -256,7 +258,6 @@ sap.ui.define([
 								});
 							}, this)
 						});
-						
 
 						oZECPModel.read("/zc_ecp_crud_operationsSet", {
 							urlParameters: {
@@ -513,12 +514,10 @@ sap.ui.define([
 			}, {
 				typeNames: this.oBundle.getText("EXTENSION"),
 				typeKey: "EXTENSION"
-			},
-			{
+			}, {
 				typeNames: this.oBundle.getText("CERTIFIED"),
 				typeKey: "CERTIFIED"
-			}
-			];
+			}];
 
 			var oZECPModel = this.getModel("EcpSalesModel");
 
@@ -607,40 +606,40 @@ sap.ui.define([
 								"$filter": "VIN eq '" + VinNum + "' "
 							},
 							success: $.proxy(function (data) {
-								
-								if(data.results.length > 0){
 
-								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
+								if (data.results.length > 0) {
 
-								this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
-								this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
-									"/ApplicationOwnerData/ECPPlanCode"));
-								this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.getModel("LocalDataModel").getProperty(
-									"/ApplicationOwnerData/Odometer"));
-								this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
-									"/ApplicationOwnerData/AgreementType"));
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
-								// oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
-								// 	"/ApplicationOwnerData/SaleDate")));
+									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
+									this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
+										"/ApplicationOwnerData/ECPPlanCode"));
+									this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.getModel("LocalDataModel").getProperty(
+										"/ApplicationOwnerData/Odometer"));
+									this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
+										"/ApplicationOwnerData/AgreementType"));
 
-								// ApplicationOwnerData_Name
+									// oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
+									// 	"/ApplicationOwnerData/SaleDate")));
 
-								if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
+									// ApplicationOwnerData_Name
 
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-											"i18n").getResourceBundle()
-										.getText("Organization"));
+									if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
 
-								} else {
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
-										" " + data.results[0].CustomerLastName);
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-											"i18n").getResourceBundle()
-										.getText("Individual")); // added translation
-								}
+										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
+										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+												"i18n").getResourceBundle()
+											.getText("Organization"));
 
-								this.oECPData = this.getView().getModel("EcpFieldData").getData();
+									} else {
+										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
+											" " + data.results[0].CustomerLastName);
+										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+												"i18n").getResourceBundle()
+											.getText("Individual")); // added translation
+									}
+
+									this.oECPData = this.getView().getModel("EcpFieldData").getData();
 								}
 							}, this),
 							error: function (err) {
@@ -657,8 +656,8 @@ sap.ui.define([
 
 								var oDataRes = data.results;
 
-								var oResults = oDataRes.filter(v=> 
-									v["PlanType"].startsWith("NTC34") || v["PlanType"].startsWith("NLC46") || v["PlanType"].startsWith("NTC94") || 
+								var oResults = oDataRes.filter(v =>
+									v["PlanType"].startsWith("NTC34") || v["PlanType"].startsWith("NLC46") || v["PlanType"].startsWith("NTC94") ||
 									v["PlanType"].startsWith("NTC45") || v["PlanType"].startsWith("NTC46") || v["PlanType"].startsWith("NTC47")
 								);
 
@@ -809,14 +808,17 @@ sap.ui.define([
 
 						this.getModel("LocalDataModel").setProperty("/OwnerData", data.results[0]);
 						if (data.results != "") {
-							if(data.results[0].to_EmailAddress.results.length > 0){
-							this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress || "");
+							if (data.results[0].to_EmailAddress.results.length > 0) {
+								this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress ||
+									"");
 							}
-							if(data.results[0].to_PhoneNumber.results.length > 0){
-							this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber || "");
+							if (data.results[0].to_PhoneNumber.results.length > 0) {
+								this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber ||
+									"");
 							}
-							if(data.results[0].to_FaxNumber.results.length > 0){
-							this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber || "");
+							if (data.results[0].to_FaxNumber.results.length > 0) {
+								this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[0].FaxNumber ||
+									"");
 							}
 						}
 					}, this),
@@ -944,7 +946,7 @@ sap.ui.define([
 
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "yyyy-MM-ddTHH:mm:ss",
-				 UTC : true
+				UTC: true
 			});
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
@@ -1114,7 +1116,8 @@ sap.ui.define([
 											oAgr.setValueStateText(this.oBundle.getText("PleaseSelectAgreementType"));
 										}
 
-										if (this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("USEDVEHICLEAGREEMENT")) {
+										if (this.fnLanguageCheck(oAgrItem) == this.oBundle.getText("USEDVEHICLEAGREEMENT") || this.fnLanguageCheck(oAgrItem) ==
+											this.oBundle.getText("CERTIFIED")) {
 											var oSaleYear = new Date(oSaleDate).getFullYear();
 											var oModelYr = this.getModel("LocalDataModel").getProperty("/PricingModelData/ZZMOYR");
 											var oyearGap = parseInt(oSaleYear - oModelYr);
@@ -1300,35 +1303,35 @@ sap.ui.define([
 							this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[
 								0].FaxNumber);
 						}
-					}
 
-					this.oECPData = this.getView().getModel("EcpFieldData").getData();
+						this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
-					if (data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
-						this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
-					}
-					if (data.results[0].CityName != undefined || data.results[0].CityName != "") {
-						this.oECPData.ZecpCity = data.results[0].CityName;
-					}
-					if (data.results[0].StreetName != undefined || data.results[0].StreetName != "") {
-						this.oECPData.ZecpAddress = data.results[0].StreetName;
-					}
-					if (data.results[0].to_EmailAddress.results.length > 0) {
-						this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress;
-					} else {
-						this.oECPData.ZecpEmail = "";
-					}
-					if (data.results[0].PostalCode != undefined || data.results[0].PostalCode != "") {
-						this.oECPData.ZecpPostalcode = data.results[0].PostalCode;
-					}
-					if (data.results[0].Region != undefined || data.results[0].Region != "") {
-						this.oECPData.ZecpProvince = data.results[0].Region;
-					}
-					if (data.results[0].to_PhoneNumber.results.length > 0) {
-						this.oECPData.ZecpHomePhone = data.results[0].to_PhoneNumber.results[0].PhoneNumber;
-					}
-					if (data.results[0].to_FaxNumber.results.length > 0) {
-						this.oECPData.ZecpBusPhone = data.results[0].to_FaxNumber.results[0].FaxNumber;
+						if (data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
+							this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
+						}
+						if (data.results[0].CityName != undefined || data.results[0].CityName != "") {
+							this.oECPData.ZecpCity = data.results[0].CityName;
+						}
+						if (data.results[0].StreetName != undefined || data.results[0].StreetName != "") {
+							this.oECPData.ZecpAddress = data.results[0].StreetName;
+						}
+						if (data.results[0].to_EmailAddress.results.length > 0) {
+							this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress;
+						} else {
+							this.oECPData.ZecpEmail = "";
+						}
+						if (data.results[0].PostalCode != undefined || data.results[0].PostalCode != "") {
+							this.oECPData.ZecpPostalcode = data.results[0].PostalCode;
+						}
+						if (data.results[0].Region != undefined || data.results[0].Region != "") {
+							this.oECPData.ZecpProvince = data.results[0].Region;
+						}
+						if (data.results[0].to_PhoneNumber.results.length > 0) {
+							this.oECPData.ZecpHomePhone = data.results[0].to_PhoneNumber.results[0].PhoneNumber;
+						}
+						if (data.results[0].to_FaxNumber.results.length > 0) {
+							this.oECPData.ZecpBusPhone = data.results[0].to_FaxNumber.results[0].FaxNumber;
+						}
 					}
 
 				}, this),
@@ -1704,8 +1707,6 @@ sap.ui.define([
 
 				}, this));
 
-			
-
 			var oMonthDef = this.DifferTime;
 
 			var MaxMonthDays = parseInt(this.mxMonth * 30.42);
@@ -1714,8 +1715,11 @@ sap.ui.define([
 			// var PlanMonthInDay = Math.round(this.mxMonth * 30.42);
 
 			//this.DifferTime <= this.PlanTime
-
-			if (this.oECPData.ZecpAgrType === "ENTENTE DE VÉHICULE USAGÉ" || this.oECPData.ZecpAgrType == "USED VEHICLE AGREEMENT") {
+			var oAgrTyp = this.oECPData.ZecpAgrType;
+// this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT")
+			if (this.fnLanguageCheck(oAgrTyp) ===  this.oBundle.getText("USEDVEHICLEAGREEMENT") || this.fnLanguageCheck(oAgrTyp) ===  this.oBundle.getText("CERTIFIED")
+			
+			) {
 
 				//to Fix Defect #12699
 				var isUsedPrimPlan = this.check4PrimUsedVehiclePlan(oSelectedPlan);
@@ -2038,7 +2042,7 @@ sap.ui.define([
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "yyyy-MM-ddTHH:mm:ss",
-				 UTC : true
+				UTC: true
 			});
 
 			var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
@@ -3208,7 +3212,7 @@ sap.ui.define([
 
 			var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
 				pattern: "yyyy-MM-ddTHH:mm:ss",
-				 UTC : true
+				UTC: true
 			});
 			var oFormatedSaleDate = oDateFormat.format(new Date(oECPData.ZecpSaleDate));
 			var agreeTypeKey = this.getTypeOfAggreementKey(oECPData.ZecpAgrType);
