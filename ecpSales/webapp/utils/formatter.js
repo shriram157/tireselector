@@ -89,6 +89,14 @@ zecp.utils.formatter = {
 		
 		// return cutNameF+CustNameL+custType+companyNm;
 	},
+	convUpperCase : function(s){
+		var oval="";
+		if(s !== "" && s !== undefined){
+			oval = s.toUpperCase();
+		}
+		return oval;
+		
+	},
 	enquiryPageCnclFee:function(planCode,cancleFee){
 		//UTR3A 
 			var vehCnclFeeNAPlan = ["ULR1A", "ULR2A", "ULPZY", "ULP1D", "ULP2E", "UTR1A", "UTR1B", "UTUZH", "UTUWC"];

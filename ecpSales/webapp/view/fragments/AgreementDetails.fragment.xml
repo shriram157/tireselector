@@ -15,7 +15,7 @@
 							<Label text="{i18n>Language}"/>
 							<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
 							<Label text="{i18n>Name}"/>
-							<Text text="{LocalDataModel>/responseData/ZecpLastName} {LocalDataModel>/responseData/ZecpCustName}"/>
+							<Text text="{path:'LocalDataModel>/responseData/ZecpLastName', formatter:'zecp.utils.formatter.convUpperCase'} {path:'LocalDataModel>/responseData/ZecpCustName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 							<Label text="{i18n>Address}"/>
 							<Text text="{LocalDataModel>/responseData/ZecpAddress}"/>
 							<Label text="{i18n>City}"/>
@@ -25,7 +25,7 @@
 							<Label text="{i18n>PostalCode}"/>
 							<Text text="{LocalDataModel>/responseData/ZecpPostalcode}"/>
 							<Label text="{i18n>Email}"/>
-							<Text text="{LocalDataModel>/responseData/ZecpEmail}"/>
+							<Text text="{path:'LocalDataModel>/responseData/ZecpEmail', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 							<Label text="{i18n>Home}"/>
 							<Text text="{LocalDataModel>/responseData/ZecpBusPhone}"/>
 							<Label text="{i18n>Business}"/>
@@ -45,7 +45,8 @@
 							<Label text="{i18n>Language}"/>
 							<Text text="{path: 'LocalDataModel>/BusinessPartnerData/Language'}"/>
 							<Label text="{i18n>Name}"/>
-							<Text text="{LocalDataModel>/responseData/ZecpLastName} {LocalDataModel>/responseData/ZecpCustName}"/>
+							<Text text="{path:'LocalDataModel>/responseData/ZecpLastName', formatter:'zecp.utils.formatter.convUpperCase'} 
+							{path:'LocalDataModel>/responseData/ZecpCustName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 							<Label text="{i18n>Address}"/>
 							<Text text="{LocalDataModel>/responseData/ZecpAddress}"/>
 							<Label text="{i18n>City}"/>
@@ -55,7 +56,7 @@
 							<Label text="{i18n>PostalCode}"/>
 							<Text text="{LocalDataModel>/responseData/ZecpPostalcode}"/>
 							<Label text="{i18n>Email}"/>
-							<Text text="{LocalDataModel>/responseData/ZecpEmail}"/>
+							<Text text="{path:'LocalDataModel>/responseData/ZecpEmail', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 							<Label text="{i18n>Home}"/>
 							<Text text="{LocalDataModel>/responseData/ZecpBusPhone}"/>
 							<Label text="{i18n>Business}"/>

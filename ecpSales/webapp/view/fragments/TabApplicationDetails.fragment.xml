@@ -41,7 +41,7 @@
 						<Text text="{LocalDataModel>/OwnerData/Language}"/>
 						<Label text="{i18n>Name}" textAlign="Begin"/>
 						<!--<Text text="{LocalDataModel>/AgreementOwnerName/LastName} {LocalDataModel>/AgreementOwnerName/FirstName}"/>-->
-						<Text text="{LocalDataModel>/AgrOwnerSectAddOnAppSub_Name}"/>
+						<Text text="{path:'LocalDataModel>/AgrOwnerSectAddOnAppSub_Name', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Address}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
 						<Label text="{i18n>City}" textAlign="Begin"/>
@@ -51,7 +51,7 @@
 						<Label text="{i18n>PostalCode}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/PostalCode}"/>
 						<Label text="{i18n>Email}" textAlign="Begin"/>
-						<Text text="{LocalDataModel>/OwnerData/EmailAddress}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/EmailAddress', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Home}" textAlign="Begin"/>
 						<Text text="{LocalDataModel>/OwnerData/PhoneNumber}"/>
 						<Label text="{i18n>Business}" textAlign="Begin"/>
@@ -71,7 +71,7 @@
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Language}"/>
 						<Label text="{i18n>Name}"/>
 						<!--<Text text="{LocalDataModel>/ApplicationOwnerData/CustomerName} {LocalDataModel>/ApplicationOwnerData/CustomerLastName}"/>-->
-						<Text text="{LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_Name}"/>
+						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_Name', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Address}"/>
 						<Text text="{LocalDataModel>/ApplicationOwnerData/Address}"/>
 						<Label text="{i18n>City}"/>
@@ -81,7 +81,7 @@
 						<Label text="{i18n>PostalCode}"/>
 						<Text text="{LocalDataModel>/ApplicationOwnerData/PostalCode}"/>
 						<Label text="{i18n>Email}"/>
-						<Text text="{LocalDataModel>/ApplicationOwnerData/Email}"/>
+						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/Email', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Home}"/>
 						<Text text="{LocalDataModel>/ApplicationOwnerData/HomePhone}"/>
 						<Label text="{i18n>Business}"/>
@@ -103,7 +103,7 @@
 						<Text text="{LocalDataModel>/OwnerData/Language}"/>
 						<Label text="{i18n>Name}"/>
 						<!--<Text text="{LocalDataModel>/AgreementOwnerName/FirstName} {LocalDataModel>/AgreementOwnerName/LastName}"/>-->
-						<Text text="{LocalDataModel>/VechOwnrSectAddOnAppSub_Name}"/>
+						<Text text="{path:'LocalDataModel>/VechOwnrSectAddOnAppSub_Name', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Address}"/>
 						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
 						<Label text="{i18n>City}"/>
@@ -113,7 +113,7 @@
 						<Label text="{i18n>PostalCode}"/>
 						<Text text="{LocalDataModel>/OwnerData/PostalCode}"/>
 						<Label text="{i18n>Email}"/>
-						<Text text="{LocalDataModel>/OwnerData/EmailAddress}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/EmailAddress', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Home}"/>
 						<Text text="{LocalDataModel>/OwnerData/PhoneNumber}"/>
 						<Label text="{i18n>Business}"/>
