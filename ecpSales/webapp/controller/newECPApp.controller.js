@@ -530,26 +530,26 @@ sap.ui.define([
 				success: $.proxy(function (vinData) {
 					var oVinLength = vinData.results.length;
 					if (oVinLength > 0) {
-						this.getModel("LocalDataModel").setProperty("/AgrSet", AgrTypes);
+						//this.getModel("LocalDataModel").setProperty("/AgrSet", AgrTypes);
 						//this.getModel("LocalDataModel").setProperty("/enabledNext01", true);
-						// oZECPModel.read("/zc_ecp_valid_plansSet", {
-						// 	urlParameters: {
-						// 		"$filter": "VIN eq '" + VinNum + "'"
-						// 	},
-						// 	success: $.proxy(function (data) {
-						// 		this.oFlag = data.results[0].ZZEXT_FLG;
-						// 		if (this.oFlag === "YES") {
-						// 			this.getModel("LocalDataModel").setProperty("/AgrSet", AgrTypes);
-						// 		} else {
-						// 			var oFilterdVal = AgrTypes.filter((item) => item.typeNames != "EXTENSION" && item.typeNames != "PROLONGATION");
-						// 			this.getModel("LocalDataModel").setProperty("/AgrSet", oFilterdVal);
+						oZECPModel.read("/zc_ecp_valid_plansSet", {
+							urlParameters: {
+								"$filter": "VIN eq '" + VinNum + "'"
+							},
+							success: $.proxy(function (data) {
+								this.oFlag = data.results[0].ZZEXT_FLG;
+								if (this.oFlag === "YES") {
+									this.getModel("LocalDataModel").setProperty("/AgrSet", AgrTypes);
+								} else {
+									var oFilterdVal = AgrTypes.filter((item) => item.typeNames != "EXTENSION" && item.typeNames != "PROLONGATION");
+									this.getModel("LocalDataModel").setProperty("/AgrSet", oFilterdVal);
 
-						// 		}
-						// 	}, this),
-						// 	error: function () {
-						// 		//console.log("Error");
-						// 	}
-						// });
+								}
+							}, this),
+							error: function () {
+								//console.log("Error");
+							}
+						});
 
 						oZECPModel.read("/zc_ecp_duplicate_agreementSet", {
 							urlParameters: {
@@ -559,25 +559,6 @@ sap.ui.define([
 								var oFlag = data.results[0].ProcessingFlag;
 								var sStatus = data.results[0].Status;
 								this.getModel("LocalDataModel").setProperty("/duplicateAgrData", data.results[0]);
-
-								// if (
-								// 	(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
-								// 	(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
-
-								// ) {
-								// 	sap.ui.core.BusyIndicator.hide();
-
-								// 	MessageToast.show(oBundle.getText("ActiveAgrexist"), {
-								// 		width: "30em",
-								// 		my: "center center",
-								// 		at: "center center",
-								// 		duration: 500,
-								// 		onClose: $.proxy(function () {
-								// 			this.getRouter().navTo("ApplicationList");
-								// 		}, this)
-								// 	});
-
-								// }
 
 							},this),
 							error: function (err) {
@@ -1296,53 +1277,53 @@ sap.ui.define([
 			//});
 		},
 
-		_fnExistAppCheck: function () {
+		// _fnExistAppCheck: function () {
 
-			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
-			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
-			var zEcpModel = this.getModel("EcpSalesModel");
-			var oBundle = this.getView().getModel("i18n").getResourceBundle();
-			zEcpModel.read("/zc_ecp_duplicate_agreementSet", {
-				urlParameters: {
-					"$filter": "VIN eq '" + oVin + "'"
-				},
-				success: $.proxy(function (data) {
-					var oFlag = data.results[0].ProcessingFlag;
-					if (this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") {
-						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
-							width: "30em",
-							my: "center center",
-							at: "center center",
-							onClose: $.proxy(function () {
-								this.getRouter().navTo("ApplicationList");
-							}, this)
-						});
+		// 	var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
+		// 	var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
+		// 	var zEcpModel = this.getModel("EcpSalesModel");
+		// 	var oBundle = this.getView().getModel("i18n").getResourceBundle();
+		// 	zEcpModel.read("/zc_ecp_duplicate_agreementSet", {
+		// 		urlParameters: {
+		// 			"$filter": "VIN eq '" + oVin + "'"
+		// 		},
+		// 		success: $.proxy(function (data) {
+		// 			var oFlag = data.results[0].ProcessingFlag;
+		// 			if (this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") {
+		// 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+		// 				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+		// 				MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+		// 					width: "30em",
+		// 					my: "center center",
+		// 					at: "center center",
+		// 					onClose: $.proxy(function () {
+		// 						this.getRouter().navTo("ApplicationList");
+		// 					}, this)
+		// 				});
 
-					} else if (this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") {
-						this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
-						this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
-						MessageToast.show(oBundle.getText("ActiveAgrexist"), {
-							width: "30em",
-							my: "center center",
-							at: "center center",
-							onClose: $.proxy(function () {
-								this.getRouter().navTo("ApplicationList");
-							}, this)
-						});
+		// 			} else if (this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") {
+		// 				this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
+		// 				this.getView().byId("idIconTabBarNoIcons").setSelectedKey("Tab2");
+		// 				MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+		// 					width: "30em",
+		// 					my: "center center",
+		// 					at: "center center",
+		// 					onClose: $.proxy(function () {
+		// 						this.getRouter().navTo("ApplicationList");
+		// 					}, this)
+		// 				});
 
-					} else {
-						$.proxy(this._fnValidateSubmit(), this);
-					}
+		// 			} else {
+		// 				$.proxy(this._fnValidateSubmit(), this);
+		// 			}
 
-				}, this),
-				error: $.proxy(function () {
+		// 		}, this),
+		// 		error: $.proxy(function () {
 
-				}, this)
+		// 		}, this)
 
-			});
-		},
+		// 	});
+		// },
 
 		_fnDifSaleDRegD: function () {
 			var currenDateMoment = moment(new Date).format("YYYY-MM-DD");
@@ -2879,7 +2860,7 @@ sap.ui.define([
 		onSubmitApp: function () {
 			//this._Step04MandatoryFn();
 			this.resetValidationError();
-			this._fnExistAppCheck();
+			//this._fnExistAppCheck();
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
 			//ReValidating form
 
