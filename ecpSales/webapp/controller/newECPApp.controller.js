@@ -20,7 +20,6 @@ sap.ui.define([
 		 * @memberOf zecp.view.newECPApp
 		 */
 		onInit: function () {
-
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
 			var oVehicleMaster = this.getOwnerComponent().getModel("ZVehicleMasterModel");
 			this.getView().setModel(oVehicleMaster, "VinModel");
