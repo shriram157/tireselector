@@ -521,7 +521,6 @@ sap.ui.define([
 			}];
 
 			var oZECPModel = this.getModel("EcpSalesModel");
-		
 
 			oZECPModel.read("/zc_ecp_valid_vinsSet", {
 				urlParameters: {
