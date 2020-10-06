@@ -811,7 +811,7 @@ sap.ui.define([
 			}
 
 			if (sStatus == "03") {
-				if (this.oSelectedAgrTypeKey != this.getView().getModel("i18n").getResourceBundle().getText("NEWVEHICLEAGREEMENT")) {
+
 					MessageToast.show(oBundle.getText("planError03"), {
 						width: "30em",
 						my: "center center",
@@ -821,7 +821,7 @@ sap.ui.define([
 							this.getRouter().navTo("ApplicationList");
 						}, this)
 					});
-				}
+				
 			}
 
 			if (sStatus == "04") {
