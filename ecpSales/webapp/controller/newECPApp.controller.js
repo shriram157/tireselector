@@ -2859,6 +2859,7 @@ sap.ui.define([
 			//this._Step04MandatoryFn();
 			this.resetValidationError();
 			//this._fnExistAppCheck();
+			$.proxy(this._fnValidateSubmit(), this);
 			this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
 			//ReValidating form
 
