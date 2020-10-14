@@ -1858,6 +1858,8 @@ sap.ui.define([
 					success: $.proxy(function (budata) {
 
 							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
+							this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", budata.results[0]);
+							
 							if (budata.results[0].to_EmailAddress.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress.results[
 									0].EmailAddress);
