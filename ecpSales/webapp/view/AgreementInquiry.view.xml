@@ -22,19 +22,19 @@
 												<Label text="{i18n>Language}"/>
 												<Text text="{path: 'LocalDataModel>/AgrOwnrSectonAddress/Language'}"/>
 												<Label text="{i18n>Name}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress_Name}"/>
+												<Text text="{path:'LocalDataModel>/AgrOwnrSectonAddress_Name', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 												<!--<Text text="{path: 'LocalDataModel>/AgrOwnrSectonAddress/Name', formatter:'zecp.utils.formatter.bPNameA'}"/>-->
 												<!--<Text text="{LocalDataModel>/AgrOwnrSectonAddress/FirstName} {LocalDataModel>/AgrOwnrSectonAddress/LastName}" visible="{path: 'LocalDataModel>/AgrOwnrSectonAddress/BusinessPartnerCategory', formatter:'zecp.utils.formatter.bPIndvType'}"/>-->
 												<Label text="{i18n>Address}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/StreetName}"/>
+												<Text text="{path:'LocalDataModel>/AgrOwnrSectonAddress/StreetName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 												<Label text="{i18n>City}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/CityName}"/>
+												<Text text="{path:'LocalDataModel>/AgrOwnrSectonAddress/CityName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 												<Label text="{i18n>Province}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/Region}"/>
+												<Text text="{path:'LocalDataModel>/AgrOwnrSectonAddress/Region', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 												<Label text="{i18n>PostalCode}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/PostalCode}"/>
+												<Text text="{path:'LocalDataModel>/AgrOwnrSectonAddress/PostalCode', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 												<Label text="{i18n>Email}"/>
-												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/EmailAddress}"/>
+												<Text text="{path:'LocalDataModel>/AgrOwnrSectonAddress/EmailAddress', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 												<Label text="{i18n>Home}"/>
 												<Text text="{LocalDataModel>/AgrOwnrSectonAddress/PhoneNumber}"/>
 												<Label text="{i18n>Mobile}"/>
