@@ -27,6 +27,7 @@ modules:
     - name: application-logs_ecpSales
     - name: uaa_ecpSales
     - name: cf-drain
+    - name: dynatrace-service
     - name: ECP_SALES_APIM_CUPS
 
  - name: ecpSales
@@ -62,6 +63,7 @@ modules:
     - name: application-logs_ecpSales
     - name: uaa_ecpSales
     - name: cf-drain
+    - name: dynatrace-service
     - name: ecpSales_Node_api
       group: destinations
       properties:
@@ -93,3 +95,7 @@ resources:
    type: org.cloudfoundry.existing-service
    parameters:
       service-name: ECP_SALES_APIM_CUPS
+ - name: dynatrace-service
+   type: org.cloudfoundry.existing-service
+   parameters:
+      service-name: dynatrace-service
