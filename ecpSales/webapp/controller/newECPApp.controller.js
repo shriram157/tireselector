@@ -3322,7 +3322,7 @@ sap.ui.define([
 													.results[
 														0].PhoneNumber);
 											}
-											this.getRouter().navTo("ApplicationList");
+											location.reload();
 										},
 										this),
 									error: function () {
