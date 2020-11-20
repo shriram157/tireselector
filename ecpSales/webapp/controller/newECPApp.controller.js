@@ -3300,29 +3300,38 @@ sap.ui.define([
 									success: $.proxy(function (budata) {
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
+											this.getModel("LocalDataModel").setProperty("/OwnerData", budata.results[0]);
 											if (budata.results[0].to_EmailAddress.results.length > 0) {
 												var oEmailAdd = budata.results[0].to_EmailAddress.results;
 												var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true);
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", sEmail[0].EmailAddress ||
 													"");
+												this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", sEmail[0].EmailAddress || "");
 											}
 											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
 													.results[
 														0].PhoneNumber);
+												this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", budata.results[0].to_PhoneNumber.results[
+													0].PhoneNumber || "");
 											}
 											if (budata.results[0].to_FaxNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber
 													.results[
 														0]
 													.FaxNumber);
+												this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", budata.results[0].to_FaxNumber.results[
+													0].FaxNumber || "");
 											}
 											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber
 													.results[
 														0].PhoneNumber);
+												this.getModel("LocalDataModel").setProperty("/OwnerData/Mobile", budata.results[0].to_MobilePhoneNumber
+													.results[
+														0].PhoneNumber);
 											}
-											location.reload();
+										
 										},
 										this),
 									error: function () {
