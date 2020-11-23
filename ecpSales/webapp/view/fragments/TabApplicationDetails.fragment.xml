@@ -43,13 +43,13 @@
 						<!--<Text text="{LocalDataModel>/AgreementOwnerName/LastName} {LocalDataModel>/AgreementOwnerName/FirstName}"/>-->
 						<Text text="{path:'LocalDataModel>/AgrOwnerSectAddOnAppSub_Name', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Address}" textAlign="Begin"/>
-						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/StreetName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>City}" textAlign="Begin"/>
-						<Text text="{LocalDataModel>/OwnerData/CityName}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/CityName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Province}" textAlign="Begin"/>
-						<Text text="{LocalDataModel>/OwnerData/Region}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/Region', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>PostalCode}" textAlign="Begin"/>
-						<Text text="{LocalDataModel>/OwnerData/PostalCode}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/PostalCode', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Email}" textAlign="Begin"/>
 						<Text text="{path:'LocalDataModel>/OwnerData/EmailAddress', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Home}" textAlign="Begin"/>
@@ -73,13 +73,13 @@
 						<!--<Text text="{LocalDataModel>/ApplicationOwnerData/CustomerName} {LocalDataModel>/ApplicationOwnerData/CustomerLastName}"/>-->
 						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/ApplicationOwnerData_Name', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Address}"/>
-						<Text text="{LocalDataModel>/ApplicationOwnerData/Address}"/>
+						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/Address', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>City}"/>
-						<Text text="{LocalDataModel>/ApplicationOwnerData/City}"/>
+						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/City', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Province}"/>
-						<Text text="{LocalDataModel>/ApplicationOwnerData/Province}"/>
+						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/Province', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>PostalCode}"/>
-						<Text text="{LocalDataModel>/ApplicationOwnerData/PostalCode}"/>
+						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/PostalCode', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Email}"/>
 						<Text text="{path:'LocalDataModel>/ApplicationOwnerData/Email', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Home}"/>
@@ -105,13 +105,13 @@
 						<!--<Text text="{LocalDataModel>/AgreementOwnerName/FirstName} {LocalDataModel>/AgreementOwnerName/LastName}"/>-->
 						<Text text="{path:'LocalDataModel>/VechOwnrSectAddOnAppSub_Name', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Address}"/>
-						<Text text="{LocalDataModel>/OwnerData/StreetName}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/StreetName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>City}"/>
-						<Text text="{LocalDataModel>/OwnerData/CityName}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/CityName', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Province}"/>
-						<Text text="{LocalDataModel>/OwnerData/Region}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/Region', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>PostalCode}"/>
-						<Text text="{LocalDataModel>/OwnerData/PostalCode}"/>
+						<Text text="{path:'LocalDataModel>/OwnerData/PostalCode', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Email}"/>
 						<Text text="{path:'LocalDataModel>/OwnerData/EmailAddress', formatter:'zecp.utils.formatter.convUpperCase'}"/>
 						<Label text="{i18n>Home}"/>
