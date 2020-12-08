@@ -12,7 +12,6 @@ sap.ui.define([
 	"sap/ui/core/BusyIndicator"
 ], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager, ValueState, BusyIndicator) {
 	"use strict";
-
 	return Controller.extend("zecp.controller.newECPApp", {
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
