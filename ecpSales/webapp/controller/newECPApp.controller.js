@@ -243,8 +243,7 @@ sap.ui.define([
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].FirstName +
 													" " + businessB.results[0].LastName);
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_BpType", this.getView().getModel("i18n")
-													.getResourceBundle()
-													.getText("Individual")); // added translation
+													.getResourceBundle().getText("Individual")); // added translation
 
 											} else if (businessB.results[0].BusinessPartnerCategory === "2") {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub_Name", businessB.results[0].OrganizationBPName1);
@@ -506,18 +505,20 @@ sap.ui.define([
 			var VinNum = this.oECPData.ZecpVin.trim();
 
 			var AgrTypes = [{
-				typeNames: this.oBundle.getText("NEWVEHICLEAGREEMENT"),
-				typeKey: "NEWAGR"
-			}, {
-				typeNames: this.oBundle.getText("USEDVEHICLEAGREEMENT"),
-				typeKey: "USEDAGR"
-			}, {
-				typeNames: this.oBundle.getText("EXTENSION"),
-				typeKey: "EXTENSION"
-			}, {
-				typeNames: this.oBundle.getText("CERTIFIED"),
-				typeKey: "CERTIFIED"
-			}];
+					typeNames: this.oBundle.getText("NEWVEHICLEAGREEMENT"),
+					typeKey: "NEWAGR"
+				}, {
+					typeNames: this.oBundle.getText("USEDVEHICLEAGREEMENT"),
+					typeKey: "USEDAGR"
+				}, {
+					typeNames: this.oBundle.getText("EXTENSION"),
+					typeKey: "EXTENSION"
+				}
+				// {
+				// 	typeNames: this.oBundle.getText("CERTIFIED"),
+				// 	typeKey: "CERTIFIED"
+				// }
+			];
 
 			var oZECPModel = this.getModel("EcpSalesModel");
 
@@ -619,51 +620,49 @@ sap.ui.define([
 							}, this)
 						});
 
-						oZECPModel.read("/zc_ecp_application", {
-							urlParameters: {
-								"$filter": "VIN eq '" + VinNum + "' "
-							},
-							success: $.proxy(function (data) {
+						// oZECPModel.read("/zc_ecp_application", {
+						// 	urlParameters: {
+						// 		"$filter": "VIN eq '" + VinNum + "' "
+						// 	},
+						// 	success: $.proxy(function (data) {
 
-								if (data.results.length > 0) {
+						// 		this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
 
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
+						// 		this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
+						// 		this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
+						// 			"/ApplicationOwnerData/ECPPlanCode"));
+						// 		this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.getModel("LocalDataModel").getProperty(
+						// 			"/ApplicationOwnerData/Odometer"));
+						// 		this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
+						// 			"/ApplicationOwnerData/AgreementType"));
 
-									this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData", data.results[0]);
-									this.getView().getModel("oSetProperty").setProperty("/oPlan", this.getModel("LocalDataModel").getProperty(
-										"/ApplicationOwnerData/ECPPlanCode"));
-									this.getView().getModel("oSetProperty").setProperty("/oOdometer", this.getModel("LocalDataModel").getProperty(
-										"/ApplicationOwnerData/Odometer"));
-									this.getView().getModel("oSetProperty").setProperty("/oAppType", this.getModel("LocalDataModel").getProperty(
-										"/ApplicationOwnerData/AgreementType"));
+						// 		// oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
+						// 		// 	"/ApplicationOwnerData/SaleDate")));
 
-									// oFormatedSaleDate = oDateFormat.format(new Date(this.getModel("LocalDataModel").getProperty(
-									// 	"/ApplicationOwnerData/SaleDate")));
+						// 		// ApplicationOwnerData_Name
 
-									// ApplicationOwnerData_Name
+						// 		if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
 
-									if (data.results[0].BusinessIndividual.toUpperCase() === "BUSINESS") {
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+						// 					"i18n").getResourceBundle()
+						// 				.getText("Organization"));
 
-										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CompanyName);
-										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-												"i18n").getResourceBundle()
-											.getText("Organization"));
+						// 		} else {
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
+						// 				" " + data.results[0].CustomerLastName);
+						// 			this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
+						// 					"i18n").getResourceBundle()
+						// 				.getText("Individual")); // added translation
+						// 		}
 
-									} else {
-										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_Name", data.results[0].CustomerName +
-											" " + data.results[0].CustomerLastName);
-										this.getModel("LocalDataModel").setProperty("/ApplicationOwnerData/ApplicationOwnerData_BpType", this.getView().getModel(
-												"i18n").getResourceBundle()
-											.getText("Individual")); // added translation
-									}
+						// 		this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
-									this.oECPData = this.getView().getModel("EcpFieldData").getData();
-								}
-							}, this),
-							error: function (err) {
-								console.log(err);
-							}
-						});
+						// 	}, this),
+						// 	error: function (err) {
+						// 		console.log(err);
+						// 	}
+						// });
 						//	var oPlansArray = ["NLC46", "NTC34", "NTC94", "NTC45", "NTC46", "NTC47"];
 
 						oZECPModel.read("/zc_ecp_agreement", {
@@ -888,8 +887,10 @@ sap.ui.define([
 						this.getModel("LocalDataModel").setProperty("/OwnerData", data.results[0]);
 						if (data.results != "") {
 							if (data.results[0].to_EmailAddress.results.length > 0) {
-								this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", data.results[0].to_EmailAddress.results[0].EmailAddress ||
-									"");
+								var oEmailAdd = data.results[0].to_EmailAddress.results;
+								var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true);
+
+								this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", sEmail[0].EmailAddress || "");
 							}
 							if (data.results[0].to_PhoneNumber.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", data.results[0].to_PhoneNumber.results[0].PhoneNumber ||
@@ -1389,32 +1390,33 @@ sap.ui.define([
 
 						this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
-						if (data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
-							this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
-						}
-						if (data.results[0].CityName != undefined || data.results[0].CityName != "") {
-							this.oECPData.ZecpCity = data.results[0].CityName;
-						}
-						if (data.results[0].StreetName != undefined || data.results[0].StreetName != "") {
-							this.oECPData.ZecpAddress = data.results[0].StreetName;
-						}
-						if (data.results[0].to_EmailAddress.results.length > 0) {
-							this.oECPData.ZecpEmail = data.results[0].to_EmailAddress.results[0].EmailAddress;
-						} else {
-							this.oECPData.ZecpEmail = "";
-						}
-						if (data.results[0].PostalCode != undefined || data.results[0].PostalCode != "") {
-							this.oECPData.ZecpPostalcode = data.results[0].PostalCode;
-						}
-						if (data.results[0].Region != undefined || data.results[0].Region != "") {
-							this.oECPData.ZecpProvince = data.results[0].Region;
-						}
-						if (data.results[0].to_PhoneNumber.results.length > 0) {
-							this.oECPData.ZecpHomePhone = data.results[0].to_PhoneNumber.results[0].PhoneNumber;
-						}
-						if (data.results[0].to_FaxNumber.results.length > 0) {
-							this.oECPData.ZecpBusPhone = data.results[0].to_FaxNumber.results[0].FaxNumber;
-						}
+					if (data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
+						this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
+					}
+					if (data.results[0].CityName != undefined || data.results[0].CityName != "") {
+						this.oECPData.ZecpCity = data.results[0].CityName;
+					}
+					if (data.results[0].StreetName != undefined || data.results[0].StreetName != "") {
+						this.oECPData.ZecpAddress = data.results[0].StreetName;
+					}
+					if (data.results[0].to_EmailAddress.results.length > 0) {
+						var oEmailAdd = data.results[0].to_EmailAddress.results;
+						var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true);
+						this.oECPData.ZecpEmail = sEmail[0].EmailAddress || "";
+					} else {
+						this.oECPData.ZecpEmail = "";
+					}
+					if (data.results[0].PostalCode != undefined || data.results[0].PostalCode != "") {
+						this.oECPData.ZecpPostalcode = data.results[0].PostalCode;
+					}
+					if (data.results[0].Region != undefined || data.results[0].Region != "") {
+						this.oECPData.ZecpProvince = data.results[0].Region;
+					}
+					if (data.results[0].to_PhoneNumber.results.length > 0) {
+						this.oECPData.ZecpHomePhone = data.results[0].to_PhoneNumber.results[0].PhoneNumber;
+					}
+					if (data.results[0].to_FaxNumber.results.length > 0) {
+						this.oECPData.ZecpBusPhone = data.results[0].to_FaxNumber.results[0].FaxNumber;
 					}
 
 				}, this),
@@ -1443,7 +1445,6 @@ sap.ui.define([
 						this.getModel("LocalDataModel").setProperty("/AgrOwnerSectAddOnAppSub_Name", data.results[0].FirstName +
 							" " + data.results[
 								0].LastName);
-
 					}
 				}, this),
 				error: function () {}
@@ -1948,6 +1949,8 @@ sap.ui.define([
 					success: $.proxy(function (budata) {
 
 							this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
+							this.getModel("LocalDataModel").setProperty("/OwnerData", budata.results[0]);
+
 							if (budata.results[0].to_EmailAddress.results.length > 0) {
 								this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress.results[
 									0].EmailAddress);
@@ -3385,27 +3388,38 @@ sap.ui.define([
 									success: $.proxy(function (budata) {
 
 											this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub", budata.results[0]);
+											this.getModel("LocalDataModel").setProperty("/OwnerData", budata.results[0]);
 											if (budata.results[0].to_EmailAddress.results.length > 0) {
-												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", budata.results[0].to_EmailAddress
-													.results[0].EmailAddress || "");
+												var oEmailAdd = budata.results[0].to_EmailAddress.results;
+												var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true);
+												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/EmailAddress", sEmail[0].EmailAddress ||
+													"");
+												this.getModel("LocalDataModel").setProperty("/OwnerData/EmailAddress", sEmail[0].EmailAddress || "");
 											}
 											if (budata.results[0].to_PhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/PhoneNumber", budata.results[0].to_PhoneNumber
 													.results[
 														0].PhoneNumber);
+												this.getModel("LocalDataModel").setProperty("/OwnerData/PhoneNumber", budata.results[0].to_PhoneNumber.results[
+													0].PhoneNumber || "");
 											}
 											if (budata.results[0].to_FaxNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/FaxNumber", budata.results[0].to_FaxNumber
 													.results[
 														0]
 													.FaxNumber);
+												this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", budata.results[0].to_FaxNumber.results[
+													0].FaxNumber || "");
 											}
 											if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 												this.getModel("LocalDataModel").setProperty("/VechOwnrSectAddOnAppSub/Mobile", budata.results[0].to_MobilePhoneNumber
 													.results[
 														0].PhoneNumber);
+												this.getModel("LocalDataModel").setProperty("/OwnerData/Mobile", budata.results[0].to_MobilePhoneNumber
+													.results[
+														0].PhoneNumber);
 											}
-
+										
 										},
 										this),
 									error: function () {
