@@ -781,9 +781,70 @@ sap.ui.define([
 			// 			}
 		},
 
-		onSelectAgrType: function (oEvent) {
+				onSelectAgrType: function (oEvent) {
 			this.oSelectedAgrTypeKey = oEvent.getSource().getSelectedKey();
 			var oSelectedText = this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION");
+
+			var sStatus = this.getModel("LocalDataModel").getProperty("/duplicateAgrData/Status");
+			var oFlag = this.getModel("LocalDataModel").getProperty("/duplicateAgrData/ProcessingFlag");
+		var oBundle = this.getView().getModel("i18n").getResourceBundle();
+
+			if (sStatus == "01") {
+				if (this.oSelectedAgrTypeKey != this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) {
+					MessageToast.show(oBundle.getText("planError01"), {
+						width: "30em",
+						my: "center center",
+						at: "center center",
+						duration: 500,
+						onClose: $.proxy(function () {
+							this.getRouter().navTo("ApplicationList");
+						}, this)
+					});
+				}
+			}
+
+			if (sStatus == "03") {
+
+					MessageToast.show(oBundle.getText("planError03"), {
+						width: "30em",
+						my: "center center",
+						at: "center center",
+						duration: 500,
+						onClose: $.proxy(function () {
+							this.getRouter().navTo("ApplicationList");
+						}, this)
+					});
+				
+			}
+
+			if (sStatus == "04") {
+				if (this.oSelectedAgrTypeKey != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) {
+					MessageToast.show(oBundle.getText("planError04"), {
+						width: "30em",
+						my: "center center",
+						at: "center center",
+						duration: 500,
+						onClose: $.proxy(function () {
+							this.getRouter().navTo("ApplicationList");
+						}, this)
+					});
+				}
+			}
+
+			if (sStatus == "05") {
+				if (this.oSelectedAgrTypeKey == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) {
+					MessageToast.show(oBundle.getText("planError05"), {
+						width: "30em",
+						my: "center center",
+						at: "center center",
+						duration: 500,
+						onClose: $.proxy(function () {
+							this.getRouter().navTo("ApplicationList");
+						}, this)
+					});
+				}
+			}
+
 			var oAgrTableData = this.getView().getModel("LocalDataModel").getProperty("/AgreementDataActive");
 			if (this.oSelectedAgrTypeKey == oSelectedText) {
 				this.getView().getModel("oSetProperty").setProperty("/oAgreementTable", true);
