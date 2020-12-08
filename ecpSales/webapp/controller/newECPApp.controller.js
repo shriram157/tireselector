@@ -513,11 +513,11 @@ sap.ui.define([
 				}, {
 					typeNames: this.oBundle.getText("EXTENSION"),
 					typeKey: "EXTENSION"
+				},
+				{
+					typeNames: this.oBundle.getText("CERTIFIED"),
+					typeKey: "CERTIFIED"
 				}
-				// {
-				// 	typeNames: this.oBundle.getText("CERTIFIED"),
-				// 	typeKey: "CERTIFIED"
-				// }
 			];
 
 			var oZECPModel = this.getModel("EcpSalesModel");
@@ -550,22 +550,22 @@ sap.ui.define([
 							}
 						});
 
-						oZECPModel.read("/zc_ecp_duplicate_agreementSet", {
-							urlParameters: {
-								"$filter": "VIN eq '" + VinNum + "'"
-							},
-							success: $.proxy(function (data) {
-								var oFlag = data.results[0].ProcessingFlag;
-								var sStatus = data.results[0].Status;
-								this.getModel("LocalDataModel").setProperty("/duplicateAgrData", data.results[0]);
+						// oZECPModel.read("/zc_ecp_duplicate_agreementSet", {
+						// 	urlParameters: {
+						// 		"$filter": "VIN eq '" + VinNum + "'"
+						// 	},
+						// 	success: $.proxy(function (data) {
+						// 		var oFlag = data.results[0].ProcessingFlag;
+						// 		var sStatus = data.results[0].Status;
+						// 		this.getModel("LocalDataModel").setProperty("/duplicateAgrData", data.results[0]);
 
-							},this),
-							error: function (err) {
-								sap.ui.core.BusyIndicator.hide();
-								console.log(err);
-							}
+						// 	},this),
+						// 	error: function (err) {
+						// 		sap.ui.core.BusyIndicator.hide();
+						// 		console.log(err);
+						// 	}
 
-						});
+						// });
 
 						var winUrl = window.location.search;
 						var userLang = navigator.language || navigator.userLanguage;
@@ -936,7 +936,7 @@ sap.ui.define([
 				);
 			}
 		},
-		//Auth: Vinay
+	
 		//this method is to fix the key tranlation issue while calling the zc_ecp_valid_plansSet with Plane type New/used/Ext
 		// Becoz this key are getting translated due to language and Service is not able to identified/incorporate the translated key in Service
 		getTypeOfAggreementKey: function (planTypeStr) {
@@ -1349,7 +1349,8 @@ sap.ui.define([
 				}
 			}
 		},
-
+		
+		
 		OnNextStep3: function (oEvent) {
 
 			this._fnExistAppCheckCreate();
@@ -1387,8 +1388,9 @@ sap.ui.define([
 							this.getModel("LocalDataModel").setProperty("/OwnerData/FaxNumber", data.results[0].to_FaxNumber.results[
 								0].FaxNumber);
 						}
+					}
 
-						this.oECPData = this.getView().getModel("EcpFieldData").getData();
+					this.oECPData = this.getView().getModel("EcpFieldData").getData();
 
 					if (data.results[0].BusinessPartner != undefined || data.results[0].BusinessPartner != "") {
 						this.oECPData.ZecpCustNum = data.results[0].BusinessPartner;
@@ -1451,6 +1453,8 @@ sap.ui.define([
 			});
 
 		},
+
+		
 		onSelectPlanCode: function (oEvent) {
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
 			if (oEvent.getParameters().selectedItem != null) {
@@ -2695,7 +2699,7 @@ sap.ui.define([
 			}
 
 		},
-		//Auth: Vinay
+		
 		//Check and Validate DMS data with Vechical owner to Verify Address Defect_ID: 9618
 		//Comparing  Name City Provinecn, Address and Postal code
 		validateAgrmtOwnrNVechOwnr: function () {
