@@ -966,7 +966,7 @@ sap.ui.define([
 						width: "30em",
 						my: "center center",
 						at: "center center",
-						duration: 700,
+						duration: 1200,
 						onClose: $.proxy(function () {
 							this.getRouter().navTo("ApplicationList");
 						}, this)
@@ -980,7 +980,7 @@ sap.ui.define([
 					width: "30em",
 					my: "center center",
 					at: "center center",
-					duration: 700,
+					duration: 1200,
 					onClose: $.proxy(function () {
 						this.getRouter().navTo("ApplicationList");
 					}, this)
@@ -994,7 +994,7 @@ sap.ui.define([
 						width: "30em",
 						my: "center center",
 						at: "center center",
-						duration: 700,
+						duration: 1200,
 						onClose: $.proxy(function () {
 							this.getRouter().navTo("ApplicationList");
 						}, this)
@@ -1008,7 +1008,7 @@ sap.ui.define([
 						width: "30em",
 						my: "center center",
 						at: "center center",
-						duration: 700,
+						duration: 1200,
 						onClose: $.proxy(function () {
 							this.getRouter().navTo("ApplicationList");
 						}, this)
@@ -1044,7 +1044,7 @@ sap.ui.define([
 					width: "30em",
 					my: "center center",
 					at: "center center",
-					duration: 500,
+					duration: 1200,
 					onClose: $.proxy(function () {
 						this.getRouter().navTo("ApplicationList");
 					}, this)
