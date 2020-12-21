@@ -547,22 +547,22 @@ sap.ui.define([
 							}
 						});
 
-						// oZECPModel.read("/zc_ecp_duplicate_agreementSet", {
-						// 	urlParameters: {
-						// 		"$filter": "VIN eq '" + VinNum + "'"
-						// 	},
-						// 	success: $.proxy(function (data) {
-						// 		var oFlag = data.results[0].ProcessingFlag;
-						// 		var sStatus = data.results[0].Status;
-						// 		this.getModel("LocalDataModel").setProperty("/duplicateAgrData", data.results[0]);
+						oZECPModel.read("/zc_ecp_duplicate_agreementSet", {
+							urlParameters: {
+								"$filter": "VIN eq '" + VinNum + "'"
+							},
+							success: $.proxy(function (data) {
+								var oFlag = data.results[0].ProcessingFlag;
+								var sStatus = data.results[0].Status;
+								this.getModel("LocalDataModel").setProperty("/duplicateAgrData", data.results[0]);
 
-						// 	},this),
-						// 	error: function (err) {
-						// 		sap.ui.core.BusyIndicator.hide();
-						// 		console.log(err);
-						// 	}
+							},this),
+							error: function (err) {
+								sap.ui.core.BusyIndicator.hide();
+								console.log(err);
+							}
 
-						// });
+						});
 
 						var winUrl = window.location.search;
 						var userLang = navigator.language || navigator.userLanguage;
@@ -1057,7 +1057,7 @@ sap.ui.define([
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
 							agreeTypeKey +
 							"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
-						"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
+						"$expand": "ZC_ECP_PLANSSET"
 					},
 					success: $.proxy(function (data) {
 							sap.ui.core.BusyIndicator.hide();
@@ -2007,6 +2007,7 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStripPlan").setType("None");
 				this.getModel("LocalDataModel").setProperty("/odometerState", "None");
 				idOdo.setValueState(sap.ui.core.ValueState.None);
+				this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 			}
 
 			var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
@@ -2018,6 +2019,8 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRuleLexus"));
 					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 
+				}else{
+					this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				}
 			}
 
@@ -2027,6 +2030,8 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRule"));
 					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
+				}else{
+					this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);	
 				}
 			}
 
@@ -3109,7 +3114,7 @@ sap.ui.define([
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
 						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
-					"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
+					"$expand": "ZC_ECP_PLANSSET"
 				},
 				success: $.proxy(function (data) {
 
