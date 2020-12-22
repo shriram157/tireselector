@@ -960,61 +960,61 @@ sap.ui.define([
 			var sStatus = this.getModel("LocalDataModel").getProperty("/duplicateAgrData/Status");
 			var oFlag = this.getModel("LocalDataModel").getProperty("/duplicateAgrData/ProcessingFlag");
 
-			if (sStatus == "01") {
-				if (oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) {
-					MessageToast.show(oBundle.getText("planError01"), {
-						width: "30em",
-						my: "center center",
-						at: "center center",
-						duration: 1200,
-						onClose: $.proxy(function () {
-							this.getRouter().navTo("ApplicationList");
-						}, this)
-					});
-				}
-			}
+			// if (sStatus == "01") {
+			// 	if (oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) {
+			// 		MessageToast.show(oBundle.getText("planError01"), {
+			// 			width: "30em",
+			// 			my: "center center",
+			// 			at: "center center",
+			// 			duration: 1200,
+			// 			onClose: $.proxy(function () {
+			// 				this.getRouter().navTo("ApplicationList");
+			// 			}, this)
+			// 		});
+			// 	}
+			// }
 
-			if (sStatus == "03") {
+			// if (sStatus == "03") {
 
-				MessageToast.show(oBundle.getText("planError03"), {
-					width: "30em",
-					my: "center center",
-					at: "center center",
-					duration: 1200,
-					onClose: $.proxy(function () {
-						this.getRouter().navTo("ApplicationList");
-					}, this)
-				});
+			// 	MessageToast.show(oBundle.getText("planError03"), {
+			// 		width: "30em",
+			// 		my: "center center",
+			// 		at: "center center",
+			// 		duration: 1200,
+			// 		onClose: $.proxy(function () {
+			// 			this.getRouter().navTo("ApplicationList");
+			// 		}, this)
+			// 	});
 
-			}
+			// }
 
-			if (sStatus == "04") {
-				if (oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) {
-					MessageToast.show(oBundle.getText("planError04"), {
-						width: "30em",
-						my: "center center",
-						at: "center center",
-						duration: 1200,
-						onClose: $.proxy(function () {
-							this.getRouter().navTo("ApplicationList");
-						}, this)
-					});
-				}
-			}
+			// if (sStatus == "04") {
+			// 	if (oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) {
+			// 		MessageToast.show(oBundle.getText("planError04"), {
+			// 			width: "30em",
+			// 			my: "center center",
+			// 			at: "center center",
+			// 			duration: 1200,
+			// 			onClose: $.proxy(function () {
+			// 				this.getRouter().navTo("ApplicationList");
+			// 			}, this)
+			// 		});
+			// 	}
+			// }
 
-			if (sStatus == "05") {
-				if (oAgrTyp == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) {
-					MessageToast.show(oBundle.getText("planError05"), {
-						width: "30em",
-						my: "center center",
-						at: "center center",
-						duration: 1200,
-						onClose: $.proxy(function () {
-							this.getRouter().navTo("ApplicationList");
-						}, this)
-					});
-				}
-			}
+			// if (sStatus == "05") {
+			// 	if (oAgrTyp == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) {
+			// 		MessageToast.show(oBundle.getText("planError05"), {
+			// 			width: "30em",
+			// 			my: "center center",
+			// 			at: "center center",
+			// 			duration: 1200,
+			// 			onClose: $.proxy(function () {
+			// 				this.getRouter().navTo("ApplicationList");
+			// 			}, this)
+			// 		});
+			// 	}
+			// }
 
 			if (this.oCustomer) {
 				var oCustomerNum = this.oCustomer.substr(5);
@@ -1035,7 +1035,12 @@ sap.ui.define([
 
 			if (
 				(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
-				(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N")
+				(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") ||
+				(sStatus == "01" && oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) ||
+				sStatus == "03" ||
+				(sStatus == "04" && oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) ||
+				(sStatus == "05" && oAgrTyp == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED"))
+				
 
 			) {
 				sap.ui.core.BusyIndicator.hide();
@@ -1044,7 +1049,7 @@ sap.ui.define([
 					width: "30em",
 					my: "center center",
 					at: "center center",
-					duration: 1200,
+					duration: 2000,
 					onClose: $.proxy(function () {
 						this.getRouter().navTo("ApplicationList");
 					}, this)
