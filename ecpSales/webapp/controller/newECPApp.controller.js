@@ -908,7 +908,7 @@ sap.ui.define([
 				return "EXTENSION";
 			}
 			if (planTypeStr === "CERTIFIED VEHICLE AGREEMENT" || planTypeStr === "CONTRAT DE VÉHICULE CERTIFIÉ") {
-				return "CERTIFIED";
+				return "CERTIFIED VEHICLE AGREEMENT";
 			}
 
 		},
