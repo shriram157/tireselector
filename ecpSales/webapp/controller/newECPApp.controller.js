@@ -2664,10 +2664,11 @@ sap.ui.define([
 
 		onSubmitApp: function () {
 			//this._Step04MandatoryFn();
+			this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
 			this.resetValidationError();
 			//this._fnExistAppCheck();
 			$.proxy(this._fnValidateSubmit(), this);
-			this.getView().getModel("oSetProperty").setProperty("/submitBtn", false);
+			
 			//ReValidating form
 
 		},
