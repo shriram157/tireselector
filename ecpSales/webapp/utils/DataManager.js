@@ -2,15 +2,14 @@ sap.ui.define([], function () {
 	"use strict";
 	return {
 		oPlanArray6000: ["NTC34", "NTC94", "NTC04", "NTC45", "NTC46", "NTC47", "NTC55", "NTC56", "NTC58", "NTC66", "NTC60", "NTC76", "NTC78",
-			"NTC70",
-			"NTF34", "NTF94", "NTC04", "NTF45", "NTF46", "NTF47", "NTF55", "NTF56", "NTF58", "NTF66", "NTF60", "NTF76", "NTF78", "NTF70",
-			"CTC40", "CTC50"
+			"NTC70", "NTF34", "NTF94", "NTC04", "NTF45", "NTF46", "NTF47", "NTF55", "NTF56", "NTF58", "NTF66", "NTF60", "NTF76", "NTF78", "NTF70",
+			"CTC40", "CTC50", "NTC68", "NTF68"
 		],
 		oPlanArray: ["NTC34", "NTC94", "NTC04", "NTC45", "NTC46", "NTC47", "NTF34", "NTF94", "NTF04", "NTF45", "NTF46", "NTF47",
 			"CTC40", "CTC50"
 		],
 		oPlanArray3Y: ["NTC55", "NTC56", "NTC58", "NTC66", "NTC60", "NTC76", "NTC78", "NTC70", "NTF55", "NTF56", "NTF58", "NTF66", "NTF60",
-			"NTF76", "NTF78", "NTF70"
+			"NTF76", "NTF78", "NTF70", "NTC68", "NTF68"
 		],
 		oPlanArray4Y: ["NLC45", "NLC46", "NLC55", "NLC66", "NLC68", "NLC69", "NLC77", "NLC86", "NLC88", "NLC80", "NLF45", "NLF46", "NLF55",
 			"NLF66", "NLF68", "NLF69", "NLF77", "NLF86", "NLF88", "NLF80"
