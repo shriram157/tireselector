@@ -12,6 +12,12 @@ sap.ui.define([
 	"sap/ui/core/BusyIndicator"
 ], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager, ValueState, BusyIndicator) {
 	"use strict";
+	var winUrl = window.location.search;
+	var userLang = navigator.language || navigator.userLanguage;
+	var lanKey = 'E';
+	if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+		lanKey = 'F';
+	}
 
 	return Controller.extend("zecp.controller.newECPApp", {
 		/**
@@ -550,8 +556,7 @@ sap.ui.define([
 							}
 						});
 
-						var winUrl = window.location.search;
-						var userLang = navigator.language || navigator.userLanguage;
+						
 						var vHset_lanKey = 'EN';
 						if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
 							vHset_lanKey = 'FR';
@@ -924,13 +929,7 @@ sap.ui.define([
 		},
 
 		_fnExistAppCheckCreate: function () {
-			var winUrl = window.location.search;
-			var userLang = navigator.language || navigator.userLanguage;
-			var lanKey = 'E';
-			if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
-				lanKey = 'F';
-			}
-			
+
 			this._fnValidateTab2();
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
@@ -992,7 +991,7 @@ sap.ui.define([
 								urlParameters: {
 									"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
 										agreeTypeKey +
-										"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'and LANGUAGE eq '" +lanKey+"'",
+										"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'and LANGUAGE eq '" + lanKey + "'",
 									"$expand": "ZC_ECP_PLANSSET"
 								},
 								success: $.proxy(function (data) {
@@ -1382,49 +1381,6 @@ sap.ui.define([
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
 			if (oEvent.getParameters().selectedItem != null) {
 				this.oPlanCode = oEvent.getParameters().selectedItem.getText();
-
-				// var oPlanKey = oEvent.getSource().getSelectedKey();
-				// var km = oPlanKey.split("/")[0];
-				// var mnth = oPlanKey.split("/")[1];
-				// this.mxMillage = oPlanKey.split("/")[2];
-				// this.mxMonth = oPlanKey.split("/")[3];
-				// this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
-				// this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
-				// this.oPlanMonth = parseInt(mnth);
-
-				// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
-
-				// var zEcpModel = this.getModel("EcpSalesModel");
-				// this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-				// $.ajaxSetup({
-				// 	headers: {
-				// 		'X-CSRF-Token': this._oToken
-				// 	}
-				// });
-
-				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
-				// });
-
-				// var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
-
-				// zEcpModel.read("/zc_ecp_planpricing_dataSet", {
-				// 	urlParameters: {
-				// 		"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
-				// 			"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
-				// 	},
-				// 	success: $.proxy(function (data) {
-				// 		this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
-				// 		this.oECPData.ZecpRetPrice = data.results[0].ZECP_RET_PRICE;
-				// 		this.oECPData.ZecpDefSurchrg = data.results[0].ZECP_DEF_SURCHRG;
-				// 		this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
-				// 		this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
-				// 	}, this),
-				// 	error: function (err) {
-				// 		console.log(err);
-				// 	}
-				// });
-
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 				oidPlanCodeId.setValueStateText("");
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
@@ -1534,17 +1490,6 @@ sap.ui.define([
 
 		},
 		OnNextStep4: function (oEvent) {
-
-			// var oPlanKey = oEvent.getSource().getSelectedKey();
-			// var km = oPlanKey.split("/")[0];
-			// var mnth = oPlanKey.split("/")[1];
-			// this.mxMillage = oPlanKey.split("/")[2];
-			// this.mxMonth = oPlanKey.split("/")[3];
-			// this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
-			// this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
-			// this.oPlanMonth = parseInt(mnth);
-
-			// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
 
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
@@ -3121,12 +3066,7 @@ sap.ui.define([
 			if (window.document.domain == "localhost") {
 				isProxy = "proxy";
 			}
-			var winUrl = window.location.search;
-			var userLang = navigator.language || navigator.userLanguage;
-			var lanKey = 'E';
-			if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
-				lanKey = 'F';
-			}
+			
 			var w = window.open(isProxy +
 				"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='" + lanKey + "')/$value",
 				'_blank');
@@ -3209,11 +3149,7 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStrip").destroy();
 		},
 		getValidPlanSet: function (oECPDataObj) {
-			var userLang = navigator.language || navigator.userLanguage;
-			var lanKey = 'E';
-			if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
-				lanKey = 'F';
-			}
+			
 			var oECPData = oECPDataObj.getData()
 			var zEcpModel = this.getModel("EcpSalesModel");
 			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
@@ -3237,7 +3173,7 @@ sap.ui.define([
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
-						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "' and LANGUAGE eq '" +lanKey+"'",
+						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "' and LANGUAGE eq '" + lanKey + "'",
 					"$expand": "ZC_ECP_PLANSSET"
 				},
 				success: $.proxy(function (data) {
@@ -3342,7 +3278,7 @@ sap.ui.define([
 													.results[
 														0].PhoneNumber);
 											}
-										
+
 										},
 										this),
 									error: function () {
