@@ -924,6 +924,13 @@ sap.ui.define([
 		},
 
 		_fnExistAppCheckCreate: function () {
+			var winUrl = window.location.search;
+			var userLang = navigator.language || navigator.userLanguage;
+			var lanKey = 'E';
+			if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+				lanKey = 'F';
+			}
+			
 			this._fnValidateTab2();
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
@@ -985,8 +992,8 @@ sap.ui.define([
 								urlParameters: {
 									"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
 										agreeTypeKey +
-										"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
-									"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
+										"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'and LANGUAGE eq '" +lanKey+"'",
+									"$expand": "ZC_ECP_PLANSSET"
 								},
 								success: $.proxy(function (data) {
 										sap.ui.core.BusyIndicator.hide();
@@ -3202,7 +3209,11 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStrip").destroy();
 		},
 		getValidPlanSet: function (oECPDataObj) {
-
+			var userLang = navigator.language || navigator.userLanguage;
+			var lanKey = 'E';
+			if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+				lanKey = 'F';
+			}
 			var oECPData = oECPDataObj.getData()
 			var zEcpModel = this.getModel("EcpSalesModel");
 			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
@@ -3226,8 +3237,8 @@ sap.ui.define([
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
-						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
-					"$expand": "ZC_ECP_PLANOSET,ZC_PLANDEALSET,ZC_ECP_PLANSSET,ZC_RETURNSET,ZC_VEHICLESET"
+						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "' and LANGUAGE eq '" +lanKey+"'",
+					"$expand": "ZC_ECP_PLANSSET"
 				},
 				success: $.proxy(function (data) {
 
