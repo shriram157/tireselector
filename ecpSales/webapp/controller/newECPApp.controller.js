@@ -1995,9 +1995,14 @@ sap.ui.define([
 					(oOdoVal - this.oAdditionalVal) + this.oBundle
 					.getText("KMagainstplanmilagevalue"));
 
-			} else if (oOdoVal > parseInt(this.mxMillage) &&
-				(oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ") && this.getModel("LocalDataModel").getProperty(
-					"/UserType") != "TCI_Admin") {
+			} else if (
+				(oOdoVal > parseInt(this.mxMillage) && (oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ") && 
+				this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") ||
+				
+				(oOdoVal > parseInt(this.mxMillage) && (oAgrType == "CERTIFIED VEHICLE AGREEMENT" || oAgrType == "CONTRAT DE VÉHICULE CERTIFIÉ") && 
+				this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")
+				
+			) {
 				//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
 
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
