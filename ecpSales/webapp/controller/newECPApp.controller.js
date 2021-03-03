@@ -556,7 +556,7 @@ sap.ui.define([
 								var sStatus = data.results[0].Status;
 								this.getModel("LocalDataModel").setProperty("/duplicateAgrData", data.results[0]);
 
-							},this),
+							}, this),
 							error: function (err) {
 								sap.ui.core.BusyIndicator.hide();
 								console.log(err);
@@ -1040,7 +1040,6 @@ sap.ui.define([
 				sStatus == "03" ||
 				(sStatus == "04" && oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) ||
 				(sStatus == "05" && oAgrTyp == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED"))
-				
 
 			) {
 				sap.ui.core.BusyIndicator.hide();
@@ -1994,15 +1993,16 @@ sap.ui.define([
 				MessageToast.show(this.oBundle.getText("Odometervalueexceeds") + " " +
 					(oOdoVal - this.oAdditionalVal) + this.oBundle
 					.getText("KMagainstplanmilagevalue"));
-
+				///// added logic for certified agreement on 03/03/2021 singhmi start
 			} else if (
-				(oOdoVal > parseInt(this.mxMillage) && (oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ") && 
-				this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") ||
-				
-				(oOdoVal > parseInt(this.mxMillage) && (oAgrType == "CERTIFIED VEHICLE AGREEMENT" || oAgrType == "CONTRAT DE VÉHICULE CERTIFIÉ") && 
-				this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")
-				
+				(oOdoVal > parseInt(this.mxMillage) && (oAgrType == "USED VEHICLE AGREEMENT" || oAgrType == "ENTENTE DE VÉHICULE USAGÉ") &&
+					this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin") ||
+
+				(oOdoVal > parseInt(this.mxMillage) && (oAgrType == "CERTIFIED VEHICLE AGREEMENT" || oAgrType == "CONTRAT DE VÉHICULE CERTIFIÉ") &&
+					this.getModel("LocalDataModel").getProperty("/UserType") != "TCI_Admin")
+
 			) {
+				///// added logic for certified agreement on 03/03/2021 singhmi end
 				//var oMonthMiliSecond = (finalMonthDef - this.mxMonth) * 30.42 * 24 * 60 * 60 * 1000;
 
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
@@ -2029,7 +2029,7 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRuleLexus"));
 					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 
-				}else{
+				} else {
 					this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				}
 			}
@@ -2040,8 +2040,8 @@ sap.ui.define([
 					this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", true);
 					this.getView().byId("idNewECPMsgStripPlan").setText(this.oBundle.getText("NewVehiclePlanRule"));
 					this.getView().byId("idNewECPMsgStripPlan").setType("Error");
-				}else{
-					this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);	
+				} else {
+					this.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
 				}
 			}
 
@@ -2673,7 +2673,7 @@ sap.ui.define([
 			this.resetValidationError();
 			//this._fnExistAppCheck();
 			$.proxy(this._fnValidateSubmit(), this);
-			
+
 			//ReValidating form
 
 		},
