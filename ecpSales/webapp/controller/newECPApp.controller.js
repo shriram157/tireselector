@@ -2804,7 +2804,7 @@ sap.ui.define([
 
 		_fnValidateSubmit: function () {
 			
-			that.getView().getModel("oSetProperty").setProperty("/subYes", true);
+			this.getView().getModel("oSetProperty").setProperty("/subYes", true);
 
 			if (!this.oECPData) {
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -2862,9 +2862,9 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
-					enabled: that.getView().getModel("oSetProperty").getProperty("/subYes"),
-					press: function () {
-
+					visible: that.getView().getModel("oSetProperty").getProperty("/subYes"),
+					press: function (oEvent) {
+						dialog.close();
 						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
@@ -2967,7 +2967,7 @@ sap.ui.define([
 							}, this)
 						});
 
-						dialog.close();
+						
 					}
 				}),
 
