@@ -12,6 +12,12 @@ sap.ui.define([
 	"sap/ui/core/BusyIndicator"
 ], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager, ValueState, BusyIndicator) {
 	"use strict";
+	var winUrl = window.location.search;
+	var userLang = navigator.language || navigator.userLanguage;
+	var lanKey = 'E';
+	if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+		lanKey = 'F';
+	}
 	return Controller.extend("zecp.controller.newECPApp", {
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -1060,7 +1066,7 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
 							agreeTypeKey +
-							"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
+							"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'and LANGUAGE eq '" + lanKey + "'",
 						"$expand": "ZC_ECP_PLANSSET"
 					},
 					success: $.proxy(function (data) {
@@ -2178,7 +2184,6 @@ sap.ui.define([
 			dialog.open();
 		},
 		OnBack: function (oEvent) {
-			console.log(oEvent);
 			this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
@@ -3130,7 +3135,7 @@ sap.ui.define([
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
-						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
+						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "' and LANGUAGE eq '" + lanKey + "'",
 					"$expand": "ZC_ECP_PLANSSET"
 				},
 				success: $.proxy(function (data) {
