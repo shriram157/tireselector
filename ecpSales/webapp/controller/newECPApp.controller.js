@@ -12,6 +12,12 @@ sap.ui.define([
 	"sap/ui/core/BusyIndicator"
 ], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager, ValueState, BusyIndicator) {
 	"use strict";
+	var winUrl = window.location.search;
+	var userLang = navigator.language || navigator.userLanguage;
+	var lanKey = 'E';
+	if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+		lanKey = 'F';
+	}
 	return Controller.extend("zecp.controller.newECPApp", {
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -1060,7 +1066,7 @@ sap.ui.define([
 					urlParameters: {
 						"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
 							agreeTypeKey +
-							"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
+							"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'and LANGUAGE eq '" + lanKey + "'",
 						"$expand": "ZC_ECP_PLANSSET"
 					},
 					success: $.proxy(function (data) {
@@ -2177,7 +2183,7 @@ sap.ui.define([
 
 			dialog.open();
 		},
-		OnBack: function () {
+		OnBack: function (oEvent) {
 			this.getView().getModel("oSetProperty").setProperty("/oTab1visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab3visible", false);
 			this.getView().getModel("oSetProperty").setProperty("/oTab2visible", false);
@@ -2821,7 +2827,8 @@ sap.ui.define([
 		},
 
 		_fnValidateSubmit: function () {
-
+			var oCounter = 0;
+			this.getView().getModel("oSetProperty").setProperty("/subYes", true);
 			if (!this.oECPData) {
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 			}
@@ -2878,8 +2885,11 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
+					visible: that.getView().getModel("oSetProperty").getProperty("/subYes"),
 					press: function () {
-
+						oCounter += 1;
+						dialog.close();
+						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
 						//objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
@@ -2898,95 +2908,96 @@ sap.ui.define([
 							}
 						});
 						var oBusinessModel = that.getModel("ApiBusinessModel");
-						oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
+						if (oCounter < 2) {
+							oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
 
-							success: function (data, response) {
-								console.log(response.data);
-								that.getView().getModel("LocalDataModel").setProperty("/responseData", response.data);
-								if (that.oECPData.ZecpIntApp.charAt(0) === "D") {
-									oEcpModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + that.oECPData.ZecpIntApp + "',ZecpVin='" + that.oECPData
-										.ZecpVin +
-										"')", {
-											method: "DELETE",
-											success: function (data) {
-												oEcpModel.refresh();
-											},
-											error: function (e) {
-												console.log("error");
-											}
-										});
-								}
-								var oAgr = response.data.ZecpAgrNum;
-								var oCustomer = response.data.ZecpCustNum;
-								oEcpModel.read("/zc_ecp_agreement", {
-									urlParameters: {
-										"$filter": "AgreementNumber eq '" + oAgr + "'"
-									},
-									success: function (ret) {
-										console.log(ret);
-										if (ret.results[0] && (parseInt(ret.results[0].CancelFee) === 0)) {
-											ret.results[0].CancelFee = "100.00";
-										}
-										ret.results[0].RoadHazard = that.oBundle.getText(ret.results[0].RoadHazard); // added translation
-										ret.results[0].BenefitsFlag = that.oBundle.getText(ret.results[0].BenefitsFlag); // added translation
-										that.getView().getModel("LocalDataModel").setProperty("/AgreementData", ret.results[0]);
-
-										var oDealer = ret.results[0].DealershipNumber;
-										var dealerStr = ret.results[0].DealershipNumber
-										ret.results[0].DealershipNumber = dealerStr.substring(dealerStr.length - 5, dealerStr.length);
-										if (oDealer) {
-											oBusinessModel.read("/A_BusinessPartner", {
-												urlParameters: {
-													"$filter": "BusinessPartner eq '" + oDealer + "'"
+								success: function (data, response) {
+									console.log(response.data);
+									that.getView().getModel("LocalDataModel").setProperty("/responseData", response.data);
+									if (that.oECPData.ZecpIntApp.charAt(0) === "D") {
+										oEcpModel.remove("/zc_ecp_crud_operationsSet(ZecpIntApp='" + that.oECPData.ZecpIntApp + "',ZecpVin='" + that.oECPData
+											.ZecpVin +
+											"')", {
+												method: "DELETE",
+												success: function (data) {
+													oEcpModel.refresh();
 												},
-												success: function (businessData) {
-													if (businessData.results.length > 0) {
-														that.getModel("LocalDataModel").setProperty("/DealerData", businessData.results[0]);
-													}
+												error: function (e) {
+													console.log("error");
 												}
 											});
-										}
-									},
-									error: function () {}
-								});
-
-								oBusinessModel.read("/A_BusinessPartnerAddress", {
-									urlParameters: {
-										"$filter": "BusinessPartner eq '" + oCustomer + "' ",
-										"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
-
-									},
-									success: function (bData) {
-
-										that.getModel("LocalDataModel").setProperty("/BusinessPartnerData", bData.results[0]);
-
-									},
-									error: function () {
-										console.log("Error");
 									}
-								});
+									var oAgr = response.data.ZecpAgrNum;
+									var oCustomer = response.data.ZecpCustNum;
+									oEcpModel.read("/zc_ecp_agreement", {
+										urlParameters: {
+											"$filter": "AgreementNumber eq '" + oAgr + "'"
+										},
+										success: function (ret) {
+											console.log(ret);
+											if (ret.results[0] && (parseInt(ret.results[0].CancelFee) === 0)) {
+												ret.results[0].CancelFee = "100.00";
+											}
+											ret.results[0].RoadHazard = that.oBundle.getText(ret.results[0].RoadHazard); // added translation
+											ret.results[0].BenefitsFlag = that.oBundle.getText(ret.results[0].BenefitsFlag); // added translation
+											that.getView().getModel("LocalDataModel").setProperty("/AgreementData", ret.results[0]);
 
-								that.printPrevDialogBox = sap.ui.xmlfragment("zecp.view.fragments.AgreementDetails", that);
-								that.getView().addDependent(that.printPrevDialogBox);
-								that.printPrevDialogBox.open();
-								that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
-							},
-							error: $.proxy(function (err) {
-								//console.log(err + "Error Message for duplicate vin");
-								var errorMsg = JSON.parse(err.responseText);
-								var msg = errorMsg.error.message.value;
-								if (msg == "Duplicate Agreement") {
-									MessageBox.show(oBundle.getText("ActiveAgrexist"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK, null, null);
-								} else {
-									MessageBox.show(oBundle.getText("ApplicationIsnotSubmitted"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK,
-										null, null);
-								}
+											var oDealer = ret.results[0].DealershipNumber;
+											var dealerStr = ret.results[0].DealershipNumber
+											ret.results[0].DealershipNumber = dealerStr.substring(dealerStr.length - 5, dealerStr.length);
+											if (oDealer) {
+												oBusinessModel.read("/A_BusinessPartner", {
+													urlParameters: {
+														"$filter": "BusinessPartner eq '" + oDealer + "'"
+													},
+													success: function (businessData) {
+														if (businessData.results.length > 0) {
+															that.getModel("LocalDataModel").setProperty("/DealerData", businessData.results[0]);
+														}
+													}
+												});
+											}
+										},
+										error: function () {}
+									});
 
-								that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
-							}, this)
-						});
+									oBusinessModel.read("/A_BusinessPartnerAddress", {
+										urlParameters: {
+											"$filter": "BusinessPartner eq '" + oCustomer + "' ",
+											"$expand": "to_PhoneNumber,to_FaxNumber,to_EmailAddress"
 
-						dialog.close();
+										},
+										success: function (bData) {
+
+											that.getModel("LocalDataModel").setProperty("/BusinessPartnerData", bData.results[0]);
+
+										},
+										error: function () {
+											console.log("Error");
+										}
+									});
+
+									that.printPrevDialogBox = sap.ui.xmlfragment("zecp.view.fragments.AgreementDetails", that);
+									that.getView().addDependent(that.printPrevDialogBox);
+									that.printPrevDialogBox.open();
+									that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
+								},
+								error: $.proxy(function (err) {
+									//console.log(err + "Error Message for duplicate vin");
+									var errorMsg = JSON.parse(err.responseText);
+									var msg = errorMsg.error.message.value;
+									if (msg == "Duplicate Agreement") {
+										MessageBox.show(oBundle.getText("ActiveAgrexist"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK, null, null);
+									} else {
+										MessageBox.show(oBundle.getText("ApplicationIsnotSubmitted"), MessageBox.Icon.ERROR, "Error", MessageBox.Action.OK,
+											null, null);
+									}
+
+									that.getView().getModel("oSetProperty").setProperty("/submitBtn", true);
+								}, this)
+							});
+						}
+
 					}
 				}),
 
@@ -3124,7 +3135,7 @@ sap.ui.define([
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
-						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
+						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "' and LANGUAGE eq '" + lanKey + "'",
 					"$expand": "ZC_ECP_PLANSSET"
 				},
 				success: $.proxy(function (data) {
