@@ -2863,8 +2863,9 @@ sap.ui.define([
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
 					enabled: that.getView().getModel("oSetProperty").getProperty("/subYes"),
-					press: function (oEvent) {
+					press: function (sEvent) {
 						dialog.close();
+						console.log(sEvent);
 						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
