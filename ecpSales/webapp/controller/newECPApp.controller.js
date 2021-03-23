@@ -98,6 +98,7 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
 			this.getView().byId("idNewECPMsgStripPlan").setText("");
 			this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
+			this.getView().getModel("oSetProperty").setProperty("/subYes", true);
 
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			var oFormatedSaleDate;
@@ -556,7 +557,6 @@ sap.ui.define([
 							}
 						});
 
-						
 						var vHset_lanKey = 'EN';
 						if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
 							vHset_lanKey = 'FR';
@@ -2156,7 +2156,9 @@ sap.ui.define([
 				buttons: [
 					new Button({
 						text: oBundle.getText("Yes"),
+
 						press: function () {
+
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
 							var objSave = this._fnObject("SAVE", "PENDING");
 							//objSave.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);         
@@ -2875,6 +2877,8 @@ sap.ui.define([
 		},
 
 		_fnValidateSubmit: function () {
+			
+			that.getView().getModel("oSetProperty").setProperty("/subYes", true);
 
 			if (!this.oECPData) {
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -2932,18 +2936,15 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
+					enabled: that.getView().getModel("oSetProperty").getProperty("/subYes"),
 					press: function () {
 
+						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
 						//objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
 						var oEcpModel = that.getModel("EcpSalesModel");
-						/*
-						Defect:9937
-						Auth Vinay Chandra
-						*/
 						that.setDataValueOnEcpData(objSub);
-
 						/* End Of Defect 9937 */
 						this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 						$.ajaxSetup({
@@ -3066,7 +3067,7 @@ sap.ui.define([
 			if (window.document.domain == "localhost") {
 				isProxy = "proxy";
 			}
-			
+
 			var w = window.open(isProxy +
 				"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='" + lanKey + "')/$value",
 				'_blank');
@@ -3149,7 +3150,7 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStrip").destroy();
 		},
 		getValidPlanSet: function (oECPDataObj) {
-			
+
 			var oECPData = oECPDataObj.getData()
 			var zEcpModel = this.getModel("EcpSalesModel");
 			this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
