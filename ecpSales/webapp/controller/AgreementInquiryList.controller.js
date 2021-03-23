@@ -150,7 +150,6 @@ sap.ui.define([
 				oAgrVin: obj.VIN
 			});
 
-			//this.getView().byId("idAgreementTable").removeSelections("true");
 
 		},
 		onEnterVinInput: function (oEvent) {

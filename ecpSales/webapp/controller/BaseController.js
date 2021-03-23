@@ -11,7 +11,6 @@ sap.ui.define([
 		 * @public
 		 * @returns {sap.ui.core.routing.Router} the router for this component
 		 */
-
 		getRouter: function () {
 			return this.getOwnerComponent().getRouter();
 		},

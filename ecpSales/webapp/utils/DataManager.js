@@ -14,6 +14,7 @@ sap.ui.define([], function () {
 		oPlanArray4Y: ["NLC45", "NLC46", "NLC55", "NLC66", "NLC68", "NLC69", "NLC77", "NLC86", "NLC88", "NLC80", "NLF45", "NLF46", "NLF55",
 			"NLF66", "NLF68", "NLF69", "NLF77", "NLF86", "NLF88", "NLF80"
 		],
+		
 		_validateInput: function (oInput) {
 			var oBinding = oInput.getBinding("value");
 			var sValueState = "None";
