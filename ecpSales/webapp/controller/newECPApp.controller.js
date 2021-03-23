@@ -2862,7 +2862,7 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
-					visible: that.getView().getModel("oSetProperty").getProperty("/subYes"),
+					enabled: that.getView().getModel("oSetProperty").getProperty("/subYes"),
 					press: function (oEvent) {
 						dialog.close();
 						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
