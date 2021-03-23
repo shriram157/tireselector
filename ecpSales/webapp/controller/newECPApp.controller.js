@@ -12,14 +12,6 @@ sap.ui.define([
 	"sap/ui/core/BusyIndicator"
 ], function (Button, Dialog, Label, MessageToast, Text, Filter, Controller, MessageBox, DataManager, ValueState, BusyIndicator) {
 	"use strict";
-	var winUrl = window.location.search;
-	var userLang = navigator.language || navigator.userLanguage;
-	var lanKey = 'E';
-	if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
-		lanKey = 'F';
-	}
-
-=======
 	return Controller.extend("zecp.controller.newECPApp", {
 		/**
 		 * Called when a controller is instantiated and its View controls (if available) are already created.
@@ -98,7 +90,6 @@ sap.ui.define([
 			this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
 			this.getView().byId("idNewECPMsgStripPlan").setText("");
 			this.getView().getModel("oSetProperty").setProperty("/oFlag", false);
-			this.getView().getModel("oSetProperty").setProperty("/subYes", true);
 
 			this.oAppId = oEvent.getParameters().arguments.appId;
 			var oFormatedSaleDate;
@@ -556,7 +547,6 @@ sap.ui.define([
 							}
 						});
 
-=======
 						oZECPModel.read("/zc_ecp_duplicate_agreementSet", {
 							urlParameters: {
 								"$filter": "VIN eq '" + VinNum + "'"
@@ -948,7 +938,6 @@ sap.ui.define([
 		},
 
 		_fnExistAppCheckCreate: function () {
-
 			this._fnValidateTab2();
 			var oVin = this.getView().getModel("EcpFieldData").getProperty("/ZecpVin");
 			var oAgrTyp = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
@@ -1052,16 +1041,6 @@ sap.ui.define([
 				(sStatus == "04" && oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) ||
 				(sStatus == "05" && oAgrTyp == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED"))
 
-							zEcpModel.read("/zc_ecp_valid_plansSet", {
-								urlParameters: {
-									"$filter": "VIN eq '" + this.oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" +
-										agreeTypeKey +
-										"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'and LANGUAGE eq '" + lanKey + "'",
-									"$expand": "ZC_ECP_PLANSSET"
-								},
-								success: $.proxy(function (data) {
-										sap.ui.core.BusyIndicator.hide();
-=======
 			) {
 				sap.ui.core.BusyIndicator.hide();
 				this._fnValidateTab2();
@@ -1418,6 +1397,49 @@ sap.ui.define([
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
 			if (oEvent.getParameters().selectedItem != null) {
 				this.oPlanCode = oEvent.getParameters().selectedItem.getText();
+
+				// var oPlanKey = oEvent.getSource().getSelectedKey();
+				// var km = oPlanKey.split("/")[0];
+				// var mnth = oPlanKey.split("/")[1];
+				// this.mxMillage = oPlanKey.split("/")[2];
+				// this.mxMonth = oPlanKey.split("/")[3];
+				// this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
+				// this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
+				// this.oPlanMonth = parseInt(mnth);
+
+				// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
+
+				// var zEcpModel = this.getModel("EcpSalesModel");
+				// this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
+				// $.ajaxSetup({
+				// 	headers: {
+				// 		'X-CSRF-Token': this._oToken
+				// 	}
+				// });
+
+				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
+				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
+				// });
+
+				// var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
+
+				// zEcpModel.read("/zc_ecp_planpricing_dataSet", {
+				// 	urlParameters: {
+				// 		"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
+				// 			"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
+				// 	},
+				// 	success: $.proxy(function (data) {
+				// 		this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
+				// 		this.oECPData.ZecpRetPrice = data.results[0].ZECP_RET_PRICE;
+				// 		this.oECPData.ZecpDefSurchrg = data.results[0].ZECP_DEF_SURCHRG;
+				// 		this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
+				// 		this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
+				// 	}, this),
+				// 	error: function (err) {
+				// 		console.log(err);
+				// 	}
+				// });
+
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 				oidPlanCodeId.setValueStateText("");
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
@@ -1527,8 +1549,6 @@ sap.ui.define([
 
 		},
 		OnNextStep4: function (oEvent) {
-
-=======
 			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
 				dayDif, finalDayDef, Date1, Date2, oMonthMiliSecond, TotaldayMonDif;
@@ -2198,9 +2218,7 @@ sap.ui.define([
 				buttons: [
 					new Button({
 						text: oBundle.getText("Yes"),
-
 						press: function () {
-
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
 							var objSave = this._fnObject("SAVE", "PENDING");
 							//objSave.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);         
@@ -2803,8 +2821,6 @@ sap.ui.define([
 		},
 
 		_fnValidateSubmit: function () {
-			
-			this.getView().getModel("oSetProperty").setProperty("/subYes", true);
 
 			if (!this.oECPData) {
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -2862,16 +2878,18 @@ sap.ui.define([
 				],
 				beginButton: new Button({
 					text: oBundle.getText("SubmitApplication"),
-					enabled: that.getView().getModel("oSetProperty").getProperty("/subYes"),
-					press: function (sEvent) {
-						dialog.close();
-						console.log(sEvent);
-						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
+					press: function () {
+
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
 						//objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
 						var oEcpModel = that.getModel("EcpSalesModel");
+						/*
+						Defect:9937
+						Auth Vinay Chandra
+						*/
 						that.setDataValueOnEcpData(objSub);
+
 						/* End Of Defect 9937 */
 						this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
 						$.ajaxSetup({
@@ -2968,7 +2986,7 @@ sap.ui.define([
 							}, this)
 						});
 
-						
+						dialog.close();
 					}
 				}),
 
@@ -2994,7 +3012,12 @@ sap.ui.define([
 			if (window.document.domain == "localhost") {
 				isProxy = "proxy";
 			}
-
+			var winUrl = window.location.search;
+			var userLang = navigator.language || navigator.userLanguage;
+			var lanKey = 'E';
+			if ((winUrl.indexOf("=fr") > -1) || (userLang == "fr")) {
+				lanKey = 'F';
+			}
 			var w = window.open(isProxy +
 				"/node/ZECP_SALES_ODATA_SERVICE_SRV/zc_ecp_agreement_printSet(AGRNUM='" + oAgr + "',LANG='" + lanKey + "')/$value",
 				'_blank');
@@ -3101,8 +3124,6 @@ sap.ui.define([
 			zEcpModel.read("/zc_ecp_valid_plansSet", {
 				urlParameters: {
 					"$filter": "VIN eq '" + oECPData.ZecpVin + "'and KUNNR eq '" + oCustomerNum + "'and ZECPAGRTYPE eq '" + agreeTypeKey +
-						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "' and LANGUAGE eq '" + lanKey + "'",
-=======
 						"'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'",
 					"$expand": "ZC_ECP_PLANSSET"
 				},
