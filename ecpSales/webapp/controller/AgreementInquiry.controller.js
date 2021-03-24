@@ -108,8 +108,8 @@ sap.ui.define([
 						this.getModel("LocalDataModel").setProperty("/AgreementInfo/BenefitsFlagTranlates", "");
 					}
 
-					this.getView().byId("sAgreementEnq").bindElement("/zc_ecp_agreement(VIN='" + this.getModel("LocalDataModel").getProperty(
-						"/AgreementInfo/VIN") + "',AgreementNumber='" + oAgrNum + "')");
+					// this.getView().byId("sAgreementEnq").bindElement("/zc_ecp_agreement(VIN='" + this.getModel("LocalDataModel").getProperty(
+					// 	"/AgreementInfo/VIN") + "',AgreementNumber='" + oAgrNum + "')");
 					var oDealer = data.results[0].DealershipNumber;
 					if (oDealer) {
 						oBusinessModel.read("/A_BusinessPartner", {

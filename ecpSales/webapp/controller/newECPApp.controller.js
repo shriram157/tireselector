@@ -2821,8 +2821,11 @@ sap.ui.define([
 				BccLstUpdTmstmp: "",
 				ZamtFincd: "0.00",
 				ZretailPrice: "0.00",
-				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice || "0.00"
+				ZecpPlanpurchprice: this.oECPData.ZecpPlanpurchprice || "0.00",
+				ZecpUserid: this.getModel("LocalDataModel").getProperty("/LoggedInUser")
 			};
+			// ##change done for DMND0003001 by Minakshi
+			
 			return crudObj;
 		},
 

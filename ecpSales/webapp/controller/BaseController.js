@@ -244,7 +244,8 @@ sap.ui.define([
 
 					});
 					that.getModel("LocalDataModel").setProperty("/BpDealerModel", BpDealer);
-
+					// ##change done for DMND0003001 by Minakshi
+					that.getModel("LocalDataModel").setProperty("/LoggedInUser", oData.userProfile.id);
 				}.bind(this),
 				error: function (response) {
 					sap.ui.core.BusyIndicator.hide();
