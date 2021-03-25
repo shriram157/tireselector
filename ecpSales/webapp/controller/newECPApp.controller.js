@@ -2456,7 +2456,7 @@ sap.ui.define([
 				"ZecpLienterms": oECPData.ZecpLienterms,
 				"ZecpBenefitsFlg": oECPData.ZecpBenefitsFlg,
 				"ZecpSaleDate": this._fnDateFormat(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")),
-				"BccLstUpdUserid" : this.getModel("LocalDataModel").getProperty("/LoggedInUser")
+				"ZecpUserid" : this.getModel("LocalDataModel").getProperty("/LoggedInUser")
 			};
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
@@ -2818,7 +2818,7 @@ sap.ui.define([
 				BccCrtnTmstmp: "",
 				BccLstUpdPltf: "",
 				BccLstUpdPgmid: "",
-				BccLstUpdUserid: this.getModel("LocalDataModel").getProperty("/LoggedInUser"),
+				BccLstUpdUserid: "",
 				BccLstUpdTmstmp: "",
 				ZamtFincd: "0.00",
 				ZretailPrice: "0.00",
