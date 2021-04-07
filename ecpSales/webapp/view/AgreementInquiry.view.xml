@@ -163,13 +163,16 @@
 											labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
 											columnsM="1" singleContainerFullSize="false">
 											<f:content>
+												<Label text="{i18n>CreatedBy}"/>
+												<Text text="{LocalDataModel>/AgreementInfo/ZecpUserid}"/>
+												
 												<Label text="{i18n>Status}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/AgreementStatus}"/>
 												<Label text="{i18n>StatusDate}"/>
 												<Text
 													text="{path : 'LocalDataModel>/AgreementInfo/StatusDate', type: 'sap.ui.model.type.Date', constraints: {displayFormat: 'Date' }, formatOptions: { style: 'medium', strictParsing: true , UTC: true}}"/>
-												<Label text="{i18n>StatusReason}"/>
-												<Text text="{path:'LocalDataModel>/AgreementInfo/Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}"/>
+												<!--<Label text="{i18n>StatusReason}"/>-->
+												<!--<Text text="{path:'LocalDataModel>/AgreementInfo/Agreementreasoncode', formatter : 'zecp.utils.formatter.fnFormatStatusReason'}"/>-->
 												<Label text="{i18n>OdometerNewLbl}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/AgreementthruKMreading}"/>
 												<Label text="{i18n>SaleDate}"/>
