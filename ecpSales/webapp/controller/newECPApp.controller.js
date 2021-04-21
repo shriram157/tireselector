@@ -2906,7 +2906,7 @@ sap.ui.define([
 						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
-						if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+						if (that.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
 							objSub.ZecpUserid = "ECP Support";
 						}
 						//objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
