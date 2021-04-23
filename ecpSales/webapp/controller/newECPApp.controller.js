@@ -2227,6 +2227,9 @@ sap.ui.define([
 						press: function () {
 							that.oECPData = that.getView().getModel("EcpFieldData").getData();
 							var objSave = this._fnObject("SAVE", "PENDING");
+							if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+								objSave.ZecpUserid = "ECP Support";
+							}
 							//objSave.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);         
 							var oEcpModel = that.getModel("EcpSalesModel");
 							this._oToken = oEcpModel.getHeaders()['x-csrf-token'];
@@ -2374,6 +2377,9 @@ sap.ui.define([
 
 				this.oECPData = this.getView().getModel("EcpFieldData").getData();
 				var objSave = this._fnObject("SAVE", "PENDING");
+				if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+					objSave.ZecpUserid = "ECP Support";
+				}
 				console.log(objSave);
 				//objSave.ZecpAgrType =  this.getTypeOfAggreementKey(this.oECPData.ZecpAgrType);  
 				var oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -2456,8 +2462,12 @@ sap.ui.define([
 				"ZecpLienterms": oECPData.ZecpLienterms,
 				"ZecpBenefitsFlg": oECPData.ZecpBenefitsFlg,
 				"ZecpSaleDate": this._fnDateFormat(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")),
-				"ZecpUserid" : this.getModel("LocalDataModel").getProperty("/LoggedInUser")
+				"ZecpUserid": this.getModel("LocalDataModel").getProperty("/LoggedInUser")
 			};
+			
+			if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+							obj.ZecpUserid = "ECP Support";
+			}
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
 			var planPrice = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlanpurchprice");
@@ -2826,7 +2836,7 @@ sap.ui.define([
 				ZecpUserid: this.getModel("LocalDataModel").getProperty("/LoggedInUser")
 			};
 			// ##change done for DMND0003001 by Minakshi
-			
+
 			return crudObj;
 		},
 
@@ -2896,6 +2906,9 @@ sap.ui.define([
 						that.getView().getModel("oSetProperty").setProperty("/subYes", false);
 						that.oECPData = that.getView().getModel("EcpFieldData").getData();
 						var objSub = that._fnObject("SUB", "DELETED");
+						if (that.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
+							objSub.ZecpUserid = "ECP Support";
+						}
 						//objSub.ZecpAgrType =  that.getTypeOfAggreementKey(that.oECPData.ZecpAgrType);                  
 						var oEcpModel = that.getModel("EcpSalesModel");
 						/*
