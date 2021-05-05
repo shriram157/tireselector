@@ -139,37 +139,47 @@ sap.ui.define([
 								console.log("Error");
 							}
 						});
-						
+
 						this.fnBusinessPartnerData(AgrOwnrSectonCno, $.proxy(function (budata) {
 							this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress", budata.results[0]);
 							if (budata.results[0].to_EmailAddress.results.length > 0) {
 								var oEmailAdd = budata.results[0].to_EmailAddress.results;
-								var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true)[0]?.EmailAddress.toUpperCase() || "";
+								var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true)[0].EmailAddress.toUpperCase() || "";
 								this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/EmailAddress", sEmail);
 							}
 							if (budata.results[0].to_PhoneNumber.results.length > 0) {
 								// Added for incident INC0184963 start
 								var oPhoneNumList = budata.results[0].to_PhoneNumber.results;
-								var validPhone = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0]?.PhoneNumber ||
-									"";
+								var validPhone = "";
+								//oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0].PhoneNumber || "";
+								var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
+								if (phoneArr.length > 0) {
+									validPhone = phoneArr[0].PhoneNumber;
+								}
 								this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/PhoneNumber", validPhone);
 								// Added for incident INC0184963 end
 							}
 							if (budata.results[0].to_FaxNumber.results.length > 0) {
-								this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[0]?.FaxNumber || "");
+								this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/FaxNumber", budata.results[0].to_FaxNumber.results[
+										0]
+									.FaxNumber || "");
 							}
 
 							if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 								// Added for incident INC0184963 start
 								var oMobNumList = budata.results[0].to_MobilePhoneNumber.results;
-								var validMobile = oMobNumList.filter(s => s.PhoneNumberType == 3)[0]?.PhoneNumber || "";
+								var validMobile = "";
+								var validMobileArr = oMobNumList.filter(s => s.PhoneNumberType == 3);
+
+								if (validMobileArr.length > 0) {
+									var validMobile = validMobileArr[0].PhoneNumber || "";
+								}
 								this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/MobileNumber", validMobile);
 								// Added for incident INC0184963 end
 
 							}
 						}, this));
 
-						
 					}
 
 					zEcpModel.read("/zc_ecp_vehicle_detailSet", {
@@ -222,20 +232,19 @@ sap.ui.define([
 									this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
 									if (budata.results[0].to_EmailAddress.results.length > 0) {
 										var oEmailAdd = budata.results[0].to_EmailAddress.results;
-										var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true)[0]?.EmailAddress.toUpperCase() || "";
+										var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true)[0].EmailAddress.toUpperCase() || "";
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/EmailAddress", sEmail);
 									}
 									if (budata.results[0].to_PhoneNumber.results.length > 0) {
 										// Added for incident INC0184963 start
 										var oPhoneNumList = budata.results[0].to_PhoneNumber.results;
-										// var validPhone = "";
-										var validPhone = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0]?.PhoneNumber || "";
-										// var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
-										// if(phoneArr.length > 0){
-										// 	validPhone = phoneArr[0].PhoneNumber;
-										// }	
-											
-											
+										var validPhone = "";
+										//oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0].PhoneNumber || "";
+										var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
+										if (phoneArr.length > 0) {
+											validPhone = phoneArr[0].PhoneNumber;
+										}
+
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", validPhone);
 										// Added for incident INC0184963 end
 									}
@@ -246,7 +255,7 @@ sap.ui.define([
 									if (budata.results[0].to_MobilePhoneNumber.results.length > 0) {
 										// Added for incident INC0184963 start
 										var oMobNumList = budata.results[0].to_MobilePhoneNumber.results;
-										var validMobile = oMobNumList.filter(s => s.PhoneNumberType == 3)[0]?.PhoneNumber || "";
+										var validMobile = oMobNumList.filter(s => s.PhoneNumberType == 3)[0].PhoneNumber || "";
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/Mobile", validMobile);
 										// Added for incident INC0184963 end
 
@@ -293,21 +302,26 @@ sap.ui.define([
 						this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
 						if (budata.results[0].to_EmailAddress.results.length > 0) {
 							var oEmailAdd = budata.results[0].to_EmailAddress.results;
-							var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true)[0]?.EmailAddress.toUpperCase() || "";
+							var sEmail = oEmailAdd.filter(s => s.IsDefaultEmailAddress == true)[0].EmailAddress.toUpperCase() || "";
 							this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/EmailAddress", sEmail);
 						}
 
 						if (budata.results[0].to_PhoneNumber.results.length > 0) {
 							// Added for incident INC0184963 start
 							var oPhoneNumList = budata.results[0].to_PhoneNumber.results;
-							var validPhone = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0]?.PhoneNumber ||
-								"";
+							var validPhone = "";
+							//oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0].PhoneNumber || "";
+							var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
+							if (phoneArr.length > 0) {
+								validPhone = phoneArr[0].PhoneNumber;
+							}
 							this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/PhoneNumber", validPhone);
 							// Added for incident INC0184963 end
 						}
 
 						if (budata.results[0].to_FaxNumber.results.length > 0) {
-							this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", budata.results[0].to_FaxNumber.results[0]?.FaxNumber || "");
+							this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/FaxNumber", budata.results[0].to_FaxNumber.results[0]
+								.FaxNumber || "");
 						}
 					}, this));
 
