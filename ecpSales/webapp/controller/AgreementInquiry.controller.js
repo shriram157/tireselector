@@ -228,12 +228,12 @@ sap.ui.define([
 									if (budata.results[0].to_PhoneNumber.results.length > 0) {
 										// Added for incident INC0184963 start
 										var oPhoneNumList = budata.results[0].to_PhoneNumber.results;
-										var validPhone = "";
-										//oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0].PhoneNumber || "";
-										var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
-										if(phoneArr.length > 0){
-											validPhone = phoneArr[0].PhoneNumber;
-										}	
+										// var validPhone = "";
+										var validPhone = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1)[0]?.PhoneNumber || "";
+										// var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
+										// if(phoneArr.length > 0){
+										// 	validPhone = phoneArr[0].PhoneNumber;
+										// }	
 											
 											
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", validPhone);
