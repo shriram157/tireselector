@@ -313,7 +313,7 @@ sap.ui.define([
 
 					this.fnBusinessPartnerData(this.getModel("LocalDataModel").getProperty("/AgreementInfo/DealershipNumber"), $.proxy(function (
 						budata) {
-						this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
+						//this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress", budata.results[0]);
 						if (budata.results[0].to_EmailAddress.results.length > 0) {
 							var oEmailAdd = budata.results[0].to_EmailAddress.results;
 							var sEmail = "";
