@@ -159,6 +159,11 @@ sap.ui.define([
 								var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
 								if (phoneArr.length > 0) {
 									validPhone = phoneArr[0].PhoneNumber;
+								} else {
+									phoneArr = oPhoneNumList.filter(s => s.PhoneNumberType == 1);
+									if (phoneArr.length > 0) {
+										validPhone = phoneArr[0].PhoneNumber;
+									}
 								}
 								this.getModel("LocalDataModel").setProperty("/AgrOwnrSectonAddress/PhoneNumber", validPhone);
 								// Added for incident INC0184963 end
@@ -251,6 +256,11 @@ sap.ui.define([
 										var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
 										if (phoneArr.length > 0) {
 											validPhone = phoneArr[0].PhoneNumber;
+										} else {
+											phoneArr = oPhoneNumList.filter(s => s.PhoneNumberType == 1);
+											if (phoneArr.length > 0) {
+												validPhone = phoneArr[0].PhoneNumber;
+											}
 										}
 
 										this.getModel("LocalDataModel").setProperty("/VechOwnrSectonAddress/PhoneNumber", validPhone);
@@ -332,6 +342,11 @@ sap.ui.define([
 							var phoneArr = oPhoneNumList.filter(s => s.IsDefaultPhoneNumber == true && s.PhoneNumberType == 1);
 							if (phoneArr.length > 0) {
 								validPhone = phoneArr[0].PhoneNumber;
+							} else {
+								phoneArr = oPhoneNumList.filter(s => s.PhoneNumberType == 1);
+								if (phoneArr.length > 0) {
+									validPhone = phoneArr[0].PhoneNumber;
+								}
 							}
 							this.getModel("LocalDataModel").setProperty("/BusinessPartnerData/PhoneNumber", validPhone);
 							// Added for incident INC0184963 end
