@@ -105,9 +105,14 @@
 											<Label text="{i18n>RoadHazardProtection} "/>
 											<Label text=" {i18n>AgreementText}" class="noCustomColor"/>
 										</HBox>
-										<Select id="id_RHP" forceSelection="false" selectedKey="" width="100%" items="{ProductCategoryModel>/results}" change="onMatSelection">
-											<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR_DESC}"/>
-										</Select>
+										<!-- Codes added by Minakshi start DMND0003098 and commented old codes -->
+										<ComboBox id="id_RHP" selectedKey="" items="{ProductCategoryModel>/results}" selectionChange="onMatSelection">
+											<core:ListItem text="{ProductCategoryModel>MATNR_DESC}" key="{ProductCategoryModel>MATNR}" additionalText="{ProductCategoryModel>CATEGORYFLAG}"/>
+										</ComboBox>
+										<!--<Select id="id_RHP" forceSelection="false" selectedKey="" width="100%" items="{ProductCategoryModel>/results}" change="onMatSelection">-->
+										<!--	<core:Item key="{ProductCategoryModel>MATNR}" text="{ProductCategoryModel>MATNR} - {ProductCategoryModel>MATNR_DESC} - {ProductCategoryModel>CATEGORYFLAG}" />-->
+										<!--</Select>-->
+										<!-- Codes added by Minakshi end DMND0003098 and commented old codes -->
 									</VBox>
 									<Input value="{path:'TireQuotationModel>/RHPPRice', formatter: '.addDollarSign'}" id="id_RHPUnitPrice" editable="false"/>
 									<Input value="" id="id_RHPsQty" editable="false"/>
