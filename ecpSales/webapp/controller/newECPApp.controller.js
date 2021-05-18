@@ -274,8 +274,8 @@ sap.ui.define([
 								EcpFieldData.setDefaultBindingMode("TwoWay");
 								this.getView().setModel(EcpFieldData, "EcpFieldData");
 								this.getValidPlanSet(EcpFieldData);
-								this.updateTHazBenFlag();
 								var oSelectedPlan = this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode");
+								this.updateTHazBenFlag(oSelectedPlan);
 								var isUsedPrimPlan = this.check4PrimUsedVehiclePlan(oSelectedPlan);
 								if (isUsedPrimPlan) {
 									this.getView().getModel("oSetProperty").setProperty("/notUsedPrimPlan", false);
@@ -319,7 +319,7 @@ sap.ui.define([
 							success: $.proxy(function (vedata) {
 								this.getModel("LocalDataModel").setProperty("/PricingModelData", vedata.results[0]);
 								//Check and Update Tire Hazard and Benifit Falg for DMS App: Defet ID = 9616
-								this.updateTHazBenFlag();
+								//this.updateTHazBenFlag(this.getView().getModel("EcpFieldData").getProperty("/ZecpPlancode"));
 
 							}, this),
 							error: function () {
@@ -362,7 +362,7 @@ sap.ui.define([
 			}
 
 		},
-		updateTHazBenFlag: function () {
+		updateTHazBenFlag: function (scode) {
 			// var sourceType = this.getModel("LocalDataModel").getProperty("/ApplicationOwnerData").Source;
 			var pricingModelData = this.getModel("LocalDataModel").getProperty("/PricingModelData");
 			var oECPData = this.getView().getModel("EcpFieldData").getData();
@@ -377,11 +377,13 @@ sap.ui.define([
 				var DifferTime = Math.round(moment.duration(SaleDateVar.diff(RegDateVar)).asDays());
 
 				var oOdoVal = oECPData.ZecpOdometer;
+				// if plancode starts with CTC the tire road hazard should come as NO
+				var bul = scode.startsWith("CTC") ? true : false;
 
 				//3year 1095 in days
 
 				if (DifferTime <= 1095 && oOdoVal <= 50000 && (oECPData.ZecpAgrType === oBundle.getText("NEWVEHICLEAGREEMENT") || oECPData.ZecpAgrType ===
-						"NEW VEHICLE AGREEMENT")) {
+						"NEW VEHICLE AGREEMENT") && bul == false) {
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard", "Yes");
 					this.getView().getModel("EcpFieldData").setProperty("/ZecpRoadhazard1", oBundle.getText("Yes"));
 				} else if (DifferTime > 1095 || oOdoVal > 50000) {
@@ -1838,7 +1840,7 @@ sap.ui.define([
 
 			}
 
-			this.updateTHazBenFlag();
+			this.updateTHazBenFlag(oSelectedPlan);
 
 			//resetting the LienFields Validation
 
@@ -2464,9 +2466,9 @@ sap.ui.define([
 				"ZecpSaleDate": this._fnDateFormat(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")),
 				"ZecpUserid": this.getModel("LocalDataModel").getProperty("/LoggedInUser")
 			};
-			
+
 			if (this.getModel("LocalDataModel").getProperty("/UserType") == "TCI_Admin") {
-							obj.ZecpUserid = "ECP Support";
+				obj.ZecpUserid = "ECP Support";
 			}
 
 			var retPrice = this.getModel("LocalDataModel").getProperty("/oPlanPricingData/ZECP_LISTPURPRICE");
