@@ -243,6 +243,10 @@ sap.ui.define([
 					currentImageSource = this.getView().byId("idLexusLogo");
 					currentImageSource.setProperty("src", "images/LexusNew.png");
 				}
+			} else {
+				DivUser = "TOY";
+				currentImageSource = this.getView().byId("idLexusLogo");
+				currentImageSource.setProperty("src", "images/toyota_logo_colour.png");
 			}
 			_this.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			_this.userData = sap.ui.getCore().getModel("DealerModel").getData();
@@ -370,7 +374,7 @@ sap.ui.define([
 									_this.oTireQuotationModel.getData().FederalTax = Number(oPriceData.results[n].Amount);
 								} else if (CndType == "JRC3" || CndType == "JRC2") {
 									_this.oTireQuotationModel.getData().ProvincialTax = Number(oPriceData.results[n].Amount);
-								} 
+								}
 								// else if (CndType == "ZPOF") { //Freight Cost
 								// 	_this.oTireQuotationModel.getData().EHFPRice = Number(oPriceData.results[n].Amount);
 								// }
@@ -404,25 +408,30 @@ sap.ui.define([
 			$.ajax({
 				dataType: "json",
 				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '" + Lang +
-					"' and PRODH eq 'PARP10F22P101ECPRH'",
+					"'and PRODH eq 'PARP10F22P101ECPRH'",
 				type: "GET",
 				success: function (oDataResponse) {
 					if (oDataResponse.d.results.length > 0) {
-						_this.matData = {
-							"results": []
-						};
-						$.each(oDataResponse.d.results, function (i, item) {
-							if (item.MATNR != "" && (item.MATNR == "C0WGITRHP3" || item.MATNR == "C0WGITRHP4")) {
-								_this.matData.results.push({
-									"MATNR": item.MATNR,
-									"MATNR_DESC": item.MATNR_DESC
-								});
-							}
-						});
+						// OLD codes commented by Minakshi DMND0003098
+						// _this.matData = {
+						// 	"results": []
+						// };
+						//and PRODH eq 'PARP10F22P101ECPRH'
+						// _this.matData.results.push(oDataResponse.d.results);
+
+						// $.each(oDataResponse.d.results, function (i, item) {
+						// 	if (item.MATNR != "" && (item.MATNR == "C0WGITRHP3" || item.MATNR == "C0WGITRHP4")) {
+						// 		_this.matData.results.push({
+						// 			"MATNR": item.MATNR,
+						// 			"MATNR_DESC": item.MATNR_DESC
+						// 		});
+						// 	}
+						// });
 						_this.oBundle = _this.getView().getModel("i18n").getResourceBundle();
 						_this.oProductCategoryModel = new JSONModel();
 						_this.getView().setModel(_this.oProductCategoryModel, "ProductCategoryModel");
-						_this.oProductCategoryModel.setData(_this.matData);
+						// Changes added by Minakshi DMND0003098 on 14.05.2021
+						_this.oProductCategoryModel.setProperty("/results", oDataResponse.d.results);
 						_this.oProductCategoryModel.getData().results.unshift({
 							"MATNR": _this.oBundle.getText("NoThankYou"),
 							"MATNR_DESC": _this.oBundle.getText("NoThankYou")
@@ -468,13 +477,25 @@ sap.ui.define([
 		onPressBreadCrumb: function (oEvtLink) {
 			sap.ui.core.UIComponent.getRouterFor(_this).navTo("master");
 		},
+		// declaired by Minakshi DMND0003098 on 14.05.2021 start
+		_flagLogic: function () {
+			var sFlag = _this.getView().byId("id_RHP").getSelectedItem().getAdditionalText(); // declaired by Minakshi DMND0003098 on 14.05.2021
+			if (sFlag === "") {
+				_this.getView().byId("id_RHPsQty").setValue("1");
+			} else {
+				_this.getView().byId("id_RHPsQty").setValue(_this.getView().byId("id_tireQty").getValue());
+			}
+		},
+		// declaired by Minakshi DMND0003098 on 14.05.2021 end
 
 		onMatSelection: function (oChange) {
 			_this.oGlobalBusyDialog.open();
 			_this.oBundle = _this.getView().getModel("i18n").getResourceBundle();
 			var oMat = oChange.getParameter("selectedItem").getProperty("key");
+
 			if (oMat != _this.oBundle.getText("NoThankYou")) {
-				_this.getView().byId("id_RHPsQty").setValue(_this.getView().byId("id_tireQty").getValue());
+
+				_this._flagLogic();
 				var oMaterial = oMat;
 				var CustomerRegion = _this.userData.DealerData.Region;
 				_this.Division = "00";
@@ -494,74 +515,72 @@ sap.ui.define([
 				_this.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
 					success: $.proxy(function (oPriceData) {
 						if (oPriceData.results.length > 0) {
-							var CndTypeArray=[];
-							
+							var CndTypeArray = [];
+
 							for (var n = 0; n < oPriceData.results.length; n++) {
 								var CnType = oPriceData.results[n].CndType;
 								CndTypeArray.push(CnType);
-								
-							}
-							var n= CndTypeArray.indexOf("ZPM3");
-							if (n == -1)
-							{
-								n= CndTypeArray.indexOf("ZPM2");	
-							}
-								
-							 
-									_this.oTireQuotationModel.getData().RHPPRice = parseFloat(oPriceData.results[n].Amount).toFixed(2);
-								
-									if (_this.oTireQuotationModel.getData().RHPPRice != "") {
-										_this.oTirePriceModel.getData().RHPPriceSum = (Number(_this.oTireQuotationModel.getData().RHPPRice) * Number(_this.getView()
-											.byId("id_RHPsQty").getValue())).toString();
-										var arrPrices = _this.oTirePriceModel.getData();
-										var summed = 0;
-										for (var key in arrPrices) {
-											summed += Number(arrPrices[key]);
-										}
-										_this.oTireQuotationModel.getData().subTotal = _this.decimalFormatter(summed);
-										_this.oTireQuotationModel.updateBindings(true);
-										var dataRes = _this.oTireQuotationModel.getData();
-										_this.sub = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
 
-										if (dataRes.FederalTax != "") {
-											dataRes.FederalTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.FederalTax));
-											_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.FederalTax);
-											_this._oViewModelTax.setProperty("/enableFTC", true);
-											_this.oTireQuotationModel.updateBindings(true);
-											_this._oViewModelTax.updateBindings(true);
-										} else {
-											dataRes.FederalTaxSum = "";
-											_this._oViewModelTax.setProperty("/enableFTC", false);
-											_this.oTireQuotationModel.updateBindings(true);
-											_this._oViewModelTax.updateBindings(true);
-										}
-										if (dataRes.ProvincialTax != "") {
-											// dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
-											// _this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
-											var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
-											dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
-											_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+							}
+							var n = CndTypeArray.indexOf("ZPM3");
+							if (n == -1) {
+								n = CndTypeArray.indexOf("ZPM2");
+							}
 
-											_this._oViewModelTax.setProperty("/enablePTC", true);
-											_this.oTireQuotationModel.updateBindings(true);
-											_this._oViewModelTax.updateBindings(true);
-										} else {
-											dataRes.ProvincialTaxSum = "";
-											_this._oViewModelTax.setProperty("/enablePTC", false);
-											_this.oTireQuotationModel.updateBindings(true);
-											_this._oViewModelTax.updateBindings(true);
-										}
-										_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
-										// _this.TotalAmount.setValue(_this.decimalFormatter(_this.sub));
-										dataRes.Total = _this.decimalFormatter(_this.sub);
-										_this.oTirePriceModel.updateBindings(true);
-										_this.oTireQuotationModel.updateBindings(true);
-									}
-								
+							_this.oTireQuotationModel.getData().RHPPRice = parseFloat(oPriceData.results[n].Amount).toFixed(2);
+
+							if (_this.oTireQuotationModel.getData().RHPPRice != "") {
+								_this.oTirePriceModel.getData().RHPPriceSum = (Number(_this.oTireQuotationModel.getData().RHPPRice) * Number(_this.getView()
+									.byId("id_RHPsQty").getValue())).toString();
+								var arrPrices = _this.oTirePriceModel.getData();
+								var summed = 0;
+								for (var key in arrPrices) {
+									summed += Number(arrPrices[key]);
+								}
+								_this.oTireQuotationModel.getData().subTotal = _this.decimalFormatter(summed);
 								_this.oTireQuotationModel.updateBindings(true);
+								var dataRes = _this.oTireQuotationModel.getData();
+								_this.sub = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
+
+								if (dataRes.FederalTax != "") {
+									dataRes.FederalTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.FederalTax));
+									_this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.FederalTax);
+									_this._oViewModelTax.setProperty("/enableFTC", true);
+									_this.oTireQuotationModel.updateBindings(true);
+									_this._oViewModelTax.updateBindings(true);
+								} else {
+									dataRes.FederalTaxSum = "";
+									_this._oViewModelTax.setProperty("/enableFTC", false);
+									_this.oTireQuotationModel.updateBindings(true);
+									_this._oViewModelTax.updateBindings(true);
+								}
+								if (dataRes.ProvincialTax != "") {
+									// dataRes.ProvincialTaxSum = _this.decimalFormatter((_this.sub / 100) * Number(dataRes.ProvincialTax));
+									// _this.sub = _this.sub + (_this.sub / 100) * Number(dataRes.ProvincialTax);
+									var subTotalForProvincialTax = Number(dataRes.subTotal) + Number(dataRes.EHFPriceSum);
+									dataRes.ProvincialTaxSum = _this.decimalFormatter((subTotalForProvincialTax / 100) * Number(dataRes.ProvincialTax));
+									_this.sub = _this.sub + Number(dataRes.ProvincialTaxSum); //(_this.sub / 100) * Number(dataRes.ProvincialTax);
+
+									_this._oViewModelTax.setProperty("/enablePTC", true);
+									_this.oTireQuotationModel.updateBindings(true);
+									_this._oViewModelTax.updateBindings(true);
+								} else {
+									dataRes.ProvincialTaxSum = "";
+									_this._oViewModelTax.setProperty("/enablePTC", false);
+									_this.oTireQuotationModel.updateBindings(true);
+									_this._oViewModelTax.updateBindings(true);
+								}
+								_this.getView().setModel(_this._oViewModelTax, "TireTaxModel");
+								// _this.TotalAmount.setValue(_this.decimalFormatter(_this.sub));
+								dataRes.Total = _this.decimalFormatter(_this.sub);
 								_this.oTirePriceModel.updateBindings(true);
-								_this.oGlobalBusyDialog.close();
-							
+								_this.oTireQuotationModel.updateBindings(true);
+							}
+
+							_this.oTireQuotationModel.updateBindings(true);
+							_this.oTirePriceModel.updateBindings(true);
+							_this.oGlobalBusyDialog.close();
+
 						} else {
 							// sap.m.MessageBox.error(
 							// 	"NO Pricing data found for Material"
@@ -760,7 +779,7 @@ sap.ui.define([
 					"DlrTel": ModelData3.PhoneNumber,
 					"VehicleDes": ModelData.ModelDesc,
 					"VinNum": ModelData.VIN,
-					"MATNR":ModelData.Material,
+					"MATNR": ModelData.Material,
 					"QuoteDate": this.oDateFormatShort.format(new Date(ModelData3.CurrentDate)),
 					"OfferExpDt": this.oDateFormatShort.format(new Date(ModelData3.expiryDate)),
 					"RhpPlnDesc": this.getView().byId("id_RHP")._getSelectedItemText(),
@@ -923,7 +942,7 @@ sap.ui.define([
 		},
 
 		changeUnitPrice: function (oUnitPrice) {
-			_this.oTireQuotationModel.setProperty("/Retails",oUnitPrice.getParameter("newValue"));
+			_this.oTireQuotationModel.setProperty("/Retails", oUnitPrice.getParameter("newValue"));
 			_this.oTirePriceModel.updateBindings(true);
 		},
 
@@ -1001,7 +1020,9 @@ sap.ui.define([
 			if (oQtyVal !== undefined || oQtyVal !== null || oQtyVal !== "") {
 				if (oQty.getSource().getId().split("_")[3] === "tireQty") {
 					if (_this.getView().byId("id_RHP").getSelectedKey() !== _this.oBundle.getText("NoThankYou")) {
-						_this.getView().byId("id_RHPsQty").setValue(oQtyVal);
+						// start by Minakshi on 14.05.2021
+						_this._flagLogic();
+						// end by Minakshi on 14.05.2021
 						if (_this.oTireQuotationModel.getData().RHPPRice !== "") {
 							data.RHPPriceSum = _this.decimalFormatter(Number(_this.oTireQuotationModel.getData().RHPPRice) * Number(_this.getView()
 								.byId("id_RHPsQty").getValue())).toString();
