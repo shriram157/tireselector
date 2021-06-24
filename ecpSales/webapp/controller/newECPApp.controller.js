@@ -1044,10 +1044,10 @@ sap.ui.define([
 			if (
 				(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("NEWVEHICLEAGREEMENT") && oFlag === "N") ||
 				(this.fnLanguageCheck(oAgrTyp) == oBundle.getText("USEDVEHICLEAGREEMENT") && oFlag === "N") ||
-				(sStatus == "01" && oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) ||
+				(sStatus == "01" && this.fnLanguageCheck(oAgrTyp) != this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED")) ||
 				sStatus == "03" ||
-				(sStatus == "04" && oAgrTyp != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) ||
-				(sStatus == "05" && oAgrTyp == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED"))
+				(sStatus == "04" && this.fnLanguageCheck(oAgrTyp) != this.getView().getModel("i18n").getResourceBundle().getText("EXTENSION")) ||
+				(sStatus == "05" && this.fnLanguageCheck(oAgrTyp) == this.getView().getModel("i18n").getResourceBundle().getText("CERTIFIED"))
 
 			) {
 				sap.ui.core.BusyIndicator.hide();
@@ -2929,7 +2929,6 @@ sap.ui.define([
 						var oBusinessModel = that.getModel("ApiBusinessModel");
 						if (oCounter < 2) {
 							oEcpModel.create("/zc_ecp_crud_operationsSet", objSub, {
-
 								success: function (data, response) {
 									console.log(response.data);
 									that.getView().getModel("LocalDataModel").setProperty("/responseData", response.data);
