@@ -1064,7 +1064,7 @@ sap.ui.define([
 
 				// Changes done by Minakshi for	INC0195098 on 13/07/2021
 				MessageBox.warning(oBundle.getText("ActiveAgrexist"), {
-					actions: [MessageBox.Action.OK, MessageBox.Action.CANCEL],
+					actions: [MessageBox.Action.OK],
 					emphasizedAction: MessageBox.Action.OK,
 					onClose: $.proxy(function (sAction) {
 						this.getRouter().navTo("ApplicationList");
