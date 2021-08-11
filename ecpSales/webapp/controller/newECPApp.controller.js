@@ -1052,12 +1052,21 @@ sap.ui.define([
 			) {
 				sap.ui.core.BusyIndicator.hide();
 				this._fnValidateTab2();
-				MessageToast.show(oBundle.getText("ActiveAgrexist"), {
-					width: "30em",
-					my: "center center",
-					at: "center center",
-					duration: 2000,
-					onClose: $.proxy(function () {
+				// MessageToast.show(oBundle.getText("ActiveAgrexist"), {
+				// 	width: "30em",
+				// 	my: "center center",
+				// 	at: "center center",
+				// 	duration: 2000,
+				// 	onClose: $.proxy(function () {
+				// 		this.getRouter().navTo("ApplicationList");
+				// 	}, this)
+				// });
+
+				// Changes done by Minakshi for	INC0195098 on 13/07/2021
+				MessageBox.warning(oBundle.getText("ActiveAgrexist"), {
+					actions: [MessageBox.Action.OK],
+					emphasizedAction: MessageBox.Action.OK,
+					onClose: $.proxy(function (sAction) {
 						this.getRouter().navTo("ApplicationList");
 					}, this)
 				});
