@@ -15,7 +15,7 @@
 			<tnt:ToolHeader backgroundDesign="Translucent">
 				<Link text="{i18n>PageTitle}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
 				<Link text="{i18n>ProductMarkups}" visible="{MasterModel>/enableProdMarkup}" class="clCustomFont sapUiSmallMargin" press="onMenuLinkPress"/>
-				<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>
+				<!--<Link text="{i18n>ReportError}" class="clCustomFont sapUiSmallMargin" press="onShareEmailPress"/>-->
 			</tnt:ToolHeader>
 			<content>
 				<l:VerticalLayout class="sapUiContentPadding" width="100%">
@@ -106,6 +106,13 @@
 								<Label text="{i18n>Package}"/>
 								<t:template>
 									<Text text="{SearchResultModel>Zzsuffix}"/>
+								</t:template>
+							</t:Column>
+							<!--Adding of New field Of CR1032-->
+							<t:Column>
+								<Label text="{i18n>FrontRear}"/>
+								<t:template>
+									<Text text="{SearchResultModel>Front_Rear}"/>
 								</t:template>
 							</t:Column>
 							<t:Column>

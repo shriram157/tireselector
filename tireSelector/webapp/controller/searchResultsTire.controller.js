@@ -180,8 +180,10 @@ sap.ui.define([
 
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
-			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
-			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
+			sap.ushell.components.oTable.getExtension()[0].getContent()[0].setSelected(false);
+			sap.ushell.components.oTable.getExtension()[0].getContent()[1].setSelected(false)
+			//sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
+			//sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
 
 			that._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
@@ -235,7 +237,7 @@ sap.ui.define([
 			} else {
 				that._oViewModel.setProperty("/enableProdMarkup", false);
 			}
-
+			
 			//  END : uncomment below for cloud testing
 			that.oTireFitmentJSONModel = new sap.ui.model.json.JSONModel();
 			oTable = that.getView().byId("idTireSelectionTable");
@@ -586,12 +588,19 @@ sap.ui.define([
 										that.oTireFitmentJSONModel.getData().Filters.push(that.Filters[4]);
 										that.oTireFitmentJSONModel.updateBindings(true);
 
+										
+											that.getView().byId("idTireSelectionTable").setVisibleRowCount(20);
+										
+										
+										
 										that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.oTable.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ushell.components.FacetFilters.setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
 										sap.ui.core.BusyIndicator.hide();
 										that.oTireFitmentJSONModel.refresh(true);
 										that.oTireFitmentJSONModel.updateBindings(true);
+									
+										
 									}, 2000);
 
 									if (that.msgFlag == true) {
@@ -754,8 +763,8 @@ sap.ui.define([
 		NavBackToSearch: function () {
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
-			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
-			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
+			sap.ushell.components.oTable.getExtension()[0].getContent()[0].setSelected(false);
+			sap.ushell.components.oTable.getExtension()[0].getContent()[1].setSelected(false);
 			if (that.oTireFitmentJSONModel != undefined) {
 				that.oTireFitmentJSONModel.setData(null);
 				that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");
@@ -876,8 +885,8 @@ sap.ui.define([
 		onExit: function () {
 			sap.ushell.components.oTable.getColumns()[7].setVisible(false);
 			sap.ushell.components.oTable.getColumns()[8].setVisible(false);
-			sap.ushell.components.oTable.getToolbar().getContent()[0].setSelected(false);
-			sap.ushell.components.oTable.getToolbar().getContent()[1].setSelected(false);
+			sap.ushell.components.oTable.getExtension()[0].getContent()[0].setSelected(false);
+			sap.ushell.components.oTable.getExtension()[0].getContent()[1].setSelected(false);
 			if (that.oTireFitmentJSONModel != undefined) {
 				that.oTireFitmentJSONModel.setData(null);
 				that.getView().setModel(that.oTireFitmentJSONModel, "TireFitmentJSONModel");

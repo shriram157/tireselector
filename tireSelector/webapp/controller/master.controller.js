@@ -36,7 +36,7 @@ sap.ui.define([
 					"CurrentDate": new Date(),
 					"AddressID": "31298",
 					"Div": "TOY",
-					"Region":"ON"
+					"Region": "ON"
 				};
 				_that._oDealerModel = new sap.ui.model.json.JSONModel();
 				var dealer = _that.DealerData.BusinessPartner;
@@ -120,7 +120,8 @@ sap.ui.define([
 					//2400599999
 					if (_that.userData.userContext.userAttributes.DealerCode !== undefined) {
 						_that.dealerCode = _that.userData.userContext.userAttributes.DealerCode[0];
-					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National"|| _that.userData.userContext.userAttributes.UserType[0] == "Zone") {
+					} else if (_that.userData.userContext.userAttributes.UserType[0] == "National" || _that.userData.userContext.userAttributes.UserType[
+							0] == "Zone") {
 						_that.dealerCode = "2400599999";
 					} else {
 						_that.dealerCode = "";
@@ -148,11 +149,12 @@ sap.ui.define([
 					} else {
 						_that._oViewModel.setProperty("/enableProdMarkup", false);
 					}
-					// Stop: comment for local testing
+					// Stop: comment zfor local testing
 					_that.DealerData = {};
 					_that.oBusinessPartnerModel = _that.getOwnerComponent().getModel("BusinessPartnerModel");
 					var queryString1;
-					if (_that.userData.userContext.userAttributes.UserType[0] == "National"|| _that.userData.userContext.userAttributes.UserType[0] == "Zone") {
+					if (_that.userData.userContext.userAttributes.UserType[0] == "National" || _that.userData.userContext.userAttributes.UserType[
+							0] == "Zone") {
 						queryString1 = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
 					} else {
 						queryString1 = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_BusinessPartnerAddress";
@@ -166,14 +168,15 @@ sap.ui.define([
 								_that.DealerData.BusinessPartnerNo = address.BusinessPartner;
 								_that.getPhoneNumber(_that.DealerData.BusinessPartnerNo, _that.DealerData.AddressID);
 
-								_that.DealerData.BusinessPartnerAddress1 = address.StreetName + "," + address.CityName ;
+								_that.DealerData.BusinessPartnerAddress1 = address.StreetName + "," + address.CityName;
 								_that.DealerData.BusinessPartnerAddress2 = address.Country + "-" + address.PostalCode;
 								_that.DealerData.BusinessPartnerPhone = "";
 								_that.DealerData.Region = address.Region;
 								_that._oDealerModel.getData().DealerData = _that.DealerData;
 								_that._oDealerModel.updateBindings(true);
 								var queryString;
-								if (_that.userData.userContext.userAttributes.UserType[0] == "National"|| _that.userData.userContext.userAttributes.UserType[0] == "Zone") {
+								if (_that.userData.userContext.userAttributes.UserType[0] == "National" || _that.userData.userContext.userAttributes.UserType[
+										0] == "Zone") {
 									queryString = "?$filter=BusinessPartner eq'" + _that.dealerCode + "' &$expand=to_Customer";
 								} else {
 									queryString = "?$filter=SearchTerm2 eq'" + _that.dealerCode + "' &$expand=to_Customer";
@@ -398,8 +401,7 @@ sap.ui.define([
 				type: "GET",
 				dataType: "json",
 				success: function (oDataResponse) {
-					if (oDataResponse.d.results.length <= 0) {
-					} else {
+					if (oDataResponse.d.results.length <= 0) {} else {
 						for (var n = 0; n < oDataResponse.d.results.length; n++) {
 							_that.oGlobalJSONModel.getData().vinData.push(oDataResponse.d.results[n]);
 						}
@@ -429,7 +431,9 @@ sap.ui.define([
 					aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.StartsWith, newaTerm));
 				}
 			}
-			oEvent.getSource().getBinding("suggestionItems").filter(new Filter({filters:aFilters}));
+			oEvent.getSource().getBinding("suggestionItems").filter(new Filter({
+				filters: aFilters
+			}));
 			oEvent.getSource().getBinding("suggestionItems").refresh(true);
 		},
 
@@ -520,8 +524,8 @@ sap.ui.define([
 				if (sTerm) {
 					aFilters.push(new Filter("TIRE_SIZE", sap.ui.model.FilterOperator.Contains, sTerm));
 				}
-			//	oEntry.getSource().getBinding("suggestionItems").filter(aFilters);
-			//	oEntry.getSource().getBinding("suggestionItems").refresh(true);
+				//	oEntry.getSource().getBinding("suggestionItems").filter(aFilters);
+				//	oEntry.getSource().getBinding("suggestionItems").refresh(true);
 				_that._oViewModel.setProperty("/enableSearchBtn", true);
 			}
 		},
@@ -686,7 +690,8 @@ sap.ui.define([
 				return vin.match(re);
 			}
 			var Searchkey = _that.SearchOptionList.getSelectedKey();
-			if ((Searchkey == _that.oI18nModel.getResourceBundle().getText("VIN") || Searchkey == _that.oI18nModel.getResourceBundle().getText("VehicleSeries")) &&
+			if ((Searchkey == _that.oI18nModel.getResourceBundle().getText("VIN") || Searchkey == _that.oI18nModel.getResourceBundle().getText(
+					"VehicleSeries")) &&
 				(_that.SearchOptionTireSize.getValue() != "" || _that.SearchOptionVIN.getValue() != "" || _that.SearchOptionVehicle.getSelectedKey() !=
 					"")) {
 				_that.SearchOptionList.setValueState(sap.ui.core.ValueState.Success);
@@ -793,7 +798,7 @@ sap.ui.define([
 							var modelYearVal = _that.vinResultdata.results[v].modelYearVal;
 							var seriesVal = _that.vinResultdata.results[v].seriesVal;
 							var serviceURL2 = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + seriesVal +
-								"' and Zdivision eq '" + DivUser + "' and ModelYear eq '" + modelYearVal + "' and LANGUAGE eq '"+localLang+"'";
+								"' and Zdivision eq '" + DivUser + "' and ModelYear eq '" + modelYearVal + "' and LANGUAGE eq '" + localLang + "'";
 							$.ajax({
 								dataType: "json",
 								url: serviceURL2,
@@ -806,8 +811,9 @@ sap.ui.define([
 												"Zzsuffix": item.Zzsuffix,
 												"ZtireSize": item.ZtireSize,
 												"ZrimType": item.ZrimType,
-												"SuffixDesc":item.SuffixDesc,
-												"ModelYear":item.ModelYear
+												"SuffixDesc": item.SuffixDesc,
+												"ModelYear": item.ModelYear,
+												"Front_Rear": item.Front_Rear //Addine Field for CR1032
 											});
 										});
 										_that.SearchResultModel.setData(_that.searchresultObj);
@@ -840,7 +846,7 @@ sap.ui.define([
 				var modelyear = _that.ModelSeriesCombo.getSelectedKey();
 				var flagNODATFOUND = false;
 				serviceURL = _that.nodeJsUrl + "/Z_TIRESELECTOR_SRV/ZC_YEAR_DETAILSet?$filter=Series eq '" + TCIseries + "' and Zdivision eq '" +
-					DivUser + "' and ModelYear eq '" + modelyear + "' and LANGUAGE eq '"+localLang+"'";
+					DivUser + "' and ModelYear eq '" + modelyear + "' and LANGUAGE eq '" + localLang + "'";
 				$.ajax({
 					dataType: "json",
 					url: serviceURL,
@@ -885,11 +891,11 @@ sap.ui.define([
 			}
 			oBj.ModelSeriesCombo = _that.ModelSeriesCombo.getSelectedKey();
 			oBj.SearchOptionVIN = _that.SearchOptionVIN.getValue();
-			
+
 			var oPath = oEvtModel.getSource().getModel("SearchResultModel").getProperty(oEvtModel.getParameters().rowBindingContext.sPath);
 			oBj.ZtireSize = oPath.ZtireSize.replace("/", "%2F");
-			oBj.ModelDesc = oPath.ModelYear +" "+oPath.SuffixDesc; //removing +" "+oPath.ModelDesc_EN as discussed
-			
+			oBj.ModelDesc = oPath.ModelYear + " " + oPath.SuffixDesc; //removing +" "+oPath.ModelDesc_EN as discussed
+
 			sap.ui.core.UIComponent.getRouterFor(_that).navTo("searchResultsTire", {
 				modelData: JSON.stringify(oBj)
 			});
