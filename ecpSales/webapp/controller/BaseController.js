@@ -144,9 +144,6 @@ sap.ui.define([
 			var oBusinessModel = this.getModel("ApiBusinessModel");
 			this.getView().setModel(oBusinessModel, "OBusinessModel");
 			this.getView().setModel(this.getOwnerComponent().getModel("EcpSalesModel"));
-			// var oEventBus = sap.ui.getCore().getEventBus();
-			// oEventBus.subscribe("newECPApp", "Binded", this.onSelectiDealer, this);
-
 			//======================================================================================================================//			
 			//  on init method,  get the token attributes and authentication details to the UI from node layer.  - begin
 			//======================================================================================================================//		
