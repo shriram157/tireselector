@@ -2070,8 +2070,10 @@ sap.ui.define([
 							oEcpFieldDataModel.setProperty("/ZecpVehSurchrgAmt", data.results[0].ZECP_VEH_SURCHRG_AMT);
 							// this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
 							oEcpFieldDataModel.setProperty("/ZecpListpurprice", data.results[0].ZECP_LISTPURPRICE);
+							//DMND0003027 demand changes done.
 							if(data.results[0].BENEFITSFLAG === "X"){
 							oEcpFieldDataModel.setProperty("/ZbenefitFlag1", this.getView().getModel("i18n").getResourceBundle().getText("Yes"));
+							this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 							// this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
 							}
 						}, this),
