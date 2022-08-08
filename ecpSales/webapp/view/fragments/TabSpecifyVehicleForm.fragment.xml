@@ -6,7 +6,7 @@
 			<Label text="{i18n>VIN}"/>
 			<Input value="{EcpFieldData>/ZecpVin}" editable="{DateModel>/enableVin}" liveChange="onEnterVinInput" id="idVinNum"/>
 			<Button text="{i18n>Next}" type="Emphasized" press="OnNextStep2"/>
-			<Button text="{i18n>Back}" type="Emphasized" press="OnBack"/>
+			<Button text="{i18n>Back}" type="Back" press="OnBack"/>
 		</f:content>
 		
 	</f:SimpleForm>
