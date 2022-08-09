@@ -1,14 +1,12 @@
 {
 
 	"dependencies": {
-		"@sap/xsenv": "3.1.1",
+		"@sap/logging": "^4.1.0",
+		"@sap/xsenv": "^2.2.0",
 		"@sap/xssec": "^2.2.4",
-		"body-parser": "^1.19.0",
+		"cors": "^2.8.5",
 		"express": "^4.16.4",
-		"boom": "^2.10.1",
-		"request": "^2.88.0",
-		"passport": "^0.4.0",
-		"cf-nodejs-logging-support": "^3.0.13"
+		"passport": "^0.4.0"
 	},
 	"description": "Node.js module for tire selector consolidated app",
 	"devDependencies": {
