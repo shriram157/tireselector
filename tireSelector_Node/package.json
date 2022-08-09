@@ -24,7 +24,7 @@
 		"start": "node --max-http-header-size=40960 server.js"
 	},
 	"engines": {
-		"node": "^16.0.0"
+		"node": "^16x"
 	},
 	"version": "2.0.0"
 }
