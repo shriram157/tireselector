@@ -42,6 +42,7 @@ modules:
    parameters:
       disk-quota: 512M
       memory: 256M
+      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.7.70
    properties:
       OPTIMIZE_MEMORY: true
       XS_APP_LOG_LEVEL: info
