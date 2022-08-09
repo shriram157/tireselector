@@ -1,7 +1,7 @@
 ID: tireSelector
 _schema-version: '3.1'
 description: Tire Selector consolidated app
-version: 2.0.0
+version: 3.0.0
 
 modules:
  - name: tireSelector_hdb
@@ -16,7 +16,7 @@ modules:
    parameters:
       disk-quota: 512M
       memory: 256M
-      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.7.70
+      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.7.61
    properties:
       NODE_TLS_REJECT_UNAUTHORIZED: 0
       OPTIMIZE_MEMORY: true
@@ -42,7 +42,6 @@ modules:
    parameters:
       disk-quota: 512M
       memory: 256M
-      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.7.70
    properties:
       OPTIMIZE_MEMORY: true
       XS_APP_LOG_LEVEL: info
