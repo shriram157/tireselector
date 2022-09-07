@@ -249,7 +249,6 @@
 								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
 									enabled="{LocalDataModel>/printBtnState}"/>
 							</HBox>
-							<br></br>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
