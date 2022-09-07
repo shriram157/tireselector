@@ -118,3 +118,6 @@ html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
 	padding-left:3rem;
 	text-align: left!important;
 }
+body {
+	margin:0;
+}

@@ -234,7 +234,7 @@
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<uxap:ObjectPageSection  class="sapUiTinyMarginBottom">
+			<uxap:ObjectPageSection>
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="">
 						<uxap:blocks>
