@@ -252,7 +252,6 @@
 			<Button class="sapUiTinyMarginBeginEnd" text="{i18n>PerformCIC}" press="performCIC"/>
 			<Button class="sapUiTinyMarginBeginEnd" press="onSubmitApp" visible="{oSetProperty>/oSecondaryState}" text="{i18n>Submit}" id="idSubmitBtn"
 				type="Emphasized" enabled="{oSetProperty>/submitBtn}"/>
-			<Label class="sapUiTinyMarginBottom"/>
 			<!--<Button class="sapUiTinyMarginBeginEnd" visible="{oSetProperty>/oSecondaryState01}" text="{i18n>Submit}" id="idUpdateSubmitBtn"-->
 			<!--	press="onSubmitApp"/>-->
 		</HBox>
