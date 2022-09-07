@@ -234,10 +234,10 @@
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<!--<uxap:ObjectPageSection > changes by swetha for demand DMND0003799
+			<uxap:ObjectPageSection >
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="">
-						<uxap:blocks>-->
+						<uxap:blocks>
 							<!--<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>-->
@@ -249,10 +249,10 @@
 								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
 									enabled="{LocalDataModel>/printBtnState}"/>
 							</HBox>
-						<!--</uxap:blocks>
+						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
-			</uxap:ObjectPageSection>-->
+			</uxap:ObjectPageSection>
 		</uxap:sections>
 	</uxap:ObjectPageLayout>
 </mvc:View>

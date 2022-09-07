@@ -100,6 +100,7 @@
 
 html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
     outline: none!important;
+    min-height: 100%;
 }
 
 .clClaimTable .sapMListTblHeader>.sapMTableTH {
