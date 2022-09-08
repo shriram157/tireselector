@@ -236,7 +236,7 @@
 			</uxap:ObjectPageSection>
 			<uxap:ObjectPageSection>
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection title="">
+					<uxap:ObjectPageSubSection title="" class="sapUiNoMarginBottom">
 						<uxap:blocks>
 							<!--<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>-->
