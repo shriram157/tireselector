@@ -1,9 +1,9 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.AgreementInquiry"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:uxap="sap.uxap" xmlns:tnt="sap.tnt">
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
-	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" class="sapUiNoMarginBottom">
+	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true">
 		<uxap:sections> 
-			<uxap:ObjectPageSection title="" class="sapUiNoMarginBottom">
+			<uxap:ObjectPageSection title="">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection id="idAgreementDetailHeader" title="">
 						<uxap:blocks>
@@ -236,17 +236,17 @@
 			</uxap:ObjectPageSection>
 			<uxap:ObjectPageSection>
 				<uxap:subSections>
-					<uxap:ObjectPageSubSection title="" class="sapUiNoMarginBottom">
+					<uxap:ObjectPageSubSection title="">
 						<uxap:blocks>
 							<!--<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" type="Back" press="onPrintPdf"/>-->
 							<!--</HBox>-->
-							<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiNoMarginBottom">
-								<Button class="sapUiTinyMarginBeginEnd sapUiNoMarginBottom" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
-								<Button class="sapUiTinyMarginBeginEnd sapUiNoMarginBottom" press="onSearchBackList" text="{i18n>NewSearch}"/>
-								<Button class="sapUiTinyMarginBeginEnd sapUiNoMarginBottom" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
+							<HBox width="100%" alignContent="Center" justifyContent="Center">
+								<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
+								<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>
+								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
 									enabled="{LocalDataModel>/printBtnState}"/>
 							</HBox>
 						</uxap:blocks>
