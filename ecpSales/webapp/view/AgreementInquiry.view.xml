@@ -1,7 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.AgreementInquiry"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:uxap="sap.uxap" xmlns:tnt="sap.tnt">
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
-	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" class="sapUiNoMarginEnd">
+	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true">
 		<uxap:sections>
 			<uxap:ObjectPageSection title="">
 				<uxap:subSections>
@@ -243,12 +243,14 @@
 							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" type="Back" press="onPrintPdf"/>-->
 							<!--</HBox>-->
+							<html:div class="sapUiNoMarginBottom sapUiNoMarginEnd">    <!--changes by swetha-->
 							<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
 								<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
 								<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>
 								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
 									enabled="{LocalDataModel>/printBtnState}"/>
 							</HBox>
+							</html:div>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
