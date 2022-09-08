@@ -243,14 +243,12 @@
 							<!--	<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>-->
 							<!--	<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" type="Back" press="onPrintPdf"/>-->
 							<!--</HBox>-->
-							<html:div class="sapUiNoMarginBottom sapUiNoMarginEnd">    <!--changes by swetha-->
-							<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
-								<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
-								<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>
-								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
+							<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiNoMarginBottom">
+								<Button class="sapUiTinyMarginBeginEnd sapUiNoMarginBottom" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
+								<Button class="sapUiTinyMarginBeginEnd sapUiNoMarginBottom" press="onSearchBackList" text="{i18n>NewSearch}"/>
+								<Button class="sapUiTinyMarginBeginEnd sapUiNoMarginBottom" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
 									enabled="{LocalDataModel>/printBtnState}"/>
 							</HBox>
-							</html:div>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
