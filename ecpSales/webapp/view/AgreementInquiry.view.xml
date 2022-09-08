@@ -1,7 +1,7 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="zecp.controller.AgreementInquiry"
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:uxap="sap.uxap" xmlns:tnt="sap.tnt">
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
-	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" class="sapUiNoMarginBottom">
+	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true" class="sapUiNoMarginEnd">
 		<uxap:sections>
 			<uxap:ObjectPageSection title="">
 				<uxap:subSections>
