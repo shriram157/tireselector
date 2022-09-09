@@ -117,4 +117,5 @@ html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
 .clFormTitleGap .sapUiRespGridMedia-Std-Tablet.sapUiFormResGridCont>.sapUiFormElementLbl:not(.sapUiRespGridSpanM12)>.sapMLabel {
 	padding-left:3rem;
 	text-align: left!important;
+	margin-bottom:0!important;
 }
