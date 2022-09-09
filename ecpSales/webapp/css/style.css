@@ -118,8 +118,15 @@ html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
 	padding-left:3rem;
 	text-align: left!important;
 }
-
-</*html {
+@media only screen {
+	html, body{
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+}
+/*html {
     height: 100%;
     width: 100%;
     margin: 0;
