@@ -2,7 +2,7 @@
 	xmlns:html="http://www.w3.org/1999/xhtml" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:uxap="sap.uxap" xmlns:tnt="sap.tnt">
 	<core:Fragment fragmentName="zecp.view.fragments.ToolHeader" type="XML"/>
 	<uxap:ObjectPageLayout id="ObjectPageLayout" enableLazyLoading="true">
-		<uxap:sections>
+		<uxap:sections> 
 			<uxap:ObjectPageSection title="">
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection id="idAgreementDetailHeader" title="">
@@ -14,6 +14,7 @@
 											labelSpanM="5" labelSpanS="4" adjustLabelSpan="true" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1"
 											columnsM="1" singleContainerFullSize="false">
 											<f:content>
+										
 												<Label text="{i18n>Customer}"/>
 												<Text text="{path: 'LocalDataModel>/AgreementInfo/CustomerNumber'}"/>
 												<Label text="{i18n>Type}"/>
@@ -164,6 +165,7 @@
 											<f:content>
 												<Label text="{i18n>CreatedBy}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/ZecpUserid}"/>
+												
 												<Label text="{i18n>Status}"/>
 												<Text text="{LocalDataModel>/AgreementInfo/AgreementStatus}"/>
 												<Label text="{i18n>StatusDate}"/>
@@ -227,35 +229,25 @@
 				<uxap:subSections>
 					<uxap:ObjectPageSubSection title="{i18n>Comments}">
 						<uxap:blocks>
-							<VBox>
 							<Text width="100%" text="{LocalDataModel>/AgreementInfo/Adjustercoments}"/>
-							</VBox>
-							<VBox>
-								<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">
-									<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
-									<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>
-									<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
-										enabled="{LocalDataModel>/printBtnState}"/>
-								</HBox>
-							</VBox>
 						</uxap:blocks>
 					</uxap:ObjectPageSubSection>
 				</uxap:subSections>
 			</uxap:ObjectPageSection>
-			<!--<uxap:ObjectPageSection>-->
-			<!--	<uxap:subSections>-->
-			<!--		<uxap:ObjectPageSubSection title="">-->
-			<!--			<uxap:blocks>-->
-			<!--				<HBox width="100%" alignContent="Center" justifyContent="Center" class="sapUiLargeMarginBottom">-->
-			<!--					<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>-->
-			<!--					<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>-->
-			<!--					<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"-->
-			<!--						enabled="{LocalDataModel>/printBtnState}"/>-->
-			<!--				</HBox>-->
-			<!--			</uxap:blocks>-->
-			<!--		</uxap:ObjectPageSubSection>-->
-			<!--	</uxap:subSections>-->
-			<!--</uxap:ObjectPageSection>-->
+			<uxap:ObjectPageSection>
+				<uxap:subSections>
+					<uxap:ObjectPageSubSection title="">
+						<uxap:blocks>
+							<HBox width="100%" alignContent="Center" justifyContent="Center">
+								<Button class="sapUiTinyMarginBeginEnd" press="onBacktoList" text="{i18n>BacktoAgreementList}" type="Back"/>
+								<Button class="sapUiTinyMarginBeginEnd" press="onSearchBackList" text="{i18n>NewSearch}"/>
+								<Button class="sapUiTinyMarginBeginEnd" type="Emphasized" text="{i18n>PrintAgreement}" press="onPrintPdf"
+									enabled="{LocalDataModel>/printBtnState}"/>
+							</HBox>
+						</uxap:blocks>
+					</uxap:ObjectPageSubSection>
+				</uxap:subSections>
+			</uxap:ObjectPageSection>
 		</uxap:sections>
 	</uxap:ObjectPageLayout>
 </mvc:View>
