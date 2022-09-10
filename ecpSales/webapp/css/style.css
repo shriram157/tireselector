@@ -119,8 +119,7 @@ html.sap-desktop .sapContrastPlus .sapMBtn:focus>.sapMFocusable {
 	text-align: left!important;
 }
 
-#__xmlview1--ObjectPageLayout-spacer {display:none!important;}
-#__xmlview2--ObjectPageLayout-spacer {display:none!important;}
-#__xmlview3--ObjectPageLayout-spacer {display:none!important;}
-#__xmlview4--ObjectPageLayout-spacer {display:none!important;}
-#__xmlview5--ObjectPageLayout-spacer {display:none!important;}
+
+div[id*="ObjectPageLayout-spacer"] {
+  height: 0!important;
+}
