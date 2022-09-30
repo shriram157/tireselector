@@ -1,7 +1,7 @@
 ID: tireSelector
 _schema-version: '3.1'
 description: Tire Selector consolidated app
-version: 2.0.0
+version: 3.0.0
 
 modules:
  - name: tireSelector_hdb
@@ -9,6 +9,30 @@ modules:
    path: tireSelector_hdb
    requires:
     - name: hdi_tireSelector_hdb
+    
+ - name: tireSelector_XSJS
+   type: nodejs
+   path: tireSelector_XSJS
+   parameters:
+      disk-quota: 512M
+      memory: 256M
+      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.7.61
+   properties:
+      OPTIMIZE_MEMORY: true
+      XS_APP_LOG_LEVEL: info
+      XS_LOG_CONNECTION_DATA: true
+      XS_LOG_REFERER: true
+      XS_LOG_USER: true
+   provides:
+    - name: tireSelector_XSJS_api
+      properties:
+         url: ${default-url}
+   requires:
+    - name: tireSelector_hdb
+    - name: application-logs_tireSelector
+    - name: hdi_tireSelector_hdb
+    - name: uaa_tireSelector
+    - name: cf-drain
 
  - name: tireSelector_Node
    type: nodejs
@@ -35,26 +59,6 @@ modules:
     - name: uaa_tireSelector
     - name: cf-drain
     - name: TIRE_SELECTOR_APIM_CUPS
-
- - name: tireSelector_XSJS
-   type: nodejs
-   path: tireSelector_XSJS
-   parameters:
-      disk-quota: 512M
-      memory: 256M
-   properties:
-      OPTIMIZE_MEMORY: true
-      XS_APP_LOG_LEVEL: info
-   provides:
-    - name: tireSelector_XSJS_api
-      properties:
-         url: ${default-url}
-   requires:
-    - name: tireSelector_hdb
-    - name: application-logs_tireSelector
-    - name: hdi_tireSelector_hdb
-    - name: uaa_tireSelector
-    - name: cf-drain
 
  - name: tireSelector
    type: html5
@@ -84,7 +88,6 @@ modules:
       XS_LOG_USER: true
    build-parameters:
       builder: grunt
-      build-result: dist
    requires:
     - name: application-logs_tireSelector
     - name: uaa_tireSelector
