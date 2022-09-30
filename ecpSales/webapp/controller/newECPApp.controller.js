@@ -1415,48 +1415,6 @@ sap.ui.define([
 			if (oEvent.getParameters().selectedItem != null) {
 				this.oPlanCode = oEvent.getParameters().selectedItem.getText();
 
-				// var oPlanKey = oEvent.getSource().getSelectedKey();
-				// var km = oPlanKey.split("/")[0];
-				// var mnth = oPlanKey.split("/")[1];
-				// this.mxMillage = oPlanKey.split("/")[2];
-				// this.mxMonth = oPlanKey.split("/")[3];
-				// this.oAdditionalText = oEvent.getSource().getSelectedItem().getAdditionalText();
-				// this.oAdditionalVal = parseInt(km.replace(/,/g, ''));
-				// this.oPlanMonth = parseInt(mnth);
-
-				// this.PlanTime = parseFloat(this.oPlanMonth * 30.42 * 24 * 60 * 60 * 1000).toFixed(2);
-
-				// var zEcpModel = this.getModel("EcpSalesModel");
-				// this._oToken = zEcpModel.getHeaders()['x-csrf-token'];
-				// $.ajaxSetup({
-				// 	headers: {
-				// 		'X-CSRF-Token': this._oToken
-				// 	}
-				// });
-
-				// var oDateFormat = sap.ui.core.format.DateFormat.getDateInstance({
-				// 	pattern: "yyyy-MM-ddTHH:mm:ss"
-				// });
-
-				// var oFormatedSaleDate = oDateFormat.format(new Date(this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate")));
-
-				// zEcpModel.read("/zc_ecp_planpricing_dataSet", {
-				// 	urlParameters: {
-				// 		"$filter": "MGANR eq '" + this.oPlanCode + "'and ODMTR eq'" + this.oECPData.ZecpOdometer + "'and VIN eq '" + this.oECPData.ZecpVin +
-				// 			"'and ZECPAGRTYPE eq'" + this.oECPData.ZecpAgrType + "'and ZECPSALE_DATE eq datetime'" + oFormatedSaleDate + "'"
-				// 	},
-				// 	success: $.proxy(function (data) {
-				// 		this.getModel("LocalDataModel").setProperty("/oPlanPricingData", data.results[0]);
-				// 		this.oECPData.ZecpRetPrice = data.results[0].ZECP_RET_PRICE;
-				// 		this.oECPData.ZecpDefSurchrg = data.results[0].ZECP_DEF_SURCHRG;
-				// 		this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
-				// 		this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
-				// 	}, this),
-				// 	error: function (err) {
-				// 		console.log(err);
-				// 	}
-				// });
-
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.None);
 				oidPlanCodeId.setValueStateText("");
 				this.getView().byId("idNewECPMsgStripPlan").setProperty("visible", false);
@@ -1566,7 +1524,7 @@ sap.ui.define([
 
 		},
 		OnNextStep4: function (oEvent) {
-			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
+			
 			var oRegYear, oSaleDate, oSaleYear, yearDef, yearInMonthDef, oSaleMonth, oRegMonth, monthDef, finalMonthDef, regDay, oSaleDay,
 				dayDif, finalDayDef, Date1, Date2, oMonthMiliSecond, TotaldayMonDif;
 			oSaleDate = this.getView().getModel("EcpFieldData").getProperty("/ZecpSaleDate");
@@ -1850,6 +1808,8 @@ sap.ui.define([
 			}
 
 			this.updateTHazBenFlag(oSelectedPlan);
+			
+			this.updateSurchargeValue(this.getModel("LocalDataModel").getProperty("/odometerState"));
 
 			//resetting the LienFields Validation
 
@@ -1940,8 +1900,14 @@ sap.ui.define([
 						console.log("Error");
 					}
 				});
+				
+				
+				
 
 			}
+			
+			
+			
 
 		},
 		onChangeAmt: function (oEvent) {
@@ -2104,8 +2070,12 @@ sap.ui.define([
 							oEcpFieldDataModel.setProperty("/ZecpVehSurchrgAmt", data.results[0].ZECP_VEH_SURCHRG_AMT);
 							// this.oECPData.ZecpVehSurchrgAmt = data.results[0].ZECP_VEH_SURCHRG_AMT;
 							oEcpFieldDataModel.setProperty("/ZecpListpurprice", data.results[0].ZECP_LISTPURPRICE);
+							//DMND0003027 demand changes done.
+							if(data.results[0].BENEFITSFLAG === "X"){
+							oEcpFieldDataModel.setProperty("/ZbenefitFlag1", this.getView().getModel("i18n").getResourceBundle().getText("Yes"));
+							this.getView().getModel("EcpFieldData").setProperty("/ZecpBenefitsFlg", "Yes");
 							// this.oECPData.ZecpListpurprice = data.results[0].ZECP_LISTPURPRICE;
-
+							}
 						}, this),
 						error: function (err) {
 							console.log(err);
