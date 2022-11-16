@@ -1412,6 +1412,12 @@ sap.ui.define([
 
 		onSelectPlanCode: function (oEvent) {
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
+			if (this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User") {
+				if (this.getView().byId("idPlanCode").getProperty("/ZECP_HIDEPLAN") =="X") {
+					this.getView().byId("idPlanCode").getProperty("/MGANR").hidden="true";	
+				}
+			}
+			
 			if (oEvent.getParameters().selectedItem != null) {
 				this.oPlanCode = oEvent.getParameters().selectedItem.getText();
 
@@ -1425,9 +1431,8 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 				oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
-			}
-
-		},
+			}},
+			//changes by swetha
 		onChangePreownedCert: function (oEvent) {
 			var oVal = oEvent.getSource().getValue();
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
