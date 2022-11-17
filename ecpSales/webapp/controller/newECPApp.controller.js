@@ -1094,14 +1094,14 @@ sap.ui.define([
 								this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
 								
 								// 17-11-2022 Shriram       DMND0003842  ZECP_HIDEPLAN=X dont show relative  MGANR    Code Start
-								// if(this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User"){
-								// 	oFilteredPlan = oFilteredPlan.filter(function (p) {
-								// 	return !(String(p.ZECP_HIDEPLAN).startsWith("X"));
-								// });
+								if(this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User"){
+									oFilteredPlan = oFilteredPlan.filter(function (p) {
+									return !(String(p.ZECP_HIDEPLAN).startsWith("X"));
+								});
 								
-								// this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);	
-								// }
-									// 17-11-2022 Shriram      DMND0003842 ZECP_HIDEPLAN=X dont show relative  MGANR                                 Code End
+								this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);	
+								}
+									// 17-11-2022 Shriram      DMND0003842 ZECP_HIDEPLAN=X dont show relative  MGANR    Code End
 							}
 
 							var oAgrItem = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
@@ -1422,11 +1422,11 @@ sap.ui.define([
 
 		onSelectPlanCode: function (oEvent) {
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
-			if (this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User") {
-				if (this.getView().byId("idPlanCode").getProperty("/ZECP_HIDEPLAN") =="X") {
-					this.getView().byId("idPlanCode").getProperty("/MGANR").hidden="true";	
-				}
-			}
+			// if (this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User") {
+			// 	if (this.getView().byId("idPlanCode").getProperty("/ZECP_HIDEPLAN") =="X") {
+			// 		this.getView().byId("idPlanCode").getProperty("/MGANR").hidden="true";	
+			// 	}
+			// }
 			
 			if (oEvent.getParameters().selectedItem != null) {
 				this.oPlanCode = oEvent.getParameters().selectedItem.getText();
