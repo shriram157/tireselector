@@ -1094,13 +1094,13 @@ sap.ui.define([
 								this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
 								
 								// 17-11-2022 Shriram       DMND0003842  ZECP_HIDEPLAN=X dont show relative  MGANR    Code Start
-								if(this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User"){
-									oFilteredPlan = oFilteredPlan.filter(function (p) {
-									return !(String(p.ZECP_HIDEPLAN).startsWith("X"));
-								});
+								// if(this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User"){
+								// 	oFilteredPlan = oFilteredPlan.filter(function (p) {
+								// 	return !(String(p.ZECP_HIDEPLAN).startsWith("X"));
+								// });
 								
-								this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);	
-								}
+								// this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);	
+								// }
 									// 17-11-2022 Shriram      DMND0003842 ZECP_HIDEPLAN=X dont show relative  MGANR                                 Code End
 							}
 
