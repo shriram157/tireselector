@@ -1574,7 +1574,7 @@ sap.ui.define([
 					width: "30em",
 					my: "center center",
 					at: "center center",
-					duration: 500,
+					duration: 3000,				//changes for DMND0003842
 					onClose: $.proxy(function () {
 						this.getRouter().navTo("ApplicationList");
 					}, this)
