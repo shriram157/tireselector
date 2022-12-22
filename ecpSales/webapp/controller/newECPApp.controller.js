@@ -1092,6 +1092,16 @@ sap.ui.define([
 								});
 
 								this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);
+								
+								// 17-11-2022 Shriram       DMND0003842  ZECP_HIDEPLAN=X dont show relative  MGANR    Code Start
+								if(this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User"){
+									oFilteredPlan = oFilteredPlan.filter(function (p) {
+									return !(String(p.ZECP_HIDEPLAN).startsWith("X"));
+								});
+								
+								this.getModel("LocalDataModel").setProperty("/PlanValidSet", oFilteredPlan);	
+								}
+									// 17-11-2022 Shriram      DMND0003842 ZECP_HIDEPLAN=X dont show relative  MGANR    Code End
 							}
 
 							var oAgrItem = this.getView().getModel("EcpFieldData").getProperty("/ZecpAgrType");
@@ -1412,6 +1422,12 @@ sap.ui.define([
 
 		onSelectPlanCode: function (oEvent) {
 			var oidPlanCodeId = this.getView().byId("idPlanCode");
+			// if (this.getModel("LocalDataModel").getProperty("/UserType") == "Dealer_Sales_User") {
+			// 	if (this.getView().byId("idPlanCode").getProperty("/ZECP_HIDEPLAN") =="X") {
+			// 		this.getView().byId("idPlanCode").getProperty("/MGANR").hidden="true";	
+			// 	}
+			// }
+			
 			if (oEvent.getParameters().selectedItem != null) {
 				this.oPlanCode = oEvent.getParameters().selectedItem.getText();
 
@@ -1425,9 +1441,8 @@ sap.ui.define([
 				this.getView().byId("idNewECPMsgStripPlan").setType("Error");
 				oidPlanCodeId.setValueState(sap.ui.core.ValueState.Error);
 				oidPlanCodeId.setValueStateText(this.oBundle.getText("ECP0007EPlanCode"));
-			}
-
-		},
+			}},
+			//changes by swetha
 		onChangePreownedCert: function (oEvent) {
 			var oVal = oEvent.getSource().getValue();
 			this.oBundle = this.getView().getModel("i18n").getResourceBundle();
@@ -1559,7 +1574,7 @@ sap.ui.define([
 					width: "30em",
 					my: "center center",
 					at: "center center",
-					duration: 500,
+					duration: 3000,				//changes for DMND0003842
 					onClose: $.proxy(function () {
 						this.getRouter().navTo("ApplicationList");
 					}, this)
