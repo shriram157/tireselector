@@ -407,7 +407,7 @@ sap.ui.define([
 			}
 			$.ajax({
 				dataType: "json",
-				url: this.nodeJsUrl + "/MD_PRODUCT_FS_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '" + Lang +
+				url: this.nodeJsUrl + "/MD_PRODUCT_OP_SRV/ZC_Product_CategorySet?$filter=LANGUAGE eq '" + Lang +
 					"'and PRODH eq 'PARP10F22P101ECPRH'",
 				type: "GET",
 				success: function (oDataResponse) {
