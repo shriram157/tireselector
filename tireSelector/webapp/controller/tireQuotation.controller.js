@@ -365,7 +365,9 @@ sap.ui.define([
 				var filterdata = "?$filter=Division eq '" + _this.Division + "' and DocType eq '" + _this.Doctype + "' and SalesOrg eq '" +
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty +
 					"' and Material eq '" + oMaterial + "'";
+					//GST field was coming in UI so PriceServiceModel replaced to PriceServiceModel2
 				_this.oPriceServiceModel = _this.getOwnerComponent().getModel("PriceServiceModel2");
+				//ZC_PriceSet replaced to ZC_PriceCollection
 				_this.oPriceServiceModel.read("/ZC_PriceCollection" + filterdata, {
 					success: $.proxy(function (oPriceData) {
 							for (var n = 0; n < oPriceData.results.length; n++) {
@@ -511,7 +513,9 @@ sap.ui.define([
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty + "' and Material eq '" +
 					oMaterial +
 					"'";
+					//GST field was coming in UI so PriceServiceModel replaced to PriceServiceModel2
 				_this.oPriceServiceModel = _this.getOwnerComponent().getModel("PriceServiceModel2");
+					//ZC_PriceSet replaced to ZC_PriceCollection
 				_this.oPriceServiceModel.read("/ZC_PriceCollection" + filterdata, {
 					success: $.proxy(function (oPriceData) {
 						if (oPriceData.results.length > 0) {
