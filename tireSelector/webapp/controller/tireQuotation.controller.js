@@ -365,8 +365,8 @@ sap.ui.define([
 				var filterdata = "?$filter=Division eq '" + _this.Division + "' and DocType eq '" + _this.Doctype + "' and SalesOrg eq '" +
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty +
 					"' and Material eq '" + oMaterial + "'";
-				_this.oPriceServiceModel = _this.getOwnerComponent().getModel("PriceServiceModel");
-				_this.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
+				_this.oPriceServiceModel = _this.getOwnerComponent().getModel("PriceServiceModel2");
+				_this.oPriceServiceModel.read("/ZC_PriceCollection" + filterdata, {
 					success: $.proxy(function (oPriceData) {
 							for (var n = 0; n < oPriceData.results.length; n++) {
 								var CndType = oPriceData.results[n].CndType;
@@ -511,8 +511,8 @@ sap.ui.define([
 					_this.SalesOrg + "' and DistrChan eq '" + _this.DistrChan + "' and SoldtoParty eq '" + _this.SoldtoParty + "' and Material eq '" +
 					oMaterial +
 					"'";
-				_this.oPriceServiceModel = _this.getOwnerComponent().getModel("PriceServiceModel");
-				_this.oPriceServiceModel.read("/ZC_PriceSet" + filterdata, {
+				_this.oPriceServiceModel = _this.getOwnerComponent().getModel("PriceServiceModel2");
+				_this.oPriceServiceModel.read("/ZC_PriceCollection" + filterdata, {
 					success: $.proxy(function (oPriceData) {
 						if (oPriceData.results.length > 0) {
 							var CndTypeArray = [];
