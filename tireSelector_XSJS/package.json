@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@sap/xsjs": "^6.6.8",
+    "@sap/xsjs": "^6.7.8",
     "@sap/xsenv": "^3.3.2"
   },
   "description": "XSJS Module to Provide oData",
