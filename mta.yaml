@@ -16,7 +16,7 @@ modules:
    parameters:
       disk-quota: 512M
       memory: 256M
-      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.8.1
+      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.8.5
       stack: cflinuxfs4
    properties:
       OPTIMIZE_MEMORY: true
@@ -41,7 +41,7 @@ modules:
    parameters:
       disk-quota: 512M
       memory: 256M
-      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.8.1
+      buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.8.5
       stack: cflinuxfs4
    properties:
       NODE_TLS_REJECT_UNAUTHORIZED: 0
