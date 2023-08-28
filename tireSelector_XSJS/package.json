@@ -12,7 +12,7 @@
   "main": "server.js",
   "name": "tireSelector_XSJS",
   "scripts": {
-    "start": "node --max-http-header-size=40960 server.js",
+    "start": "node --experimental-vm-modules index.js",
     "test": "node testrun.js"
   },
   "engines": {
