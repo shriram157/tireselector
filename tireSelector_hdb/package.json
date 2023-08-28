@@ -7,6 +7,6 @@
         "start": "node node_modules/@sap/hdi-deploy/deploy.js"
     },
     "engines": {
-		"node": "16.x"
+		"node": "12.x || 14.x"
 	}
 }
