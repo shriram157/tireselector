@@ -1,22 +1,22 @@
 {
-  "dependencies": {
-   
-    "@sap/xsenv": "^3.3.2",
-    "@sap/async-xsjs": "^1.0.0"
-  },
-  "description": "XSJS Module to Provide oData",
-  "devDependencies": {
-    "@sap/xsjs-test": "^3.2.2"
-  },
-  "files": [],
-  "main": "server.js",
-  "name": "tireSelector_XSJS",
-  "scripts": {
-    "start": "node --experimental-vm-modules index.js",
-    "test": "node testrun.js"
-  },
-  "engines": {
-    "node": "16.x"
-  },
-  "version": "2.0.0"
+	"dependencies": {
+		"@sap/xsjs": "^6.7.8",
+		"@sap/xsenv": "^3.3.2",
+		"@sap/async-xsjs": "^1.0.0"
+	},
+	"description": "XSJS Module to Provide oData",
+	"devDependencies": {
+		"@sap/xsjs-test": "^3.2.2"
+	},
+	"files": [],
+	"main": "server.js",
+	"name": "tireSelector_XSJS",
+	"scripts": {
+		"start": "node --max-http-header-size=40960 server.js",
+		"test": "node testrun.js"
+	},
+	"engines": {
+		"node": "16.x"
+	},
+	"version": "2.0.0"
 }
