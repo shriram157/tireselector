@@ -14,8 +14,8 @@ modules:
    type: nodejs
    path: tireSelector_XSJS
    parameters:
-      disk-quota: 512M
-      memory: 256M
+      disk-quota: 1024M
+      memory: 1024M
       buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.8.5
       stack: cflinuxfs4
    properties:
@@ -119,7 +119,9 @@ resources:
    type: com.sap.xs.hdi-container
    parameters:
       config:
-         schema: tireSelector
+       database_id: ce36bdc1-4b4a-4333-a892-1a830c458f82
+       schema: tireSelector
+         
    properties:
       hdi-container-name: ${service-name}
 
