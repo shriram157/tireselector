@@ -1,6 +1,6 @@
 {
 	"dependencies": {
-	
+	    "@sap/async-xsjs": "^1.0.0",
 		"@sap/xsenv": "^3.3.2"
 		
 	},

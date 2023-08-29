@@ -1,29 +1,21 @@
-/*eslint no-console: 0, no-unused-vars: 0*/
-"use strict";
+'use strict';
 
-var xsjs  = require("@sap/xsjs");
-var xsenv = require("@sap/xsenv");
-var port  = process.env.PORT || 3000;
+var xsenv = require('@sap/xsenv');
+var async_xsjs = require('@sap/async-xsjs');
 
-var options = {
-	redirectUrl : "/index.xsjs"
-};
-
-// configure HANA
-try {
-	options = Object.assign(options, xsenv.getServices({ hana: {tag: "hana"} }));
-} catch (err) {
-	console.log("[WARN]", err.message);
-}
-
-// configure UAA
-try {
-	options = Object.assign(options, xsenv.getServices({ uaa: {tag: "xsuaa"} }));
-} catch (err) {
-	console.log("[WARN]", err.message);
-}
-
-// start server
-xsjs(options).listen(port);
-
-console.log("Server listening on port %d", port);
+var port = process.env.PORT || 3000;
+var options = xsenv.getServices({
+    uaa: 'xsuaa',
+    hana: 'hana-hdi',
+    secureStore: 'secureStore'
+    
+});
+async_xsjs(options).then((async_xsjs_server)=>{
+  async_xsjs_server.listen(port, (err)=>{
+    if(!err) {
+      console.log('Node XS server listening on port %d', port);
+    }else{
+      console.log('Node XS server failed to start on port %d', port);
+    }
+  });
+});
