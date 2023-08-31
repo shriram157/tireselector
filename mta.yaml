@@ -32,7 +32,7 @@ modules:
     - name: tireSelector_hdb
     - name: application-logs_tireSelector
     - name: hdi_tireSelector_hdb
-    - name: uaa_tireSelector
+    
     - name: cf-drain
 
  - name: tireSelector_Node
@@ -119,8 +119,7 @@ resources:
    type: com.sap.xs.hdi-container
    parameters:
       config:
-       database_id: ce36bdc1-4b4a-4333-a892-1a830c458f82
-       schema: tireSelector
+      schema: tireSelector
          
    properties:
       hdi-container-name: ${service-name}
