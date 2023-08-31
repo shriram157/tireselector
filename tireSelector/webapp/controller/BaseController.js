@@ -23,7 +23,7 @@ sap.ui.define([
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
 
-		//This code makes no sense. Why would you want to send an email to yourself to report the error?
+		// This code makes no sense. Why would you want to send an email to yourself to report the error?
 		onShareEmailPress: function () {
 			var email, logonName;
 			$.ajax({
