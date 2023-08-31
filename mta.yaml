@@ -32,7 +32,7 @@ modules:
     - name: tireSelector_hdb
     - name: application-logs_tireSelector
     - name: hdi_tireSelector_hdb
-    
+    - name: uaa_tireSelector
     - name: cf-drain
 
  - name: tireSelector_Node
@@ -58,7 +58,7 @@ modules:
          url: ${default-url}
    requires:
     - name: application-logs_tireSelector
-   
+    - name: uaa_tireSelector
     - name: cf-drain
     - name: TIRE_SELECTOR_APIM_CUPS
 
@@ -92,7 +92,7 @@ modules:
       builder: grunt
    requires:
     - name: application-logs_tireSelector
-    
+    - name: uaa_tireSelector
     - name: cf-drain
     - name: tireSelector_Node_api
       group: destinations
@@ -119,12 +119,18 @@ resources:
    type: com.sap.xs.hdi-container
    parameters:
       config:
-      schema: tireSelector
+       
+       schema: tireSelector
          
    properties:
       hdi-container-name: ${service-name}
 
-
+ - name: uaa_tireSelector
+   type: org.cloudfoundry.managed-service
+   parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
 
  - name: cf-drain
    type: org.cloudfoundry.existing-service
