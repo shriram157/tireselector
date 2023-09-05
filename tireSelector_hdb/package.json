@@ -4,8 +4,8 @@
         "@sap/hdi-deploy": "4.6.0"
     },
     "scripts": {
-        "start": "node node_modules/@sap/hdi-deploy/deploy.js"
-    },
+    	"start": "node --experimental-vm-modules --max-http-header-size=40960 server.js"
+         },
     "engines": {
 		"node": "16.x"
 	}
