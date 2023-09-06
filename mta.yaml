@@ -129,9 +129,10 @@ resources:
    type: org.cloudfoundry.managed-service
    parameters:
       service: xsuaa
-      service-name: uaa_tireSelector
       service-plan: application
       path: ./xs-security.json
+      config: 
+   xsappname: tireSelector-${org}-${space}
 
  - name: cf-drain
    type: org.cloudfoundry.existing-service
