@@ -129,7 +129,7 @@ resources:
    type: org.cloudfoundry.managed-service
    parameters:
       service: xsuaa
-      service-name:  uaa_tireSelector
+      service-name: uaa_tireSelector
       service-plan: application
       path: ./xs-security.json
 
