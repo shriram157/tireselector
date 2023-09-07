@@ -2,7 +2,7 @@ context tireSelector {
   
   
       entity dealerMarkUp {
-            @Comment : 'Dealer Code'
+            @Comment : 'Dealer Code T'
         key Dealer_code          : String(20);
 
             @Comment : 'This is the Brand (Toyota or Lexus) - SAP name = Division'
