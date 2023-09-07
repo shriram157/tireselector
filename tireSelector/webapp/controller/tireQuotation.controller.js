@@ -63,7 +63,7 @@ sap.ui.define([
 			if (isLocaleSent) {
 				sSelectedLocale = window.location.search.match(/language=([^&]*)/i)[1];
 			} else {
-				sSelectedLocale = "EN"; // default is english 
+				sSelectedLocale = "EN"; // default is English 
 			}
 			if (sSelectedLocale == "fr") {
 				localLang = "F";
