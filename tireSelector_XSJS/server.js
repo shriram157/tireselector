@@ -9,7 +9,7 @@ var options = xsenv.getServices({
 		tag: 'hana-hdi',
 		plan: 'hana-hdi'
 	},
-	uaa: {
+	xsuaa: {
 		tag: 'xsuaa'
 	},
 	secureStore: 'secureStore'
