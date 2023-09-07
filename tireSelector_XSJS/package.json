@@ -1,7 +1,7 @@
 {
 	"dependencies": {
-	    "@sap/async-xsjs": "^1.0.0",
-		"@sap/xsenv": "^3.3.2"
+	    "@sap/async-xsjs": "^1.0.6",
+		"@sap/xsenv": "3.4.0"
 		
 	},
 	"description": "XSJS Module to Provide oData",
