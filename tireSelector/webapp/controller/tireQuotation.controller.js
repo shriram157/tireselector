@@ -30,6 +30,7 @@ sap.ui.define([
 			if (sLocation_conf == 0) {
 				_this.getView().setModel(sap.ui.getCore().getModel("DealerModel"), "DealerModel");
 			}
+			
 			_this.nodeJsUrl = "/node";
 			_this._oViewModel = new sap.ui.model.json.JSONModel({
 				busy: false,
