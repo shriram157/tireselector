@@ -1,4 +1,4 @@
-_schema-version: '3.1'
+_schema-version: "3.1"
 ID: tireSelector
 version: 3.0.1
 description: "Tire Selector consolidated app"
@@ -8,7 +8,6 @@ build-parameters:
   before-all:
     - builder: custom
       commands:
-        - npm install
         - npx cds build --production
 modules:
   - name: tireSelector_XSJS
@@ -18,8 +17,8 @@ modules:
       buildpack: nodejs_buildpack
     build-parameters:
       builder: npm
-    properties:  
-      SAP_JWT_TRUST_ACL: '[{"clientid":"*","identityzone":"*"}]'  
+    properties:
+      SAP_JWT_TRUST_ACL: '[{"clientid":"*","identityzone":"*"}]'
     provides:
       - name: tireSelector_XSJS_api # required by consumers of CAP services (e.g. approuter)
         properties:
@@ -43,7 +42,7 @@ modules:
   - name: tireSelector_Node
     type: nodejs
     path: tireSelector_Node
-    parameters: 
+    parameters:
       disk-quota: 512M
       memory: 256M
       buildpack: https://github.com/cloudfoundry/nodejs-buildpack#v1.8.5
@@ -59,18 +58,18 @@ modules:
       XS_LOG_NETWORK: true
       XS_LOG_REFERER: true
       XS_LOG_USER: true
-      
-    provides:
-    - name: tireSelector_Node_api
-      properties:
-         url: ${default-url}
-    requires:
-    - name: application-logs_tireSelector
-    - name: uaa_tireSelector
-    - name: TIRE_SELECTOR_APIM_CUPS
-    - name: cf-drain
-    # - name: capmt-dst
 
+    provides:
+      - name: tireSelector_Node_api
+        properties:
+          url: ${default-url}
+    requires:
+      - name: application-logs_tireSelector
+      - name: uaa_tireSelector
+      - name: TIRE_SELECTOR_APIM_CUPS
+      - name: cf-drain
+
+    # - name: capmt-dst
   - name: tireSelector
     type: html5
     path: tireSelector
@@ -79,17 +78,17 @@ modules:
       memory: 512M
     properties:
       CORS: >
-         [
-           {
-             "allowedOrigin": [
-               {
-                 "host": "*"
-               }
-             ],
-             "allowedCredentials": true,
-             "uriPattern": "^/custom/do/logout"
-           }
-         ]
+        [
+          {
+            "allowedOrigin": [
+              {
+                "host": "*"
+              }
+            ],
+            "allowedCredentials": true,
+            "uriPattern": "^/custom/do/logout"
+          }
+        ]
       OPTIMIZE_MEMORY: true
       SESSION_TIMEOUT: 60
       XS_APP_LOG_LEVEL: info
@@ -100,22 +99,22 @@ modules:
     build-parameters:
       builder: grunt
     requires:
-    - name: application-logs_tireSelector
-    - name: cf-drain
-    - name: uaa_tireSelector
-    - name: tireSelector_Node_api
-      group: destinations
-      properties:
-         name: tireSelector-node-backend
-         url: "~{url}"
-         forwardAuthToken: true
-         timeout: 60000
-    - name: tireSelector_XSJS_api
-      group: destinations
-      properties:
-         name: tireSelector
-         url: "~{srv-url}"     
-         forwardAuthToken: true
+      - name: application-logs_tireSelector
+      - name: cf-drain
+      - name: uaa_tireSelector
+      - name: tireSelector_Node_api
+        group: destinations
+        properties:
+          name: tireSelector-node-backend
+          url: "~{url}"
+          forwardAuthToken: true
+          timeout: 60000
+      - name: tireSelector_XSJS_api
+        group: destinations
+        properties:
+          name: tireSelector
+          url: "~{srv-url}"
+          forwardAuthToken: true
 resources:
   - name: uaa_tireSelector
     type: org.cloudfoundry.managed-service
@@ -130,23 +129,23 @@ resources:
       service: hana
       service-plan: hdi-shared
       config:
-       schema: tireSelector
+        schema: tireSelector
   - name: TIRE_SELECTOR_APIM_CUPS
     type: org.cloudfoundry.existing-service
     parameters:
-      service-name: TIRE_SELECTOR_APIM_CUPS  
+      service-name: TIRE_SELECTOR_APIM_CUPS
   - name: cf-drain
     type: org.cloudfoundry.existing-service
     parameters:
-      service-name: cf-drain    
+      service-name: cf-drain
   - name: application-logs_tireSelector
     type: org.cloudfoundry.managed-service
     parameters:
       service: application-logs
-      service-plan: lite 
+      service-plan: lite
   # - name: capmt-dst
   #   type: org.cloudfoundry.managed-service
   #   parameters:
   #     service: destination
   #     service-plan: lite
-  #     service-name: CAPMT_DST_TIRESELECTOR     
+  #     service-name: CAPMT_DST_TIRESELECTOR
